@@ -1,0 +1,227 @@
+@charset "UTF-8";
+
+body {
+	margin:0;
+}
+
+.tx_main {
+	padding-top: 45px;
+    color: #333;
+    font-size: 36px;
+    letter-spacing: -0.5px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.tx_sub {
+	display: block;
+    letter-spacing: -0.5px;
+    font-size: 14px;
+    color: #555;
+    line-height: 20px;
+    padding-top: 14px;
+    text-align: center;
+}
+
+
+.register_form_div {
+	box-sizing: border-box;
+	text-align: -webkit-center;
+}
+
+.register_form_div h3 {
+	display: block;
+	text-align: left;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 30px;
+    color: #333;
+}
+
+.register_form_div form {
+	width: 800px;
+}
+
+.register_table {
+	border-top: 1px solid #333;
+	border-spacing: 0;
+}
+
+.register_table tr {
+	border-bottom: 1px solid #d7d7d7;
+}
+
+.register_table th, .register_table td {
+	border-bottom: 1px solid #d7d7d7;
+	color: #333;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+    text-align: left;
+}
+
+.register_table td {
+	padding: 11px 20px;
+	width: 630px;
+}
+
+/* 인풋*/
+.register_table td input, .register_table td div input {
+	border: 1px solid #d7d7d7;
+    padding: 10px 5px 8px;
+}
+
+.register_table th {
+	background-color: #f3f3f3;
+    padding: 23px 29px 21px;
+    font-weight: 600;
+    vertical-align: top;
+    width: 170px;
+    color: #333;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+    text-align: left;
+}
+
+.register_table td div a {
+	min-width: 83px;
+	border: 1px solid #222;
+	padding: 0px 5px;
+	height: 34px;
+    line-height: 34px;
+    font-size: 14px;
+}
+
+
+.register_table td div a span {
+	font-size: 14px;
+	color: #222222;
+}
+
+.tx_ex {
+	display: block;
+    font-size: 12px;
+    color: #777;
+    padding: 7px 0;
+    line-height: 1.4;
+}
+
+.register_table td .complete_cancel input {
+	display: inline-block;
+	height: 50px;
+    line-height: 50px;
+    min-width: 180px;
+    margin: 0 3px;
+    padding: 0px 0px;
+}
+
+.register_table td .complete_cancel #register_submit {
+	font-size: 18px;
+	background-color: black;
+	color: white;
+	font-weight: 900;
+}
+
+.register_table td .complete_cancel #register_reset {
+	font-size: 18px;
+	background-color: white;
+	color: black;
+	font-weight: 900;
+}
+
+#hp1 {
+	width: 40px;
+}
+
+#hp2, #hp3 {
+	width: 50px;
+}
+
+#userEmail {
+	width: 100px;
+}
+
+#userEmail3 {
+	height: 36px;
+}
+
+#address_addr1, #address_addr2 {
+	width: 448px;
+}
+
+#address_addr2 {
+	margin-bottom: 5px;
+}
+
+/* 회원탈퇴 */
+.withdraw_div {
+	text-align: right;
+}
+
+.withdraw_div label {
+	/* display: flex; */
+    font-size: 12px;
+    color: #777;
+    padding: 7px 0;
+    line-height: 1.4;
+}
+
+#withdraw {
+	
+	
+}
+
+
+
+/* #userName {
+	
+}
+
+#userBirth {
+	
+}
+
+#userId {
+	
+}
+
+#userPwd {
+	
+}
+
+#UserrePwd {
+	
+}
+
+#userTel {
+	
+}
+
+#userEmail {
+	
+}
+
+#userAddress {
+	
+}
+
+.userZipcode_div {
+	
+}
+
+#userAddress_addr1 {
+	
+}
+
+#userAddress_addr2 {
+	
+}
+
+#userAddress_addr3 {
+	
+} */
+
+
+
+
+

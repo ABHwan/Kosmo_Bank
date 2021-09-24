@@ -1,0 +1,331 @@
+-- 고객 테이블
+DROP TABLE members;
+CREATE TABLE members(
+    id      VARCHAR2(50)    PRIMARY KEY,                -- 아이디
+    password     VARCHAR2(100)    NOT NULL,              -- 비밀번호                          
+    name    VARCHAR2(20)     NOT NULL,                  -- 이름
+    birth   VARCHAR2(20),                               -- 생년월일
+    hp     VARCHAR(13)      NOT NULL UNIQUE,            -- 연락처
+    email   VARCHAR2(50)    UNIQUE,                     -- 이메일
+    zipcode NUMBER       NOT NULL,                      -- 우편번호
+    addr1 VARCHAR2(50)    NOT NULL,                     -- 도로명
+    addr2 VARCHAR2(50),                                 -- 지번
+    addr3 VARCHAR2(50),                                 -- 상세 주소
+    indate    TIMESTAMP          DEFAULT SYSDATE,       -- 가입일
+    key     NUMBER DEFAULT 0 CHECK(m_key IN (0,1)),   -- 이메일 인증키
+    authority VARCHAR2(50) default 'ROLE_USER'        -- 회원등급 코드
+);
+
+select * from members;
+delete members;
+update members set m_key = 1;
+update members set password = '$2a$10$YFZJG6HEsMOda4LSZBk2du1ZuFnN0oSSfde2VfIyQnWpKk48c1Dcu';
+commit;
+
+DROP TABLE admin;
+CREATE TABLE admin(
+   id           VARCHAR2(20)    PRIMARY KEY,
+   password     VARCHAR2(100)    NOT NULL,
+   name         VARCHAR2(20)    DEFAULT '관리자',
+   key CHAR(1) default 1,                        -- 권한
+   authority VARCHAR2(50) default 'ROLE_ADMIN'        -- 회원등급 코드
+);
+insert into admin
+values('admin', '$2a$10$ys0r9UfRSMjRZcXbu7Zzu.W9T5J5HQFFTrLTE6iSNu6QuLuSIw0AG', '관리자', 1, 'ROLE_ADMIN');
+
+commit;
+select * from admin;
+
+-- 상품 테이블
+DROP TABLE products;
+CREATE TABLE products(
+    pdNo       VARCHAR2(20)    PRIMARY KEY,
+    pdName     VARCHAR2(100)   NOT NULL UNIQUE,
+    pdImg      VARCHAR2(100),
+    category   VARCHAR2(20)    NOT NULL,
+    brand      VARCHAR2(20)    NOT NULL,
+    content    VARCHAR2(1000),
+    price      NUMBER          DEFAULT 0,
+    quantity   NUMBER          DEFAULT 0,
+    indate     Timestamp       DEFAULT SYSDATE
+);
+select*from products;
+
+-- 배송지 테이블
+DROP TABLE delivery;
+CREATE TABLE delivery(
+    deNo       NUMBER(6),         -- 배송지 번호(seq)
+    id          VARCHAR2(50),   -- 연동된 아이디
+    zipcode     NUMBER(5),
+    receipt     VARCHAR2(20)    NOT NULL, -- 수령인
+    deTel       VARCHAR(13),               -- 수령인 연락처
+    addr1        VARCHAR2(100)   NOT NULL, -- 수령인 주소
+    addr2       VARCHAR2(100),
+    de_default  NUMBER(1)         DEFAULT 0 CHECK(de_default IN (0,1)), -- de_default = 1일 경우 기본 배송지로 설정
+    CONSTRAINT delivery_deNo_pk PRIMARY KEY(deNo),
+    CONSTRAINT delivery_id_fk FOREIGN KEY(id) REFERENCES members(id) ON DELETE CASCADE
+);
+-- 배송지 디폴트값 제거 후 de_no = 1 을 기본 배송지로 설정, orders 테이블에 de_no(fk) 넣어놓고 Default값 1로 설정.
+-- 기본 배송지는 수정하면서 사용
+
+select * from delivery;
+ INSERT INTO delivery(deNo, id, zipcode, receipt, deTel, addr1, addr2, de_default)
+ VALUES(de_seq.nextval, 'testkosmo@gmail.com', ?, ?, ?, ?, ?, ?);
+ 
+
+
+-- 주문 테이블
+DROP TABLE orders;
+CREATE TABLE orders(
+    oNo        NUMBER(10)      PRIMARY KEY,
+    pdNo       VARCHAR2(20)    REFERENCES products(pdNo) ON DELETE CASCADE,
+    id          VARCHAR2(50)    REFERENCES members(id) ON DELETE CASCADE,
+    deNo        NUMBER(6)       REFERENCES delivery(deNo) ON DELETE CASCADE,
+    quantity    NUMBER          DEFAULT 0,
+    sales       NUMBER,
+    state       NUMBER          DEFAULT 0 CHECK(state BETWEEN 0 AND 6),
+    indate      TIMESTAMP       DEFAULT SYSDATE
+);
+
+
+-- 장바구니 테이블
+DROP TABLE cart;
+CREATE TABLE cart(
+    cNo         NUMBER(10)      PRIMARY KEY,
+    id          VARCHAR2(50)    REFERENCES members(id) ON DELETE CASCADE,
+    pdNo       VARCHAR2(20)    UNIQUE REFERENCES products(pdNo) ON DELETE CASCADE,
+    quantity    NUMBER          DEFAULT 0
+);
+
+select * from cart;
+
+-- 문의 게시판 테이블
+DROP TABLE qna;
+CREATE TABLE qna(
+    no        NUMBER(6) PRIMARY KEY,
+    id        VARCHAR2(50),
+    subject   VARCHAR2(50),
+    category  VARCHAR2(20),
+    question   VARCHAR2(1000),
+    answer     VARCHAR2(1000),
+    ref       NUMBER(6) default 0,
+    ref_step  NUMBER(6) default 0,
+    indate     TIMESTAMP default sysdate,
+    CONSTRAINT qna_id_fk FOREIGN KEY(id) REFERENCES members(id) ON DELETE CASCADE
+);
+
+ALTER table qna MODIFY id varchar2(50);
+-- 장바구니 시퀀스
+DROP SEQUENCE cart_seq;
+CREATE SEQUENCE cart_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 999999;
+
+-- 문의번호 시퀀스
+DROP SEQUENCE qna_seq;
+CREATE SEQUENCE qna_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 999999;
+    
+-- 상품번호 시퀀스
+DROP SEQUENCE pd_seq;
+CREATE SEQUENCE pd_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 999999;
+
+-- 주문번호 시퀀스
+DROP SEQUENCE o_seq;
+CREATE SEQUENCE o_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 999999;
+
+-- 배송지번호 시퀀드
+DROP SEQUENCE de_seq;
+CREATE SEQUENCE de_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 999999;
+    
+   -- 주문관리 view 0826
+DROP VIEW mngOrder_view;
+CREATE OR REPLACE VIEW mngOrder_view
+AS
+SELECT * 
+      FROM 
+        (SELECT oNo
+     , o.indate
+     , o.id
+     , p.brand
+     , p.pdName
+     , p.pdNo
+     , o.quantity
+     , o.sales
+     , m.name
+     , d.addr1
+     , d.addr2
+     , d.receipt
+     , d.deTel
+     , DECODE(o.state, 0, '주문처리중'
+                     , 1, '주문처리완료'
+                     , 2, '배송중'
+                     , 3, '배송완료'
+                     , 4, '구매확정'
+                     , 5, '환불요청'
+                     , 6, '환불완료') strState 
+     , rowNum rNum
+          FROM (SELECT * FROM orders  
+                    ORDER BY oNO DESC) o, members m, products p, delivery d
+                     WHERE m.id = o.id
+                       AND p.pdNo = o.pdNo
+                       AND m.id = d.id
+                       AND d.deNo = o.deNo 
+                       ORDER BY o.indate DESC
+                     );
+SELECT COUNT(*) as cnt
+     , SUM(sales) as sales
+     , sysdate
+  FROM orders
+ GROUP BY sysdate; -- 주문
+
+SELECT COUNT(*) as cnt
+     , SUM(sales) as sales
+     , sysdate
+  FROM orders
+ WHERE state IN (1,2,3,4)
+ GROUP BY sysdate; -- 결제
+ 
+SELECT COUNT(*) as cnt
+     , SUM(sales) as sales
+     , sysdate
+  FROM orders
+ WHERE state IN (5,6)
+ GROUP BY sysdate; -- 환불
+
+SELECT COUNT(*) as cnt
+     , SUM(sales) as sales
+     , sysdate
+  FROM orders
+ WHERE state = 0
+ GROUP BY sysdate; -- 환불
+ 
+SELECT COUNT(*) FROM orders;
+SELECT * FROM orders;
+SELECT COUNT(*) FROM orders WHERE state = 0; -- 주문처리중
+
+SELECT COUNT(*) FROM orders WHERE state = 2; -- 배송중
+
+SELECT COUNT(*) FROM orders WHERE state = 3; -- 배송완료
+
+SELECT COUNT(*) FROM orders WHERE state = 4; -- 구매확정
+                  
+SELECT * FROM mngOrder_view;
+SELECT * FROM orders;
+SELECT * FROM products;
+
+-- 매출 선형 그래프
+SELECT SUM(sales) sales
+    , TO_CHAR(indate, 'YYYY-MM-DD') salesdate
+  FROM orders
+  WHERE state not in 6
+  GROUP BY TO_CHAR(indate, 'YYYY-MM-DD')
+  ORDER BY TO_CHAR(indate, 'YYYY-MM-DD') DESC;
+
+UPDATE orders SET state = 3;
+commit;
+
+--
+SELECT COUNT(*) cnt
+     , SUM(sales) sales
+  FROM orders
+GROUP BY id;
+ 
+SELECT COUNT(*) cnt
+     , SUM(sales) sales
+  FROM orders
+ WHERE state IN (1,2,3,4,5);
+
+
+
+SELECT count(o.oNo)
+     , p.category
+FROM orders o, products p
+WHERE p.pdNo = o.pdNo
+GROUP BY p.category;
+
+-- 총 결제 금액(환불제외)
+SELECT SUM(sales)
+FROM orders WHERE state IN (4,5);
+
+-- 환불 금액
+SELECT SUM(sales)
+FROM orders WHERE state = 6;
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM tab;
+PURGE RECYCLEBIN;
+
+
+
+
+
+
+
+
+SELECT c.cNo, c.id, c.pdNo, p.pdName, p.pdImg, p.category, p.brand, p.price, c.quantity  
+		  FROM products p, (SELECT * FROM cart 
+                    ORDER BY ABS(cNo) DESC) c 
+					 WHERE p.pdNo = c.pdNo 
+					   AND c.cNo IN (101,102);
+select * from cart;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 5. jsp_88 계정 생성 및 테이블 생성
+-- =========================================================
+--	< 계정생성 jsp_88/tiger >
+-- [ 시스템 계정(System) 접속 ] ------
+
+-- 5-1. 계정 생성
+-- create user <계정이름> identified by <계정암호> default tablespace users;
+create user spring_pj_abh identified by tiger default tablespace users;
+
+-- 비밀번호 변경
+-- alter user <계정이름> identified by <변경 비밀번호>
+
+-- 5-2. 사용자 권한 부여
+-- grant connect, resource, create view to <계정이름>
+grant connect, resource, create view to spring_pj_abh;
+grant create view to spring_pj_abh;
+
+-- 5-3. 락해제
+-- alter user <계정> account unlock;
+alter user spring_pj_abh account unlock;
+
+-- 5-4. 계정 연결(+)
+-- =======================================

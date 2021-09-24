@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.manager_menu {
+	text-align: center;
+	width: 173px;
+	margin-top: 50px;
+}
+
+.manager_menu ul {
+	white-space:nowrap;
+	list-style: none;
+	padding: 0;
+	line-height: 10;
+}
+
+.mrgPd_in {
+	font-size: 14px;
+}
+
+.manager_menu ul li button {
+	font-weight: bold;
+	border: none;
+	background: none;
+	font-size: 19px;
+	cursor:pointer
+	
+}
+
+.mrgMain {
+	display: block;
+    font-size: 1.17em;
+    font-weight: bold;
+	border: none;
+	background: none;
+	cursor:pointer;
+}

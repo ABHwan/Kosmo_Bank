@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+h2 {
+	margin-top: 100px;
+}
+
+h2, form {
+	text-align: -webkit-center;
+}
+
+form {
+	margin-top: 50px;
+}
+
+.userUpdate_table {
+	border-top: 1px solid #333;
+	border-spacing: 0;
+}
+
+.userUpdate_table tr {
+	border-bottom: 1px solid #d7d7d7;
+}
+
+.userUpdate_table th, .userUpdate_table td {
+	border-bottom: 1px solid #d7d7d7;
+	color: #333;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+}
+
+.userUpdate_table td {
+	padding: 11px 20px;
+	text-align: center;
+}
+
+/* 인풋*/
+.userUpdate_table td input, .register_table td div input {
+	border: 1px solid #d7d7d7;
+    padding: 10px 5px 8px;
+}
+
+.tx_sub {
+	
+    padding: 23px 10px 21px;
+    font-weight: 600;
+    vertical-align: top;
+    width: 300px;
+    color: #333;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+}
+
+.tbl_th {
+	background-color: #f3f3f3;
+    padding: 23px 10px 21px;
+    font-weight: 600;
+    vertical-align: top;
+    color: #333;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+}
+
+.inputButton {
+	padding-top: 5px;
+	padding-bottom: 5px;
+    margin: 0 3px;
+}
+
+.tbl_input {
+	padding: 15px 10px 15px;
+    font-weight: 600;
+    vertical-align: top;
+    width: 300px;
+    color: #333;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+}

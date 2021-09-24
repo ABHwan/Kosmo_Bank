@@ -1,0 +1,106 @@
+#main {
+  margin: 60px 0;
+  margin-bottom: 120px;
+}
+
+.main__container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.main__top {
+  display: flex;
+}
+
+.main__top a {
+  display: inline-block;
+  width: 160px;
+  height: 50px;
+  border: 1px solid lightgray;
+  background-color: #fff;
+  color: #007bff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 2.4em;
+}
+
+.main__top a.select {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.main__middle {
+  border: 1px solid lightgray;
+}
+
+.middle__container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.middle__container > h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.middle__container > p {
+  margin-bottom: 20px;
+  font-size: 21px;
+  text-align: center;
+}
+
+.middle__container > input {
+  width: 60%;
+  height: 40px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+  font-size: 18px;
+  outline: none;
+  text-align: center;
+  letter-spacing: 1.2px;
+}
+
+.middle__container > button {
+  width: 60%;
+  margin: 0 auto;
+  height: 40px;
+  border: 1px solid #189cc4;
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  outline: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .middle__container > input {
+    width: 80%;
+  }
+  .middle__container > button {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .main__container {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .middle__container > input {
+    width: 95%;
+  }
+  .middle__container > button {
+    width: 95%;
+  }
+}

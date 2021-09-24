@@ -1,0 +1,362 @@
+보안영역
+
+- 인증(Authentication) 처리 :
+      현재 사용자가 누구인지 확인하는 과정으로,
+     일반적인 웹어플리케이션은 아이디/암호를 이용해서 인증을 처리한다.(예. 로그인화면)
+
+- 인가(Authorization) 처리 :
+   현재 사용자가 특정대상(URL, 기능 등)을 사용(접근)할 권한이 있는지 검사한다.
+   
+- UI 처리 : 권한이 없는 사용자가 접근했을때, 알맞은 에러화면(403 Forbidden 에러)을 보여주거나,
+          로그인폼과 같은 인증화면으로 이동시킨다.
+          
+- 역할(role)
+   /member로 시작하는 경로 : 인증된 사용자만 접근가능(관리자, 사용자 접근 가능)
+   /admin로 시작하는 경로 : ROLE_ADMIN 권한을 가진 사용자만 접근 가능
+   /manager로 시작하는 경로 : ROLE_MANAGER 권한을 가진 사용자만 접근 가능
+   ...
+   나머지 경로 : 누구나 접근 가능
+   권한이 없는 사용자가 접근했을 때, 403 Forbidden 응답(권한없음)을 보여줌
+   
+ ----------------------------------------------------------------------------
+ - 예제 > 권한
+   member 로그인 -> member, home
+   manager 로그인 -> manager, member, home
+   admin 로그인 -> admin, manager, member, home
+
+시큐리티, 비밀번호 암호화(개별플젝, 팀플 필수)
+
+1. 플젝 생성
+   spring_mvcSecurity_encryptPassword
+   
+     패키지 생성
+   spring.security.encrypt
+
+2. encrypt_88/tiger 계정 생성
+   -- [ 시스템 계정(System) 접속 ] ----------------------------------------------
+   
+   -- 2-1. 계정 생성
+   -- create user <계정이름> identified by <계정암호> default tablespace users;
+   create user encrypt_88 identified by tiger default tablespace users;
+   
+   -- 비밀번호 변경
+   -- alter user <계정이름> identified by <변경 비밀번호>
+   
+   -- 2-22. 사용자 권한 부여
+   -- grant connect, resource, create view to <계정이름>
+   grant connect, resource, create view to encrypt_88;
+   grant create view to encrypt_88;
+
+   -- 2-3. 락해제
+   -- alter user <계정> account unlock;
+   alter user encrypt_88 account unlock;
+  
+   -- 2.4. 회원테이블 생성
+   
+   *** 주의사항 : 시큐리티와 같은 계정에서 작업시 기존 users, authority 테이블 삭제처리하고 아래 테이블 생성할 것
+   
+     -- 2.4. 회원테이블 생성
+    DROP TABLE users;
+    CREATE TABLE users(    
+       userid      VARCHAR2(50)    PRIMARY KEY,     -- 아이디
+       password    VARCHAR2(100)   NOT NULL,        -- 인증암호
+       username    VARCHAR2(50)    NOT NULL ,       -- 사용자이름
+       enabled     NUMBER(1)         DEFAULT 1,        -- 계정사용 가능여부(1:사용가능, 0:사용불가)
+       authority   VARCHAR2(50)    DEFAULT 'ROLE_USER'  -- 권한('ROLE_USER' : 일반사용자, 'ROLE_ADMIN' : 관리자)
+    );
+   
+   
+    2-5. context.xml에 컨넥션풀 추가 .. name="jdbc/spring_pj_abh"
+ 
+    servers > Tomcat v8.5 > context.xml에 컨넥션풀 추가
+   <!-- 커넥션풀 : DBCP(DataBase Connection Pool) -->
+    <!-- 88기 스프링 비밀번호 암호화 jdbc/spring_pj_abh 계정 -->
+    
+    <Resource auth="Container"
+       name="jdbc/spring_pj_abh"
+       username="spring_pj_abh"
+       password="tiger"
+       url="jdbc:oracle:thin:@localhost:1521:xe"
+       driverClassName="oracle.jdbc.driver.OracleDriver"
+       maxActive="5"
+       maxWait="1000"
+       type="javax.sql.DataSource"
+    />
+
+ 
+ 
+3. 3-1) 자바 설정
+ 
+    Project 우클릭 > properties > Project Facets > java를 1.8로 변경
+   Runtimes 탭에서 Apache Tomcat v8.5클릭 > Apply 버튼
+   
+   Project 우클릭 > properties > Java Build Path > Library 탭 > jre library 선택후 Edit 선택 / 또는 jre library 더블클릭
+   > 세번째 workspace default JRE(jre1.8.0_242) 선택
+   
+   Java compiler - 1.8 버전 확인
+
+   3-2) pom.xml에 버전 반영
+   * https://spring.io/projects/spring-framework에서 스프링 최신 버전 확인 - v5.3.3
+   
+   <java-version>1.8</java-version>
+   <org.springframework-version>5.1.8.RELEASE</org.springframework-version>
+   
+   * aopalliance-1.0.jar 오류시 추가 => mvnrepository.com에서 aopalliance 검색후 복사해서 추가
+    
+    <!-- https://mvnrepository.com/artifact/aopalliance/aopalliance -->
+   <dependency>
+       <groupId>aopalliance</groupId>
+       <artifactId>aopalliance</artifactId>
+       <version>1.0</version>
+   </dependency>
+   
+   
+   3-3) pom.xml에 Mybatis.jar 파일 설정
+   mvnrepository.com에서  4개의 라이브러리를 복사후 pom.xml에 등록하면,
+   maven 중앙 repository로부터 다운로드 후 빌드되어 Maven Dependencies(.m2.repository)에 저장된다.
+   
+   <!-- Mybatis 설정 시작 -->
+   <dependency>
+       <groupId>org.mybatis</groupId>
+       <artifactId>mybatis-spring</artifactId>
+       <version>1.3.2</version>
+   </dependency>
+   
+   <dependency>
+       <groupId>org.springframework</groupId>
+       <artifactId>spring-jdbc</artifactId>
+       <version>5.1.8.RELEASE</version>
+   </dependency>
+   
+   <dependency>
+       <groupId>org.mybatis</groupId>
+       <artifactId>mybatis</artifactId>
+       <version>3.4.6</version>
+   </dependency>
+   
+   <dependency>
+       <groupId>org.springframework</groupId>
+       <artifactId>spring-test</artifactId>
+       <version>5.1.8.RELEASE</version>
+       <scope>test</scope>
+   </dependency>
+    <!-- Mybatis 설정 종료 -->   
+   
+   
+   3-4) pom.xml에 security jar 파일 설정
+   
+   mvnrepository.com에서 각 파일 4개를 검색해서 복사
+   
+   spring-security-config, spring-security-core, spring-security-taglibs, spring-security-web
+   
+      <!-- 스프링 시큐리티 설정 시작 -->
+      <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+   <dependency>
+       <groupId>org.springframework.security</groupId>
+       <artifactId>spring-security-config</artifactId>
+       <version>5.2.1.RELEASE</version>
+   </dependency>
+   
+   <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+   <dependency>
+       <groupId>org.springframework.security</groupId>
+       <artifactId>spring-security-core</artifactId>
+       <version>5.2.1.RELEASE</version>
+   </dependency>
+   
+   <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
+   <dependency>
+       <groupId>org.springframework.security</groupId>
+       <artifactId>spring-security-taglibs</artifactId>
+       <version>5.2.1.RELEASE</version>
+   </dependency>
+      
+   <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+   <dependency>
+       <groupId>org.springframework.security</groupId>
+       <artifactId>spring-security-web</artifactId>
+       <version>5.2.1.RELEASE</version>
+   </dependency>
+   <!-- 스프링 시큐리티 설정 종료 -->
+   
+
+4. WEB-INF/web.xml 설정
+
+ 4-1. 추가된 xml 파일을 web.xml에 등록 (5-2, 5-3 파일 생성후)
+   <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/spring/root-context.xml
+               classpath:/security-context.xml   <!-- 4-1. 시큐리티 권한 설정 파일 추가 -->
+               classpath:/security-dataSource.xml <!-- 4-1. dataSource 설정 파일 추가 -->
+      </param-value>
+   </context-param>
+   
+
+ 4-2. 시큐리티 리스너 추가
+   <!-- 스프링 시큐리티에서 사용하는 세션 이벤트 처리 관련 리스너로서, 세션 만료 체크, 동시 로그인 제한 등의 기능 제공 -->
+   <listener>
+      <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+   </listener>
+ 
+ 4-3. web.xml에 한글 안깨지도록 추가
+ <!-- 한글 안깨지게 처리 시작 -->
+   <filter>
+      <filter-name>encodingFilter</filter-name>
+      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+      
+      <init-param>
+         <param-name>encoding</param-name>
+         <param-value>UTF-8</param-value>
+      </init-param>   
+      
+      <init-param>
+         <param-name>forceEncoding</param-name>
+         <param-value>true</param-value>
+      </init-param>
+   </filter>
+   
+   <filter-mapping>
+      <filter-name>encodingFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+   <!-- 한글 안깨지게 처리 종료 -->
+   
+ 4-4. DelegatingFilterProxy 추가
+ <!-- 4-4. 시큐리티 추가 시작 -->
+   <!-- 어플리케이션의 모든 요청을 스프링 시큐리티에서 처리하도록 하는 필터 -->
+   <!-- 보안필터 체인 : 보안과 관련된 작업을 처리한다.
+      - 로그인 폼을 보여주거나, 접근 권한이 없는 경우 403 Forbidden(권한없음) 상태코드를 응답
+      - DelegatingFilterProxy -> FilterChainProxy -> SecurityFilterChain -> 실제 지원
+    -->
+   
+   <filter>
+      <filter-name>springSecurityFilterChain</filter-name>
+      <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+   </filter>   
+   <filter-mapping>
+      <filter-name>springSecurityFilterChain</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+   <!-- 4-4. 시큐리티 추가 종료 -->
+
+4-5. 에러처리 페이지       
+  <!-- 4-5. 에러처리 페이지 -->
+   <error-page>
+      <error-code>500</error-code>
+      <location>/user/login</location>
+   </error-page>
+   
+4-6. 세션 타임 아웃 설정(480분)
+   <!-- 4-6. 세션 타임 아웃 설정(480분) -->
+   <session-config>
+      <session-timeout>480</session-timeout>
+   </session-config>
+   
+------------------------------------------------------------------------------------------   
+   
+   
+5. 시큐리티 권한 설정
+
+5-1). src>main>webapp>WEB-INF>spring>appServlet>servlet-context.xml
+<!-- 시큐리티 추가1. 정적 리소스 파일 : 시큐리티 적용 안할 폴더 지정 -->
+   <resources mapping="/include/**" location="/WEB-INF/views/include/" />
+   
+<!-- 시큐리티 추가 2. @Secured 어노테이션 활성화, 사용권한 제한 -->
+   <!-- Namespaces 탭에서 security 추가, 오른쪽 5.2 선택 -->
+   <security:global-method-security secured-annotations="enabled" />
+
+
+시큐리티 권한 설정
+5-2) src>main>resources> security-context.xml 생성
+   
+   작성 src>main>resources> 우클릭 > new > Spring Bean Configuration File > 파일명 : security-context.xml > Finish
+  Namespaces탭 > security 체크 - 오른쪽 맨아래 5.2버전 체크 > xml 파일에 security 네임스페이스가 자동추가됨. 
+  ****** 주의<= pom.xml에 security 4개 파일을 추가해야 네임스페이스탭에서 security 네임스페이스 추가 가능
+   
+   Namespaces탭 > security가 없는 경우 다시 xml파일명 -> next 버튼 -> security 네임스페이스 체크 -> Finish
+   
+   =============   작성  =================
+5-3) 6. Mapper 작성 먼저 한다.
+ 
+ 
+ 5-4)  src>main>resources> security-dataSource.xml 생성
+  작성 src>main>resources> 우클릭 > new > Spring Bean Configuration File > 파일명 : security-dataSource.xml > Finish
+  
+  - security-dataSource.xml에 MyBatis 설정 추가(기존 : servlet-context.xml 복사)
+  - <beans:bean> beans 삭제
+  주의사항 : 1) "jndiName" value="java:comp/env/jdbc/encrypt_88"(context.xml에서 확인)
+          2) mapperLocations  ==> 주석처리(dao, 테이블 생성 전이므로)
+ 
+  5-5) security-dataSource.xml에 MyBatis 설정 추가
+	<!-- MyBatis 설정 시작 -->
+	<!-- 컨넥션풀 -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/encrypt_88" />
+		<property name="resourceRef" value="true" />
+	</bean>
+   
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mappers/**/*.xml" />
+	</bean>
+   
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	<!-- MyBatis 설정 종료 -->
+ 
+ 
+ 5-6.  security-dataSource.xml에 트랜잭션 관리자 추가 
+ 
+	<!-- 트랜잭션 관리자 : @Transactional 어노테이션 추가 -->
+	<!-- Namespace 탭에서 tx 추가 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+ 
+   
+6. Mapper 작성
+   
+   1) src>main>resources>mappers 패키지 작성 > 우클릭 new > Other > xml File > sqlMapper.xml 생성
+   <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    => sqlMapper.xml에 붙여넣는다.
+    
+    *** 주의사항 : mapper namespace="DAO인터페이스"를 추가안하고 실행시 에러
+ 
+	<mapper namespace="">
+    
+	</mapper>
+    
+    
+ =======================  구현  =========================
+ 
+    
+7. UserVO 작성
+8. persistence 작성
+  UserDAO
+  UserDAOImpl   
+             
+9. mapper 작성
+
+10. service 작성
+ 
+11. Controller 작성
+
+12. jsp 작성
+   HomeController 주석처리
+   home.jsp 수정
+   
+13. join.jsp  작성
+
+14. 파일업로드시 pom.xml에 추가
+
+
+ =======================  테스트  =========================
+ 
+================ 테스트 ============================   
+
+1. http://localhost/encrypt/ 접속
+   => http://localhost/encrypt/user/login.do 이동
