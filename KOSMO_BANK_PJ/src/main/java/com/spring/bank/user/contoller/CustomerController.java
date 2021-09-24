@@ -320,4 +320,110 @@ public class CustomerController {
 		service.pwFindAction(req, model);
 		return "customer/account/pwFindAction";
 	}
+	
+	
+	//!지은!
+
+	// 대출중인 상품 목록
+	@RequestMapping("loanAccountList.do")
+	public String loanAccountList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanAccountList]");
+		return "customer/loan/loanAccountList";
+	}
+
+	// 대출 계좌 거래내역
+	@RequestMapping("loanAccountDetail.do")
+	public String loanAccountDetail(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanAccountDetail]");
+		return "customer/loan/loanAccountDetail";
+	}
+
+	// 대출 해지 목록
+	@RequestMapping("loanCancelList.do")
+	public String loanCancelList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanCancelList]");
+		return "customer/loan/loanCancelList";
+	}
+
+	// 대출 해지 상세
+	@RequestMapping("loanCancelDetail.do")
+	public String loanCancelDetail(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanCancelDetail]");
+		return "customer/loan/loanCancelDetail";
+	}
+
+	// 대출 자동이체
+	@RequestMapping("loanDirectDebit.do")
+	public String loanDirectDebit(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanDirectDebit]");
+		return "customer/loan/loanDirectDebit";
+	}
+
+	// 대출 원금 목록
+	@RequestMapping("loanPrincipalList.do")
+	public String loanPrincipalList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalList]");
+		return "customer/loan/loanPrincipalList";
+	}
+
+	// 대출 원금 상세
+	@RequestMapping("loanPrincipalDetail.do")
+	public String loanPrincipalDetail(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalDetail]");
+		return "customer/loan/loanPrincipalDetail";
+	}
+
+	// 대출 원금 납부
+	@RequestMapping("loanPrincipalPayment.do")
+	public String loanPrincipalPayment(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalPayment]");
+		return "customer/loan/loanPrincipalPayment";
+	}
+
+	// 대출 이자 목록
+	@RequestMapping("loanRateList.do")
+	public String loanRateList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanRateList]");
+		return "customer/loan/loanRateList";
+	}
+
+	// 대출 이자 상세
+	@RequestMapping("loanRateDetail.do")
+	public String loanRateDetail(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanRateDetail]");
+		return "customer/loan/loanRateDetail";
+	}
+
+	// 대출 이자 납부
+	@RequestMapping("loanRatePayment.do")
+	public String loanRatePayment(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanRatePayment]");
+		return "customer/loan/loanRatePayment";
+	}
+
+	// 대출 상품 목록
+	@RequestMapping("newLoanList.do")
+	public String newLoanList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /newLoanList]");
+		
+		//service.loanList(req, model);
+		return "customer/loan/newLoanList";
+	}
+
+	// 대출 상품 상세
+	@RequestMapping("newLoanDetail.do")
+	public String newLoanDetail(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /newLoanDetail]");
+		return "customer/loan/newLoanDetail";
+	}
+
+	// 신규대출
+	@RequestMapping("newLoanSign.do")
+	public String newLoanSign(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /newLoanSign]");
+		return "customer/loan/newLoanSign";
+	}
+	
+	//!지은!
+	
 }
