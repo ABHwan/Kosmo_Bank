@@ -580,7 +580,7 @@ public class AdminServiceImpl implements AdminService {
 
 			if (cnt > 0) {
 				// 5-2단계. 게시글 목록 조회
-				Map<String, Integer> map = new HashMap<>();
+				Map<String, Integer> map = new HashMap<String, Integer>();
 				map.put("start", start);
 				map.put("end", end);
 				dtos = dao.getInquiryList(map);
@@ -684,7 +684,7 @@ public class AdminServiceImpl implements AdminService {
 
 			if (cnt > 0) {
 				// 5-2단계. 게시글 목록 조회
-				Map<String, Integer> map = new HashMap<>();
+				Map<String, Integer> map = new HashMap<String, Integer>();
 				map.put("start", start);
 				map.put("end", end);
 				dtos = dao.getFaqList(map);
