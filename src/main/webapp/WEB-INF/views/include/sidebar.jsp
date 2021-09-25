@@ -140,7 +140,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="${custPath}depositList.do">
 											<span class="sub-item">예금</span>
 										</a>
 									</li>
@@ -269,12 +269,12 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
-											<span class="sub-item">챗봇 대화하기</span>
+										<a href="${custPath}faqList">
+											<span class="sub-item">자주 묻는 질문 </span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="${custPath}qnaList">
 											<span class="sub-item">1대1 문의하기</span>
 										</a>
 									</li>
