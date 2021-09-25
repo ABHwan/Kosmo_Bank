@@ -1,8 +1,8 @@
 package com.spring.bank.admin.service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.admin.dao.AdminDAOImpl;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
+import com.spring.bank.user.vo.faqVO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -364,6 +366,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 		
 	// 관리자 페이지 예금 상품검색
+	@Override
 	public void searchDepositProduct(HttpServletRequest req, Model model) {
 		
 		// 입력받은 검색어
@@ -448,7 +451,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		ArrayList<DepositProductVO> dtos = null;
 		if(cnt > 0) {
-			// 5-2단계. 회원수 조회
+
 			dtos = dao.searchDepositProduct(map);
 		}
 		
@@ -494,5 +497,293 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println("예금상품 삭제여부 : " + deleteCnt);
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
+	
+	//qna 조회(지현)
+		@Override
+		public void qnaList_mng(HttpServletRequest req, Model model) {
+			// 3단계. 화면으로부터 입력받은 값을 받아온다.
+			// 페이징
+			int pageSize = 5; // 한페이지당 출력할 글 갯수
+			int pageBlock = 3; // 한 블록당 페이지 갯수
+
+			int cnt = 0; // 글 갯수
+			int start = 0; // 현재페이지 시작 글 번호
+			int end = 0; // 현재페이지 마지막 글 번호
+			int number = 0; // 출력용 글번호
+			String pageNum = ""; // 페이지 번호
+			int currentPage = 0; // 현재 페이지
+
+			int pageCount = 0; // 페이지 갯수
+			int startPage = 0; // 시작페이지
+			int endPage = 0; // 마지막페이지
+
+			// 5-1단계. 게시글 갯수 조회
+			cnt = dao.getInquiryCnt();
+
+			System.out.println("cnt ==> " + cnt);
+
+			// 5-2단계. 게시글 목록 조회
+			pageNum = req.getParameter("pageNum");
+
+			if (pageNum == null) {
+				pageNum = "1"; // 첫페이지를 1페이지로 지정
+			}
+
+			// 글 30건 기준
+			currentPage = Integer.parseInt(pageNum);
+			System.out.println("currentPage : " + currentPage);
+
+			// 페이지 갯수 6 = (30/5) + (0)
+			pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지 있으면 1페이지
+
+			// 현재페이지 시작 글번호(페이지별)
+			// start = (currentPage - 1) * pageSize +1;
+			// 1 = (1 - 1 )* 5 + 1
+			start = (currentPage - 1) * pageSize + 1;
+
+			// 현재페이지 마지막 글번호(페이지별)
+			// end = start + pageSize - 1;
+			// 5 = 1 + 5 - 1
+			end = start + pageSize - 1;
+
+			System.out.println("start : " + start);
+			System.out.println("end : " + end);
+
+			// 출력용 글번호
+			// 30 = 30 - (1 - 1) * 5 //1페이지
+			// number = cnt- (currentPage - 1) * pageSize;
+			number = cnt - (currentPage - 1) * pageSize;
+
+			System.out.println("number : " + number);
+			System.out.println("pageSize : " + pageSize);
+
+			// 시작페이지
+			// 1 = (1 / 3) * 3 + 1;
+			// startPage = (currentPage / pageBlock) * pageBlock + 1;
+			startPage = (currentPage / pageBlock) * pageBlock + 1;
+			if (currentPage % pageBlock == 0)
+				startPage -= pageBlock;
+
+			System.out.println("startPage : " + startPage);
+
+			// 마지막 페이지
+			// 3 = 1 + 3 - 1
+			endPage = startPage + pageBlock - 1;
+			if (endPage > pageCount)
+				endPage = pageCount;
+
+			System.out.println("endPage : " + endPage);
+
+			System.out.println("--------------------------");
+
+			List<InquiryVO> dtos = null;
+
+			if (cnt > 0) {
+				// 5-2단계. 게시글 목록 조회
+				Map<String, Integer> map = new HashMap<>();
+				map.put("start", start);
+				map.put("end", end);
+				dtos = dao.getInquiryList(map);
+			}
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("dtos", dtos); // 게시글 목록
+			req.setAttribute("cnt", cnt); // 글개수
+			req.setAttribute("pageNum", pageNum); // 페이지 번호
+			req.setAttribute("number", number); // 출력용 글번호
+
+			if (cnt > 0) {
+				req.setAttribute("startPage", startPage); // 시작페이지
+				req.setAttribute("endPage", endPage); // 마지막 페이지
+				req.setAttribute("pageBlock", pageBlock); // 한블럭당 페이지 갯수
+				req.setAttribute("pageCount", pageCount); // 페이지 갯수
+				req.setAttribute("currentPage", currentPage); // 현재페이지
+			}
+
+		}
+		
+		//faq 게시글 조회(지현)
+		@Override
+		public void faqList_mng(HttpServletRequest req,Model model) {
+			// 3단계. 화면으로부터 입력받은 값을 받아온다.
+			// 페이징
+			int pageSize = 5; // 한페이지당 출력할 글 갯수
+			int pageBlock = 3; // 한 블록당 페이지 갯수
+
+			int cnt = 0; // 글 갯수
+			int start = 0; // 현재페이지 시작 글 번호
+			int end = 0; // 현재페이지 마지막 글 번호
+			int number = 0; // 출력용 글번호
+			String pageNum = ""; // 페이지 번호
+			int currentPage = 0; // 현재 페이지
+
+			int pageCount = 0; // 페이지 갯수
+			int startPage = 0; // 시작페이지
+			int endPage = 0; // 마지막페이지
+
+			// 5-1단계. 게시글 갯수 조회
+			cnt = dao.getFaqCnt();
+
+			System.out.println("cnt ==> " + cnt);
+
+			// 5-2단계. 게시글 목록 조회
+			pageNum = req.getParameter("pageNum");
+
+			if (pageNum == null) {
+				pageNum = "1"; // 첫페이지를 1페이지로 지정
+			}
+
+			// 글 30건 기준
+			currentPage = Integer.parseInt(pageNum);
+			System.out.println("currentPage : " + currentPage);
+
+			// 페이지 갯수 6 = (30/5) + (0)
+			pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지 있으면 1페이지
+
+			// 현재페이지 시작 글번호(페이지별)
+			// start = (currentPage - 1) * pageSize +1;
+			// 1 = (1 - 1 )* 5 + 1
+			start = (currentPage - 1) * pageSize + 1;
+
+			// 현재페이지 마지막 글번호(페이지별)
+			// end = start + pageSize - 1;
+			// 5 = 1 + 5 - 1
+			end = start + pageSize - 1;
+
+			System.out.println("start : " + start);
+			System.out.println("end : " + end);
+
+			// 출력용 글번호
+			// 30 = 30 - (1 - 1) * 5 //1페이지
+			// number = cnt- (currentPage - 1) * pageSize;
+			number = cnt - (currentPage - 1) * pageSize;
+
+			System.out.println("number : " + number);
+			System.out.println("pageSize : " + pageSize);
+
+			// 시작페이지
+			// 1 = (1 / 3) * 3 + 1;
+			// startPage = (currentPage / pageBlock) * pageBlock + 1;
+			startPage = (currentPage / pageBlock) * pageBlock + 1;
+			if (currentPage % pageBlock == 0)
+				startPage -= pageBlock;
+
+			System.out.println("startPage : " + startPage);
+
+			// 마지막 페이지
+			// 3 = 1 + 3 - 1
+			endPage = startPage + pageBlock - 1;
+			if (endPage > pageCount)
+				endPage = pageCount;
+
+			System.out.println("endPage : " + endPage);
+
+			System.out.println("--------------------------");
+
+			List<faqVO> dtos = null;
+
+			if (cnt > 0) {
+				// 5-2단계. 게시글 목록 조회
+				Map<String, Integer> map = new HashMap<>();
+				map.put("start", start);
+				map.put("end", end);
+				dtos = dao.getFaqList(map);
+			}
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("dtos", dtos); // 게시글 목록
+			req.setAttribute("cnt", cnt); // 글개수
+			req.setAttribute("pageNum", pageNum); // 페이지 번호
+			req.setAttribute("number", number); // 출력용 글번호
+
+			if (cnt > 0) {
+				req.setAttribute("startPage", startPage); // 시작페이지
+				req.setAttribute("endPage", endPage); // 마지막 페이지
+				req.setAttribute("pageBlock", pageBlock); // 한블럭당 페이지 갯수
+				req.setAttribute("pageCount", pageCount); // 페이지 갯수
+				req.setAttribute("currentPage", currentPage); // 현재페이지
+			}
+
+		}
+		
+		//faq 게시글 추가(지현)
+		@Override
+		public void faqAdd(HttpServletRequest req, Model model) {
+			int insertCnt = 0;
+			
+			faqVO vo = new faqVO();
+			// 3-1단계. 화면으로부터 입력받은 값(hidden값)을 받아온다.
+			int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+
+			// 3-2단계. 화면으로부터 입력받은 값(input 값 = 작성자, 비밀번호, 글제목, 글내용)을 받아와서 바구니에 담는다
+			vo.setFaq_title(req.getParameter("faq_title"));
+			vo.setFaq_content(req.getParameter("faq_content"));
+
+			// 5단계. 게시글 작성
+			insertCnt = dao.faqAdd(vo);
+			System.out.println("insertCnt : " + insertCnt);
+
+			// 6단계
+			req.setAttribute("insertCnt", insertCnt);
+			req.setAttribute("pageNum", pageNum);
+			
+		}
+		
+		//faq 수정 상세(지현)
+		@Override
+		public void faqModifyDetail(HttpServletRequest req, Model model) {
+			int faq_id = Integer.parseInt(req.getParameter("faq_id"));
+			int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+			
+			// 5-2 단계. 상세페이지 조회
+			faqVO vo = dao.getFaqDetail(faq_id);
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("dto", vo);
+			req.setAttribute("faq_id", faq_id);
+			req.setAttribute("pageNum", pageNum);
+		}
+
+		//faq 수정 처리(지현)
+		@Override
+		public void faqModify(HttpServletRequest req, Model model) {
+
+			System.out.println(req.getParameter("faq_id"));
+			int faq_id = Integer.parseInt(req.getParameter("faq_id"));
+			int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+
+			// QnaVO바구니 생성
+			// 화면으로부터 입력받은 값(input값 - 작성자,비밀번호, 제목, 내용), num을 받아온다.
+			faqVO vo = new faqVO();
+			vo.setFaq_title(req.getParameter("faq_title"));
+			vo.setFaq_content(req.getParameter("faq_content"));
+			vo.setFaq_id(faq_id);
+
+			// 5단계. 게시글 수정처리
+			int updateCnt = dao.updateFaq(vo);
+			System.out.println("updateCnt : " + updateCnt);
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("updateCnt", updateCnt);
+			req.setAttribute("pageNum", pageNum);
+			req.setAttribute("faq_id", faq_id);
+		}
+
+		//faq 삭제(지현)
+		@Override
+		public void faqDelete(HttpServletRequest req, Model model) {
+			System.out.println("삭제처리 아이디 : " + req.getParameter("faq_id"));
+			int faq_id = Integer.parseInt(req.getParameter("faq_id"));
+			int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+
+			// 5단계. 게시글 수정처리
+			int deleteCnt = dao.deleteFaq(faq_id);
+			System.out.println("deleteCnt : " + deleteCnt);
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("deleteCnt", deleteCnt);
+			req.setAttribute("pageNum", pageNum);
+			req.setAttribute("faq_id", faq_id);
+		}
 
 }

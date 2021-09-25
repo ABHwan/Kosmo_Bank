@@ -1,14 +1,13 @@
 package com.spring.bank.admin.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.ui.Model;
-
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
+import com.spring.bank.user.vo.faqVO;
 
 
 public interface AdminDAO {
@@ -48,5 +47,29 @@ public interface AdminDAO {
 	
 	// 관리자 페이지 예금 상품 삭제
 	public int deleteDepositProduct(String deposit_product_name);
+	
+	//문의사항 갯수 (지현)
+	public int getInquiryCnt();
+	
+	//문의사항 리스트 (지현)
+	public List<InquiryVO> getInquiryList(Map<String, Integer> map);
+	
+	//faq 갯수 구하기(지현)
+	public int getFaqCnt();
+	
+	//faq 조회(지현)
+	public List<faqVO> getFaqList(Map<String, Integer> map);
+	
+	//faq 추가하기(지현)
+	public int faqAdd(faqVO vo);
+	
+	//faq 수정 상세조회(지현)
+	public faqVO getFaqDetail(int faq_id);
+	
+	//faq 수정 처리(지현)
+	public int updateFaq(faqVO vo);
+	
+	//faq 삭제 처리(지현)
+	public int deleteFaq(int faq_id);
 
 }

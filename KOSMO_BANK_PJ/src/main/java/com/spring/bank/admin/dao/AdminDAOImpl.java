@@ -1,6 +1,7 @@
 package com.spring.bank.admin.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
+import com.spring.bank.user.vo.faqVO;
 
 @Repository
 public class AdminDAOImpl implements AdminDAO {
@@ -86,6 +89,72 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public int deleteDepositProduct(String deposit_product_name) {
 		return sqlSession.getMapper(AdminDAO.class).deleteDepositProduct(deposit_product_name);
+	}
+	
+	//qna 개수(지현)
+	@Override
+	public int getInquiryCnt() {
+		
+		int selectCnt = sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.getInquiryCnt");
+		return selectCnt;
+	}
+
+	//qna 조회(지현)
+	@Override
+	public List<InquiryVO> getInquiryList(Map<String, Integer> map) {
+		// List<InquiryVO> list = sqlSession.selectList("com.spring.bank.admin.dao.AdminDAO.getInquiryList"); // ........................
+		List<InquiryVO> list = sqlSession.selectList("com.spring.bank.admin.dao.AdminDAO.getInquiryList", map); // 너 죽인다. 파라미터 안줬자나....
+		return list;
+	}
+
+	//자주묻는 질문 갯수 (지현)
+	@Override
+	public int getFaqCnt() {
+		int selectCnt = sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.getFaqCnt");				;
+		
+		
+		return selectCnt;
+	}
+
+	//자주묻는 질문 조회(지현)
+	@Override
+	public List<faqVO> getFaqList(Map<String, Integer> map) {
+		
+		List<faqVO> list = sqlSession.selectList("com.spring.bank.admin.dao.AdminDAO.getFaqList", map);
+		return list;
+	}
+
+	//자주묻는 질문  등록하기(지현)
+	@Override
+	public int faqAdd(faqVO vo) {
+		int insertCnt = sqlSession.insert("com.spring.bank.admin.dao.AdminDAO.faqAdd", vo);
+				
+		return insertCnt;
+	}
+
+	//faq 수정 상세 조회(지현)
+	@Override
+	public faqVO getFaqDetail(int faq_id) {
+		faqVO vo = sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.getFaqDetail", faq_id);
+		
+		return vo;
+	}
+
+	//faq 수정 처리(지현)
+	@Override
+	public int updateFaq(faqVO vo) {
+		int updateCnt = sqlSession.update("com.spring.bank.admin.dao.AdminDAO.updateFaq", vo);
+		
+		return updateCnt;
+	}
+	
+	
+	//faq삭제처리(지현)
+	@Override
+	public int deleteFaq(int faq_id) {
+		int deleteCnt = sqlSession.delete("com.spring.bank.admin.dao.AdminDAO.deleteFaq", faq_id);
+		
+		return deleteCnt;
 	}
 
 }
