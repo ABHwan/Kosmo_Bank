@@ -64,4 +64,111 @@
 	<update id="updatePassword" parameterType="com.spring.bank.user.vo.UserVO">
 		UPDATE members set member_password=#{member_password} WHERE member_id=#{member_id}
 	</update>
+	
+	<!-- 진지현 작성 -->
+	<!-- 문의사항 갯수 -->
+	<select resultType="int" id="getInquiryCnt">
+		SELECT COUNT(*) as cnt FROM inquiry
+	</select>
+
+	<!-- 문의사항 리스트 조회 -->
+	<select resultType="com.spring.bank.user.vo.InquiryVO" parameterType="java.util.Map" id="getInquiryList">
+		<![CDATA[
+			SELECT * 
+				FROM (SELECT inquiry_id, inquiry_title, inquiry_content, member_id, inquiry_ref, inquiry_regDate
+						, rowNUM rNum 
+						 FROM (SELECT * FROM inquiry ORDER BY inquiry_ref DESC))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+
+	<!-- 문의사항 추가 처리 -->
+	<insert parameterType="com.spring.bank.user.vo.InquiryVO" id="insertInquiry">
+		INSERT INTO inquiry(inquiry_id, inquiry_title,inquiry_content,member_id, inquiry_ref,inquiry_regDate)
+		VALUES(inquiry_seq.nextval, #{inquiry_title}, #{inquiry_content}, #{member_id}, inquiry_seq.currval,#{inquiry_regDate}) 
+		</insert>
+
+	<!-- 게시글 증가 -->
+	<update parameterType="int" id="addReadCnt">
+		UPDATE inquiry SET readCnt = readCnt+1
+		WHERE inquiry_id=#{inquiry_id} 
+	</update>
+
+	<!-- qna 상세페이지, 수정상세페이지 -->
+	<select resultType="com.spring.bank.user.vo.InquiryVO" parameterType="int" id="getInquiryDetail">
+		SELECT * FROM inquiry 
+		WHERE inquiry_id=#{inquiry_id} 
+		</select>
+
+	<!-- 게시글 수정 삭제시 비밀번호 인증 -->
+	<!-- <select id="numPasswordCheck" parameterType ="java.util.Map" resultType="int">SELECT 
+		COUNT(*) FROM inquiry WHERE inquiry_id=#{inquiry_id} AND inquiry_password=#{inquiry_password}</select> -->
+
+	<!-- 게시글 수정 처리 -->
+	<update parameterType="com.spring.bank.user.vo.InquiryVO" id="updateQna">
+		UPDATE inquiry SET inquiry_id=#{inquiry_id},
+		inquiry_title=#{inquiry_title}, inquiry_content=#{inquiry_content} 
+		WHERE inquiry_id=#{inquiry_id}
+	</update>
+
+	<!-- 게시글 삭체 처리 -->
+	<delete parameterType="int" id="deleteQna">
+		DELETE FROM inquiry 
+		WHERE inquiry_id=#{inquiry_id} 
+	</delete>
+	
+	<!-- 자주묻는 질문 갯수 -->
+	<select id="getFaqCnt" resultType="int" >
+		SELECT COUNT(*) as cnt FROM faq
+	</select>
+	
+	<!-- 자주묻는 질문조회-->
+	<select id="getFaqList" resultType="com.spring.bank.user.vo.faqVO" parameterType="java.util.Map" >
+		<![CDATA[
+			SELECT * 
+				FROM (SELECT faq_id, faq_title, faq_content, faq_regDate,rowNUM rNum 
+						 FROM (SELECT * FROM faq ORDER BY faq_id))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	<!-- 예금 상품 개수 -->
+	<select id="getDepositCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM deposit_product
+	</select>
+	
+	<!-- 예금 상품 조회  -->
+	<select id="getDepositList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.DepositProductVO">
+		<![CDATA[
+			SELECT * FROM 
+				(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interRate, deposit_product_type, deposit_product_maxDate, deposit_product_minDate, deposit_product_minPrice, deposit_product_explanation, deposit_product_notice, deposit_product_bankCode, rowNUM rNum 
+					 FROM (SELECT * FROM deposit_product ORDER BY deposit_product_date DESC))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 예금 상품 수(검색결과수)  -->
+	<select id="getDepositProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 예금 상품 검색(입력받아서 검색) -->
+	<select id="searchDepositProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.DepositProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
+				FROM (SELECT * FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%' ORDER BY deposit_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!--예금 상품 상세 조회 -->
+	<select id="getDepositDetail" parameterType="String" resultType="com.spring.bank.product.vo.DepositProductVO">
+		SELECT * FROM  deposit_product
+		WHERE deposit_product_name=#{deposit_product_name} 	
+	</select>
+	
+	
 </mapper>
