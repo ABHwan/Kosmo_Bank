@@ -195,7 +195,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	
 	//예금 상품 조회
 	@Override
-	public List<DepositProductVO> getDepositList(Map<String, Integer> map){
+	public List<DepositProductVO> getDepositList(Map<String, Object> map){
 		List<DepositProductVO> list = sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getDepositList", map);
 		
 		return list;
@@ -217,7 +217,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public DepositProductVO getDepositDetail(String deposit_product_name) {
 		DepositProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getDepositDetail",deposit_product_name);
-		
+		System.out.println("상세보기 : "+vo.getDeposit_product_name());
 		return vo;
 	}
 }

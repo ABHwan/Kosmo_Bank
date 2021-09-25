@@ -70,4 +70,7 @@ public interface CustomerService {
 	
 	//예금 상품 상세보기 
 	public void depositDetail(HttpServletRequest req, Model model);
+	
+	//예금 신청 
+	public void insertDeposit(HttpServletRequest req, Model model);
 }

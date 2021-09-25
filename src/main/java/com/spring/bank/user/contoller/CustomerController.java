@@ -348,13 +348,14 @@ public class CustomerController {
 		return "customer/depositProduct/depositDetail";
 	}
 	
-	//예금 상품 신청()
-	@RequestMapping("depositProductInsert")
+	//예금 상품 신청(지현)
+	@RequestMapping("depositProductAction")
 	public String depositProductInsert(HttpServletRequest req, Model model) {
 		logger.info("url => depositProductInsert");
 		
+		service.insertDeposit(req, model);
 		
-		return "";
+		return "customer/depositProduct/depositProductAction";
 	}
 	
 	//qna 게시판(지현)

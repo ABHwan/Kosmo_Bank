@@ -860,7 +860,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (cnt > 0) {
 			// 5-2단계. 게시글 목록 조회
-			Map<String, Integer> map = new HashMap<>();
+			Map<String, Object> map = new HashMap<>();
 			map.put("start", start);
 			map.put("end", end);
 			dtos = dao.getDepositList(map);
@@ -882,6 +882,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	//예금 상품 검색 
+	@Override
 	public void searchDepositProduct(HttpServletRequest req, Model model) {
 
 		// 입력받은 검색어
@@ -990,6 +991,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public void depositDetail(HttpServletRequest req, Model model) {
 		// http://localhost/jsp_mvcBoard_jjh/boardDetail.bo?=num=30&pageNum=1&number=30
 		String deposit_product_name = req.getParameter("deposit_product_name");
+		System.out.println("deposit_product_name : " + deposit_product_name);
 		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
 		int number = Integer.parseInt(req.getParameter("number"));
 
@@ -1001,6 +1003,16 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("dto", vo);
 		req.setAttribute("pageNum", pageNum);
 		req.setAttribute("number", number);
+	}
+	
+	//예금 신청 
+	@Override
+	public void insertDeposit(HttpServletRequest req, Model model) {
+		String deposit_product_name = req.getParameter("deposit_product_name");
+		
+		//작은바구니 생성
+		DepositProductVO vo = new DepositProductVO();
+		
 	}
 
 }

@@ -63,7 +63,7 @@
 			      <h2 class="title">예금 상품 리스트</h2>
 			       
 					<form action="depositProductSearch.do" method="post" class="contents__top2" name="searchForm">
-			          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+						<sec:csrfInput/>
 			          <input type="search" name="search" placeholder="예금상품검색" />
 			          <button type="submit">
 			            <i class="fas fa-search"></i>
@@ -74,9 +74,9 @@
 			          <div>전체 예금 상품 수 ${cnt}건</div>
 			        </div>
 			        <form action="depositDetail.do" name="depositProductForm">
+			        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			         <input type="hidden" name="pageNum" value="${pageNum}">
 			         <input type="hidden" name="number" value="${number}">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			        <table class="admin__table">
 			          <tr class="table__head">
 			            <th>번호</th>
@@ -135,7 +135,8 @@
 				           		</c:choose>
 				           </td>
 				           <td>${dto.deposit_product_date}</td>
-			          		<td><input type="submit" class="btn btn-link" value="상세"></td>
+			          		<td><input type="button" class="btn btn-link" value="상세"
+			          				onclick="window.location='depositDetail.do?pageNum=${pageNum}&number=${number}&deposit_product_name=${dto.deposit_product_name}'"></td>
 				         </tr>
 				        </c:forEach>
 				      </c:if>

@@ -10,27 +10,7 @@
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 
-<script type="text/javascript">
-      $(function() {
-			$("#all_check").change(function() {
-				var is_check = $("#all_check").is(":checked");
-				$(".user_check").prop("checked", is_check);
-				
-			});
-	  });
-      
-      function fn_process(val){
-    	  var form = document.depositProductForm
-    	  if(val == '1'){
-    		  // 회원정보수정시
-    		  form.action = "";
-    		  form.submit();
-    	  }else{
-    		  form.action = "depositProductDelete";
-    		  form.submit();
-    	  }
-      }
-</script>
+
 <script>
 	var msg = "<%=request.getAttribute("msg") %>";
 	if(msg != 'null'){
@@ -71,10 +51,10 @@
 									<div class="card-title">${dto.deposit_product_name}</div>
 								</div>
 								<div class="card-body">
-									 <form action="depositProductInsert" name="depositProductForm">
-							         <input type="hidden" name="pageNum" value="${pageNum}">
-							         <input type="hidden" name="number" value="${number}">
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+									 <form action="depositProductAction" name="depositProductForm">
+									 	<sec:csrfInput/>
+								         <input type="hidden" name="pageNum" value="${pageNum}">
+								         <input type="hidden" name="number" value="${number}">
 						        <table class="admin__table">
 						          <tr>
 						            <th class="table__head">상품명</th>
