@@ -348,13 +348,23 @@ public class CustomerController {
 		return "customer/depositProduct/depositDetail";
 	}
 	
-	//예금 상품 신청()
-	@RequestMapping("depositProductInsert")
+	//예금 상품 신청 상세 화면 (지현)
+	@RequestMapping("depositProductJoin")
 	public String depositProductInsert(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductInsert");
+		logger.info("url => depositProductJoin");
+		
+		//INSERT
+		service.insertDeposit(req, model);
+		
+		return "customer/depositProduct/depositProductJoin";
+	}
+	
+	//예금 상품 신청 처리(지현)
+	public String depositProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => depositProductAction");
 		
 		
-		return "";
+		return "customer/depositProduct/depositProductAction";
 	}
 	
 	//qna 게시판(지현)
@@ -472,7 +482,7 @@ public class CustomerController {
 	}
 	
 	//자주묻는 질문 (지현)
-	@RequestMapping("faqList")
+	@RequestMapping("faqList.do")
 	public String faqList(HttpServletRequest req, Model model) {
 		logger.info("url => faqList");
 		

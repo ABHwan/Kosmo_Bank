@@ -170,5 +170,18 @@
 		WHERE deposit_product_name=#{deposit_product_name} 	
 	</select>
 	
+	<!-- 예금 신청 처리 -->
+	<insert id="insertDeposit" parameterType="com.spring.bank.user.vo.DepositVO" >
+		INSERT INTO deposit(deposit_id, deposit_product_name, account_id,deposit_joinDate, deposit_rate, deposit_type, deposit_balance, deposit_endDate)
+		VALUES(deposit_seq.nextval, #{deposit_product_name}, #{account_id}, sysdate, #{deposit_rate}, #{deposit_type}, #{deposit_balance}, #{deposit_endDate})
+	</insert>
+	
+	<!-- 예금 상품 신청할 때 상세 페이지 set -->
+	<select id="setDeposit" parameterType="String" resultType="com.spring.bank.user.vo.DepositVO">
+		SELECT a.account_bankCode, d.*, dp.deposit_product_name, a.account_id
+		  FROM deposit d, deposit_product dp, account a
+		WHERE dp.deposit_product_name=#{deposit_product_name} 	
+	</select>
+	
 	
 </mapper>

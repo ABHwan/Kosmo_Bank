@@ -81,7 +81,6 @@
 			         <input type="hidden" name="number" value="${number}">
 			        <table class="admin__table">
 			          <tr class="table__head">
-			            <th class="zero"><input type="checkbox" id="all_check"></th>
 			            <th>번호</th>
 			            <th>상품명</th>
 			            <th>상품요약</th>
@@ -97,8 +96,6 @@
 			          <c:if test="${cnt > 0}">
 			          	<c:forEach var="dto" items="${dtos}">
 				         <tr>
-				           <td><input type="checkbox" name="check" class="user_check" value="${dto.deposit_product_name}" /></td>
-				           
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>

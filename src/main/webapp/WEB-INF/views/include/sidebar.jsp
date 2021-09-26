@@ -269,7 +269,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="${custPath}faqList">
+										<a href="${custPath}faqList.do">
 											<span class="sub-item">자주 묻는 질문 </span>
 										</a>
 									</li>

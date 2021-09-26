@@ -2,6 +2,8 @@ package com.spring.bank.user.service;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,7 @@ import org.springframework.ui.Model;
 import com.spring.bank.customer.encrypt.UserAuthenticationService;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -860,7 +863,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (cnt > 0) {
 			// 5-2단계. 게시글 목록 조회
-			Map<String, Integer> map = new HashMap<>();
+			Map<String, Object> map = new HashMap<>();
 			map.put("start", start);
 			map.put("end", end);
 			dtos = dao.getDepositList(map);
@@ -882,6 +885,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	//예금 상품 검색 
+	@Override
 	public void searchDepositProduct(HttpServletRequest req, Model model) {
 
 		// 입력받은 검색어
@@ -990,6 +994,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public void depositDetail(HttpServletRequest req, Model model) {
 		// http://localhost/jsp_mvcBoard_jjh/boardDetail.bo?=num=30&pageNum=1&number=30
 		String deposit_product_name = req.getParameter("deposit_product_name");
+		System.out.println("deposit_product_name : " + deposit_product_name);
 		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
 		int number = Integer.parseInt(req.getParameter("number"));
 
@@ -1001,6 +1006,130 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("dto", vo);
 		req.setAttribute("pageNum", pageNum);
 		req.setAttribute("number", number);
+	}
+	
+	//예금 신청 상세 화면 
+	@Override
+	public void setDepositProductJoin(HttpServletRequest req, Model model) {
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		int number = Integer.parseInt(req.getParameter("number"));
+		String deposit_product_name = req.getParameter("deposit_product_name");
+		
+		DepositVO vo = new DepositVO();
+		vo.setDeposit_product_name(deposit_product_name);
+		vo.setAccount_bankCode(Integer.parseInt(req.getParameter("account_bankCode")));
+		dao.setDeposit(deposit_product_name);
+		
+		req.setAttribute("dto", vo);
+		req.setAttribute("pageNum", pageNum);
+		req.setAttribute("number", number);
+	
+	}
+	//예금 신청 
+	@Override
+	public void insertDeposit(HttpServletRequest req, Model model) {
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		int number = Integer.parseInt(req.getParameter("number"));
+		String deposit_product_name = req.getParameter("deposit_product_name");
+		
+		//계좌번호 구하기
+		 String account_id = ""; 
+	      int account_bankCode= Integer.parseInt(req.getParameter("account_bankCode"));
+	      System.out.println("은행 코드 : " + account_bankCode);
+	      if(account_bankCode == 1) {
+	    	  // 국민(14) > 6 - 2 - 6
+	          String st1 = String.format("%06d", (int)(Math.random()*1000000));
+	          String st2 = String.format("%02d", (int)(Math.random()*100));
+	          String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	          account_id = st1 + "-" + st2 + "-" + st3;
+	          
+	          System.out.println("account_id : " + account_id);
+
+	         
+	      } else if(account_bankCode ==2) {
+	          // 우리(13) > 4 - 3 - 6
+	          String st1 = String.format("%04d", (int)(Math.random()*10000));
+	          String st2 = String.format("%03d", (int)(Math.random()*1000));
+	          String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	          account_id = st1 + "-" + st2 + "-" + st3;
+	          
+	          System.out.println("account_id : " + account_id);
+	          
+	      } else if(account_bankCode ==3) {
+	    	// 농협(13) > 3 - 4 - 4 - 2
+	          String st1 = String.format("%03d", (int)(Math.random()*1000));
+	          String st2 = String.format("%04d", (int)(Math.random()*10000));
+	          String st3 = String.format("%04d", (int)(Math.random()*10000));
+	          String st4 = String.format("%02d", (int)(Math.random()*100));
+	          
+	          account_id = st1 + "-" + st2 + "-" + st3 + "-" + st4;
+	          
+	          System.out.println("account_id : " + account_id);
+
+	         
+	      } else if(account_bankCode ==4) {
+	    	  // 신한(12) > 3 - 3 - 6
+	          String st1 = String.format("%03d", (int)(Math.random()*1000));
+	          String st2 = String.format("%03d", (int)(Math.random()*1000));
+	          String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	          account_id = st1 + "-" + st2 + "-" + st3;
+	          
+	          System.out.println("account_id : " + account_id);
+
+	         
+	      } else if(account_bankCode ==5) {
+	    	  // 하나(14) > 3 - 6 - 5
+	          String st1 = String.format("%03d", (int)(Math.random()*1000));
+	          String st2 = String.format("%06d", (int)(Math.random()*1000000));
+	          String st3 = String.format("%05d", (int)(Math.random()*100000));
+
+	          account_id = st1 + "-" + st2 + "-" + st3;
+	          
+	          System.out.println("account_id : " + account_id);
+	          
+	      } else if(account_bankCode ==6){
+	         // 코스모뱅크(14) > 4 - 4 - 6
+	         String st1 = String.format("%04d", (int)(Math.random()*10000));
+	         String st2 = String.format("%04d", (int)(Math.random()*10000));
+	         String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	         account_id = st1 + "-" + st2 + "-" + st3;
+	         
+	         System.out.println("account_id : " + account_id);
+	    
+	      }
+
+		//작은바구니 생성 
+		DepositVO vo = new DepositVO();
+		
+		vo.setDeposit_product_name(deposit_product_name);
+		vo.setAccount_id(account_id);
+		System.out.println("deposit_product_name =>" + deposit_product_name);
+		System.out.println("account_id => " + account_id);
+		
+		vo.setAccount_bankCode(account_bankCode);
+		String deposit_rate = req.getParameter("deposit_rate");
+		Float rate = Float.valueOf(deposit_rate);
+		vo.setDeposit_rate(rate);
+		vo.setDeposit_type(Integer.parseInt(req.getParameter("deposit_type")));
+		vo.setDeposit_balance(Integer.parseInt(req.getParameter("deposit_balance")));
+		String deposit_endDate = req.getParameter("deposit_endDate");
+		Date date = Date.valueOf(deposit_endDate);
+		vo.setDeposit_endDate(date);
+		
+		//Account 테이블에 insert 해줘야 함 
+	     Map<String, Object> map = new HashMap<String, Object>();
+	    // map.put("", value);
+	    int insertCnt = dao.insertAccount(map);
+		int selectCnt = dao.insertDeposit(vo);
+		
+		req.setAttribute("selectCnt", selectCnt);
+		req.setAttribute("pageNum", pageNum);
+		req.setAttribute("number", number);
+		
 	}
 
 }

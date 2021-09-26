@@ -6,41 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예금 상세 보기</title>
+<title>고객 예금 신청 상세</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-
-<script type="text/javascript">
-      $(function() {
-			$("#all_check").change(function() {
-				var is_check = $("#all_check").is(":checked");
-				$(".user_check").prop("checked", is_check);
-				
-			});
-	  });
-      
-      function fn_process(val){
-    	  var form = document.depositProductForm
-    	  if(val == '1'){
-    		  // 회원정보수정시
-    		  form.action = "";
-    		  form.submit();
-    	  }else{
-    		  form.action = "depositProductDelete";
-    		  form.submit();
-    	  }
-      }
-</script>
-<script>
-	var msg = "<%=request.getAttribute("msg") %>";
-	if(msg != 'null'){
-		 alert(msg);
-	}
-</script>
 </head>
 <body>
-
-	<!-- <div class="wrapper">
+<!-- <div class="wrapper">
 		<div class="main-header"> -->
 		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
@@ -63,7 +34,7 @@
 			
 				<section id="main">
 			      <div class="main__container">
-					<h2 class="title">예금상품 상세</h2>
+					<h2 class="title">예금 신청 상세 </h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
@@ -71,11 +42,16 @@
 									<div class="card-title">${dto.deposit_product_name}</div>
 								</div>
 								<div class="card-body">
-									 <form action="depositProductJoin" name="depositProductForm">
+									 <form action="depositProductAction" name="depositProductForm">
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
 										 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 						        <table class="admin__table">
+						          <tr>
+						          	<th class="table__head">신청자</th>
+						          	<td>${sessionScope.customerID}</td>
+						          </tr>
+						        
 						          <tr>
 						            <th class="table__head">상품명</th>
 						             <td>${dto.deposit_product_name} 
@@ -88,9 +64,7 @@
 						          </tr>
 						          <tr>
 						            <th class="table__head">금리</th>
-						              <td>${dto.deposit_product_interRate}%
-						              <input type="hidden" value ="${dto.deposit_product_interRate}" name ="deposit_rate">
-						              	</td>
+						              <td>${dto.deposit_product_interRate}%</td>
 						          </tr>
 						          <tr>
 						          	 <th class="table__head">종류</th>
@@ -102,7 +76,6 @@
 								           <c:if test="${dto.deposit_product_type!=1}">
 								           	단리
 								           </c:if>
-								           <input type="hidden" value="${dto.deposit_product_type }" name="deposit_type">
 						          	 </td>
 						           </tr>
 						           <tr>
@@ -124,53 +97,40 @@
 						      			<th class="table__head">은행코드</th>
 						      			<td>
 							           		<c:choose>
-							           			<c:when test="${dto.deposit_product_bankCode==0}">
+							           			<c:when test="${dto.account_bankCode==0}">
 							           				미기재
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==1}">
-							           				국민은행
-							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==2}">
-							           				우리은행
-							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==3}">
-							           				농협은행
-							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==4}">
+							           			<c:when test="${dto.account_bankCode==1}">
 							           				신한은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==5}">
-							           				하나은행 
+							           			<c:when test="${dto.account_bankCode==2}">
+							           				국민은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==6}">
-							           				코스모 뱅크  
+							           			<c:when test="${dto.account_bankCode==3}">
+							           				우리은행
+							           			</c:when>
+							           			<c:when test="${dto.account_bankCode==4}">
+							           				기업은행
+							           			</c:when>
+							           			<c:when test="${dto.account_bankCode==5}">
+							           				하나은행
 							           			</c:when>
 							           		</c:choose>
-							           		<input type="hidden" value="${dto.deposit_product_bankCode}" name ="account_bankCode">
 							           </td>
 						      		</tr>
-						      		
+						      		<tr>
+						      			<th class="table__head">계좌번호 확인</th>
+						      			<td>${dto.account_id}</td>
+						      		</tr>
 						      		
 						      		<tr>
 						      			 <th class="table__head">등록일</th>
-						      			 <td>${dto.deposit_product_date}
-						      			 	</td>
+						      			 <td>${dto.deposit_product_date}</td>
 						      		</tr>
 						      		
-						      		<tr>
-						      			<th class="table__head">예치금</th>
-						      			<td><input type="text" name ="deposit_balance"></td>
-						      		</tr>
-						      		
-						      		<tr>
-										<th class="table__head">만기일</th>
-										<td><input type="date" name ="deposit_endDate" value="sysdate" min="sysdate" max="sysdate">		<!-- 기간 설정 하기  -->
-										</td>
-										<td>						      		
-						      		</tr>
 						        </table>
 						        <div align ="right">
-						          	<input type="submit" class="btn btn-primary btn-border" value="예금상품 신청하기">
+						          	<input type="submit" class="btn btn-primary btn-border" value="승인 요청 " >
 						        </div>
 						        
 			        </form>
@@ -324,4 +284,6 @@
 			fillColor : 'rgba(255, 165, 52, .14)'
 		});
 	</script>
+
+</body>
 </html>

@@ -1,6 +1,7 @@
 package com.spring.bank.user.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,8 +9,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.spring.bank.admin.dao.AdminDAO;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -195,7 +196,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	
 	//예금 상품 조회
 	@Override
-	public List<DepositProductVO> getDepositList(Map<String, Integer> map){
+	public List<DepositProductVO> getDepositList(Map<String, Object> map){
 		List<DepositProductVO> list = sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getDepositList", map);
 		
 		return list;
@@ -217,7 +218,38 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public DepositProductVO getDepositDetail(String deposit_product_name) {
 		DepositProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getDepositDetail",deposit_product_name);
-		
+		System.out.println("상세보기 : "+vo.getDeposit_product_name());
 		return vo;
 	}
+	
+	//예금 신청 처리 insert
+	@Override
+	public int insertDeposit(DepositVO vo) {
+		int insertCnt =sqlSession.insert("com.spring.bank.user.dao.CustomerDAO.insertDeposit", vo);
+		
+		return insertCnt;
+	}
+	
+	//예금 신청 시 계좌 개설 
+	@Override
+	public int insertAccount(Map<String, Object> map) {
+		int insertCnt = sqlSession.insert("com.spring.bank.user.dao.CustomerDAO.insertAccount", map);
+		return 0;
+	}
+	
+	//예금 신청 - 상세 보기 
+	@Override
+	public DepositVO setDeposit(String deposit_product_name) {
+		DepositVO  vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.setDeposit", deposit_product_name);
+		return vo;
+	}
+	
+	//예금 신청 취소 
+	public int deleteDeposit(String account_id) {
+		int deleteCnt=0;
+		
+		return deleteCnt;
+	}
+
+	
 }

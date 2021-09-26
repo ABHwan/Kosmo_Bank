@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -78,7 +79,7 @@ public interface CustomerDAO {
 	public int getDepositCnt();
 
 	//예금 상품 조회
-	public List<DepositProductVO> getDepositList(Map<String, Integer> map);
+	public List<DepositProductVO> getDepositList(Map<String, Object> map);
 	
 	// 관리자 페이지 예금 상품 수(검색결과수)
 	public int getDepositProductSearchCnt(String search);
@@ -88,4 +89,17 @@ public interface CustomerDAO {
 	
 	//예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+	
+	//예금 신청 처리 insert
+	public int insertDeposit(DepositVO vo);
+	
+	//예금 신청 - 상세 보기 
+	public DepositVO setDeposit(String deposit_product_name);
+	
+	//예금 신청 시 계좌 생성
+	public int insertAccount(Map<String, Object> map);
+	
+	//예금 신청 취소 
+	public int deleteDeposit(String account_id);
+	
 }
