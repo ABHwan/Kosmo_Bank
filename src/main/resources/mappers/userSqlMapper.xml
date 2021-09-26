@@ -170,5 +170,29 @@
 		WHERE deposit_product_name=#{deposit_product_name} 	
 	</select>
 	
-	
+	<!-- 환율 저장 후 출력(지호) -->
+    <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">
+    	INSERT INTO exchange_rate(exchange_country, exchange_rate)
+    	VALUES (#{exchange_country}, #{exchange_rate}) 
+    </insert>
+    
+    <!-- 환율 체크(지호) -->
+    <select id="exchangeChk" parameterType="String" resultType="int">
+    	SELECT COUNT(*) FROM exchange_rate
+    	 WHERE exchange_country=#{exchange_country}
+    </select>
+    
+    <!-- 환율 최신화(지호) -->
+    <update id="exchangeUpd" parameterType="com.spring.bank.user.vo.CrawlerVO">
+    	UPDATE exchange_rate
+    	   SET exchange_rate=#{exchange_rate}
+    	 WHERE exchange_country=#{exchange_country}
+    </update>
+    
+    <!-- db에 있는 환율  출력 -->
+    <select id="exchangeVary" parameterType="String" resultType="String">
+    	SELECT exchange_rate 
+    	  FROM exchange_rate
+    	 WHERE exchange_country=#{exchange_country}
+    </select>	
 </mapper>
