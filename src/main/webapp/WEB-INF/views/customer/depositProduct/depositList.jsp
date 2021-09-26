@@ -63,7 +63,7 @@
 			      <h2 class="title">예금 상품 리스트</h2>
 			       
 					<form action="depositProductSearch.do" method="post" class="contents__top2" name="searchForm">
-			          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+						<sec:csrfInput/>
 			          <input type="search" name="search" placeholder="예금상품검색" />
 			          <button type="submit">
 			            <i class="fas fa-search"></i>

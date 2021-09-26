@@ -39,10 +39,11 @@ public class CustomerController {
 	@Inject
 	private JavaMailSender javaMailSender;
 	
-	// main 화면
+	// main 화면(크롤링, 지호)
 	@RequestMapping("index.do")
-	public String home(Model model) {
-		
+	public String home(HttpServletRequest req, Model model) {
+		System.out.println("url ==> index");
+		//service.exchanges(req, model);
 		return "index";
 	}
 	
@@ -111,6 +112,15 @@ public class CustomerController {
 			
 			return "customer/account/authToken";
 	}
+	
+	// 회원가입 본인인증 페이지
+	@RequestMapping("certifications.do")
+	public String certifications(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/account/certifications";
+	}
+	
 	
 	// 회원가입 처리 페이지
 	@RequestMapping("registerAction.do")
@@ -318,7 +328,7 @@ public class CustomerController {
 		logger.info("url ==> pwFindAction.do");
 		service.pwFindAction(req, model);
 		return "customer/account/pwFindAction";
-	}
+	}	
 	
 	//예금 상품 조회(지현) depositList
 	@RequestMapping("depositList.do")
@@ -348,11 +358,17 @@ public class CustomerController {
 		return "customer/depositProduct/depositDetail";
 	}
 	
+<<<<<<< HEAD
 	//예금 상품 신청 상세 화면 (지현)
 	@RequestMapping("depositProductJoin")
+=======
+	//예금 상품 신청(지현)
+	@RequestMapping("depositProductAction")
+>>>>>>> master
 	public String depositProductInsert(HttpServletRequest req, Model model) {
 		logger.info("url => depositProductJoin");
 		
+<<<<<<< HEAD
 		//INSERT
 		service.insertDeposit(req, model);
 		
@@ -364,6 +380,10 @@ public class CustomerController {
 		logger.info("url => depositProductAction");
 		
 		
+=======
+		service.insertDeposit(req, model);
+		
+>>>>>>> master
 		return "customer/depositProduct/depositProductAction";
 	}
 	
@@ -490,7 +510,25 @@ public class CustomerController {
 		
 		return "customer/qna/faqList";
 	}
+
 	
+	// 환율 리스트 출력(지호)
+	@RequestMapping("exchangeList.do")
+	public String exchangeList(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchangeList.do");
+		
+		service.exchangeList(req, model);
+		
+		return "exchangeList";
+	}
 	
+	// 환전하기 (지호)
+	@RequestMapping("exchange.do")
+	public String exchange(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchange.do");
+		
+		return "exchange";
+	}	
+
 
 }

@@ -12,9 +12,13 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -22,7 +26,11 @@ import org.springframework.ui.Model;
 import com.spring.bank.customer.encrypt.UserAuthenticationService;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
+<<<<<<< HEAD
 import com.spring.bank.user.vo.DepositVO;
+=======
+import com.spring.bank.user.vo.CrawlerVO;
+>>>>>>> master
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -71,22 +79,6 @@ public class CustomerServiceImpl implements CustomerService {
 		// 3단계. 화면으로부터 입력 받은 값을 받아온다. 바구니에 담는다.
 		UserVO vo = new UserVO();
 		
-		// String strID = req.getParameter("id");
-		/*
-		CREATE TABLE members(
-		    id      VARCHAR2(20)    PRIMARY KEY,
-		    password     VARCHAR2(20)    NOT NULL,                                              
-		    name    VARCHAR2(20)     NOT NULL,
-		    birth   DATE,
-		    hp     NUMBER(11)      NOT NULL UNIQUE,
-		    email   VARCHAR2(50)    UNIQUE,
-		    zipcode NUMBER(5)       NOT NULL,
-		    addr1 VARCHAR2(50)    NOT NULL,
-		    addr2 VARCHAR2(50),
-		    addr3 VARCHAR2(50),
-		    indate    DATE          DEFAULT SYSDATE
-		);
-		*/
 		String strPassword = bCryptPasswordEncoder.encode(req.getParameter("password"));
 		
 		String hp = "";
@@ -141,20 +133,6 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("email", email);
 	}
 	
-	// 이메일 인증 성공 처리
-//	@Override
-//	public void emailSuccess(HttpServletRequest req, Model model) {
-//		String email = req.getParameter("email");
-//		
-//		UserVO vo = new UserVO();
-//		
-//		vo.setEmail(email);
-//		vo.setKey(1);
-//		
-//		dao.emailSuccess(vo);
-//		
-//	}
-
 	@Override
 	public void deleteCustomerAction(HttpServletRequest req, Model model) {
 		System.out.println("[서비스 => 회원탈퇴 처리]");
@@ -501,7 +479,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (cnt > 0) {
 			// 5-2단계. 게시글 목록 조회
-			Map<String, Integer> map = new HashMap<>();
+			Map<String, Integer> map = new HashMap<String, Integer>();
 			map.put("start", start);
 			map.put("end", end);
 			dtos = dao.getInquiryList(map);
@@ -757,7 +735,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (cnt > 0) {
 			// 5-2단계. 게시글 목록 조회
-			Map<String, Integer> map = new HashMap<>();
+			Map<String, Integer> map = new HashMap<String, Integer>();
 			map.put("start", start);
 			map.put("end", end);
 			dtos = dao.getFaqList(map);
@@ -861,7 +839,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (cnt > 0) {
 			// 5-2단계. 게시글 목록 조회
+<<<<<<< HEAD
 			Map<String, Object> map = new HashMap<>();
+=======
+			Map<String, Integer> map = new HashMap<String, Integer>();
+>>>>>>> master
 			map.put("start", start);
 			map.put("end", end);
 			dtos = dao.getDepositList(map);
@@ -1006,6 +988,7 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("number", number);
 	}
 	
+<<<<<<< HEAD
 	//예금 신청 상세 화면 
 	@Override
 	public void setDepositProductJoin(HttpServletRequest req, Model model) {
@@ -1130,4 +1113,153 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 
+=======
+	//예금 신청 
+	@Override
+	public void insertDeposit(HttpServletRequest req, Model model) {
+		String deposit_product_name = req.getParameter("deposit_product_name");
+		
+		//작은바구니 생성
+		DepositProductVO vo = new DepositProductVO();
+		
+	}
+	
+	// 환율 데이터 입력 후 출력(지호)
+	@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
+	@Scheduled(fixedRate = 6000) // 1분마다 한번씩
+	@Override
+	public void exchanges(HttpServletRequest req, Model model) {
+		
+		String country ="";
+		String strJson="";
+		String rate="";
+		String exchange_country="";
+		JSONArray array = null;
+		JSONObject obj = null;
+		JSONObject obj2 = null;
+		int num = 0;
+		List<CrawlerVO> list = null;
+		CrawlerVO vo = null;
+		// db에 있는 환율 가져올 list
+		//List<String> listRate =null;
+		String listRate = "";
+		try {
+			strJson = Jsoup.connect("http://fx.kebhana.com/FER1101M.web").get().select("body").text().replaceAll("},] }", "} ]");
+			// 0번째 부터 시작
+			strJson = strJson.substring(strJson.indexOf("["));
+			list = new ArrayList<CrawlerVO>();
+			
+			// JSONArray에 "리스트" : [] 출력
+			array = new JSONArray(strJson);
+			//System.out.println("array.length :" + array.length());	// 49
+			// 환율 db체크
+			obj2 = new JSONObject(array.get(1).toString());
+			exchange_country = obj2.get("통화명").toString();
+			num = dao.exchangeChk(exchange_country);
+			System.out.println("num : " + num);
+			
+			// 환율 데이터 저장
+			if(num != 1) {
+				for(int i=0; i<array.length(); i++) {
+					System.out.println("환율 데이터 저장");
+					obj = new JSONObject(array.get(i).toString());
+					country = obj.get("통화명").toString();
+					rate = obj.get("매매기준율").toString();
+					vo = new CrawlerVO(country, rate);
+					dao.exchangeIn(vo);	
+					
+					// 화면 출력용
+					if(i<6) {
+						obj = new JSONObject(array.get(i).toString());
+						country = obj.get("통화명").toString();
+						rate = obj.get("매매기준율").toString();
+						vo = new CrawlerVO(country, rate);
+						list.add(vo);
+					}
+				
+				}	
+			}else {
+				// 환율 최신화
+				System.out.println("array.length :" + array.length());
+				for(int i=0; i<array.length(); i++) {
+					System.out.println("환율 최신화");
+					obj = new JSONObject(array.get(i).toString());
+					country = obj.get("통화명").toString();
+					rate = obj.get("매매기준율").toString();
+					vo = new CrawlerVO(country, rate);
+					
+					// 최신화 전 환율 비교
+					listRate = dao.exchangeVary(country);
+					
+					//double lr = (((Double.parseDouble(rate)*100) / Double.parseDouble(listRate.get(i))) -100)*100;
+					double lr = (((Double.parseDouble(rate)*100) / Double.parseDouble(listRate)) -100)*100;
+					double compare = Math.round(lr*100)/100.0;
+					System.out.println("lr : " + lr);
+					// 최신화
+					dao.exchangeUpd(vo);
+					
+					// 화면 출력용
+					if(i<6) {
+						obj = new JSONObject(array.get(i).toString());
+						country = obj.get("통화명").toString();
+						rate = obj.get("매매기준율").toString();
+						vo = new CrawlerVO(country, rate, compare);
+						list.add(vo);
+					}
+				}
+			}
+		}catch(Exception e) {
+			
+		}
+		model.addAttribute("list", list);
+	}
+	
+	//환율 목록 출력(지호)
+	@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
+	@Scheduled(fixedRate = 6000) // 1분마다 한번씩
+	@Override
+	public void exchangeList(HttpServletRequest req, Model model) {
+		
+		String strJson="";
+		String exchange_country ="";
+		String exchange_rate="";
+		String exchange_buy="";
+		String exchange_sell="";
+		String exchange_transfer="";
+		String exchange_recive="";
+		JSONArray array = null;
+		JSONObject obj = null;
+		List<CrawlerVO> list = null;
+		CrawlerVO vo = null;
+		// db에 있는 환율 가져올 list
+		try {
+			strJson = Jsoup.connect("http://fx.kebhana.com/FER1101M.web").get().select("body").text().replaceAll("},] }", "} ]");
+			// 0번째 부터 시작
+			strJson = strJson.substring(strJson.indexOf("["));
+			list = new ArrayList<CrawlerVO>();
+			
+			// JSONArray에 "리스트" : [] 출력
+			array = new JSONArray(strJson);
+			
+			// 환율 데이터 저장
+				for(int i=0; i<array.length(); i++) {
+					System.out.println("환율 데이터 출력");
+					obj = new JSONObject(array.get(i).toString());
+					exchange_country = obj.get("통화명").toString();
+					exchange_rate = obj.get("매매기준율").toString();
+					exchange_buy = obj.get("현찰사실때").toString();
+					exchange_sell = obj.get("현찰파실때").toString();
+					exchange_transfer = obj.get("송금_전신환보내실때").toString();
+					exchange_recive = obj.get("송금_전신환받으실때").toString();
+					
+					vo = new CrawlerVO(exchange_country, exchange_rate, exchange_buy, exchange_sell, exchange_transfer, exchange_recive);
+					list.add(vo);
+					
+				}
+		}catch(Exception e) {
+			
+		}
+		model.addAttribute("list", list);
+	}
+>>>>>>> master
 }

@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+<<<<<<< HEAD
 import com.spring.bank.user.vo.DepositVO;
+=======
+import com.spring.bank.user.vo.CrawlerVO;
+>>>>>>> master
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -89,6 +93,7 @@ public interface CustomerDAO {
 	
 	//예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+<<<<<<< HEAD
 	
 	//예금 신청 처리 insert
 	public int insertDeposit(DepositVO vo);
@@ -102,4 +107,18 @@ public interface CustomerDAO {
 	//예금 신청 취소 
 	public int deleteDeposit(String account_id);
 	
+=======
+
+	// 환율 저장 후 출력
+	public int exchangeIn(CrawlerVO vo);
+	
+	// 환율 체크
+	public int exchangeChk(String exchange_country);
+	
+	// 환율 최신화
+	public int exchangeUpd(CrawlerVO vo);
+	
+	// 환율 증감식 -> db에 있는 정보 출력
+	public String exchangeVary(String country);	
+>>>>>>> master
 }

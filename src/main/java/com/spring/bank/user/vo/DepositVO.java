@@ -10,12 +10,20 @@ public class DepositVO {
 	private String account_id; 				// 계좌번호
 	private Date deposit_joinDate;			// 예금가입날짜
 	private int deposit_state; 				// 예금상태
+<<<<<<< HEAD
 	private Float deposit_rate; 				// 예금금리
 	private int deposit_type; 				// 예금종류(복/단)
 	private int deposit_balance; 			// 예치금액
 	private Date deposit_endDate; 			// 만기일
 	private int account_bankCode;			// 은행 코드 0:미기재 1: 신한 2:국민 3:우리 4: 기업 5: 하나 
 	
+=======
+	private int deposit_rate; 				// 예금금리
+	private int deposit_type; 				// 예금종류(복/단)
+	private int deposit_balance; 			// 예치금액
+	private Date deposit_endDate; 			// 만기일
+
+>>>>>>> master
 	public int getDeposit_id() {
 		return deposit_id;
 	}
@@ -56,11 +64,19 @@ public class DepositVO {
 		this.deposit_state = deposit_state;
 	}
 
+<<<<<<< HEAD
 	public Float getDeposit_rate() {
 		return deposit_rate;
 	}
 
 	public void setDeposit_rate(Float deposit_rate) {
+=======
+	public int getDeposit_rate() {
+		return deposit_rate;
+	}
+
+	public void setDeposit_rate(int deposit_rate) {
+>>>>>>> master
 		this.deposit_rate = deposit_rate;
 	}
 
@@ -88,6 +104,7 @@ public class DepositVO {
 		this.deposit_endDate = deposit_endDate;
 	}
 
+<<<<<<< HEAD
 	public int getAccount_bankCode() {
 		return account_bankCode;
 	}
@@ -97,4 +114,6 @@ public class DepositVO {
 	}
 
 	
+=======
+>>>>>>> master
 }

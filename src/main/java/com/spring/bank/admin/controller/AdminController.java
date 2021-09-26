@@ -2,6 +2,8 @@ package com.spring.bank.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,14 +63,23 @@ public class AdminController {
 	@Autowired
 	private AdminServiceImpl service;
 	
+	/*
+	// 스케쥴링 테스트
+	@Scheduled(fixedDelay=60000)
+    public void TestScheduler(){
+		Date date = new Date();
+		SimpleDateFormat format2 = new SimpleDateFormat ( "yyyy년 MM월dd일 HH시mm분ss초");
+        System.out.println("스케줄링 테스트(600000ms -> 10분마다 테스트) 시간 -> " + format2.format(date));
+    }*/
+	
 	// 관리자 페이지
-		@RequestMapping("index")
-		public String index(HttpServletRequest req, Model model) {
-			System.out.println("[index.ad]");
-			
-			// 이동할 페이지
-			return "index(manager)";
-		}
+	@RequestMapping("index")
+	public String index(HttpServletRequest req, Model model) {
+		System.out.println("[index.ad]");
+		
+		// 이동할 페이지
+		return "index(manager)";
+	}
 
 	// 관리자 페이지
 	@RequestMapping("mngPage.do")
@@ -142,7 +154,7 @@ public class AdminController {
 		
 		service.customerList(req, model);
 		return "manager/customerInfo/customerInfo";
-	}
+	}//지호바보
 	
 	// 관리자 - 회원관리 - 회원검색
 	@RequestMapping("customerSearch")
@@ -298,5 +310,19 @@ public class AdminController {
 		return "manager/qna/faqDeleteAction";
 	}
 
-			
+	// 회원별 계좌목록페이지
+	@RequestMapping("customerAccountInfo")
+	public String customerAccountInfo(HttpServletRequest req, Model model) {
+		logger.info("url => customerAccountInfo");
+		service.customerAccountList(req, model);
+		return "manager/customerInfo/customerAccountInfo";
+	}
+	
+	// 회원별 계좌목록 검색
+	@RequestMapping("customerAccountSearch")
+	public String customerAccountSearch(HttpServletRequest req, Model model) {
+		logger.info("url => customerAccountSearch");
+		service.searchCustomerAccountList(req, model);
+		return "manager/customerInfo/customerAccountSearch";
+	}		
 }

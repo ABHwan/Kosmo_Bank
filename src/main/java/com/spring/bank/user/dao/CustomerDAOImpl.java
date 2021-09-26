@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+<<<<<<< HEAD
 import com.spring.bank.user.vo.DepositVO;
+=======
+import com.spring.bank.user.vo.CrawlerVO;
+>>>>>>> master
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -218,6 +222,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public DepositProductVO getDepositDetail(String deposit_product_name) {
 		DepositProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getDepositDetail",deposit_product_name);
 		System.out.println("상세보기 : "+vo.getDeposit_product_name());
+<<<<<<< HEAD
 		return vo;
 	}
 	
@@ -251,4 +256,48 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	
+=======
+		return vo;
+	}
+
+	// 환율 저장 후 출력
+	@Override
+	public int exchangeIn(CrawlerVO vo) {
+		System.out.println("[DAO => exchangeIn()]");
+		
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		
+		return dao.exchangeIn(vo);
+	}
+
+	// 환율 체크
+	@Override
+	public int exchangeChk(String exchange_country) {
+		System.out.println("[DAO => exchangeChk()]");
+		
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		
+		return dao.exchangeChk(exchange_country);
+	}
+
+	// 환율 최신화
+	@Override
+	public int exchangeUpd(CrawlerVO vo) {
+		System.out.println("[DAO => exchangeUpd()]");
+		
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		
+		return dao.exchangeUpd(vo);
+	}
+
+	// 환율 증감식 -> db에있는 정보 출력
+	@Override
+	public String exchangeVary(String country) {
+		System.out.println("[DAO => exchangeVary()]");
+		
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		
+		return dao.exchangeVary(country);
+	}		
+>>>>>>> master
 }

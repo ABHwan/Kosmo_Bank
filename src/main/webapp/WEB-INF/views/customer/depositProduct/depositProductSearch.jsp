@@ -10,27 +10,6 @@
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
     
-<script type="text/javascript">
-      $(function() {
-			$("#all_check").change(function() {
-				var is_check = $("#all_check").is(":checked");
-				$(".user_check").prop("checked", is_check);
-				
-			});
-	  });
-      
-      function fn_process(val){
-    	  var form = document.depositProductForm
-    	  if(val == '1'){
-    		  // 회원정보수정시
-    		  form.action = "";
-    		  form.submit();
-    	  }else{
-    		  form.action = "depositProductDelete";
-    		  form.submit();
-    	  }
-      }
-</script>
 <script>
 	var msg = "<%=request.getAttribute("msg") %>";
 	if(msg != 'null'){
@@ -65,7 +44,7 @@
 			      <h2 class="title">예금 상품 리스트</h2>
 			       
 					<form action="depositProductSearch.do" method="post" class="contents__top2" name="searchForm">
-			          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+						<sec:csrfInput/>
 			          <input type="search" name="search" placeholder="예금상품검색" />
 			          <button type="submit">
 			            <i class="fas fa-search"></i>
