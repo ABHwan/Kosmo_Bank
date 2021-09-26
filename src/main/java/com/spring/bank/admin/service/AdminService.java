@@ -47,4 +47,10 @@ public interface AdminService {
 	
 	//faq 삭제 처리(지현)
 	public void faqDelete(HttpServletRequest req,  Model model);
+
+	// 관리자 페이지 회원계좌목록
+	public void customerAccountList(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 회원계좌검색목록
+	public void searchCustomerAccountList(HttpServletRequest req, Model model);
 }
