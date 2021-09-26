@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.bank.HomeController;
 import com.spring.bank.admin.service.AdminServiceImpl;
 import com.spring.bank.util.ImageUploaderHandler;
+
+
 
 //@WebServlet("시작url") : 웹브라우저의 모든 요청은 하나의 서블릿에서 처리한다. 즉 모든 요청의 단일 진입점에서 시작 url을 지정
 /*
