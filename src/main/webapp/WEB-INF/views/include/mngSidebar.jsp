@@ -277,6 +277,27 @@
 								</ul>
 							</div>
 						</li> -->
+						
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#test">
+								<i class="fas fa-coins"></i>
+								<p>Test Data</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="test">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="#">
+											<span class="sub-item">고객계좌데이터추가</span>
+										</a>
+										
+									</li>
+									
+								</ul>
+							</div>
+						</li>
+						
+						
 					</div>
 				</div>
 			</div>
