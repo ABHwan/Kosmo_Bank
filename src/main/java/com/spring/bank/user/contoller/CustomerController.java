@@ -41,8 +41,9 @@ public class CustomerController {
 	
 	// main 화면
 	@RequestMapping("index.do")
-	public String home(Model model) {
-		
+	public String home(HttpServletRequest req, Model model) {
+		System.out.println("url ==> index");
+		service.exchanges(req, model);
 		return "index";
 	}
 	
@@ -226,6 +227,7 @@ public class CustomerController {
 		return "/customer/account/deletecustomer";
 	}
 	
+	
 	// 회원탈퇴 처리
 	@RequestMapping("deleteCustomerAction")
 	public String deletecustomerAction(HttpServletRequest req, Model model) {
@@ -320,167 +322,22 @@ public class CustomerController {
 		return "customer/account/pwFindAction";
 	}
 	
-	//예금 상품 조회(지현) depositList
-	@RequestMapping("depositList.do")
-	public String depositList(HttpServletRequest req, Model model) {
-		logger.info("url => depositList");
+	// 환율 리스트 출력(지호)
+	@RequestMapping("exchangeList.do")
+	public String exchangeList(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchangeList.do");
 		
-		service.depositList(req, model);
+		service.exchangeList(req, model);
 		
-		return "customer/depositProduct/depositList";
+		return "exchangeList";
 	}
 	
-	//예금상품검색(지현)
-	@RequestMapping("depositProductSearch.do")
-	public String depositProductSearch(HttpServletRequest req, Model model) {
-		System.out.println("[url ==> /depositProductSearch]");
-		service.searchDepositProduct(req, model);
-		return "customer/depositProduct/depositProductSearch";
+	// 환전하기 (지호)
+	@RequestMapping("exchange.do")
+	public String exchange(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchange.do");
+		
+		return "exchange";
 	}
 	
-	//예금 상품 상세 보기 (지현)
-	@RequestMapping("depositDetail.do")
-	public String depositDetail(HttpServletRequest req, Model model) {
-		logger.info("url => depositDetail");
-		
-		service.depositDetail(req, model);
-		
-		return "customer/depositProduct/depositDetail";
-	}
-	
-	//예금 상품 신청()
-	@RequestMapping("depositProductInsert")
-	public String depositProductInsert(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductInsert");
-		
-		
-		return "";
-	}
-	
-	//qna 게시판(지현)
-	@RequestMapping("qnaList")
-	public String qnaList(HttpServletRequest req, Model model) {
-		logger.info("url => qnaList");
-		
-		//회원qna리스트 출력 메서드 service
-		service.inquiryList(req, model);
-		
-		return "customer/qna/qnaList";
-	}
-	
-	//qna 작성 게시판 (지현)
-	@RequestMapping("qnaWrite")
-	public String qnaWrite(HttpServletRequest req, Model model) {
-		logger.info("url => qnaWrite");
-		// 3단계. 신규 글- url으로부터 입력받은 값(get방식 값)을 받아온다.
-		// boardWrite.bo?num=${dto.num}&pageNum=${pageNum}
-		int inquiry_id = 0;
-		int pageNum = 0;
-		int inquiry_ref = 0;
-
-		pageNum = Integer.parseInt(req.getParameter("pageNum"));
-
-		// 3단계. 상세 페이지의 답글 쓰기 -url으로부터 입력받은 값(get방식 값)을 받아온다.
-		// boardWrite.bo?num=${dto.num}&pageNum=${pageNum}&ref=${dto.ref}&ref_step=${dto.ref_step}&ref_level=${dto.ref_level}'
-		// 상세 페이지의 답글 쓰기 버튼 클릭시의 get방식의 url에서 값을 받는다.
-		if (req.getParameter("inquiry_id") != null) {
-			inquiry_id = Integer.parseInt(req.getParameter("inquiry_id"));
-			pageNum = Integer.parseInt(req.getParameter("pageNum"));
-		}
-		// 4단계jsp로 전달하기 위해 처리 결과 저장
-		req.setAttribute("inquiry_id", inquiry_id);
-		req.setAttribute("pageNum", pageNum);
-		req.setAttribute("inquiry_ref", inquiry_ref);
-		
-		return "customer/qna/qnaWrite";
-	}
-	
-	//qna 작성 처리페이지(지현)
-	@RequestMapping("qnaWriteAction")
-	public String qnaWriteAction(HttpServletRequest req, Model model) {
-		logger.info("url => qnaWriteAction");
-		
-		service.inquiryWriteAction(req, model);
-		
-		return "customer/qna/qnaWriteAction";
-	}
-	
-	//qna 상세보기 (지현)
-	@RequestMapping("qnaDetail")
-	public String qnaDetail(HttpServletRequest req, Model model) {
-		logger.info("url => qnaDetail");
-		
-		service.InquiryDetailAction(req, model);
-		
-		return "customer/qna/qnaDetail";
-	}
-	
-	//qna 비밀번호 check(지현)
-	@RequestMapping("qnaModifyCheck")
-	public String qnaModifyCheck(HttpServletRequest req, Model model) {
-		logger.info("url => qnaModifyCheck");
-		
-		int inquiry_id = Integer.parseInt(req.getParameter("inquiry_id"));
-		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
-		
-		//4단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
-		req.setAttribute("inquiry_id", inquiry_id);
-		req.setAttribute("pageNum", pageNum);
-		
-		return "customer/qna/qnaModifyCheck";
-	}
-	
-	//qna 수정 상세 페이지 (지현)
-	@RequestMapping("qnaModifyDetail")
-	public String qnaModifyDetail(HttpServletRequest req, Model model) {
-		logger.info("url => qnaModifyDetail");
-		
-		service.InquiryModifyDetailAction(req, model);
-		
-		return "customer/qna/qnaModifyDetail";
-		
-	}
-	
-	//수정비밀번호 (지현)
-	@RequestMapping("qnaConfirm")
-	public String qnaConfirm(HttpServletRequest req, Model model) {
-		
-		service.QnaPasswordConfirm(req, model);
-		
-		return "customer/qna/qnaConfirm";
-	}
-	
-	//qna 수정 처리 페이지 (지현)
-	@RequestMapping("qnaModifyAction")
-	public String qnaModifyAction(HttpServletRequest req, Model model) {
-		logger.info("url => qnaModifyAction");
-		
-		service.inquiryModifyAction(req, model);
-		
-		return "customer/qna/qnaModifyAction";
-	}
-	
-	
-	//삭제 처리 (지현)
-	@RequestMapping("qnaDeleteAction")
-	public String qnaDeleteAction(HttpServletRequest req, Model model) {
-		logger.info("url => qnaDeleteAction");
-		
-		service.inquiryDelete(req, model);
-		
-		return "customer/qna/qnaDeleteAction";
-	}
-	
-	//자주묻는 질문 (지현)
-	@RequestMapping("faqList")
-	public String faqList(HttpServletRequest req, Model model) {
-		logger.info("url => faqList");
-		
-		service.faqList(req, model);
-		
-		return "customer/qna/faqList";
-	}
-	
-	
-
 }

@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,100 +201,4 @@ public class AdminController {
 		service.selectDepositProduct(req, model);
 		return "manager/depositProduct/depositProductList";
 	}
-	
-	
-	//qnalist 회원이 작성한것 리스트 가져오기(지현)
-	@RequestMapping("qnaList_mng")
-	public String qnaList_mng(HttpServletRequest req,Model model) {
-		logger.info("url => qnaList_mng");
-		
-		//회원qna리스트 출력 메서드 service
-		service.qnaList_mng(req, model);
-		return"manager/qna/qnaList_mng";
-	}
-	
-	//qna 답변달기(지현)
-	@RequestMapping("qnaAnswer")
-	public String qnaAnswer() {
-		logger.info("url => qnaAnswer");
-		
-		return "manager/qna/qnaAnswer";
-	}
-
-	//FAQ 게시판 (지현)
-	@RequestMapping("faq")
-	public String faq(HttpServletRequest req, Model model) {
-		logger.info("url => faq");
-		
-		service.faqList_mng(req, model);
-		
-		return "manager/qna/faq";
-	}
-	
-	//FAQ 게시판 추가화면(지현)
-	@RequestMapping("faqAdd")
-	public String faqAdd(HttpServletRequest req, Model model) {
-		logger.info("url => faqAdd");
-		// 3단계. 신규 글- url으로부터 입력받은 값(get방식 값)을 받아온다.
-		// boardWrite.bo?num=${dto.num}&pageNum=${pageNum}
-		int faq_id = 0;
-		int pageNum = 0;
-
-		pageNum = Integer.parseInt(req.getParameter("pageNum"));
-
-		// 3단계. 상세 페이지의 답글 쓰기 -url으로부터 입력받은 값(get방식 값)을 받아온다.
-		// boardWrite.bo?num=${dto.num}&pageNum=${pageNum}&ref=${dto.ref}&ref_step=${dto.ref_step}&ref_level=${dto.ref_level}'
-		// 상세 페이지의 답글 쓰기 버튼 클릭시의 get방식의 url에서 값을 받는다.
-		if (req.getParameter("inquiry_id") != null) {
-			faq_id = Integer.parseInt(req.getParameter("faq_id"));
-			pageNum = Integer.parseInt(req.getParameter("pageNum"));
-		}
-		// 4단계jsp로 전달하기 위해 처리 결과 저장
-		req.setAttribute("faq_id", faq_id);
-		req.setAttribute("pageNum", pageNum);
-		return "manager/qna/faqAdd";
-	}
-	
-	//faq 게시판 추가 처리(지현)
-	@RequestMapping("faqAddAction")
-	public String faqAddAction(HttpServletRequest req, Model model) {
-		logger.info("url=> faqAddAction");
-		
-		service.faqAdd(req, model);
-		
-		return "manager/qna/faqAddAction";
-	}
-	
-	//faq 수정 (지현)
-	@RequestMapping("faqModify")
-	public String faqModify(HttpServletRequest req, Model model) {
-		logger.info("ulr =>faqModify ");
-		
-		//수정 상세보기 
-		service.faqModifyDetail(req, model);
-		
-		return "manager/qna/faqModifyDetail";
-	}
-	
-	//faq 수정 처리(지현)
-	@RequestMapping("faqModifyAction")
-	public String faqModifyAction(HttpServletRequest req, Model model) {
-		logger.info("url => faqModifyAction");
-		
-		service.faqModify(req, model);
-		
-		return "manager/qna/faqModifyAction"; 
-	}
-	
-	//faq 삭제 (지현)
-	@RequestMapping("faqDelete")
-	public String faqDelete(HttpServletRequest req, Model model) {
-		logger.info("url => faqDelete");
-		
-		service.faqDelete(req, model);
-		
-		return "manager/qna/faqDeleteAction";
-	}
-
-			
 }

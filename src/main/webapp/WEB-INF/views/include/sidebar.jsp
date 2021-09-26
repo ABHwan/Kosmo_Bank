@@ -140,7 +140,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="${custPath}depositList.do">
+										<a href="#">
 											<span class="sub-item">예금</span>
 										</a>
 									</li>
@@ -202,23 +202,13 @@
 							<div class="collapse" id="maps">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="${path}customer/exchangeList.do">
 											<span class="sub-item">나라별 환율</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="${path}customer/exchange.do">
 											<span class="sub-item">환전</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="sub-item">해외송금</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="sub-item">국내송금</span>
 										</a>
 									</li>
 								</ul>
@@ -269,12 +259,12 @@
 										</a>
 									</li>
 									<li>
-										<a href="${custPath}faqList">
-											<span class="sub-item">자주 묻는 질문 </span>
+										<a href="#">
+											<span class="sub-item">챗봇 대화하기</span>
 										</a>
 									</li>
 									<li>
-										<a href="${custPath}qnaList">
+										<a href="#">
 											<span class="sub-item">1대1 문의하기</span>
 										</a>
 									</li>
