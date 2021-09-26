@@ -43,6 +43,35 @@ public interface CustomerService {
 	
 	// 환율 목록 출력
 	public void exchangeList(HttpServletRequest req, Model model);
+	//qna 작성 
+	public void inquiryList(HttpServletRequest req, Model model);
+	
+	//qna작성 처리페이지
+	public void inquiryWriteAction(HttpServletRequest req, Model model);
+	
+	//qna 상세보기 페이지
+	public void InquiryDetailAction(HttpServletRequest req, Model model);
+	
+	//qna 수정 
+	public void InquiryModifyDetailAction(HttpServletRequest req, Model model);
+	
+	//qna 수정 처리 
+	public void inquiryModifyAction(HttpServletRequest req, Model model);
+	
+	// qna 비번 확인
+	public void QnaPasswordConfirm(HttpServletRequest req, Model model);
+	
+	//qna 삭제 처리
+	public void inquiryDelete(HttpServletRequest req, Model model);
+	
+	//faq 조회
+	public void faqList(HttpServletRequest req, Model model);
+
+	//예금 상품 조회
+	public void depositList(HttpServletRequest req, Model model);
+	
+	//예금 상품 검색 
+	public void searchDepositProduct(HttpServletRequest req, Model model);	
 	
 	//예금 상품 상세보기 
 	public void depositDetail(HttpServletRequest req, Model model);

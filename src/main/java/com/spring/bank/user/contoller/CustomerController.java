@@ -326,6 +326,17 @@ public class CustomerController {
 	@RequestMapping("exchangeList.do")
 	public String exchangeList(HttpServletRequest req, Model model) {
 		System.out.println("url ==> exchangeList.do");
+		service.exchangeList(req, model);
+		
+		return "exchangeList";
+	}
+	// 환전하기 (지호)
+	@RequestMapping("exchange.do")
+	public String exchange(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchange.do");
+		
+		return "exchange";
+	}		
 
 	//예금 상품 조회(지현) depositList
 	@RequestMapping("depositList.do")
@@ -479,12 +490,6 @@ public class CustomerController {
 		return "exchangeList";
 	}
 	
-
-	// 환전하기 (지호)
-	@RequestMapping("exchange.do")
-	public String exchange(HttpServletRequest req, Model model) {
-		System.out.println("url ==> exchange.do");
-
 	//자주묻는 질문 (지현)
 	@RequestMapping("faqList.do")
 	public String faqList(HttpServletRequest req, Model model) {

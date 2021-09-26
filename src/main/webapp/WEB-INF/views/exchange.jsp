@@ -32,10 +32,11 @@
 										</colgroup>
 											<tr>
 												<th><b>*</b>환전신청금액</th>
-												<c:choose>
+												<%-- <c:choose>
 												<c:when test="${exchange =! null}">
 												
 												</c:when>
+												<c:otherwise> --%>
 												<td>
 													<select class="select">
 													 	<option value="미국 USD">USD (미국 달러) </option>
@@ -89,7 +90,8 @@
 														<option value="헝가리 HUF">HUF (헝가리 포린트) </option>
 													</select>
 												</td>
-												</c:choose>
+												<%-- </c:otherwise>
+												</c:choose> --%>
 												<td>
 													<input type="text" id="price" class="price" placeholder="최소금액 10" required>
 												</td>
