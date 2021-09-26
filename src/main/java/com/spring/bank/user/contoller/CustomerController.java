@@ -112,6 +112,15 @@ public class CustomerController {
 			return "customer/account/authToken";
 	}
 	
+	// 회원가입 본인인증 페이지
+	@RequestMapping("certifications.do")
+	public String certifications(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/account/certifications";
+	}
+	
+	
 	// 회원가입 처리 페이지
 	@RequestMapping("registerAction.do")
 	public String registerAction(HttpServletRequest req, Model model) {
@@ -481,7 +490,5 @@ public class CustomerController {
 		
 		return "customer/qna/faqList";
 	}
-	
-	
 
 }

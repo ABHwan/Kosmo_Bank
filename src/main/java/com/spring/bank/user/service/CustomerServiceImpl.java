@@ -70,22 +70,6 @@ public class CustomerServiceImpl implements CustomerService {
 		// 3단계. 화면으로부터 입력 받은 값을 받아온다. 바구니에 담는다.
 		UserVO vo = new UserVO();
 		
-		// String strID = req.getParameter("id");
-		/*
-		CREATE TABLE members(
-		    id      VARCHAR2(20)    PRIMARY KEY,
-		    password     VARCHAR2(20)    NOT NULL,                                              
-		    name    VARCHAR2(20)     NOT NULL,
-		    birth   DATE,
-		    hp     NUMBER(11)      NOT NULL UNIQUE,
-		    email   VARCHAR2(50)    UNIQUE,
-		    zipcode NUMBER(5)       NOT NULL,
-		    addr1 VARCHAR2(50)    NOT NULL,
-		    addr2 VARCHAR2(50),
-		    addr3 VARCHAR2(50),
-		    indate    DATE          DEFAULT SYSDATE
-		);
-		*/
 		String strPassword = bCryptPasswordEncoder.encode(req.getParameter("password"));
 		
 		String hp = "";
@@ -140,20 +124,6 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("email", email);
 	}
 	
-	// 이메일 인증 성공 처리
-//	@Override
-//	public void emailSuccess(HttpServletRequest req, Model model) {
-//		String email = req.getParameter("email");
-//		
-//		UserVO vo = new UserVO();
-//		
-//		vo.setEmail(email);
-//		vo.setKey(1);
-//		
-//		dao.emailSuccess(vo);
-//		
-//	}
-
 	@Override
 	public void deleteCustomerAction(HttpServletRequest req, Model model) {
 		System.out.println("[서비스 => 회원탈퇴 처리]");
