@@ -43,7 +43,7 @@ public class CustomerController {
 	@RequestMapping("index.do")
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
-		service.exchanges(req, model);
+		//service.exchanges(req, model);
 		return "index";
 	}
 	
