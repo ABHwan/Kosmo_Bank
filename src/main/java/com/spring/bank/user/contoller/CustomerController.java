@@ -473,7 +473,7 @@ public class CustomerController {
 	}
 	
 	//자주묻는 질문 (지현)
-	@RequestMapping("faqList")
+	@RequestMapping("faqList.do")
 	public String faqList(HttpServletRequest req, Model model) {
 		logger.info("url => faqList");
 		

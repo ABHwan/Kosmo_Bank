@@ -78,7 +78,7 @@ public interface CustomerDAO {
 	public int getDepositCnt();
 
 	//예금 상품 조회
-	public List<DepositProductVO> getDepositList(Map<String, Object> map);
+	public List<DepositProductVO> getDepositList(Map<String, Integer> map);
 	
 	// 관리자 페이지 예금 상품 수(검색결과수)
 	public int getDepositProductSearchCnt(String search);
