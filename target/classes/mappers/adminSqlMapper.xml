@@ -149,4 +149,36 @@
 		DELETE FROM faq 
 		WHERE faq_id=#{faq_id} 
 	</delete>
+	
+	<!-- 관리자 회원계좌수 -->
+	<select id="getCustomerAccountCnt" resultType="int">
+		SELECT COUNT(*) cnt FROM members m, account a WHERE m.member_id = a.member_id
+	</select>
+	
+	<!-- 관리자 회원계좌목록 -->
+	<select id="getCustomerAccountList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.CustomerAccountVO">
+		<![CDATA[
+		SELECT * FROM (      
+			SELECT member_name, member_birth, account_bankCode, account_id, account_type, account_state, account_stateContent, rowNum as rNum
+	  		FROM ( select * from members m, account a WHERE m.member_id = a.member_id ORDER BY account_newdate DESC)
+      				 ) where rNum>=#{start} and rNum<=#{end}
+      	]]>		 
+	</select>
+	
+	<!-- 관리자 회원계좌 검색결과 수 -->
+	<select id="getSerachCustomerAccountCnt" parameterType="String" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*) cnt FROM members m, account a WHERE m.member_id = a.member_id and m.member_name LIKE '%'||#{search}||'%' or a.account_id LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 관리자 회원계좌 검색결과목록 -->
+	<select id="getSearchCustomerAccountList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.CustomerAccountVO">
+		<![CDATA[
+		SELECT * FROM (      
+			SELECT member_name, member_birth, account_bankCode, account_id, account_type, account_state, account_stateContent, rowNum as rNum
+	  		FROM ( select * from members m, account a WHERE m.member_id = a.member_id and m.member_name LIKE '%'||#{search}||'%' or a.account_id LIKE '%'||#{search}||'%' ORDER BY account_newdate DESC)
+      				 ) where rNum>=#{start} and rNum<=#{end}
+      	]]>	
+	</select>
 </mapper>
