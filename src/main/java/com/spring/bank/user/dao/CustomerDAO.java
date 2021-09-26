@@ -45,17 +45,6 @@ public interface CustomerDAO {
 	// 비밀번호 변경(재설정한 비밀번호 저장)
 	public int updatePassword(UserVO vo);
 
-	// 환율 저장 후 출력
-	public int exchangeIn(CrawlerVO vo);
-	
-	// 환율 체크
-	public int exchangeChk(String exchange_country);
-	
-	// 환율 최신화
-	public int exchangeUpd(CrawlerVO vo);
-	
-	// 환율 증감식 -> db에 있는 정보 출력
-	public String exchangeVary(String country);
 	//문의사항 갯수
 	public int getInquiryCnt();
 	
@@ -73,7 +62,7 @@ public interface CustomerDAO {
 
 //			//qna 게시글 비밀번호 인증,(수정, 삭제 )
 //			public int numPasswordCheck(Map<String, Object> map);
-
+	//	
 	//qna 수정 처리 
 	public int updateQna(InquiryVO vo);
 	
@@ -100,4 +89,16 @@ public interface CustomerDAO {
 	
 	//예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+
+	// 환율 저장 후 출력
+	public int exchangeIn(CrawlerVO vo);
+	
+	// 환율 체크
+	public int exchangeChk(String exchange_country);
+	
+	// 환율 최신화
+	public int exchangeUpd(CrawlerVO vo);
+	
+	// 환율 증감식 -> db에 있는 정보 출력
+	public String exchangeVary(String country);	
 }

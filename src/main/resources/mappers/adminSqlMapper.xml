@@ -94,5 +94,59 @@
 	<delete id="deleteDepositProduct" parameterType="String">
 		DELETE FROM deposit_product WHERE deposit_product_name IN ( #{deposit_product_name} )
 	</delete>
+	<!-- 진지현 작성 -->
+	<!-- 문의사항 갯수 -->
+	<select id="getInquiryCnt" resultType="int" >
+		SELECT COUNT(*) as cnt FROM inquiry
+	</select>
+
+	<!-- 문의사항 리스트 조회 -->
+	<select id="getInquiryList" resultType="com.spring.bank.user.vo.InquiryVO" parameterType="java.util.Map" >
+		<![CDATA[
+			SELECT * 
+				FROM (SELECT inquiry_id, inquiry_title, inquiry_content, member_id, inquiry_ref, inquiry_regDate
+						, rowNUM rNum 
+						 FROM (SELECT * FROM inquiry ORDER BY inquiry_ref DESC))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+
+	<!-- 자주묻는 질문 갯수 -->
+	<select id="getFaqCnt" resultType="int" >
+		SELECT COUNT(*) as cnt FROM faq
+	</select>
 	
+	<!-- 자주묻는 질문조회-->
+	<select id="getFaqList" resultType="com.spring.bank.user.vo.faqVO" parameterType="java.util.Map" >
+		<![CDATA[
+			SELECT * 
+				FROM (SELECT faq_id, faq_title, faq_content, faq_regDate,rowNUM rNum 
+						 FROM (SELECT * FROM faq ORDER BY faq_id))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	<!-- 자주묻는 질문 추가 -->
+	<insert id ="faqAdd" parameterType="com.spring.bank.user.vo.faqVO" >
+		INSERT INTO faq(faq_id, faq_title, faq_content, faq_regDate)
+		VALUES(faq_seq.nextval, #{faq_title}, #{faq_content}, sysdate)
+	</insert>
+	
+	<!-- faq 수정 상세 조회 -->
+	<select id="getFaqDetail" parameterType="int" resultType="com.spring.bank.user.vo.faqVO">
+		SELECT * FROM faq 
+		WHERE faq_id=#{faq_id} 
+	</select>
+	
+	<!-- faq 수정 처리 -->
+	<update  id="updateFaq" parameterType="com.spring.bank.user.vo.faqVO">
+		UPDATE faq SET faq_id=#{faq_id}, faq_title=#{faq_title}, faq_content=#{faq_content} 
+		WHERE faq_id=#{faq_id}
+	</update>
+	
+	<!-- faq 삭제 -->
+	<delete id ="deleteFaq" parameterType="int">
+		DELETE FROM faq 
+		WHERE faq_id=#{faq_id} 
+	</delete>
 </mapper>

@@ -39,7 +39,7 @@ public class CustomerController {
 	@Inject
 	private JavaMailSender javaMailSender;
 	
-	// main 화면
+	// main 화면(크롤링, 지호)
 	@RequestMapping("index.do")
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
@@ -227,7 +227,6 @@ public class CustomerController {
 		return "/customer/account/deletecustomer";
 	}
 	
-	
 	// 회원탈퇴 처리
 	@RequestMapping("deleteCustomerAction")
 	public String deletecustomerAction(HttpServletRequest req, Model model) {
@@ -320,24 +319,8 @@ public class CustomerController {
 		logger.info("url ==> pwFindAction.do");
 		service.pwFindAction(req, model);
 		return "customer/account/pwFindAction";
-	}
+	}	
 	
-	// 환율 리스트 출력(지호)
-	@RequestMapping("exchangeList.do")
-	public String exchangeList(HttpServletRequest req, Model model) {
-		System.out.println("url ==> exchangeList.do");
-		service.exchangeList(req, model);
-		
-		return "exchangeList";
-	}
-	// 환전하기 (지호)
-	@RequestMapping("exchange.do")
-	public String exchange(HttpServletRequest req, Model model) {
-		System.out.println("url ==> exchange.do");
-		
-		return "exchange";
-	}		
-
 	//예금 상품 조회(지현) depositList
 	@RequestMapping("depositList.do")
 	public String depositList(HttpServletRequest req, Model model) {
@@ -485,9 +468,9 @@ public class CustomerController {
 	public String qnaDeleteAction(HttpServletRequest req, Model model) {
 		logger.info("url => qnaDeleteAction");
 		
-		service.exchangeList(req, model);
+		service.inquiryDelete(req, model);
 		
-		return "exchangeList";
+		return "customer/qna/qnaDeleteAction";
 	}
 	
 	//자주묻는 질문 (지현)
@@ -495,7 +478,27 @@ public class CustomerController {
 	public String faqList(HttpServletRequest req, Model model) {
 		logger.info("url => faqList");
 		
-		return "exchange";
+		service.faqList(req, model);
+		
+		return "customer/qna/faqList";
 	}
 	
+	// 환율 리스트 출력(지호)
+	@RequestMapping("exchangeList.do")
+	public String exchangeList(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchangeList.do");
+		
+		service.exchangeList(req, model);
+		
+		return "exchangeList";
+	}
+	
+	// 환전하기 (지호)
+	@RequestMapping("exchange.do")
+	public String exchange(HttpServletRequest req, Model model) {
+		System.out.println("url ==> exchange.do");
+		
+		return "exchange";
+	}	
+
 }

@@ -29,4 +29,22 @@ public interface AdminService {
 	
 	// 관리자 페이지 예금 상품 삭제
 	public void deleteDepositProduct(HttpServletRequest req, Model model);
+	
+	//qna게시글 조회(지현)
+	public void qnaList_mng(HttpServletRequest req,  Model model);
+	
+	//faq 조회(지현)
+	public void faqList_mng(HttpServletRequest req,  Model model);
+	
+	//faq 게시글 추가(지현)
+	public void faqAdd(HttpServletRequest req,  Model model);
+	
+	//faq 수정 상세(지현)
+	public void faqModifyDetail(HttpServletRequest req,  Model model);
+	
+	//faq 수정 처리(지현)
+	public void faqModify(HttpServletRequest req,  Model model);
+	
+	//faq 삭제 처리(지현)
+	public void faqDelete(HttpServletRequest req,  Model model);
 }

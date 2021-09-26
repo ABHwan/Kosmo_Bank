@@ -37,12 +37,7 @@ public interface CustomerService {
 	
 	// pw 찾기(재설정)
 	public void pwFindAction(HttpServletRequest req, Model model);
-
-	// 환율 데이터 입력 후 출력
-	public void exchanges(HttpServletRequest req, Model model);
 	
-	// 환율 목록 출력
-	public void exchangeList(HttpServletRequest req, Model model);
 	//qna 작성 
 	public void inquiryList(HttpServletRequest req, Model model);
 	
@@ -71,11 +66,17 @@ public interface CustomerService {
 	public void depositList(HttpServletRequest req, Model model);
 	
 	//예금 상품 검색 
-	public void searchDepositProduct(HttpServletRequest req, Model model);	
+	public void searchDepositProduct(HttpServletRequest req, Model model);
 	
 	//예금 상품 상세보기 
 	public void depositDetail(HttpServletRequest req, Model model);
 	
 	//예금 신청 
 	public void insertDeposit(HttpServletRequest req, Model model);
+	
+	// 환율 데이터 입력 후 출력
+	public void exchanges(HttpServletRequest req, Model model);
+	
+	// 환율 목록 출력
+	public void exchangeList(HttpServletRequest req, Model model);	
 }
