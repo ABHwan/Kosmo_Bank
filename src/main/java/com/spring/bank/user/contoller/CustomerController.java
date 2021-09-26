@@ -491,8 +491,7 @@ public class CustomerController {
 		
 		return "customer/qna/faqList";
 	}
-<<<<<<< HEAD
-=======
+
 	
 	// 환율 리스트 출력(지호)
 	@RequestMapping("exchangeList.do")
@@ -511,6 +510,6 @@ public class CustomerController {
 		
 		return "exchange";
 	}	
->>>>>>> master
+
 
 }
