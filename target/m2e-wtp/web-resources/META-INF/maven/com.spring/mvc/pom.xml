@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring</groupId>
 	<artifactId>mvc</artifactId>
-	<name>SPRIING_PJ_ABH</name>
+	<name>KOSMO_BANK_PJ</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>

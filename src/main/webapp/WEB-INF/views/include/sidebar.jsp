@@ -259,8 +259,13 @@
 										</a>
 									</li>
 									<li>
+<<<<<<< HEAD
 										<a href="#">
 											<span class="sub-item">챗봇 대화하기</span>
+=======
+										<a href="${custPath}faqList.do">
+											<span class="sub-item">자주 묻는 질문 </span>
+>>>>>>> master
 										</a>
 									</li>
 									<li>
