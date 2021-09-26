@@ -60,7 +60,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="mngImg.do?cnt=11">
+										<a href="customerAccountInfo">
 											<span class="sub-item">회원 계좌 관리</span>
 										</a>
 									</li>	

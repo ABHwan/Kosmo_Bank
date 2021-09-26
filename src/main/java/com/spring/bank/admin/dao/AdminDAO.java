@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -72,4 +73,15 @@ public interface AdminDAO {
 	//faq 삭제 처리(지현)
 	public int deleteFaq(int faq_id);
 
+	// 관리자 페이지 회원계좌수
+	public int getCustomerAccountCnt();
+	
+	// 관리자 페이지 회원계좌목록
+	public ArrayList<CustomerAccountVO> getCustomerAccountList(Map<String, Object> map);
+	
+	// 관리자 페이지 회원계좌 검색결과 수
+	public int getSerachCustomerAccountCnt(String search);
+	
+	// 관리자 페이지 회원계좌 검색결과목록
+	public ArrayList<CustomerAccountVO> getSearchCustomerAccountList(Map<String, Object> map); 
 }

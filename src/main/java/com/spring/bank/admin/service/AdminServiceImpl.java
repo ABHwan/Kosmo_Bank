@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.admin.dao.AdminDAOImpl;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -785,5 +786,199 @@ public class AdminServiceImpl implements AdminService {
 			req.setAttribute("pageNum", pageNum);
 			req.setAttribute("faq_id", faq_id);
 		}
-
+	// 관리자 페이지 회원계좌목록
+	public void customerAccountList(HttpServletRequest req, Model model) {
+		int pageSize = 10;		// 한 페이지당 출력할 수
+		int pageBlock = 3;		// 한 블럭당 페이지 갯수
+		
+		int cnt = 0;			// 회원계좌 수
+		int start = 0;			// 현재 페이지 시작 글 번호
+		int end = 0;			// 현재 페이지 마지막 글 번호
+		int number = 0;			// 출력용 글 번호
+		String pageNum = "";	// 페이지 번호
+		int currentPage = 0;	// 현재 페이지
+		
+		int pageCount = 0;		// 페이지 갯수
+		int startPage = 0;		// 시작 페이지
+		int endPage = 0;		// 마지막 페이지
+		
+		// 예금상품 수  조회
+		cnt = dao.getCustomerAccountCnt();
+		System.out.println("등록 된 회원별 계좌수 : " + cnt);
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1";	// 첫 페이지를 1페이지로 지정
+		}
+		
+		// 상품 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1 - 1) * 10 + 1
+		start = (currentPage - 1) * pageSize + 1;
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// end = start + pageSize - 1;
+		// 10 = 1 + 10 - 1
+		end = start + pageSize - 1 ;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글 번호
+		//number = cnt - (currentPage - 1) * pageSize; 
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) {
+			startPage -= pageBlock;
+		}
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) {
+			endPage = pageCount;
+		}
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("===================================");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		ArrayList<CustomerAccountVO> dtos = null;
+		if(cnt > 0) {
+			// 5-2단계. 회원수 조회
+			dtos = dao.getCustomerAccountList(map);
+		}
+		
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("dtos", dtos);			// 예금 상품 목록
+		model.addAttribute("cnt", cnt);				// 예금 상품 수
+		model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+		model.addAttribute("number", number);		// 출력용 번호
+		if(cnt > 0) {
+			model.addAttribute("startPage", startPage);		// 시작 페이지
+			model.addAttribute("endPage", endPage);			// 마지막 페이지
+			model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재 페이지
+		}
+	}
+		
+	// 관리자 페이지 회원계좌검색목록
+	public void searchCustomerAccountList(HttpServletRequest req, Model model) {
+		String search = req.getParameter("search");
+				
+		int pageSize = 10;		// 한 페이지당 출력할 수
+		int pageBlock = 3;		// 한 블럭당 페이지 갯수
+		
+		int cnt = 0;			// 회원계좌 수
+		int start = 0;			// 현재 페이지 시작 글 번호
+		int end = 0;			// 현재 페이지 마지막 글 번호
+		int number = 0;			// 출력용 글 번호
+		String pageNum = "";	// 페이지 번호
+		int currentPage = 0;	// 현재 페이지
+		
+		int pageCount = 0;		// 페이지 갯수
+		int startPage = 0;		// 시작 페이지
+		int endPage = 0;		// 마지막 페이지
+		
+		// 예금상품 수  조회
+		cnt = dao.getSerachCustomerAccountCnt(search);
+		System.out.println("검색된 회원별 계좌수 : " + cnt);
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1";	// 첫 페이지를 1페이지로 지정
+		}
+		
+		// 상품 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1 - 1) * 10 + 1
+		start = (currentPage - 1) * pageSize + 1;
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// end = start + pageSize - 1;
+		// 10 = 1 + 10 - 1
+		end = start + pageSize - 1 ;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글 번호
+		//number = cnt - (currentPage - 1) * pageSize; 
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) {
+			startPage -= pageBlock;
+		}
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) {
+			endPage = pageCount;
+		}
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("===================================");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("search", search);
+		
+		ArrayList<CustomerAccountVO> dtos = null;
+		if(cnt > 0) {
+			// 5-2단계. 회원수 조회
+			dtos = dao.getSearchCustomerAccountList(map);
+		}
+		
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("dtos", dtos);			// 예금 상품 목록
+		model.addAttribute("cnt", cnt);				// 예금 상품 수
+		model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+		model.addAttribute("number", number);		// 출력용 번호
+		model.addAttribute("search", search);		// 검색어
+		if(cnt > 0) {
+			model.addAttribute("startPage", startPage);		// 시작 페이지
+			model.addAttribute("endPage", endPage);			// 마지막 페이지
+			model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재 페이지
+		}
+	}
 }
