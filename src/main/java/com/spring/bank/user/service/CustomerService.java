@@ -73,4 +73,10 @@ public interface CustomerService {
 	
 	//예금 신청 
 	public void insertDeposit(HttpServletRequest req, Model model);
+	
+	// 환율 데이터 입력 후 출력
+	public void exchanges(HttpServletRequest req, Model model);
+	
+	// 환율 목록 출력
+	public void exchangeList(HttpServletRequest req, Model model);	
 }

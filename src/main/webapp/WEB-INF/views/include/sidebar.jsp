@@ -202,23 +202,13 @@
 							<div class="collapse" id="maps">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="${path}customer/exchangeList.do">
 											<span class="sub-item">나라별 환율</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="${path}customer/exchange.do">
 											<span class="sub-item">환전</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="sub-item">해외송금</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="sub-item">국내송금</span>
 										</a>
 									</li>
 								</ul>

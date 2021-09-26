@@ -262,90 +262,58 @@
 											<div class="table-responsive table-hover table-sales">
 												<table class="table">
 													<tbody>
+													<c:forEach var="i" items="${list}">
 														<tr>
 															<td>
 																<div class="flag">
-																	<img src="${rePath}images/img/flags/id.png" alt="indonesia">
+																	<c:choose>
+																		<c:when test="${i.exchange_country == '미국 USD'}">
+																			<img src="${rePath}images/img/flags/us.png" alt="미쿸">
+																		</c:when>
+																		<c:when test="${i.exchange_country == '일본 JPY 100'}">
+																			<img src="${rePath}images/img/flags/jp.png" alt="일본">
+																		</c:when>
+																		<c:when test="${i.exchange_country == '유로 EUR'}">
+																			<img src="${rePath}images/img/flags/europeanunion.png" alt="유로">
+																		</c:when>
+																		<c:when test="${i.exchange_country == '중국 CNY'}">
+																			<img src="${rePath}images/img/flags/cn.png" alt="중국">
+																		</c:when>
+																		<c:when test="${i.exchange_country == '홍콩 HKD'}">
+																			<img src="${rePath}images/img/flags/hk.png" alt="홍콩">
+																		</c:when>
+																		<c:otherwise>
+																			<img src="${rePath}images/img/flags/th.png" alt="태국">
+																		</c:otherwise>
+																	</c:choose>
 																</div>
 															</td>
-															<td>Indonesia</td>
+															
+															<td>${i.exchange_country}</td>
 															<td class="text-right">
-																2.320
+																${i.exchange_rate}
 															</td>
-															<td class="text-danger">
-																+42.18%
-															</td>
-														</tr>
-														<tr>
-															<td>
-																<div class="flag">
-																	<img src="${rePath}images/img/flags/us.png" alt="united states">
-																</div>
-															</td>
-															<td>USA</td>
-															<td class="text-right">
-																240
-															</td>
-															<td class="text-info">
-																-4.36%
-															</td>
-														</tr>
-														<tr>
-															<td>
-																<div class="flag">
-																	<img src="${rePath}images/img/flags/au.png" alt="australia">
-																</div>
-															</td>
-															<td>Australia</td>
-															<td class="text-right">
-																119
-															</td>
-															<td class="text-info">
-																-2.16%
-															</td>
-														</tr>
-														<tr>
-															<td>
-																<div class="flag">
-																	<img src="${rePath}images/img/flags/ru.png" alt="russia">
-																</div>
-															</td>
-															<td>Russia</td>
-															<td class="text-right">
-																1.081
-															</td>
-															<td class="text-danger">
-																+19.65%
-															</td>
-														</tr>
-														<tr>
-															<td>
-																<div class="flag">
-																	<img src="${rePath}images/img/flags/cn.png" alt="china">
-																</div>
-															</td>
-															<td>China</td>
-															<td class="text-right">
-																1.100
-															</td>
-															<td class="text-danger">
-																+20%
-															</td>
-														</tr>
-														<tr>
-															<td>
-																<div class="flag">
-																	<img src="${rePath}images/img/flags/br.png" alt="brazil">
-																</div>
-															</td>
-															<td>Brasil</td>
-															<td class="text-right">
-																640
-															</td>
-															<td class="text-danger">
-																+11.63%
-															</td>
-														</tr>
+															
+															<c:choose>
+															<c:when test="${i.exchange_com < 0}">
+																<td class="text-danger" style="color:blue !important;">
+																	${i.exchange_com}%
+																</td>
+															</c:when>
+															
+															<c:when test="${i.exchange_com > 0}">
+																<td class="text-danger" style="color:red !important;">
+																	${i.exchange_com}%
+																</td>
+															</c:when>
+															<c:otherwise>
+																<td class="text-danger" style="color:black !important;">
+																	${i.exchange_com}%
+																</td>	
+															</c:otherwise>
+															</c:choose>
+														</tr>	
+														</c:forEach>
 													</tbody>
 												</table>
 											</div>
