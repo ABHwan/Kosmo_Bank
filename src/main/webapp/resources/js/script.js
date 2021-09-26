@@ -604,3 +604,49 @@ function depositProductInsertCheck() {
 
 
 //-----------------------------------------------------------------
+
+//민재-----------------------------------------------------------------
+//예금
+function depositList() {
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		var select = $("#selectBank").val();
+		
+		$.ajax({
+			url : 'myDepositSubList.do',
+			type : 'POST',
+			data : {"select" : select},
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			
+			success : function(data){
+				$('.selectTable').html(data);
+			}
+		});
+}
+
+//적금
+function savingList() {
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		var select = $("#selectBank").val();
+		
+		$.ajax({
+			url : 'mySavingSubList.do',
+			type : 'POST',
+			data : {"select" : select},
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			
+			success : function(data){
+				$('.selectTable').html(data);
+			}
+		});
+}
+
+
+//-----------------------------------------------------------------

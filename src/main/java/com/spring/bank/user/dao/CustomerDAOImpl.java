@@ -12,6 +12,10 @@ import com.spring.bank.admin.dao.AdminDAO;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.MyDepositVO;
+import com.spring.bank.user.vo.MyIRPVO;
+import com.spring.bank.user.vo.MySavingVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -261,4 +265,59 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		return dao.exchangeVary(country);
 	}		
+	
+	// 회원 이름 불러오기(민재) 
+	@Override
+	public String getName(String id) {
+		
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getName", id);
+	}
+	
+	// 예금리스트 불러오기(민재)
+	@Override
+	public List<MyDepositVO> depositList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.depositList", map);
+	}
+	
+	// 예금서브리스트 불러오기(민재)
+	@Override
+	public List<MyDepositVO> depositSubList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.depositSubList", map);
+	}
+	
+	// 적금리스트 불러오기(민재)
+	@Override
+	public List<MySavingVO> savingList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.savingList", map);
+	}
+	
+	// 적금서브리스트 불러오기(민재)
+	@Override
+	public List<MySavingVO> savingSubList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.savingSubList", map);
+	}
+	
+	// 연금리스트 불러오기(민재)
+	@Override
+	public List<MyIRPVO> irpList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.irpList", map);
+	}
+	
+	// 공지사항 글 개수 구하기(민재)
+	@Override
+	public int getNoticeCnt() {
+		
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeCnt");
+	}
+	
+	// 공지사항 리스트 불러오기(민재)
+	public List<NoticeVO> getNoticeList(Map<String, Integer> map){
+
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getNoticeList", map);
+	}
 }

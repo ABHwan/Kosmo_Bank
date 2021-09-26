@@ -324,4 +324,17 @@ public class AdminController {
 		service.searchCustomerAccountList(req, model);
 		return "manager/customerInfo/customerAccountSearch";
 	}		
+	
+	// 공지사항리스트 - 관리자(민재)
+	@RequestMapping("mngNoticeList.do")
+	public String noticeList(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeList.us]");
+		
+
+		
+		// 이동할 페이지
+		return "customer/notice/noticeList";
+	}
+
 }

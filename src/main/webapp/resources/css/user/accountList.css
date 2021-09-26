@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.select{
+	font-size : 20px;
+	
+	
+}
+
+.btn_image{
+}
+
+#bank_logo{
+	width: 100px;
+	height: 100px;
+}
+
+#subListTable{
+	width:70%;
+	align-content: center;
+	align-items: center;
+}
+
+#subListTable th{
+	background: blue;
+}

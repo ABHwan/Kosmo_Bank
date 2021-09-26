@@ -195,4 +195,74 @@
     	  FROM exchange_rate
     	 WHERE exchange_country=#{exchange_country}
     </select>	
+    
+    <!-- 회원 이름 불러오기(민재) -->
+    <select id="getName" parameterType="String" resultType="String">
+    	SELECT member_name FROM members WHERE member_id=#{id}
+    </select>
+    
+    <!-- 예금 리스트 전체(민재)-->
+    <select id="depositList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MyDepositVO">
+    	SELECT d.deposit_product_name AS "deposit_product_name", a.account_id AS "account_id", a.account_bankCode AS "deposit_product_bankCode", d.deposit_joinDate AS "deposit_joinDate", d.deposit_state AS "deposit_state",
+    		   d.deposit_rate AS "deposit_rate", d.deposit_balance AS "deposit_balance", d.deposit_endDate AS "deposit_endDate"
+    	  FROM deposit d JOIN account a ON d.account_id = a.account_id
+    	  				 JOIN deposit_product p ON d.deposit_product_name = p.deposit_product_name
+    	 WHERE d.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    </select>
+    
+    <!-- 은행별 예금 리스트 (민재)-->
+    <select id="depositSubList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MyDepositVO">
+    	SELECT d.deposit_product_name AS "deposit_product_name", a.account_id AS "account_id", a.account_bankCode AS "deposit_product_bankCode", d.deposit_joinDate AS "deposit_joinDate", d.deposit_state AS "deposit_state",
+    		   d.deposit_rate AS "deposit_rate", d.deposit_balance AS "deposit_balance", d.deposit_endDate AS "deposit_endDate"
+    	  FROM deposit d JOIN account a ON d.account_id = a.account_id
+    	  				 JOIN deposit_product p ON d.deposit_product_name = p.deposit_product_name
+    	 WHERE d.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    	   AND a.account_bankCode = #{account_bankCode}
+    </select>
+    
+    <!-- 적금 리스트 전체(민재)-->
+    <select id="savingList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MySavingVO">
+    	SELECT s.saving_product_name AS "saving_product_name", a.account_id AS "account_id", a.account_bankCode AS "saving_product_bankCode", s.saving_joinDate AS "saving_joinDate", s.saving_state AS "saving_state",
+    		   s.saving_rate AS "saving_rate", s.saving_money AS "saving_money", s.saving_endDate AS "saving_endDate"
+    	  FROM saving s JOIN account a ON s.account_id = a.account_id
+    	  				JOIN saving_product p ON s.saving_product_name = p.saving_product_name
+    	 WHERE s.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    </select>
+    
+    <!-- 은행별 적금 리스트(민재) -->
+    <select id="savingSubList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MySavingVO">
+    	SELECT s.saving_product_name AS "saving_product_name", a.account_id AS "account_id", a.account_bankCode AS "saving_product_bankCode", s.saving_joinDate AS "saving_joinDate", s.saving_state AS "saving_state",
+    		   s.saving_rate AS "saving_rate", s.saving_money AS "saving_money", s.saving_endDate AS "saving_endDate"
+    	  FROM saving s JOIN account a ON s.account_id = a.account_id
+    	  				JOIN saving_product p ON s.saving_product_name = p.saving_product_name
+    	 WHERE s.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    	   AND a.account_bankCode = #{account_bankCode}
+    </select>
+    
+    <!-- 연금 리스트(민재)-->
+    <select id="irpList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MyIRPVO">
+    	SELECT i.irp_product_name AS "irp_product_name", a.account_id AS "account_id", a.account_bankCode AS "irp_product_bankCode", i.irp_joinDate AS "irp_joinDate", i.irp_state AS "irp_state",
+    		   i.irp_rate AS "irp_rate", i.irp_money AS "irp_money", i.irp_endDate AS "irp_endDate"
+    	  FROM IRP i JOIN account a ON i.account_id = a.account_id
+    	  			 JOIN IRP_product p ON i.irp_product_name = p.irp_product_name
+    	 WHERE i.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    </select>
+    
+    <!-- 공지사항 게시글 개수(민재) -->
+    <select id="getNoticeCnt" resultType="Integer">
+    	SELECT COUNT(*) FROM NOTICE
+    </select>
+    
+    <!-- 공지사항 게시글 리스트(민재) -->
+    <select id="getNoticeList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.NoticeVO">
+    	<![CDATA[
+    	SELECT * 
+    	  FROM (SELECT notice_num, notice_writer, notice_subject, notice_password, notice_content, notice_readCnt, notice_date, rowNum rNum
+    	  		  FROM (SELECT * FROM NOTICE
+    	  		 		 ORDER BY notice_num DESC
+    	  		 		)
+    	  		 )
+    	 WHERE rNum >= #{start} AND rNum <= #{end}
+    	]]>
+    </select>
 </mapper>

@@ -28,6 +28,10 @@ import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.MyDepositVO;
+import com.spring.bank.user.vo.MyIRPVO;
+import com.spring.bank.user.vo.MySavingVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -1126,5 +1130,242 @@ public class CustomerServiceImpl implements CustomerService {
 			
 		}
 		model.addAttribute("list", list);
+	}
+	
+	// 예금 리스트(민재)
+	@Override
+	public void myDepositList(HttpServletRequest req, Model model) {
+		System.out.println("[보유상품목록 => 예금화면]");
+		
+		String strId = (String) req.getSession().getAttribute("customerID");
+		// strId = "kim";
+		System.out.println("strId : " + strId);
+		
+		// 회원 이름 가져오기
+		String member_name = dao.getName(strId);
+		System.out.println("member_name : " + member_name);
+		
+		req.setAttribute("member_name", member_name);
+		req.setAttribute("boardName", "예금");
+	} 
+
+	// 예금서브 리스트(민재)
+	@Override
+	public void myDepositSubList(HttpServletRequest req, Model model) {
+		System.out.println("[보유상품목록 => 예금서브리스트]");
+		
+		String strId = (String) req.getSession().getAttribute("customerID");
+		// strId = "kim";
+		System.out.println("strId : " + strId);
+		
+		int selectValue = Integer.parseInt(req.getParameter("select"));
+		System.out.println("selectValue : " + selectValue);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("member_id", strId);
+		map.put("account_type", 0);
+		
+		List<MyDepositVO> list;
+		// 리스트 가져오기
+		if(selectValue == 0) {
+			list = dao.depositList(map);
+		} else {
+			map.put("account_bankCode", selectValue);
+			list = dao.depositSubList(map);
+		}
+		
+		int cnt = list.size();
+		System.out.println("cnt : " + cnt);
+		System.out.println("list : " + list);
+		System.out.println("서브리스트");
+		req.setAttribute("boardName", "예금");
+		req.setAttribute("list", list);
+		req.setAttribute("cnt", cnt);
+	}
+	
+	// 적금 리스트(민재)
+	@Override
+	public void mySavingList(HttpServletRequest req, Model model) {
+		System.out.println("[보유상품목록 => 적금화면]");
+		
+		String strId = (String) req.getSession().getAttribute("customerID");
+		// strId = "kim";
+		System.out.println("strId : " + strId);
+		
+		// 회원 이름 가져오기
+		String member_name = dao.getName(strId);
+		System.out.println("member_name : " + member_name);
+		
+		req.setAttribute("member_name", member_name);
+		req.setAttribute("boardName", "적금");
+	} 
+
+	// 적금서브 리스트(민재)
+	@Override
+	public void mySavingSubList(HttpServletRequest req, Model model) {
+		System.out.println("[보유상품목록 => 적금서브리스트]");
+		
+		String strId = (String) req.getSession().getAttribute("customerID");
+		// strId = "kim";
+		System.out.println("strId : " + strId);
+		
+		int selectValue = Integer.parseInt(req.getParameter("select"));
+		System.out.println("selectValue : " + selectValue);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("member_id", strId);
+		map.put("account_type", 1);
+		
+		List<MySavingVO> list;
+		// 리스트 가져오기
+		if(selectValue == 0) {
+			list = dao.savingList(map);
+		} else {
+			map.put("account_bankCode", selectValue);
+			list = dao.savingSubList(map);
+		}
+		
+		int cnt = list.size();
+		System.out.println("cnt : " + cnt);
+		System.out.println("list : " + list);
+		System.out.println("서브리스트");
+		req.setAttribute("boardName", "적금");
+		req.setAttribute("list", list);
+		req.setAttribute("cnt", cnt);
+	}
+	
+	// 연금 리스트(민재)
+	@Override
+	public void myIrpList(HttpServletRequest req, Model model) {
+		System.out.println("[보유상품목록 => 연금화면]");
+		
+		String strId = (String) req.getSession().getAttribute("customerID");
+		// strId = "kim";
+		System.out.println("strId : " + strId);
+		
+		// 회원 이름 가져오기
+		String member_name = dao.getName(strId);
+		System.out.println("member_name : " + member_name);
+		
+		req.setAttribute("member_name", member_name);
+		req.setAttribute("boardName", "연금");
+		
+		List<MyIRPVO> list = null;
+		// 리스트 가져오기
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("member_id", strId);
+		map.put("account_type", 3);
+		
+		list = dao.irpList(map);
+		
+		int cnt = list.size();
+		System.out.println("cnt : " + cnt);
+		System.out.println("list : " + list);
+		System.out.println("서브리스트");
+		req.setAttribute("boardName", "연금");
+		req.setAttribute("list", list);
+		req.setAttribute("cnt", cnt);
+	} 
+	
+	// 공지사항리스트(민재)
+	@Override
+	public void noticeList(HttpServletRequest req, Model model) {
+		System.out.println("[고객센터목록 => 공지사항리스트]");
+		
+		// 3단계. 화면으로부터 입력받은 값을 받아온다.
+		// 페이징
+		int pageSize = 10;	// 한 페이지당 출력할 글 갯수
+		int pageBlock = 5;	// 한 블럭당 페이지 갯수
+		
+		int cnt = 0;			// 글 갯수
+		int start = 0;			// 현재 페이지 시작 글번호
+		int end = 0;			// 현재 페이지 마지막 글번호
+		int number = 0;			// 출력용 글번호
+		String pageNum = "";	// 페이지 번호
+		int currentPage = 0;	// 현재 페이지
+		
+		int pageCount = 0;		// 페이지 갯수
+		int startPage = 0;		// 시작 페이지
+		int endPage = 0;		// 마지막 페이지
+		
+		// 4단계. 다형성 적용, 싱글톤 방식으로 dao 객체 생성
+		
+		// 5-1단계. 게시글 갯수 조회
+		cnt = dao.getNoticeCnt();
+	    System.out.println("cnt ==> " + cnt);
+		
+		pageNum = req.getParameter("pageNum");
+		
+		
+		if(pageNum == null) {
+			pageNum = "1";	// 첫 페이지를 1페이지로 지정
+		}
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 // 6페이지 = (30건 / 한 페이지당 5건 ) + (나머지 : 0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지갯수 + 나머지 있으면 1페이지
+		
+		// 현재페이지 시작 글번호(페이지별)
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1 - 1) * 5 + 1
+		start = (currentPage - 1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별)
+		// end = start +  pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start +  pageSize - 1;
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5;
+		// number = cnt - (currentPage - 1) * pageSize;  
+		number = cnt - (currentPage - 1) * pageSize;
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		System.out.println("starPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1;
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("================================");
+		
+		List<NoticeVO> list = null;
+		
+		if(cnt>0) {
+			// 5-2단계. 게시글 목록 조회
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("start", start);
+			map.put("end", end);
+			list = dao.getNoticeList(map);
+			System.out.println("list : " + list);
+		}
+				
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		req.setAttribute("list", list);			// 게시글목록
+		req.setAttribute("cnt", cnt);			// 글갯수
+		req.setAttribute("pageNum", pageNum);	// 페이지번호
+		req.setAttribute("number", number);		// 출력용 글번호
+		
+		if(cnt>0) {
+			req.setAttribute("startPage", startPage);   	// 시작페이지
+			req.setAttribute("endPage", endPage);      		// 마지막페이지
+			req.setAttribute("pageBlock", pageBlock);   	// 한 블럭당 페이지 갯수
+			req.setAttribute("pageCount", pageCount);   	// 페이지 갯수
+			req.setAttribute("currentPage", currentPage);   // 현재 페이지
+		}
 	}
 }
