@@ -320,4 +320,18 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getNoticeList", map);
 	}
+	
+	// 공지사항 조회수 증가(민재)
+	public int addNoticeReadCnt(int notice_num) {
+		
+		return sqlSession.update("com.spring.bank.user.dao.CustomerDAO.addNoticeReadCnt", notice_num);
+		
+	}
+	
+	// 공지사항 상세페이지(민재)
+	public NoticeVO getNoticeDetail(int notice_num) {
+		
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeDetail", notice_num);
+		
+	}
 }

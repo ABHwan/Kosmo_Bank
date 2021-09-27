@@ -1368,4 +1368,27 @@ public class CustomerServiceImpl implements CustomerService {
 			req.setAttribute("currentPage", currentPage);   // 현재 페이지
 		}
 	}
+	
+	// 공지사항 상세페이지(민재)
+	@Override
+	public void noticeDetailAction(HttpServletRequest req, Model model) {
+		System.out.println("[고객센터목록 => 공지사항상세페이지]");
+		
+		// 화면으로부터 값 받아오기(get방식)
+		int notice_num = Integer.parseInt(req.getParameter("notice_num"));
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		int number = Integer.parseInt(req.getParameter("number"));
+
+		// 조회수증가(관리자 조회수파악용) => 관리자는 타면 안된다.
+		dao.addNoticeReadCnt(notice_num);
+		
+		// 게시글 상세조회
+		NoticeVO vo = dao.getNoticeDetail(notice_num);
+		
+		// jsp로 전송
+		req.setAttribute("vo", vo);
+		req.setAttribute("pageNum", pageNum);
+		req.setAttribute("number", number);
+	}
+	
 }

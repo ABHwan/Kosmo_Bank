@@ -582,6 +582,18 @@ public class CustomerController {
 		// 이동할 페이지
 		return "customer/notice/noticeList";
 	}
+	
+	// 공지사항상세페이지(민재)
+	@RequestMapping("noticeDetail.do")
+	public String noticeDetail(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /noticeList.us]");
+		
+		service.noticeDetailAction(req, model);
+		
+		// 이동할 페이지
+		return "customer/notice/noticeDetail";
+	}
 
 
 }

@@ -129,4 +129,10 @@ public interface CustomerDAO {
 	
 	// 공지사항 리스트 불러오기(민재)
 	public List<NoticeVO> getNoticeList(Map<String, Integer> map);
+	
+	// 공지사항 조회수 증가(민재)
+	public int addNoticeReadCnt(int notice_num);
+	
+	// 공지사항 상세 페이지(민재)
+	public NoticeVO getNoticeDetail(int notice_num);
 }

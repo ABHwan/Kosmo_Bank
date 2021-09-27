@@ -63,9 +63,7 @@
 											</a>
 										</td>
 										<td> ${vo.notice_writer} </td>
-										<td> 
-											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-										</td>
+										<td> ${vo.notice_date} </td>
 										<td> ${vo.notice_readCnt} </td>
 									</tr>
 								</c:forEach> 
@@ -105,9 +103,7 @@
 												${vo.notice_subject}
 											</a>
 										</td>
-										<td> 
-											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-										</td>
+										<td> ${vo.notice_date} </td>
 									</tr>
 								</c:forEach>
 							</c:if>

@@ -97,4 +97,8 @@ public interface CustomerService {
 	
 	// 공지사항리스트(민재)
 	public void noticeList(HttpServletRequest req, Model model);
+	
+	// 공지사항상세페이지(민재)
+	public void noticeDetailAction(HttpServletRequest req, Model model);
+	
 }
