@@ -51,17 +51,11 @@
 									<div class="card-title">${dto.deposit_product_name}</div>
 								</div>
 								<div class="card-body">
-<<<<<<< HEAD
+								 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 									 <form action="depositProductJoin" name="depositProductForm">
-								         <input type="hidden" name="pageNum" value="${pageNum}">
-								         <input type="hidden" name="number" value="${number}">
-										 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-=======
-									 <form action="depositProductAction" name="depositProductForm">
 									 	<sec:csrfInput/>
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
->>>>>>> master
 						        <table class="admin__table">
 						          <tr>
 						            <th class="table__head">상품명</th>
@@ -155,6 +149,8 @@
 										</td>
 										<td>						      		
 						      		</tr>
+						      		
+						      		
 						        </table>
 						        <div align ="right">
 						          	<input type="submit" class="btn btn-primary btn-border" value="예금상품 신청하기">

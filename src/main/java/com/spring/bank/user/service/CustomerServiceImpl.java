@@ -26,11 +26,8 @@ import org.springframework.ui.Model;
 import com.spring.bank.customer.encrypt.UserAuthenticationService;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
-<<<<<<< HEAD
 import com.spring.bank.user.vo.DepositVO;
-=======
 import com.spring.bank.user.vo.CrawlerVO;
->>>>>>> master
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -839,11 +836,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 		if (cnt > 0) {
 			// 5-2단계. 게시글 목록 조회
-<<<<<<< HEAD
-			Map<String, Object> map = new HashMap<>();
-=======
-			Map<String, Integer> map = new HashMap<String, Integer>();
->>>>>>> master
+
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("start", start);
 			map.put("end", end);
 			dtos = dao.getDepositList(map);
@@ -988,7 +982,6 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("number", number);
 	}
 	
-<<<<<<< HEAD
 	//예금 신청 상세 화면 
 	@Override
 	public void setDepositProductJoin(HttpServletRequest req, Model model) {
@@ -1103,6 +1096,8 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		//Account 테이블에 insert 해줘야 함 
 	     Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("account_id", account_id);
+	    
 	    // map.put("", value);
 	    int insertCnt = dao.insertAccount(map);
 		int selectCnt = dao.insertDeposit(vo);
@@ -1113,16 +1108,6 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 
-=======
-	//예금 신청 
-	@Override
-	public void insertDeposit(HttpServletRequest req, Model model) {
-		String deposit_product_name = req.getParameter("deposit_product_name");
-		
-		//작은바구니 생성
-		DepositProductVO vo = new DepositProductVO();
-		
-	}
 	
 	// 환율 데이터 입력 후 출력(지호)
 	@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
@@ -1261,5 +1246,4 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		model.addAttribute("list", list);
 	}
->>>>>>> master
 }

@@ -9,11 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
-<<<<<<< HEAD
 import com.spring.bank.user.vo.DepositVO;
-=======
 import com.spring.bank.user.vo.CrawlerVO;
->>>>>>> master
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -222,7 +219,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public DepositProductVO getDepositDetail(String deposit_product_name) {
 		DepositProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getDepositDetail",deposit_product_name);
 		System.out.println("상세보기 : "+vo.getDeposit_product_name());
-<<<<<<< HEAD
+
 		return vo;
 	}
 	
@@ -253,11 +250,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		int deleteCnt=0;
 		
 		return deleteCnt;
-	}
-
-	
-=======
-		return vo;
 	}
 
 	// 환율 저장 후 출력
@@ -299,5 +291,4 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		return dao.exchangeVary(country);
 	}		
->>>>>>> master
 }

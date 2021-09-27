@@ -358,33 +358,15 @@ public class CustomerController {
 		return "customer/depositProduct/depositDetail";
 	}
 	
-<<<<<<< HEAD
 	//예금 상품 신청 상세 화면 (지현)
 	@RequestMapping("depositProductJoin")
-=======
-	//예금 상품 신청(지현)
-	@RequestMapping("depositProductAction")
->>>>>>> master
 	public String depositProductInsert(HttpServletRequest req, Model model) {
 		logger.info("url => depositProductJoin");
 		
-<<<<<<< HEAD
 		//INSERT
 		service.insertDeposit(req, model);
 		
 		return "customer/depositProduct/depositProductJoin";
-	}
-	
-	//예금 상품 신청 처리(지현)
-	public String depositProductAction(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductAction");
-		
-		
-=======
-		service.insertDeposit(req, model);
-		
->>>>>>> master
-		return "customer/depositProduct/depositProductAction";
 	}
 	
 	//qna 게시판(지현)

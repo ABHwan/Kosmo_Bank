@@ -170,7 +170,6 @@
 		WHERE deposit_product_name=#{deposit_product_name} 	
 	</select>
 	
-<<<<<<< HEAD
 	<!-- 예금 신청 처리 -->
 	<insert id="insertDeposit" parameterType="com.spring.bank.user.vo.DepositVO" >
 		INSERT INTO deposit(deposit_id, deposit_product_name, account_id,deposit_joinDate, deposit_rate, deposit_type, deposit_balance, deposit_endDate)
@@ -185,7 +184,6 @@
 	</select>
 	
 	
-=======
 	<!-- 환율 저장 후 출력(지호) -->
     <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">
     	INSERT INTO exchange_rate(exchange_country, exchange_rate)
@@ -211,5 +209,4 @@
     	  FROM exchange_rate
     	 WHERE exchange_country=#{exchange_country}
     </select>	
->>>>>>> master
 </mapper>
