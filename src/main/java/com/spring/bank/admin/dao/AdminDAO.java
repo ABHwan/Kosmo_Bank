@@ -7,6 +7,8 @@ import java.util.Map;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -83,5 +85,43 @@ public interface AdminDAO {
 	public int getSerachCustomerAccountCnt(String search);
 	
 	// 관리자 페이지 회원계좌 검색결과목록
-	public ArrayList<CustomerAccountVO> getSearchCustomerAccountList(Map<String, Object> map); 
+	public ArrayList<CustomerAccountVO> getSearchCustomerAccountList(Map<String, Object> map);
+
+	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
+
+	public int getLoanCancelCnt();
+
+	public ArrayList<LoanVO> searchLoanList(Map<String, Object> map);
+
+	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);
+
+	public int getSearchLoanCnt(String keyword);
+
+	public int getSearchLoanRequestCnt(String keyword);
+
+	public int loanRequestAction(Map<String, Object> map);
+
+	public int getLoanRequestCnt();
+
+	public int getLoanCnt();
+
+	public int getSearchLoanProductCnt(String keyword);
+
+	public ArrayList<LoanVO> getLoanRequestList(Map<String, Object> map);
+
+	public ArrayList<LoanVO> getLoanList(Map<String, Object> map);
+
+	public LoanProductVO getLoanProductInfo(String loan_product_name);
+
+	public int loanProductDelete(String loan_product_name);
+
+	public int loanProductUpdate(LoanProductVO l);
+
+	public int loanProductInsert(LoanProductVO l);
+
+	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
+
+	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
+
+	public int getLoanProductCnt(); 
 }

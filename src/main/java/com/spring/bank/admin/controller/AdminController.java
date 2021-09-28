@@ -324,4 +324,96 @@ public class AdminController {
 		service.searchCustomerAccountList(req, model);
 		return "manager/customerInfo/customerAccountSearch";
 	}		
+	
+	//!지은!
+	@RequestMapping("loanProductList.do")
+	public String loanProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductList]");
+		service.loanProductList(req, model);
+		return "manager/loan/loanProductList";
+	}
+
+	@RequestMapping("searchLoanProductList.do")
+	public String searchLoanProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /searchLoanProductList]");
+		service.searchLoanProductList(req, model);
+		return "manager/loan/searchLoanProductList";
+	}
+
+	@RequestMapping("loanProductInsert.do")
+	public String loanProductInsert(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductInsert]");
+		return "manager/loan/loanProductInsert";
+	}
+	
+	@RequestMapping("loanProductInsertAction.do")
+	public String loanProductInsertAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductInsertAction]");
+		service.loanProductInsertAction(req, model);
+		return "manager/loan/loanProductInsertAction";
+	}
+
+	@RequestMapping("loanProductUpdate.do")
+	public String loanProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductUpdate]");
+		service.loanProductUpdate(req, model);
+		return "manager/loan/loanProductUpdate";
+	}
+	
+	@RequestMapping("loanProductUpdateAction.do")
+	public String loanProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductUpdateAction]");
+		service.loanProductUpdateAction(req, model);
+		return "manager/loan/loanProductUpdateAction";
+	}
+	
+	@RequestMapping("loanProductDelete.do")
+	public String loanProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductDelete]");
+		service.loanProductDelete(req, model);
+		return "manager/loan/loanProductDeleteAction";
+	}
+	
+	@RequestMapping("loanRequestList.do")
+	public String loanRequestList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanRequestList(req, model);
+		return "manager/loan/loanRequestList";
+	}
+
+	@RequestMapping("loanRequestAction.do")
+	public String loanRequestAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanRequestAction(req, model);
+		return "manager/loan/loanRequestAction";
+	}
+	
+	@RequestMapping("loanList.do")
+	public String loanList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanList(req, model);
+		return "manager/loan/loanList";
+	}
+	
+	@RequestMapping("loanCancelList.do")
+	public String loanCancelList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanCancelList]");
+		service.loanCancelList(req, model);
+		return "manager/loan/loanCancelList";
+	}
+	
+	@RequestMapping("searchLoanRequestList.do")
+	public String searchLoanRequestAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /searchLoanRequestList]");
+		service.searchLoanRequestList(req, model);
+		return "manager/loan/searchLoanRequestList";
+	}
+	
+	@RequestMapping("searchLoanList.do")
+	public String searchLoanList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.searchLoanList(req, model);
+		return "manager/loan/loanList";
+	}
+	//!지은!
 }

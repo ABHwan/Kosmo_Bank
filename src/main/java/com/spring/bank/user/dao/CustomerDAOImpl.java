@@ -12,6 +12,8 @@ import com.spring.bank.admin.dao.AdminDAO;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.LoanHistoryVO;
+import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -261,4 +263,82 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		return dao.exchangeVary(country);
 	}		
+	
+	//지은~!~!@@@@!
+	// 대출 가입 상품
+	@Override
+	public ArrayList<LoanProductVO> loanList() {
+		System.out.println("[DAO => loanList()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.loanList();
+	}
+
+	public int getLoanCancelCnt(String member_id) {
+		System.out.println("[DAO => getLoanCancelCnt()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanCancelCnt(member_id);
+	}
+
+	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map) {
+		System.out.println("[DAO => getLoanCancelList()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanCancelList(map);
+	}
+
+	public int getLoanCnt(String member_id) {
+		System.out.println("[DAO => getLoanCnt()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanCnt(member_id);
+	}
+
+	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map) {
+		System.out.println("[DAO => getLoanList()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanList(map);
+	}
+	
+	// 대출 상품 개수
+	public int getLoanProductCnt() {
+		System.out.println("[UserDAO => getLoanProductCnt()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanProductCnt();	
+	}
+
+	// 대출 상품 목록
+	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map) {
+		System.out.println("[UserDAO => getLoanProductList()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanProductList(map);	
+	}
+
+	public int getSearchLoanProductCnt(String keyword) {
+		System.out.println("[UserDAO => getSearchLoanProductCnt()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getSearchLoanProductCnt(keyword);	
+	}
+
+	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map) { // parameter : keyword, start, end
+		System.out.println("[UserDAO => searchLoanProductList()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.searchLoanProductList(map);	
+	}
+
+	public LoanProductVO getLoanProductInfo(String loan_product_name) {
+		System.out.println("[UserDAO => getLoanProductInfo()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanProductInfo(loan_product_name);	
+	}
+
+	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map) {
+		System.out.println("[UserDAO => getLoanHistoryList()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanHistoryList(map);	
+	}
+
+	public int getLoanHistoryCnt(String member_id) {
+		System.out.println("[UserDAO => getLoanHistoryCnt()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanHistoryCnt(member_id);	
+	}
+	//지은!!!!!!!!1
 }
