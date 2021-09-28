@@ -1,16 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/include/setting.jsp" %>
-<%@ include file="/WEB-INF/views/include/bootstrap.jsp" %>
+	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/include/setting.jsp"%>
+<%@ include file="/WEB-INF/views/include/bootstrap.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예금 상품 목록 조회 - 고객</title>
+<title>연금 상품 목록 - 고객</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
+<script type="text/javascript">
+	$(function() {
+		$("#all_check").change(function() {
+			var is_check = $("#all_check").is(":checked");
+			$(".user_check").prop("checked", is_check);
 
+		});
+	});
 
+	function fn_process(val) {
+		var form = document.depositProductForm
+		if (val == '1') {
+			// 회원정보수정시
+			form.action = "";
+			form.submit();
+		} else {
+			form.action = "depositProductDelete";
+			form.submit();
+		}
+	}
+</script>
+
+<script>
+	var msg = "<%=request.getAttribute("msg") %>";
+	if(msg != 'null'){
+		 alert(msg);
+	}
+</script>
 </head>
 <body>
 <!-- 메인 콘텐츠 -->

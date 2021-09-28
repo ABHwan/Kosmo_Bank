@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.DepositVO;
+import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
@@ -222,7 +223,22 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 		return vo;
 	}
+	 
+	//멤버의 unique_key가져오기 
+	@Override
+	public String getUniqueKey(String id) {
+		String unique_key = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getUniqueKey", id);
+		
+		return unique_key;
+	}
 	
+	//예금 신청 시 계좌 개설 
+	@Override
+	public int insertAccount(AccountVO vo) {
+		int insertCnt = sqlSession.insert("com.spring.bank.user.dao.CustomerDAO.insertAccount", vo);
+		return insertCnt;
+	}
+		
 	//예금 신청 처리 insert
 	@Override
 	public int insertDeposit(DepositVO vo) {
@@ -231,27 +247,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return insertCnt;
 	}
 	
-	//예금 신청 시 계좌 개설 
-	@Override
-	public int insertAccount(Map<String, Object> map) {
-		int insertCnt = sqlSession.insert("com.spring.bank.user.dao.CustomerDAO.insertAccount", map);
-		return 0;
-	}
-	
-	//예금 신청 - 상세 보기 
-	@Override
-	public DepositVO setDeposit(String deposit_product_name) {
-		DepositVO  vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.setDeposit", deposit_product_name);
-		return vo;
-	}
-	
-	//예금 신청 취소 
-	public int deleteDeposit(String account_id) {
-		int deleteCnt=0;
-		
-		return deleteCnt;
-	}
-
 	// 환율 저장 후 출력
 	@Override
 	public int exchangeIn(CrawlerVO vo) {

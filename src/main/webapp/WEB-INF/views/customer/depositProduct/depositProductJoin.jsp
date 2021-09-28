@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/setting.jsp" %>
 <%@ include file="/WEB-INF/views/include/bootstrap.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,7 @@
 							<div>
 								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
 								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br/>
 									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
 							</div>
 						</div>
@@ -34,7 +35,7 @@
 			
 				<section id="main">
 			      <div class="main__container">
-					<h2 class="title">예금 신청 상세 </h2>
+					<h2 class="title">예금 가입 정보 입력 </h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
@@ -42,32 +43,36 @@
 									<div class="card-title">${dto.deposit_product_name}</div>
 								</div>
 								<div class="card-body">
-									 <form action="depositProductAction" name="depositProductForm">
+									 <form action="depositProductAction" method="post" name="depositProductForm" onsubmit="return joinInCheck()">
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
+								         <input type="hidden" name ="unique_key" value="${unique_key}">
+								          <input type="hidden" name="customerID" value="${sessionScope.customerID}">
 										 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-						        <table class="admin__table">
+						        <table class="table table-striped mt-3">
 						          <tr>
-						          	<th class="table__head">신청자</th>
+						          	<th scope="col">신청자</th>
 						          	<td>${sessionScope.customerID}</td>
 						          </tr>
 						        
 						          <tr>
-						            <th class="table__head">상품명</th>
+						            <th scope="col">상품명</th>
 						             <td>${dto.deposit_product_name} 
 						             <input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}">
 						             </td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">상품 설명</th>
-						            <td>${dto.deposit_product_explanation}</td>
+						            <th scope="col">상품 요약</th>
+						            <td>${dto.deposit_product_summary}</td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">금리</th>
-						              <td>${dto.deposit_product_interRate}%</td>
+						            <th scope="col">금리</th>
+						              <td>${dto.deposit_product_interRate}%
+						               <input type="hidden" name="deposit_product_interRate" class="user_check" value="${dto.deposit_product_interRate}">
+						              </td>
 						          </tr>
 						          <tr>
-						          	 <th class="table__head">종류</th>
+						          	 <th scope="col">종류</th>
 						          	 <td>
 						          	 <c:if test="${dto.deposit_product_type==1}">
 								           	복리
@@ -76,61 +81,70 @@
 								           <c:if test="${dto.deposit_product_type!=1}">
 								           	단리
 								           </c:if>
+								           <input type="hidden" value="${dto.deposit_product_type}" name ="deposit_product_type">
 						          	 </td>
 						           </tr>
 						           <tr>
-							           <th class="table__head">최소기간</th>
-							           <td>${dto.deposit_product_minDate}개월</td>
+							           <th scope="col">기간 설정 </th>
+							           <td>
+											<input type="date" id="currentMonth" name="deposit_endDate">
+						           		<script>
+						           			document.getElementById('currentMonth').value= new Date().toISOString().substring(0,10);
+						           		</script>				
+							           </td>
 						           </tr>
 						           
 						           <tr>
-						           		<th class="table__head">최대기간</th>
-						           		<td>${dto.deposit_product_maxDate}개월</td>
-						           </tr>
-						           
-						           <tr>
-						           		<th class="table__head">최소금액</th>
-						           		<td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원</td>
+						           		<th scope="col">한도       <small>*100만원 단위</small>
+						           		 </th>
+						           		<td>
+						           		<input type="number" name="account_limit" id="account_balance" step="100" min="100">만원</td>
+						           		<!-- deposit_balance -->
 						           </tr>
 						      		
 						      		<tr>
-						      			<th class="table__head">은행코드</th>
+						      			<th scope="col">은행코드</th>
 						      			<td>
 							           		<c:choose>
-							           			<c:when test="${dto.account_bankCode==0}">
+							           			<c:when test="${dto.deposit_product_bankCode==0}">
 							           				미기재
 							           			</c:when>
-							           			<c:when test="${dto.account_bankCode==1}">
+							           			<c:when test="${dto.deposit_product_bankCode==1}">
 							           				신한은행
 							           			</c:when>
-							           			<c:when test="${dto.account_bankCode==2}">
+							           			<c:when test="${dto.deposit_product_bankCode==2}">
 							           				국민은행
 							           			</c:when>
-							           			<c:when test="${dto.account_bankCode==3}">
+							           			<c:when test="${dto.deposit_product_bankCode==3}">
 							           				우리은행
 							           			</c:when>
-							           			<c:when test="${dto.account_bankCode==4}">
+							           			<c:when test="${dto.deposit_product_bankCode==4}">
 							           				기업은행
 							           			</c:when>
-							           			<c:when test="${dto.account_bankCode==5}">
+							           			<c:when test="${dto.deposit_product_bankCode==5}">
 							           				하나은행
 							           			</c:when>
 							           		</c:choose>
+							           		<input type="hidden" value="${dto.deposit_product_bankCode}" name ="account_bankCode">
 							           </td>
 						      		</tr>
 						      		<tr>
-						      			<th class="table__head">계좌번호 확인</th>
-						      			<td>${dto.account_id}</td>
+						      			<th scope="col">계좌번호 확인</th>
+						      			<td>${account_id}
+						      				<input type="hidden" value="${account_id}" name ="account_id">
+						      			</td>
 						      		</tr>
 						      		
 						      		<tr>
-						      			 <th class="table__head">등록일</th>
-						      			 <td>${dto.deposit_product_date}</td>
+						      			<th scope="col">계좌 비밀번호    <small>*4자리 숫자로 입력</small></th>
+						      			<td>
+						      				<input type="password" name ="account_password" placeholder="비밀번호를 입력하세요">
+						      			</td>
 						      		</tr>
 						      		
 						        </table>
 						        <div align ="right">
-						          	<input type="submit" class="btn btn-primary btn-border" value="승인 요청 " >
+						          	<input type="submit" class="btn btn-primary btn-border" value="가입 ">
 						        </div>
 						        
 			        </form>
@@ -142,7 +156,9 @@
 				</section>
 			</div>
 		</div>
-
+	<script src="${rePath}js/deposit.js"></script>
+	
+	
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>
 	<script src="${rePath}js/core/bootstrap.min.js"></script>

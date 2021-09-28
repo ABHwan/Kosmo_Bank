@@ -43,7 +43,7 @@
 			
 				<section id="main">
 			      <div class="main__container">
-					<h2 class="title">예금상품 상세</h2>
+					<h2 class="title">예금 상품 가입하기 </h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
@@ -52,10 +52,12 @@
 								</div>
 								<div class="card-body">
 								 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-									 <form action="depositProductJoin" name="depositProductForm">
+									 <form action="depositProductJoin" method="post" name="depositProductForm">
 									 	<sec:csrfInput/>
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
+								         <input type="hidden" name="customerID" value="${sessionScope.customerID}">
+								         <input type="hidden" name="deposit_product_summary" value="${dto.deposit_product_summary}">
 						        <table class="admin__table">
 						          <tr>
 						            <th class="table__head">상품명</th>
@@ -70,7 +72,7 @@
 						          <tr>
 						            <th class="table__head">금리</th>
 						              <td>${dto.deposit_product_interRate}%
-						              <input type="hidden" value ="${dto.deposit_product_interRate}" name ="deposit_rate">
+						              <input type="hidden" value ="${dto.deposit_product_interRate}" name ="deposit_product_interRate">
 						              	</td>
 						          </tr>
 						          <tr>
@@ -83,7 +85,7 @@
 								           <c:if test="${dto.deposit_product_type!=1}">
 								           	단리
 								           </c:if>
-								           <input type="hidden" value="${dto.deposit_product_type }" name="deposit_type">
+								           <input type="hidden" value="${dto.deposit_product_type }" name="deposit_product_type">
 						          	 </td>
 						           </tr>
 						           <tr>
@@ -98,7 +100,10 @@
 						           
 						           <tr>
 						           		<th class="table__head">최소금액</th>
-						           		<td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원</td>
+						           		<td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원
+						           		 <input type="hidden" value="${dto.deposit_product_minPrice }" name="deposit_product_minPrice">
+						           		</td>
+						           		
 						           </tr>
 						      		
 						      		<tr>
@@ -127,7 +132,7 @@
 							           				코스모 뱅크  
 							           			</c:when>
 							           		</c:choose>
-							           		<input type="hidden" value="${dto.deposit_product_bankCode}" name ="account_bankCode">
+							           		<input type="hidden" value="${dto.deposit_product_bankCode}" name ="deposit_product_bankCode">
 							           </td>
 						      		</tr>
 						      		
@@ -138,24 +143,11 @@
 						      			 	</td>
 						      		</tr>
 						      		
-						      		<tr>
-						      			<th class="table__head">예치금</th>
-						      			<td><input type="text" name ="deposit_balance"></td>
-						      		</tr>
-						      		
-						      		<tr>
-										<th class="table__head">만기일</th>
-										<td><input type="date" name ="deposit_endDate" value="sysdate" min="sysdate" max="sysdate">		<!-- 기간 설정 하기  -->
-										</td>
-										<td>						      		
-						      		</tr>
-						      		
-						      		
 						        </table>
 						        <div align ="right">
-						          	<input type="submit" class="btn btn-primary btn-border" value="예금상품 신청하기">
+						          	<input type="submit" class="btn btn-primary btn-border" value="예금상품 신청하러 가기 ">
+						          	<input type="button" class="btn btn-primary btn-border" onclick="window.history.back()" value="돌아가기">
 						        </div>
-						        
 			        </form>
 								</div>
 							</div>

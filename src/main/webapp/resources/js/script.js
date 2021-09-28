@@ -10,10 +10,13 @@ var passwordError = "입력하신 비밀번호가 일치하지 않습니다. \n�
 var sessionError = "로그아웃 되었습니다. \n확인 후 다시 시도하세요!!";
 
 
+
 function errorAlert(errorMsg) {
 	alert(errorMsg);
 	window.history.back(); // 이전 페이지로 이동
 }
+
+
 
 //-- 회원가입 페이지
 function signIncheck() {

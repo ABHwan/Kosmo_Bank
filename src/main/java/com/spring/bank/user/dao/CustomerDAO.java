@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -90,18 +91,18 @@ public interface CustomerDAO {
 	
 	//예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
-	
-	//예금 신청 처리 insert
+
+	/*
+	 * //예금 신청 - 상세 보기 public DepositVO setDeposit(String deposit_product_name);
+	 */
+	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
 	
-	//예금 신청 - 상세 보기 
-	public DepositVO setDeposit(String deposit_product_name);
+	//멤버의 unique_key가져오기 
+	public String getUniqueKey(String id);
 	
 	//예금 신청 시 계좌 생성
-	public int insertAccount(Map<String, Object> map);
-	
-	//예금 신청 취소 
-	public int deleteDeposit(String account_id);
+	public int insertAccount(AccountVO vo);
 	
 	// 환율 저장 후 출력
 	public int exchangeIn(CrawlerVO vo);

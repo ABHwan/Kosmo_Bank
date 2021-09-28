@@ -16,6 +16,7 @@ public class AccountVO {
 	private Date account_sleepDate;
 	private Date account_newDate;
 	private int account_bankCode;
+	private String unique_key;
 
 	public String getAccount_id() {
 		return account_id;
@@ -112,5 +113,15 @@ public class AccountVO {
 	public void setAccount_bankCode(int account_bankCode) {
 		this.account_bankCode = account_bankCode;
 	}
+
+	public String getUnique_key() {
+		return unique_key;
+	}
+
+	public void setUnique_key(String unique_key) {
+		this.unique_key = unique_key;
+	}
+	
+	
 
 }
