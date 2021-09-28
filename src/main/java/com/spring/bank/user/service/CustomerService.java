@@ -74,9 +74,24 @@ public interface CustomerService {
 	//예금 신청 
 	public void insertDeposit(HttpServletRequest req, Model model);
 	
+	// 적금 상품 조회
+	public void savingList(HttpServletRequest req, Model model);
+	
+	// 적금 상품 검색 
+	public void savingProductSearch(HttpServletRequest req, Model model);
+	
+	// 적금 상품 상세보기 
+	public void savingDetail(HttpServletRequest req, Model model);
+	
+	// 적금 신청 
+	public void savingProductAction(HttpServletRequest req, Model model);
+	
 	// 환율 데이터 입력 후 출력
-	public void exchanges(HttpServletRequest req, Model model);
+	public void exchanges(Model model);
 	
 	// 환율 목록 출력
-	public void exchangeList(HttpServletRequest req, Model model);	
+	public void exchangeList(HttpServletRequest req, Model model);
+	
+	// db json 넣기
+	//public void test(HttpServletRequest req, Model model);
 }

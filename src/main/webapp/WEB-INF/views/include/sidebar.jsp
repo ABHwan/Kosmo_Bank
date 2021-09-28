@@ -135,7 +135,7 @@
 							<div class="collapse" id="forms">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="savingList">
 											<span class="sub-item">적금</span>
 										</a>
 									</li>

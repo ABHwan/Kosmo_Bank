@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spring.bank.user.service.CustomerServiceImpl;
 
 @Controller
+
 @RequestMapping("customer")
 public class CustomerController {
 
@@ -43,9 +44,9 @@ public class CustomerController {
 	@RequestMapping("index.do")
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
-		service.exchanges(req, model);
+		//service.test(req, model);
 		return "index";
-	}
+	}  
 	
 	// 회원가입 페이지
 	@RequestMapping("register.do")
@@ -358,6 +359,44 @@ public class CustomerController {
 		
 		return "customer/depositProduct/depositProductAction";
 	}
+	
+	//적금 상품 조회(지호) - 고객
+	@RequestMapping("savingList")
+	public String savingList(HttpServletRequest req, Model model) {
+		logger.info("url => savingList");
+		
+		service.savingList(req, model);
+		
+		return "customer/savingProduct/savingList";
+	}
+	
+	//적금 상품검색(지호) - 고객
+	@RequestMapping("savingProductSearch")
+	public String savingProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /savingProductSearch]");
+		service.savingProductSearch(req, model);
+		return "customer/savingProduct/savingProductSearch";
+	}
+	
+	//적금 상품 상세 보기 (지호) -고객
+	@RequestMapping("savingDetail")
+	public String savingDetail(HttpServletRequest req, Model model) {
+		logger.info("url => savingDetail");
+		
+		service.savingDetail(req, model);
+		
+		return "customer/savingProduct/savingDetail";
+	}
+	
+	//적금 상품 신청(지호)
+	@RequestMapping("savingProductAction")
+	public String savingProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => depositProductInsert");
+		
+		service.savingProductAction(req, model);
+		
+		return "customer/savingProduct/savingProductAction";
+	}	
 	
 	//qna 게시판(지현)
 	@RequestMapping("qnaList")

@@ -103,11 +103,11 @@
 				           <td>${dto.deposit_product_summary}</td>
 				           <td>${dto.deposit_product_interRate}%</td>
 				           <td>
-					           <c:if test="${dto.deposit_product_type==1}">
+					           <c:if test="${dto.deposit_product_type==0}">
 					           	복리
 					           </c:if>
 					           
-					           <c:if test="${dto.deposit_product_type!=1}">
+					           <c:if test="${dto.deposit_product_type!=0}">
 					           	단리
 					           </c:if>
 					       </td>
@@ -120,16 +120,16 @@
 				           				미기재
 				           			</c:when>
 				           			<c:when test="${dto.deposit_product_bankCode==1}">
-				           				신한은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==2}">
 				           				국민은행
 				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==3}">
+				           			<c:when test="${dto.deposit_product_bankCode==2}">
 				           				우리은행
 				           			</c:when>
+				           			<c:when test="${dto.deposit_product_bankCode==3}">
+				           				농협은행
+				           			</c:when>
 				           			<c:when test="${dto.deposit_product_bankCode==4}">
-				           				기업은행
+				           				신한은행
 				           			</c:when>
 				           			<c:when test="${dto.deposit_product_bankCode==5}">
 				           				하나은행

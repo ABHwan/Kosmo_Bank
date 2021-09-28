@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.admin.dao.AdminDAOImpl;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -497,6 +498,284 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println("예금상품 삭제여부 : " + deleteCnt);
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
+	
+	// 관리자 페이지 적금 상품 등록 처리
+	@Override
+	public void savingProductInsertAction(HttpServletRequest req, Model model) {
+		SavingProductVO vo = new SavingProductVO();
+		vo.setSaving_product_name(req.getParameter("saving_product_name"));
+		vo.setSaving_product_summary(req.getParameter("saving_product_summary"));
+		vo.setSaving_product_interRate(Float.parseFloat(req.getParameter("saving_product_interRate")));
+		vo.setSaving_product_type(Integer.parseInt(req.getParameter("saving_product_type")));
+		vo.setSaving_product_maxDate(Integer.parseInt(req.getParameter("saving_product_maxDate")));
+		vo.setSaving_product_minDate(Integer.parseInt(req.getParameter("saving_product_minDate")));
+		vo.setSaving_product_minPrice(Integer.parseInt(req.getParameter("saving_product_minPrice")));
+		vo.setSaving_product_explanation(req.getParameter("saving_product_explanation"));
+		vo.setSaving_product_notice(req.getParameter("saving_product_notice"));
+		vo.setSaving_product_bankCode(Integer.parseInt(req.getParameter("saving_product_bankCode")));
+	
+		int insertCnt = dao.insertSavingProduct(vo);
+		System.out.println("적금상품등록 insertCnt : " + insertCnt);
+		model.addAttribute("insertCnt", insertCnt);
+	}
+
+	// 관리자 페이지 적금 상품 조회
+	@Override
+	public void selectSavingProduct(HttpServletRequest req, Model model) {
+		// 페이징
+				int pageSize = 10;		// 한 페이지당 출력할 적금상품
+				int pageBlock = 3;		// 한 블럭당 페이지 갯수
+				
+				int cnt = 0;			// 적금상품 수
+				int start = 0;			// 현재 페이지 시작 글 번호
+				int end = 0;			// 현재 페이지 마지막 글 번호
+				int number = 0;			// 출력용 글 번호
+				String pageNum = "";	// 페이지 번호
+				int currentPage = 0;	// 현재 페이지
+				
+				int pageCount = 0;		// 페이지 갯수
+				int startPage = 0;		// 시작 페이지
+				int endPage = 0;		// 마지막 페이지
+				
+				// 적금상품 수  조회
+				cnt = dao.getSavingProductCnt();
+				System.out.println("등록 된 적금 상품 수 : " + cnt);
+				
+				pageNum = req.getParameter("pageNum");
+				
+				if(pageNum == null) {
+					pageNum = "1";	// 첫 페이지를 1페이지로 지정
+				}
+				
+				// 상품 30건 기준
+				currentPage = Integer.parseInt(pageNum);
+				System.out.println("currentPage : " + currentPage);
+				
+				// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+				pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+				
+				// 현재 페이지 시작 글 번호(페이지별)
+				// start = (currentPage - 1) * pageSize + 1;
+				// 1 = (1 - 1) * 10 + 1
+				start = (currentPage - 1) * pageSize + 1;
+				
+				// 현재 페이지 시작 글 번호(페이지별)
+				// end = start + pageSize - 1;
+				// 10 = 1 + 10 - 1
+				end = start + pageSize - 1 ;
+				
+				System.out.println("start : " + start);
+				System.out.println("end : " + end);
+				
+				// 출력용 글 번호
+				//number = cnt - (currentPage - 1) * pageSize; 
+				number = cnt - (currentPage - 1) * pageSize;
+				
+				System.out.println("number : " + number);
+				System.out.println("pageSize : " + pageSize);
+				
+				// 시작 페이지
+				// 1 = (1 / 3) * 3 + 1;
+				// startPage = (currentPage / pageBlock) * pageBlock + 1;
+				startPage = (currentPage / pageBlock) * pageBlock + 1;
+				if(currentPage % pageBlock == 0) {
+					startPage -= pageBlock;
+				}
+				System.out.println("startPage : " + startPage);
+				
+				// 마지막 페이지
+				// 3 = 1 + 3 - 1
+				endPage = startPage + pageBlock - 1;
+				if(endPage > pageCount) {
+					endPage = pageCount;
+				}
+				System.out.println("endPage : " + endPage);
+				
+				System.out.println("===================================");
+				
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("start", start);
+				map.put("end", end);
+				
+				ArrayList<SavingProductVO> dtos = null;
+				if(cnt > 0) {
+					// 5-2단계. 회원수 조회
+					dtos = dao.selectSavingProduct(map);
+				}
+				
+				// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+				model.addAttribute("dtos", dtos);			// 적금 상품 목록
+				model.addAttribute("cnt", cnt);				// 적금 상품 수
+				model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+				model.addAttribute("number", number);		// 출력용 번호
+				if(cnt > 0) {
+					model.addAttribute("startPage", startPage);		// 시작 페이지
+					model.addAttribute("endPage", endPage);			// 마지막 페이지
+					model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+					model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+					model.addAttribute("currentPage", currentPage);	// 현재 페이지
+				}
+	}
+
+	// 관리자 페이지 적금 상품 검색
+	@Override
+	public void searchSavingProduct(HttpServletRequest req, Model model) {
+		// 입력받은 검색어
+		String search = req.getParameter("search");
+		System.out.println("관리자 페이지 회원 검색어 : " + search);
+		
+		// 페이징
+		int pageSize = 10;		// 한 페이지당 출력할 적금상품
+		int pageBlock = 3;		// 한 블럭당 페이지 갯수
+		
+		int cnt = 0;			// 적금상품 수
+		int start = 0;			// 현재 페이지 시작 글 번호
+		int end = 0;			// 현재 페이지 마지막 글 번호
+		int number = 0;			// 출력용 글 번호
+		String pageNum = "";	// 페이지 번호
+		int currentPage = 0;	// 현재 페이지
+		
+		int pageCount = 0;		// 페이지 갯수
+		int startPage = 0;		// 시작 페이지
+		int endPage = 0;		// 마지막 페이지
+		
+		// 검색 된 적금 상품 수 조회
+		cnt = dao.getSavingProductSearchCnt(search);
+		System.out.println("검색 된 적금 상품 수 : " + cnt);
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1";	// 첫 페이지를 1페이지로 지정
+		}
+		
+		// 상품 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1 - 1) * 10 + 1
+		start = (currentPage - 1) * pageSize + 1;
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// end = start + pageSize - 1;
+		// 10 = 1 + 10 - 1
+		end = start + pageSize - 1 ;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글 번호
+		//number = cnt - (currentPage - 1) * pageSize; 
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) {
+			startPage -= pageBlock;
+		}
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) {
+			endPage = pageCount;
+		}
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("===================================");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("search", search);
+		
+		ArrayList<SavingProductVO> dtos = null;
+		if(cnt > 0) {
+
+			dtos = dao.searchSavingProduct(map);
+		}
+		
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("dtos", dtos);			// 검색된 적금 상품 목록
+		model.addAttribute("cnt", cnt);				// 적금 상품 수
+		model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+		model.addAttribute("number", number);		// 출력용 번호
+		model.addAttribute("search", search);		// 검색어
+		if(cnt > 0) {
+			model.addAttribute("startPage", startPage);		// 시작 페이지
+			model.addAttribute("endPage", endPage);			// 마지막 페이지
+			model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재 페이지
+		}
+	}
+	
+	// 관리자 페이지 적금 상품 상세 조회
+    @Override
+    public void getSavingProductInfo(HttpServletRequest req, Model model) {
+       String saving_product_name = req.getParameter("saving_product_name");
+       int pageNum= Integer.parseInt(req.getParameter("pageNum"));
+       System.out.println("req.getParameter('pageNum')" + req.getParameter("pageNum"));
+       System.out.println(saving_product_name+" 상품 상세조회");
+       SavingProductVO vo = dao.getSavingProductInfo(saving_product_name);
+       model.addAttribute("vo", vo);
+       model.addAttribute("pageNum", pageNum);
+    }
+
+	// 관리자 페이지 적금 상품 수정
+    @Override
+    public void updateSavingProduct(HttpServletRequest req, Model model) {
+
+       int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+       SavingProductVO vo = new SavingProductVO();
+       vo.setSaving_product_name(req.getParameter("saving_product_name"));
+       vo.setSaving_product_summary(req.getParameter("saving_product_summary"));
+       vo.setSaving_product_interRate(Float.parseFloat(req.getParameter("saving_product_interRate")));
+       vo.setSaving_product_type(Integer.parseInt(req.getParameter("saving_product_type")));
+       vo.setSaving_product_maxDate(Integer.parseInt(req.getParameter("saving_product_maxDate")));
+       vo.setSaving_product_minDate(Integer.parseInt(req.getParameter("saving_product_minDate")));
+       vo.setSaving_product_minPrice(Integer.parseInt(req.getParameter("saving_product_minPrice")));
+       vo.setSaving_product_explanation(req.getParameter("saving_product_explanation"));
+       vo.setSaving_product_notice(req.getParameter("saving_product_notice"));
+       vo.setSaving_product_bankCode(Integer.parseInt(req.getParameter("saving_product_bankCode")));
+       
+       int updateCnt = dao.updateSavingProduct(vo);
+       System.out.println("적금 상품 updateCnt : " + updateCnt);
+       System.out.println("pageNum : " + pageNum);
+       model.addAttribute("updateCnt", updateCnt);
+       model.addAttribute("pageNum", pageNum);
+    }
+    
+	// 관리자 페이지 적금 상품 삭제
+	@Override
+	public void deleteSavingProduct(HttpServletRequest req, Model model) {
+		int deleteCnt = 0;
+		String saving_product_names[] = req.getParameterValues("check");
+		if(saving_product_names != null) {
+			for(int i=0; i<saving_product_names.length; i++) {
+				deleteCnt = dao.deleteSavingProduct(saving_product_names[i]);
+				System.out.println("삭제선택된 적금상품명: " + saving_product_names[i]);
+			}
+			model.addAttribute("msg", "적금상품 삭제처리되었습니다");
+		} else {
+			model.addAttribute("msg", "삭제하실 상품을 선택해주세요.");
+		}
+		System.out.println("적금상품 삭제여부 : " + deleteCnt);
+		model.addAttribute("deleteCnt", deleteCnt);
+	}
+
+
 	
 	//qna 조회(지현)
 		@Override

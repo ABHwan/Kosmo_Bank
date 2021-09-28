@@ -132,25 +132,15 @@
 							<div class="collapse" id="forms">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="mngImg.do?cnt=8">
+										<a href="savingProductInsert">
 											<span class="sub-item"> 등록</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 삭제</span>
-										</a>
-									</li> -->
 									<li>
-										<a href="mngImg.do?cnt=9">
+										<a href="savingProductList">
 											<span class="sub-item"> 조회</span>
 										</a>
-									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 수정</span>
-										</a>
-									</li> -->
+									</li>									
 								</ul>
 							</div>
 						</li>

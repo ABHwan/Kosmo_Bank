@@ -170,6 +170,44 @@
 		WHERE deposit_product_name=#{deposit_product_name} 	
 	</select>
 	
+	<!-- 적금 상품 개수 -->
+	<select id="getSavingCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM saving_product
+	</select>
+	
+	<!-- 적금 상품 조회  -->
+	<select id="getSavingList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.SavingProductVO">
+		<![CDATA[
+			SELECT * FROM 
+				(SELECT saving_product_name, saving_product_summary, saving_product_date, saving_product_interRate, saving_product_type, saving_product_maxDate, saving_product_minDate, saving_product_minPrice, saving_product_explanation, saving_product_notice, saving_product_bankCode, rowNUM rNum 
+					 FROM (SELECT * FROM saving_product ORDER BY saving_product_date DESC))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 적금 상품 수(검색결과수)  -->
+	<select id="getSavingProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM saving_product WHERE saving_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 적금 상품 검색(입력받아서 검색) -->
+	<select id="searchSavingProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.SavingProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT saving_product_name, saving_product_summary, saving_product_date, saving_product_interrate, saving_product_type, saving_product_maxdate, saving_product_mindate, saving_product_minprice, saving_product_bankcode, rowNum rNum 
+				FROM (SELECT * FROM saving_product WHERE saving_product_name LIKE '%'||#{search}||'%' ORDER BY saving_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 적금 상품 상세 조회 -->
+	<select id="getSavingDetail" parameterType="String" resultType="com.spring.bank.product.vo.SavingProductVO">
+		SELECT * FROM  saving_product
+		WHERE saving_product_name=#{saving_product_name} 	
+	</select>	
+	
 	<!-- 환율 저장 후 출력(지호) -->
     <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">
     	INSERT INTO exchange_rate(exchange_country, exchange_rate)
@@ -185,14 +223,20 @@
     <!-- 환율 최신화(지호) -->
     <update id="exchangeUpd" parameterType="com.spring.bank.user.vo.CrawlerVO">
     	UPDATE exchange_rate
-    	   SET exchange_rate=#{exchange_rate}
+    	   SET exchange_rate=#{exchange_rate}, exchange_com=#{exchange_com}
     	 WHERE exchange_country=#{exchange_country}
     </update>
     
     <!-- db에 있는 환율  출력 -->
     <select id="exchangeVary" parameterType="String" resultType="String">
-    	SELECT exchange_rate 
+    	 SELECT exchange_rate
     	  FROM exchange_rate
     	 WHERE exchange_country=#{exchange_country}
-    </select>	
+    </select>
+    
+    <!-- test -->
+<!--     <insert id="jsonIn" parameterType="String">
+    	INSERT INTO test(json, json2)
+    	VALUES (#{json1}, #{json2})
+    </insert> -->
 </mapper>
