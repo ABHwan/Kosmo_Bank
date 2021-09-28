@@ -287,7 +287,7 @@
 							<div class="collapse" id="test">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="testAccountData">
 											<span class="sub-item">고객계좌데이터추가</span>
 										</a>
 										

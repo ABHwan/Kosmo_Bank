@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.admin.dao.AdminDAOImpl;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
@@ -981,4 +982,94 @@ public class AdminServiceImpl implements AdminService {
 			model.addAttribute("currentPage", currentPage);	// 현재 페이지
 		}
 	}
+	
+	// 관리자 페이지 TEST계좌생성(복환)
+	@Override
+	public int insertTestAccount(HttpServletRequest req, Model model) {
+		System.out.println("Service => insertTestAccount");
+		
+		String account_bankCode = req.getParameter("account_bankCode");
+		String account_id = createAccountId(Integer.parseInt(account_bankCode));
+		String account_password = req.getParameter("account_password");
+		String account_balance = req.getParameter("account_balance");
+		String account_type = req.getParameter("account_type");
+		String account_state = req.getParameter("account_state");
+		String account_stateContent = req.getParameter("account_stateContent");
+		String account_limit = req.getParameter("account_limit");
+		String unique_key = req.getParameter("unique_key");
+		
+		AccountVO vo = new AccountVO();
+		
+		vo.setAccount_bankCode(account_bankCode);
+		vo.setAccount_id(account_id);
+		vo.setAccount_password(account_password);
+		vo.setAccount_balance(Integer.parseInt(account_balance));
+		vo.setAccount_type(Integer.parseInt(account_type));
+		vo.setAccount_state(Integer.parseInt(account_state));
+		vo.setAccount_stateContent(account_stateContent);
+		vo.setAccount_limit(Integer.parseInt(account_limit));
+		vo.setUnique_key(unique_key);
+		
+		return dao.insertTestAccount(vo);
+	}
+	
+	// 계좌 생성 Method
+	public String createAccountId(int account_type) {
+	      String account_id = "";
+	      
+	      if(account_type == 1) {
+	         // 국민(14) > 6 - 2 - 6
+	         String st1 = String.format("%06d", (int)(Math.random()*1000000));
+	         String st2 = String.format("%02d", (int)(Math.random()*100));
+	         String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	         account_id = st1 + "-" + st2 + "-" + st3;
+	         
+	         System.out.println("account_id : " + account_id);
+	         
+	      } else if(account_type ==2) {
+	         // 우리(13) > 4 - 3 - 6
+	         String st1 = String.format("%04d", (int)(Math.random()*10000));
+	         String st2 = String.format("%03d", (int)(Math.random()*1000));
+	         String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	         account_id = st1 + "-" + st2 + "-" + st3;
+	         
+	         System.out.println("account_id : " + account_id);
+	         
+	      } else if(account_type ==3) {
+	         // 농협(13) > 3 - 4 - 4 - 2
+	         String st1 = String.format("%03d", (int)(Math.random()*1000));
+	         String st2 = String.format("%04d", (int)(Math.random()*10000));
+	         String st3 = String.format("%04d", (int)(Math.random()*10000));
+	         String st4 = String.format("%02d", (int)(Math.random()*100));
+	         
+	         account_id = st1 + "-" + st2 + "-" + st3 + "-" + st4;
+	         
+	         System.out.println("account_id : " + account_id);
+	         
+	      } else if(account_type ==4) {
+	         // 신한(12) > 3 - 3 - 6
+	         String st1 = String.format("%03d", (int)(Math.random()*1000));
+	         String st2 = String.format("%03d", (int)(Math.random()*1000));
+	         String st3 = String.format("%06d", (int)(Math.random()*1000000));
+
+	         account_id = st1 + "-" + st2 + "-" + st3;
+	         
+	         System.out.println("account_id : " + account_id);
+	         
+	      } else if(account_type ==5) {
+	         // 하나(14) > 3 - 6 - 5
+	         String st1 = String.format("%03d", (int)(Math.random()*1000));
+	         String st2 = String.format("%06d", (int)(Math.random()*1000000));
+	         String st3 = String.format("%05d", (int)(Math.random()*100000));
+
+	         account_id = st1 + "-" + st2 + "-" + st3;
+	         
+	         System.out.println("account_id : " + account_id);
+	         
+	      }
+	      
+	      return account_id;
+	   }
 }

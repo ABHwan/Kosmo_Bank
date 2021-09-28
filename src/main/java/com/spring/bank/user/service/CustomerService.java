@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 
 public interface CustomerService {
 	
-	// 중복확인 처리
+	// 아이디 중복확인 처리
 	public int confirmIdAction(Map<String, Object> map);
 	
+	// 명의중복
+	public int duplicateAction(Map<String, Object> map);
 	// 회원가입 처리
 	public void registerAction(HttpServletRequest req, Model model);
 	

@@ -10,10 +10,15 @@
     	SELECT COUNT(*) as cnt FROM members WHERE member_id = #{member_id}
     </select>
     
+    <!-- 회원가입 명의 중복확인 -->
+    <select id="duplicateCheck" parameterType="java.util.Map" resultType="int">
+    	SELECT COUNT(*) as cnt FROM members WHERE unique_key = #{unique_key}
+    </select>
+    
     <!-- 회원가입 처리 -->
     <insert id="insertUser" parameterType="com.spring.bank.user.vo.UserVO">
-    	INSERT INTO members(member_id, member_password, member_name, member_birth, member_hp, member_email, member_zipcode, member_addr1,  member_addr2, member_addr3, member_indate, member_enabled, member_authority, access_token, refresh_token, user_seq_no)
-    	 VALUES(#{member_id}, #{member_password}, #{member_name}, #{member_birth}, #{member_hp}, #{member_email}, #{member_zipcode}, #{member_addr1}, #{member_addr2}, #{member_addr3}, sysdate, 1, 'ROLE_USER', #{access_token}, #{refresh_token}, #{user_seq_no})
+    	INSERT INTO members(member_id, member_password, member_name, member_birth, member_hp, member_email, member_zipcode, member_addr1,  member_addr2, member_addr3, member_indate, member_enabled, member_authority, unique_key)
+    	 VALUES(#{member_id}, #{member_password}, #{member_name}, #{member_birth}, #{member_hp}, #{member_email}, #{member_zipcode}, #{member_addr1}, #{member_addr2}, #{member_addr3}, sysdate, 1, 'ROLE_USER', #{unique_key})
     </insert>
     
     <!-- 이메일 인증 성공 처리 -->

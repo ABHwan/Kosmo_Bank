@@ -47,6 +47,8 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	JavaMailSender mailSender;
 	
+	
+	
 	// 아이디 중복확인
 	@Override
 	public int confirmIdAction(Map<String, Object> map) {
@@ -57,19 +59,26 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		return dao.idCheck(map);
 	}
+	
+	// 명의 중복확인
+	@Override
+	public int duplicateAction(Map<String, Object> map) {
+		
+		System.out.println("[서비스 => 명의 중복확인 처리]");
+		
+		System.out.println(map.get("unique_key"));
+		
+		return dao.duplicateCheck(map);
+	}
 
 	// 회원가입 처리
 	@Override
 	public void registerAction(HttpServletRequest req, Model model) {
 		System.out.println("[서비스 => 회원가입 처리]");
 		
-		String access_token = req.getParameter("access_token");
-		String refresh_token = req.getParameter("refresh_token");
-		String user_seq_no = req.getParameter("user_seq_no");
+		String unique_key = req.getParameter("unique_key");
 		
-		System.out.println("at : " + access_token);
-		System.out.println("rt : " + refresh_token);
-		System.out.println("usn : " + user_seq_no);
+		System.out.println("uk : " + unique_key);
 		
 		
 		// 3단계. 화면으로부터 입력 받은 값을 받아온다. 바구니에 담는다.
@@ -77,15 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		String strPassword = bCryptPasswordEncoder.encode(req.getParameter("password"));
 		
-		String hp = "";
-		String hp1 = req.getParameter("hp1");
-		String hp2 = req.getParameter("hp2");
-		String hp3 = req.getParameter("hp3");
-		
-		// hp가 필수가 아니므로 null 값이 들어올 수 있으므로 값이 존재할 때만 처리
-		if(!hp1.equals("") && !hp2.equals("") && !hp3.equals("")) {
-			hp = hp1 + "-" + hp2 + "-" + hp3;
-		}
+		String hp = req.getParameter("hp");
 		
 		String email = "";
 		String email1 = req.getParameter("email1");
@@ -94,9 +95,9 @@ public class CustomerServiceImpl implements CustomerService {
 		email = email1 + "@" + email2;
 		
 		String zipcode= req.getParameter("address_zipcode");
-		/*
-		 * if(zipcode.length() == 4 ) { zipcode = "0" + zipcode; }
-		 */
+		
+		if(zipcode.length() == 4 ) { zipcode = "0" + zipcode; }
+		
 		
 		vo.setMember_id(req.getParameter("id"));
 		vo.setMember_password(strPassword);
@@ -108,15 +109,9 @@ public class CustomerServiceImpl implements CustomerService {
 		vo.setMember_addr1(req.getParameter("address_addr1"));
 		vo.setMember_addr2(req.getParameter("address_addr2"));
 		vo.setMember_addr3(req.getParameter("address_addr3"));
-		vo.setAccess_token(req.getParameter("access_token"));
-		vo.setRefresh_token(req.getParameter("refresh_token"));
-		vo.setUser_seq_no(req.getParameter("user_seq_no"));
+		vo.setUnique_key(req.getParameter("unique_key"));
 		
 		// regDate는 입력값이 없으면 defalut가 sysdate
-		vo.setMember_indate(new Timestamp(System.currentTimeMillis()));
-		
-		// CustomerDAOImpl dao = new CustomerDAOImpl();
-		// 4단계. 싱글톤 방식으로 dao 객체 생성
 		
 		// 5단계. 회원가입 처리
 		int insertCnt = dao.insertUser(vo);
@@ -124,9 +119,6 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		// 6단계. jsp로 결과 전달(request나 session으로 처리 결과를 저장 후)
 		req.setAttribute("insertCnt", insertCnt);
-		model.addAttribute("selectCnt", insertCnt);
-		// 이메일 인증
-		req.setAttribute("email", email);
 	}
 	
 	@Override

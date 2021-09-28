@@ -2,20 +2,18 @@ package com.spring.bank.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -323,5 +321,23 @@ public class AdminController {
 		logger.info("url => customerAccountSearch");
 		service.searchCustomerAccountList(req, model);
 		return "manager/customerInfo/customerAccountSearch";
-	}		
+	}
+	
+	// 고객 TEST 계좌 추가
+	@RequestMapping("testAccountData")
+	public String testAccountData(HttpServletRequest req, Model model) {
+		
+		
+		return "manager/test/accountData";
+	}
+	
+	// 고객 TEST 계좌 추가
+	@ResponseBody
+	@RequestMapping(value="testAccountInsert", method= {RequestMethod.POST})
+	public int testAccountInsert(HttpServletRequest req, Model model) {
+		System.out.println("url => testAccountInsert");
+		logger.info("url => testAccountInsert");
+		
+		return service.insertTestAccount(req, model);
+	}
 }

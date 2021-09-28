@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -25,6 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.AccessToken;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.spring.bank.emailHandler.SHA256;
 import com.spring.bank.user.service.CustomerServiceImpl;
 
 @Controller
@@ -39,6 +45,8 @@ public class CustomerController {
 	@Inject
 	private JavaMailSender javaMailSender;
 	
+	private IamportClient api = new IamportClient("imp_apikey", "ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f");
+	
 	// main 화면(크롤링, 지호)
 	@RequestMapping("index.do")
 	public String home(HttpServletRequest req, Model model) {
@@ -49,7 +57,9 @@ public class CustomerController {
 	
 	// 회원가입 페이지
 	@RequestMapping("register.do")
-	public String register(HttpServletRequest req, Model model) {
+	public String register(HttpServletRequest req, Model model) throws IamportResponseException, IOException {
+		
+		//System.out.println(longToBase64("01079975130"));
 		
 		return "customer/account/register";
 	}
@@ -72,53 +82,72 @@ public class CustomerController {
 		return service.confirmIdAction(map);
 	}
 	
-	// 회원본인인증
-	@RequestMapping(value="authResult.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public String callAPIhttp(HttpServletRequest req, Model model) throws Exception {
-		System.out.println("[url => authResult]");
-		logger.info("[url => authResult]");
+	
+	// 회원가입 본인인증 토큰생성
+	@ResponseBody
+	@RequestMapping(value="getToken.do", method= {RequestMethod.POST})
+	public IamportResponse<AccessToken> getToken(HttpSession session, Model model) throws Exception {
+		System.out.println("[url => getToken.do]");
+		
+		
+		return api.getAuth();
+	}
+	
+	// 회원가입 본인인증 후 결과 조회 및 삭제
+	@ResponseBody
+	@RequestMapping(value="certifications.do", method= {RequestMethod.GET})
+	public String certifications(HttpServletRequest req, HttpSession session, Model model) throws Exception {
+		System.out.println("[url => certifications]");
+		logger.info("[url => certifications]");
 		
 		StringBuffer result = new StringBuffer();
 		
 		req.setCharacterEncoding("UTF-8");
 		
-			String code = req.getParameter("code");
-			
-			String urlstr = "https://testapi.openbanking.or.kr/oauth/2.0/token?" + // 클라이언트가 요청을 보낼 서버의 URL 주소
-				"code="+ code +"&" +
-				"client_id=072579e4-c1b5-4ad1-a6a4-78c69cab659c&" +
-				"client_secret=6e5b6b5d-4aa9-4a53-90a0-deeb196c10ee&" +
-			    "redirect_uri=http://localhost/bank/customer/authResult.do&" +
-			    "grant_type=authorization_code";
-			
-			URL url = new URL(urlstr);
-			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
-			urlconnection.setRequestMethod("POST");
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
-			
-			String returnLine;
-			
-			while((returnLine = br.readLine()) != null) {
-				result.append(returnLine);
-				System.out.println(br.readLine());
-			}
-			
-			urlconnection.disconnect();
-			
-			System.out.println(result.toString());
-			
-			req.setAttribute("json", result);
-			
-			return "customer/account/authToken";
+		// ajax 에서 받아온 값
+		String imp_uid = req.getParameter("imp_uid");
+		String access_token = req.getParameter("access_token");
+		
+		String urlstr = "https://api.iamport.kr/certifications/" + imp_uid
+				+ "?_token=" + access_token; // 클라이언트가 요청을 보낼 서버의 URL 주소
+		
+		URL url = new URL(urlstr);
+		HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+		// get 방식으로 전송
+		urlconnection.setRequestMethod("GET");
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
+		
+		String returnLine;
+		
+		while((returnLine = br.readLine()) != null) {
+			result.append(returnLine);
+			System.out.println(br.readLine());
+		}
+		
+		urlconnection.disconnect();
+		
+		System.out.println(result.toString());
+		
+		
+		req.setAttribute("json", result);
+		
+		return result.toString();
+		
 	}
 	
-	// 회원가입 본인인증 페이지
-	@RequestMapping("certifications.do")
-	public String certifications(HttpServletRequest req, Model model) {
+	// 회원가입 본인인증 토큰생성
+	@ResponseBody
+	@RequestMapping(value="duplicate.do", method= {RequestMethod.POST})
+	public int duplicate(HttpServletRequest req, Model model) throws Exception {
+		System.out.println("[url => duplicate]");
 		
+		String unique_key = req.getParameter("unique_key");
 		
-		return "customer/account/certifications";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("unique_key", unique_key);
+		
+		return service.duplicateAction(map);
 	}
 	
 	
@@ -205,16 +234,6 @@ public class CustomerController {
 		return "/customer/account/login";
 	}
 	
-	/*
-	 * // 로그인 처리
-	 * 
-	 * @RequestMapping("loginAction") public String loginAction(HttpServletRequest
-	 * req, Model model) { logger.info("url ==> loginAction");
-	 * 
-	 * service.loginAction(req, model);
-	 * 
-	 * return "customer/account/login"; }
-	 */
 		
 	// 로그아웃 페이지
 	@RequestMapping("logoutAction.do")
@@ -229,7 +248,6 @@ public class CustomerController {
 	@RequestMapping("deleteCustomer")
 	public String deletecustomer(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /deletecustomer.us]");
-		
 		
 		
 		// 이동할 페이지

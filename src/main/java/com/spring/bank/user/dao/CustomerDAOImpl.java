@@ -29,6 +29,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 		System.out.println(map.get("member_id"));
 		return dao.idCheck(map);
 	}
+	
+	// 회원가입 명의 중복확인
+	@Override
+	public int duplicateCheck(Map<String, Object> map) {
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		
+		System.out.println(map.get("member_id"));
+		return dao.duplicateCheck(map);
+	}
 
 	// 회원가입 처리
 	@Override

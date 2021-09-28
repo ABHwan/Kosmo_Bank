@@ -19,13 +19,13 @@ function errorAlert(errorMsg) {
 function signIncheck() {
 	// 이름
 	if(!document.registerform.name.value) {
-		alert("이름을 입력하세요!!");
+		alert("본인인증이 완료되지 않았습니다. \n 본인인증을 시도해주세요!!");
 		document.registerform.name.focus();
 		return false;
 		
 	// 생년월일
 	} else if(!document.registerform.birth.value) {
-		alert("생년월일을 입력하세요!!");
+		alert("본인인증이 완료되지 않았습니다. \n 본인인증을 시도해주세요!!");
 		document.registerform.birth.focus();
 		return false;
 		
@@ -48,19 +48,11 @@ function signIncheck() {
 		return false;
 		
 	// 연락처
-	} else if(!document.registerform.hp1.value) {
+	} else if(!document.registerform.hp.value) {
 		alert("휴대폰 번호를 입력하세요!!");
-		document.registerform.hp1.focus();
+		document.registerform.hp.focus();
 		return false;
-	} else if(!document.registerform.hp2.value) {
-		alert("휴대폰 번호를 입력하세요!!");
-		document.registerform.hp2.focus();
-		return false;
-	} else if(!document.registerform.hp3.value) {
-		alert("휴대폰 번호를 입력하세요!!");
-		document.registerform.hp3.focus();
-		return false;
-		
+	
 	// 이메일
 	} else if(!document.registerform.email1.value) {
 		alert("이메일을 입력하세요!!");
@@ -79,225 +71,19 @@ function signIncheck() {
 	// id 중복확인 버튼을 클릭하지 않는 경우
 	// signIn.jsp - hiddenId : 중복확인 버튼 클릭 여부 체크(0:클릭 안함, 1:클릭함)
 	} else if(document.registerform.hiddenId.value == 0) {
-		alert("중복 확인을 해주세요!!");
+		alert("아이디 중복 확인을 해주세요!!");
 		document.registerform.dupChk.focus();
 		return false;
 		
-	} else if(document.registerform.access_token.value == "") {
-		alert("본인 인증을 해주세요!!");
+	} else if(document.registerform.unique_key.value == "") {
+		alert("본인인증이 완료되지 않았습니다. \n 본인인증을 시도해주세요!!");
 		document.registerform.pass.focus();
 		return false;
-	} else if(document.registerform.refresh_token.value == "") {
-		alert("본인 인증을 해주세요!!");
-		document.registerform.pass.focus();
-		return false;
-	} else if(document.registerform.user_seq_no.value == "") {
-		alert("본인 인증을 해주세요!!");
-		document.registerform.pass.focus();
-		return false;
-	}
+	} 
 	
 	
 }
 
-// 아이디 중복확인 AJAX
-function confirmId() {
-	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	var member_id = $("#userId").val();
-	console.log("member_id : " + member_id);
-	setTimeout(function() {
-	$.ajax({
-		url : "confirmId.do",
-		data:  {"member_id":member_id},
-		type: "post",
-		dataType: 'json',
-		
-		beforeSend : function(xhr){
-			xhr.setRequestHeader(header, token);
-		},
-		
-		success : function(data) {
-			console.log("성공");
-			$("#id_check").text("");
-			if (data == 1) {
-					// 1 : 아이디가 중복되는 문구
-					$("#id_check").text("사용중인 아이디입니다.");
-					$("#id_check").css("color", "red");
-					$("#userId").css("border-color", "red");
-					
-					$("input[name=hiddenId]").val(0);
-					console.log($("input[name=hiddenId]").val());
-					
-				} else {
-					// 0 : 사용가능
-					$("#id_check").text("사용 가능한 아이디입니다.");
-					$("#id_check").css("color","green");
-					$("#userId").css("border-color", "#d7d7d7");
-					$("input[name=hiddenId]").val(1);
-					console.log($("input[name=hiddenId]").val());
-					
-					// input 입력 값 없을 시  id_check 초기화
-					if(member_id == "") {
-						$("#id_check").text("");
-					}
-				} 
-			
-			}, error : function() {console.log("실패");}
-		});
-	}, 10);
-}
-
-//회원가입 이메일 인증
-function emailChk() {
-	
-	console.log("emailChk - ON");
-	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-	var dice;
-	var sss;
-	var click=0;
-	var userEmail;
-	var counter;
-	
-	$('#mail1').click(function() {
-		$("#dice").val('');
-		
-		userEmail1 = $("input[name=email1").val();
-		userEmail2 = $("input[name=email2").val();
-		userEmail = userEmail1 + "@" + userEmail2;
-		console.log("이메일 : " + userEmail);
-		// var idJ = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-		if(userEmail1 == ""){
-			alert("형식에 맞게 이메일을 입력해 주세요!");
-			return;
-		} else if(userEmail2 == "") {
-			alert("형식에 맞게 이메일을 입력해 주세요!");
-			return;
-		}
-		click++;
-		$('#dice_check').css('display','');
-		
-		if(click>=1){
-			$("#mail1").css('display','none').css('margin-top','0px').css('border','1px solid').css('cursor','pointer')
-			$("#mail2").css('display','')
-			$("#dice_check1").css('display','');
-			
-		}
-		
-		var stop = false;
-		var mm=5;
-		var ss=59;
-		// 인증번호 카운터
-		counter = setInterval(function(){
-			if(!stop){
-			var time_text =  mm+':'+ss+'초';
-			$("#dice_check").text(time_text);
-			$("#dice_check").css('color','red').css('display','inline-block');
-			$("input[name=counter]").val(1);
-			ss--;
-			if(ss==-1){
-				if(mm < 1){
-					mm=0;
-					if(ss<0){
-						clearInterval(counter);
-						$("#dice_check").text('');
-						$("#dice_check1").css('display','none');
-						
-						$("#mail1").css('display','').css('margin-top','0px').css('border','1px solid').css('cursor','pointer');
-						$("#mail2").css('display','none');
-					}
-				}
-				else{mm--;}
-				ss=10;
-			}
-			if(ss<=9){
-				ss = '0'+ss;
-			}
-			}
-			else{
-				clearInterval(counter);
-			}
-		},1000);
-		
-		$.ajax({
-			url : "usermailCheck.do",
-			type: "POST",
-			data:  {"userEmail":userEmail},
-			dataType: 'json',
-			beforeSend : function(xhr){
-				xhr.setRequestHeader(header, token);
-			},
-			success : function(data) {
-				dice = data.dice;
-			}, error : function() {console.log("실패");}		
-		})
-		
-		
-		// 다시 보내기 버튼
-		$('#mail2').click(function() {
-			
-			mm=5;
-			ss=59;
-			
-			userEmail1 = $("input[name=email1").val();
-			userEmail2 = $("input[name=email2").val();
-			userEmail = userEmail1 + "@" + userEmail2;
-			console.log("이메일 : "+userEmail);
-			
-			$("input[name=emailChk]").val(0);
-			$("#dice").val('');
-			
-			
-			$.ajax({
-				url : "usermailCheck.do",
-				type: "POST",
-				data:  {"userEmail":userEmail},
-				dataType: 'json',
-				beforeSend : function(xhr){
-					xhr.setRequestHeader(header, token);
-				},
-				success : function(data) {
-					dice = data.dice;				
-				}, error : function() {console.log("실패");}		
-			})
-			
-		})
-	});
-
-
-	var suc;
-	$("#btn_dice").click(function(){
-		console.log("인증번호 확인버튼 누름");
-		if(dice==$("#dice").val()){
-			alert('성공');
-			clearInterval(counter);
-			suc =1;
-			$("#dice_check").html("") ;
-			//$("#dice_check").css("color","green");
-			$("#dice_check1").css('display','none');
-			$("#mail2").html("인증완료");
-			// pointer-events - none : a 태그 클릭 비활성화
-			$("#mail2").css("pointer-events", "none").css("color", "green");
-			
-			$("#dice").css('display','none');
-			$("#btn_dice").css('display','none');
-			$("input[name=emailChk]").val("1");
-			console.log("이메일인증" + $("input[name=emailChk]").val());
-			mm=0;
-			ss=0;
-			
-		}
-		else{
-			alert('인증번호를 확인해주세요');
-		}
-	});
-
-}
-// -- 회원가입이메일인증
 
 // 로그인 페이지
 function logcheck() {
@@ -313,7 +99,6 @@ function logcheck() {
 		return false;
 	}
 }
-
 
 
 //------------------------------------------------------------------------
@@ -384,25 +169,6 @@ function selectEmailChk_update() {
 }
 
 //------------------------------------------------------------------------
-
-
-function confirmMe() {
-	
-	var popupX = (window.screen.width / 2) - (500 / 2); // 윈도우 픽셀 기준 X축 중간
-	var popupY = (window.screen.height / 2) - (750 / 2); // 윈도우 픽셀 기준 Y축 중간
-	var url = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?" +
-    "response_type=code&"+
-    "client_id=072579e4-c1b5-4ad1-a6a4-78c69cab659c&"+ 
-    "redirect_uri=http://localhost/bank/customer/authResult.do&"+
-    "scope=login inquiry transfer&"+
-    "state=b80BLsfigm9OokPTjy03elbJqRHOfGSY&"+
-    "auth_type=0";
-	
-	window.open(url, "about:blank", "menubar=no, width=550, height=750, left="+popupX +", top="+popupY);
-  
-
-}
-
 
 // 회원 탈퇴
 function deleteUser() {
