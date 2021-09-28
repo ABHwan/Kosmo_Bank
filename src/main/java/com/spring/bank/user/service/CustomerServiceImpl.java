@@ -1379,8 +1379,12 @@ public class CustomerServiceImpl implements CustomerService {
 		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
 		int number = Integer.parseInt(req.getParameter("number"));
 
-		// 조회수증가(관리자 조회수파악용) => 관리자는 타면 안된다.
+		String id = (String)req.getSession().getAttribute("customerID");
+		
+		// 조회수증가(관리자 조회수파악용) => 관리자는 타면 안된다. 
+		if (id != null) {
 		dao.addNoticeReadCnt(notice_num);
+		}
 		
 		// 게시글 상세조회
 		NoticeVO vo = dao.getNoticeDetail(notice_num);

@@ -569,7 +569,7 @@ public class CustomerController {
 		
 		// 이동할 페이지
 		return "customer/myaccount/myIRPList";
-	}
+	} 
 	
 	// 공지사항리스트(민재)
 	@RequestMapping("noticeList.do")

@@ -41,83 +41,46 @@
 				<div class="notice">
 					<!-- 관리자 공지사항 -->
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-						<table border="1" style="width:1000px; align:center">
-							<tr>
-								<th style="width:15%"> 글번호 </th>
-								<th style="width:45%"> 글제목 </th>
-								<th style="width:15%"> 작성자 </th>
-								<th style="width:15%"> 작성일 </th>
-								<th style="width:5%"> 조회수 </th>
-							</tr>
-							
-							<!-- 게시글이 있으면 -->
-							<c:if test="${cnt>0}">
-								<c:forEach var="vo" items="${list}">
-									<tr>
-										<td> ${number} 
-											<c:set var="number" value="${number -1 }" />
-										</td>									
-										<td> 
-											<a href="noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
-												${vo.notice_subject}
-											</a>
-										</td>
-										<td> ${vo.notice_writer} </td>
-										<td> ${vo.notice_date} </td>
-										<td> ${vo.notice_readCnt} </td>
-									</tr>
-								</c:forEach> 
-							</c:if>
-							
-							<!-- 게시글이 없으면 -->
-							<c:if test="${cnt==0}">
-								<tr>
-									<td colspan="5" align="center">
-										게시글이 없습니다. 글을 작성해주세요!!
-									</td>
-								</tr>
-							</c:if>
-						</table>
-						
-						<button type="button" onclick="location.href='writeNotice.co'"> 글쓰기 </button>
 					</sec:authorize>
-					
-					<!-- 고객 공지사항 -->
-					<sec:authorize access="hasRole('ROLE_USER')">
-						<table border="1" style="width:1000px; align:center">
-							<tr>
-								<th style="width:15%"> 글번호 </th>
-								<th style="width:55%"> 글제목 </th>
-								<th style="width:15%"> 작성일 </th>
-							</tr>
-							
-							<!-- 게시글이 있으면 -->
-							<c:if test="${cnt>0}">
-								<c:forEach var="vo" items="${list}">
-									<tr>
-										<td> ${number} 
-											<c:set var="number" value="${number -1 }" />
-										</td>									
-										<td> 
-											<a href="noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
-												${vo.notice_subject}
-											</a>
-										</td>
-										<td> ${vo.notice_date} </td>
-									</tr>
-								</c:forEach>
-							</c:if>
-							
-							<!-- 게시글이 없으면 -->
-							<c:if test="${cnt==0}">
-								<tr>
-									<td colspan="3" align="center">
-										공지사항 게시글이 없습니다.
-									</td>
-								</tr>
-							</c:if>
-						</table>
-					</sec:authorize>
+
+					<table style="width:1000px; margin:auto">
+						<tr style="border-bottom: 1px solid #444444; width:500px;">
+							<td align="center" colspan="3"> ${vo.notice_subject} </td>
+						</tr>
+						<tr style="border-bottom: 1px solid #444444; width:500px;">
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<td style="width:20%; align:center"> 작성자 : ${vo.notice_writer} </td>
+							<td style="width:60%; align:left"> 조회수 : ${vo.notice_readCnt} </td>
+							<td style="width:20%; align:right">
+								작성일 : <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
+							</td>
+							</sec:authorize>
+							<sec:authorize access="hasRole('ROLE_USER')">
+							<td></td>
+							<td></td>
+							<td align="center">
+								<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
+							</td>
+							</sec:authorize>
+						</tr>
+						<tr style = "border-bottom: 1px solid #444444; width:500px; text-align:center">
+							<td colspan="3" style="width:1000px" word-break:break-all>
+								${vo.notice_content}
+							</td>
+						</tr>
+						<tr style="text-align:center; border-spacing:0 20px">
+							<th colspan="3">
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+								<input class="button" type="button" value="글수정"
+									onclick="window.location='boardModify.bo?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
+								<input class="button" type="button" value="글삭제"
+									onclick="window.location='boardDelete.bo?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
+								</sec:authorize>
+								<input class="button" type="button" value="목록"
+									onclick="window.location='noticeList.do?pageNum=${pageNum}'">
+							</th>
+						</tr>
+					</table>
 					
 					<!-- 페이지 컨트롤 -->
 					<table style="width:1000px" align="center">

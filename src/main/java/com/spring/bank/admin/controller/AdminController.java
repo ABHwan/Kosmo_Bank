@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.bank.HomeController;
 import com.spring.bank.admin.service.AdminServiceImpl;
+import com.spring.bank.user.service.CustomerServiceImpl;
 import com.spring.bank.util.ImageUploaderHandler;
 
 //@WebServlet("시작url") : 웹브라우저의 모든 요청은 하나의 서블릿에서 처리한다. 즉 모든 요청의 단일 진입점에서 시작 url을 지정
@@ -61,6 +62,9 @@ public class AdminController {
     
 	@Autowired
 	private AdminServiceImpl service;
+	
+	@Autowired
+	private CustomerServiceImpl service2;
 	
 	/*
 	// 스케쥴링 테스트
@@ -331,10 +335,23 @@ public class AdminController {
 		
 		logger.info("[url ==> /mngNoticeList.us]");
 		
-
+		service2.noticeList(req, model);
 		
 		// 이동할 페이지
 		return "customer/notice/noticeList";
 	}
 
+	// 공지사항 글쓰기 - 관리자(민재)
+	@RequestMapping("mngNoticeWrite.do")
+	public String mngNoticeWrite(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeWrite.us]");
+		
+		req.setAttribute("notice_writer", req.getSession().getAttribute("adminID"));
+		
+		// 이동할 페이지
+		return "manager/notice/noticeWrite";
+	}
+	
+	
 }

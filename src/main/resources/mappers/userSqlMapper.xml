@@ -268,8 +268,9 @@
     
     <!-- 공지사항 조회수 증가(민재) -->
     <update id="addNoticeReadCnt" parameterType="int">
-    	UPDATE NOTICE SET notice_readCnt = notice_readCnt + 1 WHERE notice_num = #{notice_num}
-    </update>
+    	UPDATE NOTICE SET notice_readCnt = notice_readCnt + 1 
+    	 WHERE notice_num = #{notice_num}
+    </update> 
     
     <!-- 공지사항 상세페이지(민재) -->
     <select id="getNoticeDetail" parameterType="int" resultType="com.spring.bank.user.vo.NoticeVO">
