@@ -17,6 +17,10 @@ import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.user.vo.MyDepositVO;
+import com.spring.bank.user.vo.MyIRPVO;
+import com.spring.bank.user.vo.MySavingVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -297,7 +301,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public String exchangeVary(String country) {
 		System.out.println("[DAO => exchangeVary()]");
 
-
 		return sqlSession.getMapper(CustomerDAO.class).exchangeVary(country);
 	}
 
@@ -440,4 +443,73 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).getLoanHistoryCnt(member_id);	
 	}
 	//지은!!!!!!!!1
+	
+	// 회원 이름 불러오기(민재) 
+	@Override
+	public String getName(String id) {
+		
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getName", id);
+	}
+	
+	// 예금리스트 불러오기(민재)
+	@Override
+	public List<MyDepositVO> depositList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.depositList", map);
+	}
+	
+	// 예금서브리스트 불러오기(민재)
+	@Override
+	public List<MyDepositVO> depositSubList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.depositSubList", map);
+	}
+	
+	// 적금리스트 불러오기(민재)
+	@Override
+	public List<MySavingVO> savingList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.savingList", map);
+	}
+	
+	// 적금서브리스트 불러오기(민재)
+	@Override
+	public List<MySavingVO> savingSubList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.savingSubList", map);
+	}
+	
+	// 연금리스트 불러오기(민재)
+	@Override
+	public List<MyIRPVO> irpList(Map<String, Object> map) {
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.irpList", map);
+	}
+	
+	// 공지사항 글 개수 구하기(민재)
+	@Override
+	public int getNoticeCnt() {
+		
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeCnt");
+	}
+	
+	// 공지사항 리스트 불러오기(민재)
+	public List<NoticeVO> getNoticeList(Map<String, Integer> map){
+
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getNoticeList", map);
+	}
+	
+	// 공지사항 조회수 증가(민재)
+	public int addNoticeReadCnt(int notice_num) {
+		
+		return sqlSession.update("com.spring.bank.user.dao.CustomerDAO.addNoticeReadCnt", notice_num);
+		
+	}
+	
+	// 공지사항 상세페이지(민재)
+	public NoticeVO getNoticeDetail(int notice_num) {
+		
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeDetail", notice_num);
+		
+	}
 }

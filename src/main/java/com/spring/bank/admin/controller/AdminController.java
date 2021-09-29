@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.spring.bank.HomeController;
 import com.spring.bank.admin.service.AdminServiceImpl;
+import com.spring.bank.user.service.CustomerServiceImpl;
 import com.spring.bank.util.ImageUploaderHandler;
 
 
@@ -57,10 +57,13 @@ public class AdminController {
 	private static final String IMG_UPLOAD_DIR = "C:\\\\dev88\\\\workspace\\\\SPRING_PJ_ABH\\\\src\\\\main\\\\webapp\\\\resources\\\\images\\\\upload";
     private ImageUploaderHandler uploader;
 	
-    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     
 	@Autowired
 	private AdminServiceImpl service;
+	
+	@Autowired
+	private CustomerServiceImpl service2;
 	
 	/*
 	// 스케쥴링 테스트
@@ -523,4 +526,105 @@ public class AdminController {
 		return "manager/loan/loanList";
 	}
 	//!지은!
+	
+	// 공지사항리스트 - 관리자(민재)
+	@RequestMapping("mngNoticeList")
+	public String noticeList(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeList.us]");
+		
+		service2.noticeList(req, model);
+		
+		// 이동할 페이지
+		return "customer/notice/noticeList";
+	}
+
+	// 공지사항 글쓰기 - 관리자(민재)
+	@RequestMapping("mngNoticeWrite")
+	public String mngNoticeWrite(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeWrite.us]");
+		
+		req.setAttribute("notice_writer", req.getSession().getAttribute("adminID"));
+		req.setAttribute("pageNum", req.getParameter("pageNum"));
+		System.out.println("mngNoticeWrite.do 끝");
+		// 이동할 페이지
+		return "manager/notice/mngNoticeWrite";
+	}
+	
+	// 공지사항 글쓰기처리 - 관리자(민재)
+	@RequestMapping("mngNoticeWriteAction")
+	public String mngNoticeWriteAction(HttpServletRequest req, Model model) {
+		System.out.println("글쓰기처리 시작");
+		logger.info("[url ==> /mngNoticeWriteAction.us]");
+		
+		service.mngNoticeWriteAction(req, model);
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeWriteAction";
+	}
+	
+	// 공지사항 수정하기(비밀번호인증) - 관리자(민재)
+	@RequestMapping("mngNoticeModify")
+	public String mngNoticeModify(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeModify.us]");
+		
+		req.setAttribute("notice_num", Integer.parseInt(req.getParameter("notice_num")));
+		req.setAttribute("pageNum", Integer.parseInt(req.getParameter("pageNum")));
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeModify";
+	}
+	 
+	// 공지사항 수정페이지
+	@RequestMapping("mngNoticeModifyDetail")
+	public String mngNoticeModifyDetail(HttpServletRequest req, Model model) {
+		System.out.println("안떠..");
+		logger.info("[url ==> /mngNoticeModifyDetail.us]");
+		
+		service.mngNoticeModifyDetail(req, model);
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeModifyDetail";
+	}
+	 
+	// 공지사항  수정처리 
+	@RequestMapping("mngNoticeModifyAction")
+	public String mngNoticeModifyAction(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeModifyAction.us]");
+		
+		service.mngNoticeModifyAction(req, model);
+		
+		// 이동할 페이지 
+		return "manager/notice/mngNoticeModifyAction";
+	}
+	
+	// 공지사항 삭제하기(비밀번호인증) - 관리자(민재)
+	@RequestMapping("mngNoticeDelete")
+	public String mngNoticeDelete(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeDelete.us]");
+		
+		req.setAttribute("notice_num", Integer.parseInt(req.getParameter("notice_num")));
+		req.setAttribute("pageNum", Integer.parseInt(req.getParameter("pageNum")));
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeDelete";
+	}
+	
+	// 공지사항 삭제처리 
+	@RequestMapping("mngNoticeDeleteAction")
+	public String mngNoticeDeleteAction(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeDeleteAction.us]");
+		
+		service.mngNoticeDeleteAction(req, model);
+		
+		// 이동할 페이지 
+		return "manager/notice/mngNoticeDeleteAction";
+	}
+	
+	
 }

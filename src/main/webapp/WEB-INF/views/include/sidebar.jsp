@@ -259,7 +259,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="noticeList.do">
 											<span class="sub-item">공지사항</span>
 										</a>
 									</li>

@@ -250,7 +250,6 @@
     </insert>
 
 	<!-- 지은 -->
-	
 	<!-- 대출 상품 개수 -->
 	<select id="getLoanProductCnt" resultType="int">
 		SELECT COUNT(*) FROM loan_product
@@ -566,6 +565,33 @@
 			   AND rNum <= #{end}
 		]]>
     </select>
-    
 	<!-- 지은 -->
+	
+	<!-- 공지사항 쓰기 처리(민재) -->
+	<insert id="mngNoticeWriteAction" parameterType="com.spring.bank.user.vo.NoticeVO">
+		INSERT INTO NOTICE
+		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0, #{notice_date})
+	</insert>
+	
+	<!-- 공지사항 - 비밀번호 인증(민재) -->
+	<select id="noticePWDCheck" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) FROM NOTICE WHERE notice_num = #{notice_num} AND notice_password = #{notice_password}
+	</select>
+	
+	<!-- 공지사항 상세페이지(민재) -->
+	<select id="getNoticeDetail" parameterType="int" resultType="com.spring.bank.user.vo.NoticeVO">
+		SELECT * FROM NOTICE WHERE notice_num = #{notice_num}
+	</select>
+	
+	<!-- 공지사항 수정처리(민재) -->
+	<update id="noticeModifyAction" parameterType="com.spring.bank.user.vo.NoticeVO">
+		UPDATE NOTICE SET notice_subject = #{notice_subject}, notice_password = #{notice_password}, notice_content = #{notice_content}
+		 WHERE notice_num = #{notice_num}
+	</update>
+	
+	<!-- 공지사항 삭제처리(민재) -->
+	<delete id="noticeDeleteAction" parameterType="int">
+		DELETE FROM NOTICE WHERE notice_num = #{notice_num}
+	</delete>
+	
 </mapper>

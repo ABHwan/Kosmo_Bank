@@ -121,4 +121,26 @@ public interface CustomerService {
 	
 	// 가계부 내역 조회
 	public void getAccountBook(HttpServletRequest req, Model model);
+
+	// 예금리스트처리(민재)
+	public void myDepositList(HttpServletRequest req, Model model);
+	
+	// 예금서브리스트처리(민재)
+	public void myDepositSubList(HttpServletRequest req, Model model);
+	
+	// 적금리스트처리(민재)
+	public void mySavingList(HttpServletRequest req, Model model);
+	
+	// 적금서브리스트처리(민재)
+	public void mySavingSubList(HttpServletRequest req, Model model);
+	
+	// 연금리스트처리(민재)
+	public void myIrpList(HttpServletRequest req, Model model);
+	
+	// 공지사항리스트(민재)
+	public void noticeList(HttpServletRequest req, Model model);
+	
+	// 공지사항상세페이지(민재)
+	public void noticeDetailAction(HttpServletRequest req, Model model);
+	
 }

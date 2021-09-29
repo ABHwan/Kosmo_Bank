@@ -11,6 +11,7 @@ import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -156,4 +157,20 @@ public interface AdminDAO {
 	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
 
 	public int getLoanProductCnt(); 
+	
+	// 공지사항 쓰기 처리(민재)
+	public int mngNoticeWriteAction(NoticeVO vo);
+	
+	// 공지사항 - 비밀번호 인증(민재)
+	public int noticePWDCheck(Map<String, Object> map);
+	
+	// 공지사항 상세페이지(민재)
+	public NoticeVO getNoticeDetail(int notice_num);
+	
+	// 공지사항 수정처리(민재)
+	public int noticeModifyAction(NoticeVO vo);
+
+	// 공지사항 수정처리(민재)
+	public int noticeDeleteAction(int notice_num);
+
 }

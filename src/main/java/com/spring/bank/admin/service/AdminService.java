@@ -77,4 +77,16 @@ public interface AdminService {
 	
 	// 관리자 페이지 TEST계좌생성(복환)
 	public int insertTestAccount(HttpServletRequest req, Model model);
+	
+	// 공지사항 쓰기 처리(민재)
+	public void mngNoticeWriteAction(HttpServletRequest req, Model model);
+	
+	// 공지사항 수정(민재)
+	public void mngNoticeModifyDetail(HttpServletRequest req, Model model);
+	
+	// 공지사항 수정처리(민재)
+	public void mngNoticeModifyAction(HttpServletRequest req, Model model);
+	
+	// 공지사항 삭제처리(민재)
+	public void mngNoticeDeleteAction(HttpServletRequest req, Model model);
 }

@@ -13,6 +13,10 @@ import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.user.vo.MyDepositVO;
+import com.spring.bank.user.vo.MyIRPVO;
+import com.spring.bank.user.vo.MySavingVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -196,4 +200,33 @@ public interface CustomerDAO {
 
 	public int getLoanHistoryCnt(String member_id);	
 
+	// 회원이름 불러오기(민재)
+	public String getName(String strId);
+	
+	// 예금리스트 불러오기(민재)
+	public List<MyDepositVO> depositList(Map<String, Object> map);
+
+	// 예금서브리스트 불러오기(민재)
+	public List<MyDepositVO> depositSubList(Map<String, Object> map);
+	
+	// 적금리스트 불러오기(민재)
+	public List<MySavingVO> savingList(Map<String, Object> map);
+
+	// 적금서브리스트 불러오기(민재)
+	public List<MySavingVO> savingSubList(Map<String, Object> map);
+	
+	// 연금리스트 불러오기(민재)
+	public List<MyIRPVO> irpList(Map<String, Object> map);
+
+	// 공지사항 글 개수 구하기(민재)
+	public int getNoticeCnt();
+	
+	// 공지사항 리스트 불러오기(민재)
+	public List<NoticeVO> getNoticeList(Map<String, Integer> map); 
+	
+	// 공지사항 조회수 증가(민재)
+	public int addNoticeReadCnt(int notice_num);
+	
+	// 공지사항 상세 페이지(민재)
+	public NoticeVO getNoticeDetail(int notice_num);
 }

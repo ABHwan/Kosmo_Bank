@@ -747,6 +747,91 @@ public class CustomerController {
 		return "customer/bank/transfer_one_to_num";
 	}
 
+	
+	// 예금리스트(민재)
+	@RequestMapping("deposit.do")
+	public String deposit(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /deposit.us]");
+		
+		service.myDepositList(req, model);
+		
+		// 이동할 페이지
+		return "customer/myaccount/myDepositList";
+	}
+	
+	// 예금서브리스트(민재)
+	@RequestMapping("myDepositSubList.do")
+	public String subList(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /myDepositSubList.us]");
+		
+		service.myDepositSubList(req, model);
+		
+		// 이동할 페이지
+		return "customer/myaccount/myDepositSubList";
+	}
+	
+	// 적금리스트(민재)
+	@RequestMapping("saving.do")
+	public String saving(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /saving.us]");
+		
+		service.mySavingList(req, model);
+		
+		// 이동할 페이지
+		return "customer/myaccount/mySavingList";
+	}
+	
+	// 적금서브리스트(민재)
+	@RequestMapping("mySavingSubList.do")
+	public String mySavingSubList(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /myDepositSubList.us]");
+		
+		service.mySavingSubList(req, model);
+		
+		// 이동할 페이지
+		return "customer/myaccount/mySavingSubList";
+	}
+	
+	// 연금리스트(민재)
+	@RequestMapping("irp.do")
+	public String irp(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /irp.us]");
+		
+		service.myIrpList(req, model);
+		
+		// 이동할 페이지
+		return "customer/myaccount/myIRPList";
+	} 
+	
+	// 공지사항리스트(민재)
+	@RequestMapping("noticeList.do")
+	public String noticeList(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /noticeList.us]");
+		
+		service.noticeList(req, model);
+		
+		// 이동할 페이지
+		return "customer/notice/noticeList";
+	}
+	
+	// 공지사항상세페이지(민재)
+	@RequestMapping("noticeDetail.do")
+	public String noticeDetail(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /noticeList.us]");
+		
+		service.noticeDetailAction(req, model);
+		
+		// 이동할 페이지
+		return "customer/notice/noticeDetail";
+	}
+
 	// 회원 이체(유성)
 	@RequestMapping("transfer_confirm")
 	public String transfer_confirm(HttpServletRequest req, Model model) {
