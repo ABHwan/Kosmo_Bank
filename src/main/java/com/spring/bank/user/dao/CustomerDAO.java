@@ -97,15 +97,18 @@ public interface CustomerDAO {
 	// 적금 상품 조회
 	public List<SavingProductVO> getSavingList(Map<String, Integer> map);
 	
-	// 관리자 페이지 적금 상품 수(검색결과수)
+	// 적금 상품 수(검색결과수)
 	public int getSavingProductSearchCnt(String search);
 	
-	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	// 적금 상품 검색(입력받아서 검색)
 	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map);
 	
 	// 적금 상품 상세 보기
 	public SavingProductVO getSavingDetail(String saving_product_name);
 
+	// 적금 신청
+	public int savingProductAction(SavingProductVO vo);
+	
 	// 환율 저장 후 출력
 	public int exchangeIn(CrawlerVO vo);
 	

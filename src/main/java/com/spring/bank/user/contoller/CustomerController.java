@@ -46,7 +46,7 @@ public class CustomerController {
 		System.out.println("url ==> index");
 		//service.test(req, model);
 		return "index";
-	}  
+	}
 	
 	// 회원가입 페이지
 	@RequestMapping("register.do")
@@ -389,15 +389,22 @@ public class CustomerController {
 	}
 	
 	//적금 상품 신청(지호)
-	@RequestMapping("savingProductAction")
-	public String savingProductAction(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductInsert");
+	@RequestMapping("savingProductInsert")
+	public String savingProductInsert(HttpServletRequest req, Model model) {
+		logger.info("url => savingProductInsert");
 		
 		service.savingProductAction(req, model);
 		
-		return "customer/savingProduct/savingProductAction";
+		return "customer/savingProduct/savingProductInsert";
 	}	
 	
+	// 적금 상품 신청 처리(지호)
+	@RequestMapping("savingProductAction")
+	public String savingProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => savingProductAction");
+		
+		return "customer/savingProduct/savingProductAction";
+	}
 	//qna 게시판(지현)
 	@RequestMapping("qnaList")
 	public String qnaList(HttpServletRequest req, Model model) {

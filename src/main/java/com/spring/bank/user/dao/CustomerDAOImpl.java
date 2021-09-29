@@ -255,7 +255,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 		SavingProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getSavingDetail",saving_product_name);
 		System.out.println("상세보기 : "+vo.getSaving_product_name());
 		return vo;
-	}	
+	}
+
+	// 적금 신청
+	@Override
+	public int savingProductAction(SavingProductVO vo) {
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.savingProductAction",vo);
+	}
+
+	
 	// 환율 저장 후 출력
 	@Override
 	public int exchangeIn(CrawlerVO vo) {

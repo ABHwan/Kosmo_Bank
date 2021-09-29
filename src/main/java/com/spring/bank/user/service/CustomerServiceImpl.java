@@ -1254,16 +1254,17 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		//작은바구니 생성
 		SavingProductVO vo = new SavingProductVO();
-       vo.setSaving_product_name(req.getParameter("saving_product_name"));
-       vo.setSaving_product_summary(req.getParameter("saving_product_summary"));
-       vo.setSaving_product_interRate(Float.parseFloat(req.getParameter("saving_product_interRate")));
-       vo.setSaving_product_type(Integer.parseInt(req.getParameter("saving_product_type")));
-       vo.setSaving_product_maxDate(Integer.parseInt(req.getParameter("saving_product_maxDate")));
-       vo.setSaving_product_minDate(Integer.parseInt(req.getParameter("saving_product_minDate")));
-       vo.setSaving_product_minPrice(Integer.parseInt(req.getParameter("saving_product_minPrice")));
-       vo.setSaving_product_explanation(req.getParameter("saving_product_explanation"));
-       vo.setSaving_product_notice(req.getParameter("saving_product_notice"));
-       vo.setSaving_product_bankCode(Integer.parseInt(req.getParameter("saving_product_bankCode")));
+        vo.setSaving_product_name(req.getParameter("saving_product_name"));
+        vo.setSaving_product_interRate(Float.parseFloat(req.getParameter("saving_product_interRate")));
+        vo.setSaving_product_type(Integer.parseInt(req.getParameter("saving_product_type")));
+        vo.setSaving_product_maxDate(Integer.parseInt(req.getParameter("saving_product_maxDate")));
+        vo.setSaving_product_minDate(Integer.parseInt(req.getParameter("saving_product_minDate")));
+        vo.setSaving_product_minPrice(Integer.parseInt(req.getParameter("saving_product_minPrice")));
+        vo.setSaving_product_bankCode(Integer.parseInt(req.getParameter("saving_product_bankCode")));
+        
+        int insertCnt = dao.savingProductAction(vo);
+        
+        model.addAttribute("inserCnt", insertCnt);
 	}	
 	
 	
