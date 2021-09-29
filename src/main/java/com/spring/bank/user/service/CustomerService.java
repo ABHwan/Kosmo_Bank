@@ -103,4 +103,13 @@ public interface CustomerService {
 	
 	// db json 넣기
 	//public void test(HttpServletRequest req, Model model);
+
+	// 가계부 내역 추가
+	public void insertAccountBook(HttpServletRequest req, Model model);
+	
+	// 가계부 내역 삭제
+	public void deleteAccountBook(HttpServletRequest req, Model model);
+	
+	// 가계부 내역 조회
+	public void getAccountBook(HttpServletRequest req, Model model);
 }

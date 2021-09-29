@@ -81,10 +81,16 @@ public class AdminDAOImpl implements AdminDAO {
 		return sqlSession.getMapper(AdminDAO.class).searchDepositProduct(map);
 	}
 		
+	// 관리자 페이지 예금 상품 상세조회
+	@Override
+	public DepositProductVO getDepositProductInfo(String deposit_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).getDepositProductInfo(deposit_product_name);
+	}
+	
 	// 관리자 페이지 예금 상품 수정
 	@Override
 	public int updateDepositProduct(DepositProductVO vo) {
-		return 0;
+		return sqlSession.getMapper(AdminDAO.class).updateDepositProduct(vo);
 	}
 
 	// // 관리자 페이지 예금 상품 삭제

@@ -61,6 +61,11 @@
 												<span class="link-collapse">나의 금융상품</span>
 											</a>
 										</li>
+										<li>
+											<a href="${path}customer/accountBook">
+												<span class="link-collapse">나만의 가계부</span>
+											</a>
+										</li>
 									</c:if>
 								</ul>
 							</div>

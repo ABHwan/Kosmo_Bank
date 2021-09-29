@@ -134,6 +134,9 @@
 				           			<c:when test="${dto.deposit_product_bankCode==5}">
 				           				하나은행
 				           			</c:when>
+				           			<c:when test="${vo.deposit_product_bankCode==6}">
+				           				코스모은행
+				           			</c:when>
 				           		</c:choose>
 				           </td>
 				           <td>${dto.deposit_product_date}</td>
@@ -143,7 +146,7 @@
 				      
 				      <!-- 게시글이 없으면 -->
 			          <c:if test="${cnt == 0}">
-			          	<td colspan="6" align="center">
+			          	<td colspan="11" align="center">
 								검색된 예금 상품이 없습니다.
 						</td>
 			          </c:if>

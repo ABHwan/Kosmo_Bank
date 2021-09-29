@@ -99,7 +99,7 @@
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>
-				           <td>${dto.deposit_product_name}</td>
+				           <td><a href="depositProductInfo?deposit_product_name=${dto.deposit_product_name}&pageNum=${pageNum}&number=${number + 1}">${dto.deposit_product_name}</a></td>
 				           <td>${dto.deposit_product_summary}</td>
 				           <td>${dto.deposit_product_interRate}%</td>
 				           <td>
@@ -134,6 +134,9 @@
 				           			<c:when test="${dto.deposit_product_bankCode==5}">
 				           				하나은행
 				           			</c:when>
+				           			<c:when test="${vo.deposit_product_bankCode==6}">
+				           				코스모은행
+				           			</c:when>
 				           		</c:choose>
 				           </td>
 				           <td>${dto.deposit_product_date}</td>
@@ -143,7 +146,7 @@
 				      
 				      <!-- 게시글이 없으면 -->
 			          <c:if test="${cnt == 0}">
-			          	<td colspan="6" align="center">
+			          	<td colspan="11" align="center">
 								등록된 예금 상품이 없습니다.
 						</td>
 			          </c:if>
@@ -188,7 +191,7 @@
 			        
 			       <div class="contents__bottom">
 			          <div class="bottom__one">
-			           <!--  <button onclick="javascript:fn_process('1')">회원정보 수정</button> -->
+			           <!--  <button onclick="javascript:fn_process('1')">예금정보 수정</button> -->
 			            <button onclick="javascript:fn_process('2')">예금상품 삭제</button>
 			          </div>
 			        </div>

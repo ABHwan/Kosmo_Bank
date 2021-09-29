@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
+import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -353,4 +354,25 @@ public class CustomerDAOImpl implements CustomerDAO {
 //		
 //		return dao.jsonIn(list);
 //	}		
+	
+	// 가계부 내역추가
+	public int insertAccountBook(AccountBookVO vo) {
+		return sqlSession.getMapper(CustomerDAO.class).insertAccountBook(vo);
+	}
+	
+	// 가계부 내역삭제
+	public int deleteAccountBook(AccountBookVO vo) {
+		return sqlSession.getMapper(CustomerDAO.class).deleteAccountBook(vo);
+	}
+	
+	// 가계부 조회
+	public ArrayList<AccountBookVO> getAccountBook(String member_id) {
+		return sqlSession.getMapper(CustomerDAO.class).getAccountBook(member_id);
+	}
+
+	// 가계부 통계조회
+	public ArrayList<AccountBookVO> getAccountBookReport(String member_id) {
+		return sqlSession.getMapper(CustomerDAO.class).getAccountBookReport(member_id);
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
+import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -143,4 +144,16 @@ public interface CustomerDAO {
 	
 	// json db에 넣기
 	//public int jsonIn(List<String> list);
+	
+	// 가계부 내역추가
+	public int insertAccountBook(AccountBookVO vo);
+	
+	// 가계부 내역삭제
+	public int deleteAccountBook(AccountBookVO vo);
+	
+	// 가계부 조회
+	public ArrayList<AccountBookVO> getAccountBook(String member_id);
+
+	// 가계부 통계조회
+	public ArrayList<AccountBookVO> getAccountBookReport(String member_id);
 }

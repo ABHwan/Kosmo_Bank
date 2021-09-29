@@ -1,0 +1,241 @@
+input {
+  outline: none;
+}
+
+button {
+  outline: none;
+  background: none;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+#header {
+  display: flex;
+  margin-bottom: 60px;
+}
+
+#header .header__container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+#header h1 > a {
+  color: #151515;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#header h1 > a > span {
+  color: #189cc4;
+}
+
+#main {
+  margin-bottom: 60px;
+}
+
+#main .container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+#main .title {
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+.main__form {
+  display: flex;
+  margin-bottom: 20px;
+  padding: 60px;
+  border: 1px solid lightgray;
+}
+
+.form__row {
+  display: flex;
+  margin-bottom: 26px;
+  padding-left: 20px;
+}
+
+.main__form input {
+  width: 70%;
+  height: 40px;
+  font-size: 16px;
+}
+
+.form__row.tel input,
+.form__row.tel select,
+.row__birth input {
+  width: 30%;
+}
+
+.form__row input.male,
+.form__row input.female {
+  width: 20%;
+}
+
+.check__male,
+.check__female {
+  display: flex;
+  align-items: center;
+  width: 30%;
+}
+
+.check__male > span,
+.check__female > span {
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.row__birth,
+.row__tel,
+.row__zipCode {
+  display: flex;
+  justify-content: space-between;
+  /* width: 70%; */
+}
+
+.row__zipCode input {
+  width: 70%;
+}
+
+.row__zipCode button {
+  width: 20%;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid black;
+}
+
+.form__row.tel select {
+  outline: none;
+}
+
+.form__row.submit .submit {
+  width: 100%;
+  margin: 20px 0;
+  border: 0;
+  background-color: #fff;
+  border: 1px solid lightgray;
+  color: #151515;
+  font-weight: bold;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.form__row.submit .submit:hover {
+  background-color: #151515;
+  color: #fff;
+}
+
+.main__form label {
+  display: inline-block;
+  width: 30%;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+table {
+  width: 100%;
+  height: 1000px;
+}
+
+th {
+  width: 20%;
+  height: 40px;
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+td {
+  width: 60%;
+  height: 40px;
+  font-size: 20px;
+}
+
+td input {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+}
+
+/*intro */
+.form__row.intro {
+  padding-top: 20px;
+}
+.form__row.intro th {
+  width: 100%;
+}
+
+/* id */
+.form__row.input td {
+  display: flex;
+}
+.form__row.input td input:first-child {
+  width: 80%;
+}
+.form__row.input td input:last-child {
+  width: 40%;
+}
+
+/* gender */
+.form__row.gender td {
+  font-size: 20px;
+}
+.form__row.gender td input {
+  width: 20px;
+  margin: 0 10px;
+}
+.form__row.gender td input:last-child {
+  margin-left: 30%;
+}
+
+/* email */
+.form__row.email td {
+  display: flex;
+}
+
+/* map */
+.form__row.map td {
+  display: flex;
+}
+
+/* submit */
+.form__row.submit th {
+  display: flex;
+  width: 80%;
+}
+
+.form__row.submit th input {
+  height: 100px;
+  font-size: 16px;
+}
+
+.form__row.submit th input:nth-child(2n) {
+  margin: 20px;
+}
+
+@media screen and (max-width: 1023px) {
+  #main .container {
+    width: 80%;
+  }
+  #header .header__container {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #main .container {
+    width: 95%;
+  }
+  #header {
+    width: 95%;
+  }
+}
