@@ -18,7 +18,10 @@ public interface CustomerDAO {
 
 	// ID 중복확인 처리
 	public int idCheck(Map<String, Object> map);
-
+	
+	// 명의 중복확인 처리
+	public int duplicateCheck(Map<String, Object> map);
+	
 	// 회원가입 처리
 	public int insertUser(UserVO vo);
 

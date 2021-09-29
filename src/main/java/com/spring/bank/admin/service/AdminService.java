@@ -74,4 +74,7 @@ public interface AdminService {
 	
 	// 관리자 페이지 회원계좌검색목록
 	public void searchCustomerAccountList(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 TEST계좌생성(복환)
+	public int insertTestAccount(HttpServletRequest req, Model model);
 }

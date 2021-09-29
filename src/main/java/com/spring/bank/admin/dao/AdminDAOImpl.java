@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -233,5 +234,13 @@ public class AdminDAOImpl implements AdminDAO {
 	// 관리자 페이지 회원계좌 검색결과목록
 	public ArrayList<CustomerAccountVO> getSearchCustomerAccountList(Map<String, Object> map){
 		return sqlSession.getMapper(AdminDAO.class).getSearchCustomerAccountList(map);
+	}
+
+	// 관리자 페이지 TEST 계좌 생성(복환)
+	@Override
+	public int insertTestAccount(AccountVO vo) {
+		System.out.println("DAO => insertTestAccount");
+		
+		return sqlSession.getMapper(AdminDAO.class).insertTestAccount(vo);
 	}
 }
