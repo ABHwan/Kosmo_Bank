@@ -166,30 +166,30 @@
 							<div class="collapse" id="tables">
 								<ul class="nav nav-collapse">
 									<li>
-		                               <a href="forms/forms.html">
+		                               <a href="transfer">
 		                                  <span class="sub-item">이체</span>
 		                               </a>
 		                            </li>
 		                            <li>
-		                               <a href="forms/forms.html">
-		                                  <span class="sub-item">다중이체</span>
+		                               <a href="transfer_one_to_num">
+		                                  <span class="sub-item">다계좌이체</span>
 		                               </a>
 		                            </li>
 									<li>
-										<a href="#">
-											<span class="sub-item">이체내역</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
+										<a href="auto_transfer">
 											<span class="sub-item">자동이체</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="transfer_List">
+											<span class="sub-item">이체내역</span>
+										</a>
+									</li>
+									<li>
+										<a href="auto_transfer_List">
 											<span class="sub-item">자동이체 관리</span>
 										</a>
-									</li>									
+									</li>							
 								</ul>
 							</div>
 						</li>
