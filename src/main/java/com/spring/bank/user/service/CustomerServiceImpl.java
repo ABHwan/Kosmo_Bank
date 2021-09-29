@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import com.spring.bank.customer.encrypt.UserAuthenticationService;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
+import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
@@ -1126,5 +1127,46 @@ public class CustomerServiceImpl implements CustomerService {
 			
 		}
 		model.addAttribute("list", list);
+	}
+	
+	// 가계부 내역 추가
+	public void insertAccountBook(HttpServletRequest req, Model model) {
+		// 로그인한 아이디 받아오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+	
+		AccountBookVO vo = new AccountBookVO();
+		vo.setMember_id(member_id);
+		vo.setIncome(Integer.parseInt(req.getParameter("income")));
+		vo.setExpense(Integer.parseInt(req.getParameter("expense")));
+		vo.setRegister_date(req.getParameter("register_date"));
+	
+		int insertCnt = dao.insertAccountBook(vo);
+		System.out.println("가계부내역추가 insertCnt : " + insertCnt);
+		model.addAttribute("insertCnt", insertCnt);
+	}
+	
+	// 가계부 내역 삭제
+	public void deleteAccountBook(HttpServletRequest req, Model model) {
+		// 로그인한 아이디 받아오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		AccountBookVO vo = new AccountBookVO();
+		vo.setMember_id(member_id);	
+		vo.setRegister_date(req.getParameter("register_date"));
+		
+		int deleteCnt = dao.deleteAccountBook(vo);
+		System.out.println("가계부내역삭제 deleteCnt : " + deleteCnt);
+		model.addAttribute("deleteCnt", deleteCnt);
+	}
+	
+	// 가계부 내역 조회
+	public void getAccountBook(HttpServletRequest req, Model model) {
+		// 로그인한 아이디 받아오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		ArrayList<AccountBookVO> list = dao.getAccountBook(member_id);
+		ArrayList<AccountBookVO> report = dao.getAccountBookReport(member_id);
+		
+		model.addAttribute("report", report);
+		model.addAttribute("list", list);
+		System.out.println("report 사이즈 : " + report.size());
 	}
 }

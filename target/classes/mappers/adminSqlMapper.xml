@@ -85,15 +85,22 @@
 		]]>	
 	</select>
 	
+	<!-- 관리자 페이지 예금 상품 상세조회 -->
+	<select id="getDepositProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.DepositProductVO">
+		SELECT * FROM deposit_product WHERE deposit_product_name=#{deposit_product_name}
+	</select>
+	
 	<!-- 관리자 페이지 예금 상품 수정 -->
 	<update id="updateDepositProduct" parameterType="com.spring.bank.product.vo.DepositProductVO">
-	
+		UPDATE deposit_product set deposit_product_summary=#{deposit_product_summary}, deposit_product_interRate=#{deposit_product_interRate}, deposit_product_type=#{deposit_product_type}, deposit_product_maxDate=#{deposit_product_maxDate}, deposit_product_minDate=#{deposit_product_minDate}, deposit_product_minPrice=#{deposit_product_minPrice}, deposit_product_explanation=#{deposit_product_explanation}, deposit_product_notice=#{deposit_product_notice}
+			WHERE deposit_product_name=#{deposit_product_name}
 	</update>
 	
 	<!-- 관리자 페이지 예금 상품 삭제 -->
 	<delete id="deleteDepositProduct" parameterType="String">
 		DELETE FROM deposit_product WHERE deposit_product_name IN ( #{deposit_product_name} )
 	</delete>
+	
 	<!-- 진지현 작성 -->
 	<!-- 문의사항 갯수 -->
 	<select id="getInquiryCnt" resultType="int" >

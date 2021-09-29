@@ -471,11 +471,39 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 	
+	// 관리자 페이지 예금 상품 상세 조회
+	@Override
+	public void getDepositProductInfo(HttpServletRequest req, Model model) {
+		String deposit_product_name = req.getParameter("deposit_product_name");
+		int pageNum= Integer.parseInt(req.getParameter("pageNum"));
+		System.out.println(deposit_product_name+" 상품 상세조회");
+		DepositProductVO vo = dao.getDepositProductInfo(deposit_product_name);
+		model.addAttribute("vo", vo);
+		model.addAttribute("pageNum", pageNum);
+	}
+		
 	// 관리자 페이지 예금 상품 수정
 	@Override
 	public void updateDepositProduct(HttpServletRequest req, Model model) {
-		// TODO Auto-generated method stub
+
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		DepositProductVO vo = new DepositProductVO();
+		vo.setDeposit_product_name(req.getParameter("deposit_product_name"));
+		vo.setDeposit_product_summary(req.getParameter("deposit_product_summary"));
+		vo.setDeposit_product_interRate(Float.parseFloat(req.getParameter("deposit_product_interRate")));
+		vo.setDeposit_product_type(Integer.parseInt(req.getParameter("deposit_product_type")));
+		vo.setDeposit_product_maxDate(Integer.parseInt(req.getParameter("deposit_product_maxDate")));
+		vo.setDeposit_product_minDate(Integer.parseInt(req.getParameter("deposit_product_minDate")));
+		vo.setDeposit_product_minPrice(Integer.parseInt(req.getParameter("deposit_product_minPrice")));
+		vo.setDeposit_product_explanation(req.getParameter("deposit_product_explanation"));
+		vo.setDeposit_product_notice(req.getParameter("deposit_product_notice"));
+		vo.setDeposit_product_bankCode(Integer.parseInt(req.getParameter("deposit_product_bankCode")));
 		
+		int updateCnt = dao.updateDepositProduct(vo);
+		System.out.println("예금 상품 updateCnt : " + updateCnt);
+		System.out.println("pageNum : " + pageNum);
+		model.addAttribute("updateCnt", updateCnt);
+		model.addAttribute("pageNum", pageNum);
 	}
 
 	// 관리자 페이지 예금 상품 삭제

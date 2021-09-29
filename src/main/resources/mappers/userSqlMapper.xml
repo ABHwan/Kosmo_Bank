@@ -194,5 +194,36 @@
     	SELECT exchange_rate 
     	  FROM exchange_rate
     	 WHERE exchange_country=#{exchange_country}
-    </select>	
+    </select>
+    
+    <!-- 가계부 내역추가 -->
+    <insert id="insertAccountBook" parameterType="com.spring.bank.user.vo.AccountBookVO">
+    	INSERT INTO ACCOUNTBOOK(ACCOUNTBOOK_ID, MEMBER_ID, EXPENSE, INCOME, REGISTER_DATE)
+		VALUES(SEQ_accountBook_id.nextval,#{member_id},#{expense},#{income},#{register_date} )
+    </insert>
+	
+	<!-- 가계부 내역삭제 -->
+	<delete id="deleteAccountBook" parameterType="com.spring.bank.user.vo.AccountBookVO">
+		DELETE FROM ACCOUNTBOOK 
+		WHERE MEMBER_ID = #{member_id} 
+		AND REGISTER_DATE = #{register_date}
+	</delete>
+	
+	<!-- 가계부 조회 -->
+	<select id="getAccountBook" parameterType="String" resultType="com.spring.bank.user.vo.AccountBookVO">
+		SELECT * 
+		FROM ACCOUNTBOOK 
+		WHERE MEMBER_ID = #{member_id}
+	</select>
+
+	<!-- 가계부 통계조회 -->
+	<select id="getAccountBookReport" parameterType="String" resultType="com.spring.bank.user.vo.AccountBookVO">
+		SELECT 
+			SUBSTR(REGISTER_DATE,0,6) AS REGISTER_DATE,
+			SUM(INCOME) AS INCOME,SUM(EXPENSE) AS EXPENSE,
+			SUM(INCOME - EXPENSE) AS TOTAL
+		FROM ACCOUNTBOOK
+		WHERE MEMBER_ID = #{member_id}
+		GROUP BY SUBSTR(REGISTER_DATE,0,6)
+	</select>
 </mapper>

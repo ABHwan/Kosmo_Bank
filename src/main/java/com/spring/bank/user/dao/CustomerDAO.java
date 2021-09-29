@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
@@ -100,5 +101,17 @@ public interface CustomerDAO {
 	public int exchangeUpd(CrawlerVO vo);
 	
 	// 환율 증감식 -> db에 있는 정보 출력
-	public String exchangeVary(String country);	
+	public String exchangeVary(String country);
+	
+	// 가계부 내역추가
+	public int insertAccountBook(AccountBookVO vo);
+	
+	// 가계부 내역삭제
+	public int deleteAccountBook(AccountBookVO vo);
+	
+	// 가계부 조회
+	public ArrayList<AccountBookVO> getAccountBook(String member_id);
+
+	// 가계부 통계조회
+	public ArrayList<AccountBookVO> getAccountBookReport(String member_id);
 }
