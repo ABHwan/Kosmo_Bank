@@ -10,7 +10,7 @@
 <body>
 	<!-------------------- header 시작 ------------------>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		
 		<!-- 메인 폼-->
@@ -35,7 +35,7 @@
 				</section>
 				</div>
 			</div>
-		<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	</div>
 	
 	<!--   Core JS Files   -->

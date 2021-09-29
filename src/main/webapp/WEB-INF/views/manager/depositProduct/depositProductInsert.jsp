@@ -7,11 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 페이지 - 예금 상품 등록</title>
+<!-- CSS -->
+<link rel="stylesheet" href="${rePath}css/manager/insertProduct.css" />
 <script src="${rePath}js/script.js"></script>
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 
 		<!-- 메인 콘텐츠 -->
@@ -70,16 +72,16 @@
 							</tr>
 							
 							<tr class="form__row">
-								<th>최대예금기간(~36개월)</th>
+								<th>최소예금기간(1개월~)</th>
 								<td>
-									<input class="input" type="text" name="deposit_product_maxDate">
+									<input class="input" type="text" name="deposit_product_minDate">
 								</td>
 							</tr>
 							
 							<tr class="form__row">
-								<th>최소예금기간(1개월~)</th>
+								<th>최대예금기간(~36개월)</th>
 								<td>
-									<input class="input" type="text" name="deposit_product_minDate">
+									<input class="input" type="text" name="deposit_product_maxDate">
 								</td>
 							</tr>
 							
@@ -114,6 +116,7 @@
 										<option value="3">농협은행</option>
 										<option value="4">신한은행</option>
 										<option value="5">하나은행</option>
+										<option value="6">코스모은행</option>
 									</select>
 								</td>
 							</tr>
@@ -132,7 +135,7 @@
 		</div>
 	</div>
 	
-	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

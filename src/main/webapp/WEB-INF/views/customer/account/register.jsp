@@ -10,7 +10,14 @@
 	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
  	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<link rel="icon" href="${rePath}images/img/icon.ico" type="image/x-icon"/>
-
+	
+	<!-- 회원본인인증 api 시작 -->
+	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.4.js"></script>
+	<script type="text/javascript" src="${rePath}js/ajax.js"></script>
+	<!-- 회원본인인증 api 끝 -->
+	
+	
+	
 	<!-- Fonts and icons -->
 	<script src="${rePath}js/plugin/webfont/webfont.min.js"></script>
 	<script>
@@ -22,7 +29,7 @@
 			}
 		});
 	</script>
-
+	
 	<!-- CSS Files -->
 	<link rel="stylesheet" href="${rePath}css/bootstrap.min.css">
 	<link rel="stylesheet" href="${rePath}css/atlantis.min.css">
@@ -235,20 +242,18 @@
 			<input type="hidden" name="emailChk" value="0">
 			
 			<!-- 회원인증 토큰 -->
-			<input type="hidden" name="access_token" value="">
-			<input type="hidden" name="refresh_token" value="">
-			<input type="hidden" name="user_seq_no" value="">
+			<input type="hidden" name="unique_key" value="">
 			
 			<table class="register_table">
 				<tr>
 					<th><label for="userName">이름＊</label></th>
-					<td><input type="text" id="userName" name="name" maxlength="20" placeholder="이름" autofocus></td>
+					<td><input type="text" id="userName" name="name" maxlength="20" placeholder="본인인증을 해주세요!" readonly></td>
 				</tr>
 
 				<tr>
 					<th><label for="userBirth">생년월일＊</label></th>
-					<td><input type="date" id="userBirth" name="birth" maxlength="10"
-						placeholder="생년월일"></td>
+					<td><input type="text" id="userBirth" name="birth" maxlength="10"
+						placeholder="본인인증을 해주세요!" readonly></td>
 				</tr>
 
 				<tr>
@@ -256,7 +261,7 @@
 					<td>
 						<div>
 							<input type="text" id="userId" class="userId" name="id" maxlength="50"
-								placeholder="중복체크를 해주세요." onkeyup="confirmId();">   
+								placeholder="중복체크를 해주세요." autofocus onkeyup="confirmId();">   
 							<br>
 							<span id="id_check"></span>
 							<p class="tx_ex">
@@ -293,9 +298,9 @@
 				<tr>
 					<th><label for="userTel">휴대폰 번호＊</label></th>
 					<td>
-						<input type="tel" id="hp1" name="hp1" maxlength="3" onkeyup="nextHp1();"> - 
-						<input type="tel" id="hp2" name="hp2" maxlength="4" onkeyup="nextHp2();"> - 
-						<input type="tel" id="hp3" name="hp3" maxlength="4" onkeyup="nextHp3();">
+						<input type="tel" id="hp" name="hp" maxlength="11" onkeyup="nextHp1();" readonly> 
+						<!-- <input type="tel" id="hp2" name="hp2" maxlength="4" onkeyup="nextHp2();"> - 
+						<input type="tel" id="hp3" name="hp3" maxlength="4" onkeyup="nextHp3();"> -->
 					</td>
 						
 				</tr>
@@ -357,7 +362,7 @@
 				<tr>
 					<td colspan="2"><br>
 						<div class="complete_cancel" align="center">
-							<input type="button" id="pass" name="pass" value="본인인증" onclick="confirmMe();">
+							<input type="button" id="pass" name="pass" value="본인인증" onclick="confirm();">
 						</div>
 					</td>
 				</tr>
@@ -854,20 +859,6 @@
 		});
 	</script>
 	 -->
-	
-	<!-- 회원인증 토큰 -->
-	<script type="text/javascript">
-		$("input[name=ajax_btn]").click(function() {
-			  var at = $("access_token").val();
-			  var rk = $("refresh_token").val();
-			  var un = $("user_seq_no").val();
-			  
-			  console.log(at);
-			  console.log(rk);
-			  console.log(un);
-			
-		});
-	</script>
 	
 </body>
 </html>

@@ -9,7 +9,7 @@
 <title>관리자 페이지 - 예금 상품 조회</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-    
+
 <script type="text/javascript">
       $(function() {
 			$("#all_check").change(function() {
@@ -37,10 +37,11 @@
 		 alert(msg);
 	}
 </script>
+
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 
 		<!-- 메인 콘텐츠 -->
@@ -134,6 +135,9 @@
 				           			<c:when test="${dto.deposit_product_bankCode==5}">
 				           				하나은행
 				           			</c:when>
+				           			<c:when test="${vo.deposit_product_bankCode==6}">
+				           				코스모은행
+				           			</c:when>
 				           		</c:choose>
 				           </td>
 				           <td>${dto.deposit_product_date}</td>
@@ -143,7 +147,7 @@
 				      
 				      <!-- 게시글이 없으면 -->
 			          <c:if test="${cnt == 0}">
-			          	<td colspan="6" align="center">
+			          	<td colspan="11" align="center">
 								검색된 예금 상품이 없습니다.
 						</td>
 			          </c:if>
@@ -199,7 +203,7 @@
 		</div>
 	</div>
 	
-	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

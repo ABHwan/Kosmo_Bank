@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.spring.bank.HomeController;
 import com.spring.bank.admin.service.AdminServiceImpl;
+import com.spring.bank.user.service.CustomerServiceImpl;
 import com.spring.bank.util.ImageUploaderHandler;
+
+
 
 //@WebServlet("시작url") : 웹브라우저의 모든 요청은 하나의 서블릿에서 처리한다. 즉 모든 요청의 단일 진입점에서 시작 url을 지정
 /*
@@ -55,19 +58,31 @@ public class AdminController {
 	private static final String IMG_UPLOAD_DIR = "C:\\\\Dev88\\\\KOSMO_BANK_PJ\\\\src\\\\main\\\\webapp\\\\resources\\\\images\\\\admin\\\\upload";
     private ImageUploaderHandler uploader;
 	
-    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     
 	@Autowired
 	private AdminServiceImpl service;
 	
+	@Autowired
+	private CustomerServiceImpl service2;
+	
+	/*
+	// 스케쥴링 테스트
+	@Scheduled(fixedDelay=60000)
+    public void TestScheduler(){
+		Date date = new Date();
+		SimpleDateFormat format2 = new SimpleDateFormat ( "yyyy년 MM월dd일 HH시mm분ss초");
+        System.out.println("스케줄링 테스트(600000ms -> 10분마다 테스트) 시간 -> " + format2.format(date));
+    }*/
+	
 	// 관리자 페이지
-		@RequestMapping("index")
-		public String index(HttpServletRequest req, Model model) {
-			System.out.println("[index.ad]");
-			
-			// 이동할 페이지
-			return "index(manager)";
-		}
+	@RequestMapping("index")
+	public String index(HttpServletRequest req, Model model) {
+		System.out.println("[index.ad]");
+		
+		// 이동할 페이지
+		return "index(manager)";
+	}
 
 	// 관리자 페이지
 	@RequestMapping("mngPage.do")
@@ -142,7 +157,7 @@ public class AdminController {
 		
 		service.customerList(req, model);
 		return "manager/customerInfo/customerInfo";
-	}
+	}//지호바보
 	
 	// 관리자 - 회원관리 - 회원검색
 	@RequestMapping("customerSearch")
@@ -195,6 +210,30 @@ public class AdminController {
 		return "manager/depositProduct/depositProductSearch";
 	}
 	
+	// 관리자 - 예금 관리 - 상품 상세조회
+	@RequestMapping("depositProductInfo")
+	public String depositProductInfo(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductInfo]");
+		service.getDepositProductInfo(req, model);
+		return "manager/depositProduct/depositProductInfo";
+	}
+	
+	// 관리자 예금 관리 - 상품 수정 페이지
+	@RequestMapping("depositProductUpdate")
+	public String depositProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductUpdate]");
+		service.getDepositProductInfo(req, model);
+		return "manager/depositProduct/depositProductUpdate";
+	}
+	
+	// 관리자 예금 관리 - 상품 수정 처리
+	@RequestMapping("depositProductUpdateAction")
+	public String depositProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductUpdateAction]");
+		service.updateDepositProduct(req, model);
+		return "manager/depositProduct/depositProductUpdateAction";
+	}
+		
 	// 관리자 - 예금 관리 - 상품삭제
 	@RequestMapping("depositProductDelete")
 	public String depositProductDelete(HttpServletRequest req, Model model) {
@@ -436,5 +475,230 @@ public class AdminController {
 		return "manager/qna/faqDeleteAction";
 	}
 
-			
+	// 회원별 계좌목록페이지
+	@RequestMapping("customerAccountInfo")
+	public String customerAccountInfo(HttpServletRequest req, Model model) {
+		logger.info("url => customerAccountInfo");
+		service.customerAccountList(req, model);
+		return "manager/customerInfo/customerAccountInfo";
+	}
+	
+	// 회원별 계좌목록 검색
+	@RequestMapping("customerAccountSearch")
+	public String customerAccountSearch(HttpServletRequest req, Model model) {
+		logger.info("url => customerAccountSearch");
+		service.searchCustomerAccountList(req, model);
+		return "manager/customerInfo/customerAccountSearch";
+	}
+	
+	// 고객 TEST 계좌 추가
+	@RequestMapping("testAccountData")
+	public String testAccountData(HttpServletRequest req, Model model) {
+		
+		
+		return "manager/test/accountData";
+	}
+	
+	// 고객 TEST 계좌 추가
+	@ResponseBody
+	@RequestMapping(value="testAccountInsert", method= {RequestMethod.POST})
+	public int testAccountInsert(HttpServletRequest req, Model model) {
+		System.out.println("url => testAccountInsert");
+		logger.info("url => testAccountInsert");
+		
+		return service.insertTestAccount(req, model);
+	}
+	
+	//!지은!
+	@RequestMapping("loanProductList.do")
+	public String loanProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductList]");
+		service.loanProductList(req, model);
+		return "manager/loan/loanProductList";
+	}
+
+	@RequestMapping("searchLoanProductList.do")
+	public String searchLoanProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /searchLoanProductList]");
+		service.searchLoanProductList(req, model);
+		return "manager/loan/searchLoanProductList";
+	}
+
+	@RequestMapping("loanProductInsert.do")
+	public String loanProductInsert(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductInsert]");
+		return "manager/loan/loanProductInsert";
+	}
+	
+	@RequestMapping("loanProductInsertAction.do")
+	public String loanProductInsertAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductInsertAction]");
+		service.loanProductInsertAction(req, model);
+		return "manager/loan/loanProductInsertAction";
+	}
+
+	@RequestMapping("loanProductUpdate.do")
+	public String loanProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductUpdate]");
+		service.loanProductUpdate(req, model);
+		return "manager/loan/loanProductUpdate";
+	}
+	
+	@RequestMapping("loanProductUpdateAction.do")
+	public String loanProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductUpdateAction]");
+		service.loanProductUpdateAction(req, model);
+		return "manager/loan/loanProductUpdateAction";
+	}
+	
+	@RequestMapping("loanProductDelete.do")
+	public String loanProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanProductDelete]");
+		service.loanProductDelete(req, model);
+		return "manager/loan/loanProductDeleteAction";
+	}
+	
+	@RequestMapping("loanRequestList.do")
+	public String loanRequestList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanRequestList(req, model);
+		return "manager/loan/loanRequestList";
+	}
+
+	@RequestMapping("loanRequestAction.do")
+	public String loanRequestAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanRequestAction(req, model);
+		return "manager/loan/loanRequestAction";
+	}
+	
+	@RequestMapping("loanList.do")
+	public String loanList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanList(req, model);
+		return "manager/loan/loanList";
+	}
+	
+	@RequestMapping("loanCancelList.do")
+	public String loanCancelList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanCancelList]");
+		service.loanCancelList(req, model);
+		return "manager/loan/loanCancelList";
+	}
+	
+	@RequestMapping("searchLoanRequestList.do")
+	public String searchLoanRequestAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /searchLoanRequestList]");
+		service.searchLoanRequestList(req, model);
+		return "manager/loan/searchLoanRequestList";
+	}
+	
+	@RequestMapping("searchLoanList.do")
+	public String searchLoanList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.searchLoanList(req, model);
+		return "manager/loan/loanList";
+	}
+	//!지은!
+	
+	// 공지사항리스트 - 관리자(민재)
+	@RequestMapping("mngNoticeList")
+	public String noticeList(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeList.us]");
+		
+		service2.noticeList(req, model);
+		
+		// 이동할 페이지
+		return "customer/notice/noticeList";
+	}
+
+	// 공지사항 글쓰기 - 관리자(민재)
+	@RequestMapping("mngNoticeWrite")
+	public String mngNoticeWrite(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeWrite.us]");
+		
+		req.setAttribute("notice_writer", req.getSession().getAttribute("adminID"));
+		req.setAttribute("pageNum", req.getParameter("pageNum"));
+		System.out.println("mngNoticeWrite.do 끝");
+		// 이동할 페이지
+		return "manager/notice/mngNoticeWrite";
+	}
+	
+	// 공지사항 글쓰기처리 - 관리자(민재)
+	@RequestMapping("mngNoticeWriteAction")
+	public String mngNoticeWriteAction(HttpServletRequest req, Model model) {
+		System.out.println("글쓰기처리 시작");
+		logger.info("[url ==> /mngNoticeWriteAction.us]");
+		
+		service.mngNoticeWriteAction(req, model);
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeWriteAction";
+	}
+	
+	// 공지사항 수정하기(비밀번호인증) - 관리자(민재)
+	@RequestMapping("mngNoticeModify")
+	public String mngNoticeModify(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeModify.us]");
+		
+		req.setAttribute("notice_num", Integer.parseInt(req.getParameter("notice_num")));
+		req.setAttribute("pageNum", Integer.parseInt(req.getParameter("pageNum")));
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeModify";
+	}
+	 
+	// 공지사항 수정페이지
+	@RequestMapping("mngNoticeModifyDetail")
+	public String mngNoticeModifyDetail(HttpServletRequest req, Model model) {
+		System.out.println("안떠..");
+		logger.info("[url ==> /mngNoticeModifyDetail.us]");
+		
+		service.mngNoticeModifyDetail(req, model);
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeModifyDetail";
+	}
+	 
+	// 공지사항  수정처리 
+	@RequestMapping("mngNoticeModifyAction")
+	public String mngNoticeModifyAction(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeModifyAction.us]");
+		
+		service.mngNoticeModifyAction(req, model);
+		
+		// 이동할 페이지 
+		return "manager/notice/mngNoticeModifyAction";
+	}
+	
+	// 공지사항 삭제하기(비밀번호인증) - 관리자(민재)
+	@RequestMapping("mngNoticeDelete")
+	public String mngNoticeDelete(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeDelete.us]");
+		
+		req.setAttribute("notice_num", Integer.parseInt(req.getParameter("notice_num")));
+		req.setAttribute("pageNum", Integer.parseInt(req.getParameter("pageNum")));
+		
+		// 이동할 페이지
+		return "manager/notice/mngNoticeDelete";
+	}
+	
+	// 공지사항 삭제처리 
+	@RequestMapping("mngNoticeDeleteAction")
+	public String mngNoticeDeleteAction(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngNoticeDeleteAction.us]");
+		
+		service.mngNoticeDeleteAction(req, model);
+		
+		// 이동할 페이지 
+		return "manager/notice/mngNoticeDeleteAction";
+	}
+	
+	
 }

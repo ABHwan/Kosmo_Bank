@@ -20,9 +20,8 @@ public class UserVO{
     private int member_enabled;   		// 이메일 인증키
     private String member_authority; // 회원등급 코드
     
-    private String access_token;
-    private String refresh_token;
-    private String user_seq_no;
+    // 본인인증 고유키
+    private String unique_key;
     
 
 	public UserVO() {}
@@ -131,31 +130,14 @@ public class UserVO{
 		this.member_authority = member_authority;
 	}
 
-	public String getAccess_token() {
-		return access_token;
+	public String getUnique_key() {
+		return unique_key;
 	}
 
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
+	public void setUnique_key(String unique_key) {
+		this.unique_key = unique_key;
 	}
 
-	public String getRefresh_token() {
-		return refresh_token;
-	}
-
-	public void setRefresh_token(String refresh_token) {
-		this.refresh_token = refresh_token;
-	}
-
-	public String getUser_seq_no() {
-		return user_seq_no;
-	}
-
-	public void setUser_seq_no(String user_seq_no) {
-		this.user_seq_no = user_seq_no;
-	}
-	
-	
 	
    
 }

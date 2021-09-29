@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 
 		<!-- 메인 콘텐츠 -->
@@ -191,7 +191,7 @@
 		</div>
 	</div>
 	
-	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

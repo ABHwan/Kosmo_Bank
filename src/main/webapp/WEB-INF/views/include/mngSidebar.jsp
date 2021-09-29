@@ -60,7 +60,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="mngImg.do?cnt=11">
+										<a href="customerAccountInfo">
 											<span class="sub-item">회원 계좌 관리</span>
 										</a>
 									</li>	
@@ -199,53 +199,44 @@
 							</div>
 						</li>
 						<li class="nav-item">
-							<a data-toggle="collapse" href="#maps">
-								<i class="fas fa-coins"></i>
-								<p>대출관리</p>
+							<a data-toggle="collapse" href="#loans">
+								<i class="fas fa-receipt"></i>
+								<p>대출</p>
 								<span class="caret"></span>
 							</a>
-							<div class="collapse" id="maps">
+							<div class="collapse" id="loans">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="mngImg.do?cnt=4">
-											<span class="sub-item"> 등록</span>
+										<a href="loanProductList.do">
+											<span class="sub-item">대출 상품 조회/수정/삭제</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 삭제</span>
-										</a>
-									</li> -->
 									<li>
-										<a href="mngImg.do?cnt=5">
-											<span class="sub-item"> 조회</span>
+										<a href="loanProductInsert.do">
+											<span class="sub-item">대출 상품 등록</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 수정</span>
-										</a>
-									</li> -->
 									<li>
-										<a href="mngImg.do?cnt=3">
-											<span class="sub-item"> 대출 신청 목록</span>
+										<a href="loanRequestList.do">
+											<span class="sub-item">신규 대출 승인/거절</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 대출 승인 목록</span>
-										</a>
-									</li> -->
 									<li>
-										<a href="mngImg.do?cnt=1">
-											<span class="sub-item"> 결산</span>
+										<a href="loanList.do">
+											<span class="sub-item">회원 대출 상품 가입 내역</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 신용점수</span>
+									<li>
+										<a href="loanCancelList.do">
+											<span class="sub-item">대출 해지 내역</span>
 										</a>
-									</li> -->
+									</li>
+									<li>
+										<a href="">
+											<span class="sub-item">추가예정</span>
+										</a>
+									</li>
+									
 								</ul>
 							</div>
 						</li>
@@ -263,6 +254,9 @@
 										</a>
 										<a href="${mngPath}faq">
 											<span class="sub-item">자주묻는 질문</span>
+										</a>
+										<a href="${mngPath}mngNoticeList">
+											<span class="sub-item">공지사항 관리</span>
 										</a>
 									</li>
 									
@@ -290,6 +284,27 @@
 								</ul>
 							</div>
 						</li> -->
+						
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#test">
+								<i class="fas fa-coins"></i>
+								<p>Test Data</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="test">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="testAccountData">
+											<span class="sub-item">고객계좌데이터추가</span>
+										</a>
+										
+									</li>
+									
+								</ul>
+							</div>
+						</li>
+						
+						
 					</div>
 				</div>
 			</div>
