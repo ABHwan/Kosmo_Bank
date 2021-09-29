@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 
 		<!-- 메인 콘텐츠 -->
@@ -124,8 +124,8 @@
 						</table>
 						
 						<div class="btnList">
-							<button><a href="savingProductUpdate?saving_product_name=${vo.saving_product_name}&pageNum=${pageNum}">상품 수정</a></button>
-							<button><a href="savingProductList?pageNum=${pageNum}">목록으로</a></button>
+							<button onclick="window.location=savingProductUpdate?saving_product_name=${vo.saving_product_name}&pageNum=${pageNum}">상품 수정</button>
+							<button onclick="window.location=savingProductList?pageNum=${pageNum}">목록으로</button>
 						</div>
 			      </div>
 			    </section>
@@ -133,7 +133,7 @@
 		</div>
 	</div>
 	
-	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

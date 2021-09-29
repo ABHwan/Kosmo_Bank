@@ -73,8 +73,11 @@ public interface CustomerService {
 
 	// 예금 상품 상세보기
 	public void depositDetail(HttpServletRequest req, Model model);
-
-	// 예금 신청
+	
+	//예금 신청 시 계좌번호 생성 insert
+	public void makeAccount(HttpServletRequest req, Model model);
+	
+	//예금 신청 
 	public void insertDeposit(HttpServletRequest req, Model model);
 
 	// 회원 계좌 찾기
@@ -98,6 +101,9 @@ public interface CustomerService {
 	// 적금 신청 
 	public void savingProductAction(HttpServletRequest req, Model model);
 	
+	//예금 신청 상세 화면 
+	public void setDepositProductJoin(HttpServletRequest req, Model model);
+
 	// 환율 데이터 입력 후 출력
 	public void exchanges(Model model);
 	

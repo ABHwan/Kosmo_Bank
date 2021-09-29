@@ -9,38 +9,12 @@
 <title>예금 상품 목록 조회 - 고객</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-    
-<script type="text/javascript">
-      $(function() {
-			$("#all_check").change(function() {
-				var is_check = $("#all_check").is(":checked");
-				$(".user_check").prop("checked", is_check);
-				
-			});
-	  });
-      
-      function fn_process(val){
-    	  var form = document.depositProductForm
-    	  if(val == '1'){
-    		  // 회원정보수정시
-    		  form.action = "";
-    		  form.submit();
-    	  }else{
-    		  form.action = "depositProductDelete";
-    		  form.submit();
-    	  }
-      }
-</script>
-<script>
-	var msg = "<%=request.getAttribute("msg") %>";
-	if(msg != 'null'){
-		 alert(msg);
-	}
-</script>
+
+
 </head>
 <body>
 <!-- 메인 콘텐츠 -->
-<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		<div class="main-panel">
 			<div class="content">
@@ -193,7 +167,7 @@
 			</div>
 		</div>
 	
-	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

@@ -4,10 +4,10 @@ import oracle.sql.DATE;
 
 public class AccountVO {
 
-	String account_bankCode;
+	int account_bankCode;
 	String account_id;
 	String account_password;
-	String member_name;
+	String member_id;
 	int account_balance;
 	int account_type;
 	int account_state;
@@ -20,11 +20,11 @@ public class AccountVO {
 	int account_default;
 	int account_linked;
 
-	public String getAccount_bankCode() {
+	public int getAccount_bankCode() {
 		return account_bankCode;
 	}
 
-	public void setAccount_bankCode(String account_bankCode) {
+	public void setAccount_bankCode(int account_bankCode) {
 		this.account_bankCode = account_bankCode;
 	}
 
@@ -44,12 +44,12 @@ public class AccountVO {
 		this.account_password = account_password;
 	}
 
-	public String getMember_name() {
-		return member_name;
+	public String getMember_id() {
+		return member_id;
 	}
 
-	public void setMember_name(String member_name) {
-		this.member_name = member_name;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 	public int getAccount_balance() {

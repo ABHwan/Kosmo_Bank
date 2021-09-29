@@ -13,6 +13,7 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
@@ -29,19 +30,17 @@ public class CustomerDAOImpl implements CustomerDAO {
 	// 회원 가입 아이디 중복확인
 	@Override
 	public int idCheck(Map<String, Object> map) {
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
 		System.out.println(map.get("member_id"));
-		return dao.idCheck(map);
+		return sqlSession.getMapper(CustomerDAO.class).idCheck(map);
 	}
 	
 	// 회원가입 명의 중복확인
 	@Override
 	public int duplicateCheck(Map<String, Object> map) {
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 		
 		System.out.println(map.get("member_id"));
-		return dao.duplicateCheck(map);
+		return sqlSession.getMapper(CustomerDAO.class).duplicateCheck(map);
 	}
 
 	// 회원가입 처리
@@ -49,8 +48,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int insertUser(UserVO vo) {
 
 		System.out.println("[DAO => InsertUser()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.insertUser(vo);
+		return sqlSession.getMapper(CustomerDAO.class).insertUser(vo);
 	}
 
 	// 이메일 인증 성공 처리
@@ -58,17 +56,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int emailSuccess(UserVO vo) {
 
 		System.out.println("[DAO => emailSuccess()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.emailSuccess(vo);
+		return sqlSession.getMapper(CustomerDAO.class).emailSuccess(vo);
 	}
 
 	// 이메일 체크
 	@Override
 	public int emailChk(String id) {
 		System.out.println("[DAO => emailChk()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.emailChk(id);
+		return sqlSession.getMapper(CustomerDAO.class).emailChk(id);
 	}
 
 	// 로그인 및 회원 인증
@@ -76,9 +72,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int idPasswordChk(Map<String, Object> map) {
 		System.out.println("[DAO => idPasswordChk()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.idPasswordChk(map);
+		return sqlSession.getMapper(CustomerDAO.class).idPasswordChk(map);
 	}
 
 	// 회원 탈퇴
@@ -86,9 +81,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int deleteUser(String id) {
 		System.out.println("[DAO => updateUser()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-
-		return dao.deleteUser(id);
+		return sqlSession.getMapper(CustomerDAO.class).deleteUser(id);
 
 	}
 
@@ -97,9 +90,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public UserVO getUserInfo(String id) {
 		System.out.println("[DAO => getUserInfo()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-
-		return dao.getUserInfo(id);
+		return sqlSession.getMapper(CustomerDAO.class).getUserInfo(id);
 	}
 
 	// 회원정보 수정 처리
@@ -107,9 +98,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int updateUser(UserVO vo) {
 		System.out.println("[DAO => updateUser()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-
-		return dao.updateUser(vo);
+		return sqlSession.getMapper(CustomerDAO.class).updateUser(vo);
 	}
 
 	// 아이디 찾기
@@ -134,86 +123,73 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public int getInquiryCnt() {
 
-		int selectCnt = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getInquiryCnt");
-		return selectCnt;
+		return sqlSession.getMapper(CustomerDAO.class).getInquiryCnt();
 	}
 
 	// 문의사항 조회(지현)
 	@Override
 	public List<InquiryVO> getInquiryList(Map<String, Integer> map) {
-		// List<InquiryVO> list =
-		// sqlSession.selectList("com.spring.bank.admin.dao.AdminDAO.getInquiryList");
-		List<InquiryVO> list = sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getInquiryList", map);
-		return list;
+		
+		return sqlSession.getMapper(CustomerDAO.class).getInquiryList(map);
 	}
 
 	// 문의사항 추가 처리 페이지(지현)
 	public int insertInquiry(InquiryVO vo) {
 
-		int selectCnt = sqlSession.insert("com.spring.bank.user.dao.CustomerDAO.insertInquiry", vo);
 
-		return selectCnt;
+		return sqlSession.getMapper(CustomerDAO.class).insertInquiry(vo);
 	}
 
 	// 문의사항 조회수 증가(지현)
 	public int addReadCnt(int inquiry_id) {
-		int readCnt = sqlSession.update("com.spring.bank.user.dao.CustomerDAO.addReadCnt", inquiry_id);
 
-		return readCnt;
+		return sqlSession.getMapper(CustomerDAO.class).addReadCnt(inquiry_id);
 	}
 
 	// 문의사항 상세페이지 조회(지현)
 	public InquiryVO getQnaDetail(int inquiry_id) {
 
-		InquiryVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getInquiryDetail", inquiry_id);
-
-		return vo;
+		return sqlSession.getMapper(CustomerDAO.class).getQnaDetail(inquiry_id);
 	}
 
 	// qna 수정 처리 (지현)
 	public int updateQna(InquiryVO vo) {
-		int updateCnt = sqlSession.update("com.spring.bank.user.dao.CustomerDAO.updateQna", vo);
 
-		return updateCnt;
+		return sqlSession.getMapper(CustomerDAO.class).updateQna(vo);
 	}
 
 	// qna 삭제 처리(지현)
 	public int deleteQna(int inquiry_id) {
-		int deleteCnt = sqlSession.delete("com.spring.bank.user.dao.CustomerDAO.deleteQna", inquiry_id);
 
-		return deleteCnt;
+		return sqlSession.getMapper(CustomerDAO.class).deleteQna(inquiry_id);
 	}
 
 	// 자주묻는 질문 갯수 (지현)
 	@Override
 	public int getFaqCnt() {
-		int selectCnt = sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.getFaqCnt");
-		;
 
-		return selectCnt;
+		return sqlSession.getMapper(CustomerDAO.class).getFaqCnt();
 	}
 
 	// 자주묻는 질문 조회(지현)
 	@Override
 	public List<faqVO> getFaqList(Map<String, Integer> map) {
 
-		List<faqVO> list = sqlSession.selectList("com.spring.bank.admin.dao.AdminDAO.getFaqList", map);
-		return list;
+		return sqlSession.getMapper(CustomerDAO.class).getFaqList(map);
 	}
 
 	// 예금 상품 갯수(지현)
 	@Override
 	public int getDepositCnt() {
-		int selectCnt = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getDepositCnt");
-		return selectCnt;
+
+		return sqlSession.getMapper(CustomerDAO.class).getDepositCnt();
 	}
 
 	// 예금 상품 조회
 	@Override
-	public List<DepositProductVO> getDepositList(Map<String, Integer> map) {
-		List<DepositProductVO> list = sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getDepositList", map);
+	public List<DepositProductVO> getDepositList(Map<String, Object> map){
 
-		return list;
+		return sqlSession.getMapper(CustomerDAO.class).getDepositList(map);
 	}
 
 	// 관리자 페이지 예금 상품 수(검색결과수)
@@ -231,25 +207,22 @@ public class CustomerDAOImpl implements CustomerDAO {
 	// 예금 상품 상세 보기
 	@Override
 	public DepositProductVO getDepositDetail(String deposit_product_name) {
-		DepositProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getDepositDetail",
-				deposit_product_name);
-		System.out.println("상세보기 : " + vo.getDeposit_product_name());
-		return vo;
+		
+		return sqlSession.getMapper(CustomerDAO.class).getDepositDetail(deposit_product_name);
 	}
 
 	// 적금 상품 갯수
 	@Override
 	public int getSavingCnt(){
-		int selectCnt =sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getSavingCnt");
-		return selectCnt;
+		
+		return sqlSession.getMapper(CustomerDAO.class).getSavingCnt();
 	}		
 	
 	// 적금 상품 조회
 	@Override
 	public List<SavingProductVO> getSavingList(Map<String, Integer> map){
-		List<SavingProductVO> list = sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getSavingList", map);
 		
-		return list;
+		return sqlSession.getMapper(CustomerDAO.class).getSavingList(map);
 	}
 	
 	// 관리자 페이지 적금 상품 수(검색결과수)
@@ -267,18 +240,38 @@ public class CustomerDAOImpl implements CustomerDAO {
 	// 적금 상품 상세 보기
 	@Override
 	public SavingProductVO getSavingDetail(String saving_product_name) {
-		SavingProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getSavingDetail",saving_product_name);
-		System.out.println("상세보기 : "+vo.getSaving_product_name());
-		return vo;
-	}	
+
+		return sqlSession.getMapper(CustomerDAO.class).getSavingDetail(saving_product_name);
+	}
+	 
+	//멤버의 unique_key가져오기 
+	@Override
+	public String getUniqueKey(String id) {
+		
+		return sqlSession.getMapper(CustomerDAO.class).getUniqueKey(id);
+	}
+	
+	//예금 신청 시 계좌 개설 
+	@Override
+	public int insertAccount(AccountVO vo) {
+		
+		return sqlSession.getMapper(CustomerDAO.class).insertAccount(vo);
+	}
+		
+	//예금 신청 처리 insert
+	@Override
+	public int insertDeposit(DepositVO vo) {
+		
+		return sqlSession.getMapper(CustomerDAO.class).insertDeposit(vo);
+	}
+	
 	// 환율 저장 후 출력
 	@Override
 	public int exchangeIn(CrawlerVO vo) {
 		System.out.println("[DAO => exchangeIn()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.exchangeIn(vo);
+		return sqlSession.getMapper(CustomerDAO.class).exchangeIn(vo);
 	}
 
 	// 환율 체크
@@ -286,9 +279,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int exchangeChk(String exchange_country) {
 		System.out.println("[DAO => exchangeChk()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.exchangeChk(exchange_country);
+		return sqlSession.getMapper(CustomerDAO.class).exchangeChk(exchange_country);
 	}
 
 	// 환율 최신화
@@ -296,9 +288,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int exchangeUpd(CrawlerVO vo) {
 		System.out.println("[DAO => exchangeUpd()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.exchangeUpd(vo);
+		return sqlSession.getMapper(CustomerDAO.class).exchangeUpd(vo);
 	}
 
 	// 환율 증감식 -> db에있는 정보 출력
@@ -306,18 +297,16 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public String exchangeVary(String country) {
 		System.out.println("[DAO => exchangeVary()]");
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.exchangeVary(country);
+		return sqlSession.getMapper(CustomerDAO.class).exchangeVary(country);
 	}
 
 	// 회원 계좌 찾기
 	@Override
 	public List<AccountVO> accountFind(String strId) {
 
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 
-		return dao.accountFind(strId);
+		return sqlSession.getMapper(CustomerDAO.class).accountFind(strId);
 	}
 
 	// 계좌 비밀번호
@@ -391,76 +380,64 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public ArrayList<LoanProductVO> loanList() {
 		System.out.println("[DAO => loanList()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.loanList();
+		return sqlSession.getMapper(CustomerDAO.class).loanList();
 	}
 
 	public int getLoanCancelCnt(String member_id) {
 		System.out.println("[DAO => getLoanCancelCnt()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanCancelCnt(member_id);
+		return sqlSession.getMapper(CustomerDAO.class).getLoanCancelCnt(member_id);
 	}
 
 	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanCancelList()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanCancelList(map);
+		return sqlSession.getMapper(CustomerDAO.class).getLoanCancelList(map);
 	}
 
 	public int getLoanCnt(String member_id) {
 		System.out.println("[DAO => getLoanCnt()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanCnt(member_id);
+		return sqlSession.getMapper(CustomerDAO.class).getLoanCnt(member_id);
 	}
 
 	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanList()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanList(map);
+		return sqlSession.getMapper(CustomerDAO.class).getLoanList(map);
 	}
 	
 	// 대출 상품 개수
 	public int getLoanProductCnt() {
 		System.out.println("[UserDAO => getLoanProductCnt()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanProductCnt();	
+		return sqlSession.getMapper(CustomerDAO.class).getLoanProductCnt();	
 	}
 
 	// 대출 상품 목록
 	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map) {
 		System.out.println("[UserDAO => getLoanProductList()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanProductList(map);	
+		return sqlSession.getMapper(CustomerDAO.class).getLoanProductList(map);	
 	}
 
 	public int getSearchLoanProductCnt(String keyword) {
 		System.out.println("[UserDAO => getSearchLoanProductCnt()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getSearchLoanProductCnt(keyword);	
+		return sqlSession.getMapper(CustomerDAO.class).getSearchLoanProductCnt(keyword);	
 	}
 
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map) { // parameter : keyword, start, end
 		System.out.println("[UserDAO => searchLoanProductList()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.searchLoanProductList(map);	
+		return sqlSession.getMapper(CustomerDAO.class).searchLoanProductList(map);	
 	}
 
 	public LoanProductVO getLoanProductInfo(String loan_product_name) {
 		System.out.println("[UserDAO => getLoanProductInfo()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanProductInfo(loan_product_name);	
+		return sqlSession.getMapper(CustomerDAO.class).getLoanProductInfo(loan_product_name);	
 	}
 
 	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map) {
 		System.out.println("[UserDAO => getLoanHistoryList()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanHistoryList(map);	
+		return sqlSession.getMapper(CustomerDAO.class).getLoanHistoryList(map);	
 	}
 
 	public int getLoanHistoryCnt(String member_id) {
 		System.out.println("[UserDAO => getLoanHistoryCnt()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanHistoryCnt(member_id);	
+		return sqlSession.getMapper(CustomerDAO.class).getLoanHistoryCnt(member_id);	
 	}
 	//지은!!!!!!!!1
 }

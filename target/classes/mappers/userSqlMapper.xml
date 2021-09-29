@@ -183,7 +183,7 @@
 		resultType="com.spring.bank.product.vo.DepositProductVO">
 		<![CDATA[
 		SELECT * FROM
-			(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
+		s	(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
 				FROM (SELECT * FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%' ORDER BY deposit_product_date DESC)
 			) WHERE rNum >= #{start} and rNum <= #{end}
 		]]>
@@ -288,6 +288,24 @@
 		SELECT * FROM  saving_product
 		WHERE saving_product_name=#{saving_product_name} 	
 	</select>	
+
+	<!-- 예금 신청시필요한 unique_key -->
+	<select id="getUniqueKey" parameterType="String" resultType="String">
+		SELECT unique_key FROM members
+		WHERE member_id = #{id}
+	</select>
+	
+	<!-- 예금 가입 시 account 테이블 insert   -->
+	<insert id="insertAccount" parameterType="com.spring.bank.user.vo.AccountVO">
+		INSERT INTO account(account_id,account_password, member_id, account_type, account_newDate, account_bankCode, account_balance)
+		VALUES(#{account_id}, #{account_password}, #{member_id}, 0, sysdate, #{account_bankCode}, #{account_balance})
+	</insert>
+	
+	<!-- 예금 신청 처리 -->
+	<insert id="insertDeposit" parameterType="com.spring.bank.user.vo.DepositVO" >
+		INSERT INTO deposit(deposit_id, deposit_product_name, account_id,deposit_joinDate, deposit_rate, deposit_type, deposit_endDate)
+		VALUES(deposit_seq.nextval, #{deposit_product_name}, #{account_id}, sysdate, #{deposit_rate}, #{deposit_type}, #{deposit_endDate})
+	</insert>
 	
 	<!-- 환율 저장 후 출력(지호) -->
     <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">

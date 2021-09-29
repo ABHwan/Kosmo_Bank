@@ -9,6 +9,7 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
@@ -87,9 +88,9 @@ public interface CustomerDAO {
 	// 예금 상품갯수
 	public int getDepositCnt();
 
-	// 예금 상품 조회
-	public List<DepositProductVO> getDepositList(Map<String, Integer> map);
-
+	//예금 상품 조회
+	public List<DepositProductVO> getDepositList(Map<String, Object> map);
+	
 	// 관리자 페이지 예금 상품 수(검색결과수)
 	public int getDepositProductSearchCnt(String search);
 
@@ -114,6 +115,15 @@ public interface CustomerDAO {
 	// 적금 상품 상세 보기
 	public SavingProductVO getSavingDetail(String saving_product_name);
 
+	//예금 신청 처리 insert 
+	public int insertDeposit(DepositVO vo);
+	
+	//멤버의 unique_key가져오기 
+	public String getUniqueKey(String id);
+	
+	//예금 신청 시 계좌 생성
+	public int insertAccount(AccountVO vo);
+	
 	// 환율 저장 후 출력
 	public int exchangeIn(CrawlerVO vo);
 

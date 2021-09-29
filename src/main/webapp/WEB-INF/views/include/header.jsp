@@ -49,7 +49,24 @@
 								<i class="fa fa-search"></i>
 							</a>
 						</li>
-						
+						<!-- 자동로그인 Controll -->
+						<%
+						    Cookie[] cookies = request.getCookies();
+						    if(cookies != null){
+						        for(Cookie tempCookie : cookies){
+						        	// 쿠키에 userID란 문자열이 있으면
+						            if(tempCookie.getName().equals("userID")){
+						                //쿠키값으로 대신 로그인 처리함
+						                session.setAttribute("userID", tempCookie.getValue());
+						                
+						            // 쿠키에 adminID란 문자열이 있으면
+						            } else if(tempCookie.getName().equals("adminID")){
+						                //쿠키값으로 대신 로그인 처리함
+						                session.setAttribute("adminID", tempCookie.getValue());
+						            }
+						        }
+						    }
+						%>
 						<c:choose>
 							<c:when test="${sessionScope.adminID != null}">
 								<li class="nav-item dropdown hidden-caret">

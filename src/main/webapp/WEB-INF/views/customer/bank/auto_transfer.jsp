@@ -79,7 +79,7 @@
 
 	<div class="wrapper">
 
-		<%@ include file="/WEB-INF/views/include/headerB.jsp"%>
+		<%@ include file="/WEB-INF/views/include/header.jsp"%>
 		<%@ include file="/WEB-INF/views/include/sidebar.jsp"%>
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -248,7 +248,7 @@
 
 
 	</div>
-	<%@ include file="/WEB-INF/views/include/footerB.jsp"%>
+	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
 	<script src="script.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

@@ -17,7 +17,7 @@
 
 	<div class="wrapper">
 
-		<%@ include file="/WEB-INF/views/include/headerB.jsp"%>
+		<%@ include file="/WEB-INF/views/include/header.jsp"%>
 		<%@ include file="/WEB-INF/views/include/sidebar.jsp"%>
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -186,7 +186,7 @@
 
 
 	</div>
-	<%@ include file="/WEB-INF/views/include/footerB.jsp"%>
+	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
 
 	<!--   Core JS Files   -->

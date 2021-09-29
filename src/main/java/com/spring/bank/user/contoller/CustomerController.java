@@ -365,14 +365,39 @@ public class CustomerController {
 		return "customer/depositProduct/depositDetail";
 	}
 
-	// 예금 상품 신청(지현)
-	@RequestMapping("depositProductAction")
+	//예금 상품 상세에서 신청하기 누르면  신청 화면 (지현)
+	@RequestMapping("depositProductJoin")
 	public String depositProductInsert(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductInsert");
-
-		service.insertDeposit(req, model);
-
-		return "customer/depositProduct/depositProductAction";
+		logger.info("url => depositProductJoin");
+		
+		service.setDepositProductJoin(req, model);
+		
+		return "customer/depositProduct/depositProductJoin";
+	}
+	
+	//예금 상품 신청 화면에서 확인 눌렀을때 -> account 계좌 생성 & deposit 테이블에 insert(지현)
+	@RequestMapping("depositProductAction")
+	public String depositAccess(HttpServletRequest req, Model model) {
+		logger.info("url => depositAccess");
+	      
+		 //계좌개설 insert account
+         service.makeAccount(req, model);
+         
+         System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
+         
+         //연금 상품  insert
+         service.insertDeposit(req, model);
+         
+		return "customer/depositProduct/depositAction";
+	}
+	
+	//연금 상품 목록 
+	@RequestMapping("irpProductList.do")
+	public String irpProductList(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductList");
+		
+		
+		return "customer/irp/irpProductList";
 	}
 
 	//적금 상품 조회(지호) - 고객

@@ -2095,7 +2095,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		AccountVO vo = new AccountVO();
 		
-		vo.setAccount_bankCode(account_bankCode);
+		vo.setAccount_bankCode(Integer.parseInt(account_bankCode));
 		vo.setAccount_id(account_id);
 		vo.setAccount_password(account_password);
 		vo.setAccount_balance(Integer.parseInt(account_balance));
