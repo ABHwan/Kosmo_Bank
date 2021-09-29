@@ -8,8 +8,8 @@ public class CrawlerVO {
     String exchange_sell;       // 현찰 팔 때
     String exchange_transfer;   // 전신환 보낼 때
     String exchange_recive;     // 전신환 받을 때
-	//String exchange_vary;		// 증감율
-	double exchange_com;		// 환율 비교
+//	String exchange_state;		// 증감율
+	String exchange_com;		// 환율 비교
 	
 	public CrawlerVO() {}
 	
@@ -23,7 +23,7 @@ public class CrawlerVO {
 		this.exchange_recive = exchange_recive;
 	}
 	
-	public CrawlerVO(String exchange_country, String exchange_rate, double exchange_com) {
+	public CrawlerVO(String exchange_country, String exchange_rate, String exchange_com) {
 		this.exchange_country = exchange_country;
 		this.exchange_rate = exchange_rate;
 		this.exchange_com = exchange_com;
@@ -82,12 +82,12 @@ public class CrawlerVO {
 		this.exchange_recive = exchange_recive;
 	}
 
-	public double getExchange_com() {
+	public String getExchange_com() {
 		return exchange_com;
 	}
 
 
-	public void setExchange_com(double exchange_com) {
+	public void setExchange_com(String exchange_com) {
 		this.exchange_com = exchange_com;
 	}
 

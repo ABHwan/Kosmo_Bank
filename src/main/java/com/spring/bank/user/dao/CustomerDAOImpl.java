@@ -8,8 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.spring.bank.admin.dao.AdminDAO;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -225,6 +225,40 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return vo;
 	}
 
+	// 적금 상품 갯수
+	@Override
+	public int getSavingCnt(){
+		int selectCnt =sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getSavingCnt");
+		return selectCnt;
+	}		
+	
+	// 적금 상품 조회
+	@Override
+	public List<SavingProductVO> getSavingList(Map<String, Integer> map){
+		List<SavingProductVO> list = sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.getSavingList", map);
+		
+		return list;
+	}
+	
+	// 관리자 페이지 적금 상품 수(검색결과수)
+	@Override
+	public int getSavingProductSearchCnt(String search) {
+		return sqlSession.getMapper(CustomerDAO.class).getSavingProductSearchCnt(search);
+	}
+	
+	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map){
+		return sqlSession.getMapper(CustomerDAO.class).searchSavingProduct(map);
+	}
+	
+	// 적금 상품 상세 보기
+	@Override
+	public SavingProductVO getSavingDetail(String saving_product_name) {
+		SavingProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getSavingDetail",saving_product_name);
+		System.out.println("상세보기 : "+vo.getSaving_product_name());
+		return vo;
+	}	
 	// 환율 저장 후 출력
 	@Override
 	public int exchangeIn(CrawlerVO vo) {
@@ -309,4 +343,14 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int transfer_receiver(AccountVO vo) {
 		return sqlSession.getMapper(CustomerDAO.class).transfer_receiver(vo);
 	}
+
+	// test
+//	@Override
+//	public int jsonIn(List<String> list) {
+//		System.out.println("[DAO ==> test()]");
+//		
+//		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+//		
+//		return dao.jsonIn(list);
+//	}		
 }

@@ -30,6 +30,24 @@ public interface AdminService {
 	// 관리자 페이지 예금 상품 삭제
 	public void deleteDepositProduct(HttpServletRequest req, Model model);
 	
+	// 관리자 페이지 적금 상품 등록 처리
+	public void savingProductInsertAction(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 적금 상품 조회
+	public void selectSavingProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 적금 상품 검색
+	public void searchSavingProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 적금 상품 상세 조회
+    public void getSavingProductInfo(HttpServletRequest req, Model model);
+   
+    // 관리자 페이지 적금 상품 수정
+    public void updateSavingProduct(HttpServletRequest req, Model model);
+	
+    // 관리자 페이지 적금 상품 삭제
+	public void deleteSavingProduct(HttpServletRequest req, Model model);
+	
 	//qna게시글 조회(지현)
 	public void qnaList_mng(HttpServletRequest req,  Model model);
 	

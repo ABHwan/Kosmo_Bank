@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -64,7 +65,7 @@ public interface CustomerDAO {
 
 //			//qna 게시글 비밀번호 인증,(수정, 삭제 )
 //			public int numPasswordCheck(Map<String, Object> map);
-	//
+
 	// qna 수정 처리
 	public int updateQna(InquiryVO vo);
 
@@ -91,6 +92,21 @@ public interface CustomerDAO {
 
 	// 예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+
+	// 적금 상품갯수
+	public int getSavingCnt();
+
+	// 적금 상품 조회
+	public List<SavingProductVO> getSavingList(Map<String, Integer> map);
+	
+	// 적금 상품 수(검색결과수)
+	public int getSavingProductSearchCnt(String search);
+	
+	// 적금 상품 검색(입력받아서 검색)
+	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map);
+	
+	// 적금 상품 상세 보기
+	public SavingProductVO getSavingDetail(String saving_product_name);
 
 	// 환율 저장 후 출력
 	public int exchangeIn(CrawlerVO vo);
@@ -124,4 +140,7 @@ public interface CustomerDAO {
 
 	// 받는사람 계좌 정보 변경(금액)
 	public int transfer_receiver(AccountVO vo);
+	
+	// json db에 넣기
+	//public int jsonIn(List<String> list);
 }

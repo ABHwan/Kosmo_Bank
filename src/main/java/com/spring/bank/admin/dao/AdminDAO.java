@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -48,6 +49,30 @@ public interface AdminDAO {
 	
 	// 관리자 페이지 예금 상품 삭제
 	public int deleteDepositProduct(String deposit_product_name);
+	
+	//
+	// 관리자 페이지 적금 상품 등록
+	public int insertSavingProduct(SavingProductVO vo);
+	// 관리자 페이지 적금 상품 수
+	public int getSavingProductCnt(); 
+	
+	// 관리자 페이지 적금 상품 조회
+	public ArrayList<SavingProductVO> selectSavingProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 적금 상품 수(검색결과수)
+	public int getSavingProductSearchCnt(String search);
+	
+	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 적금 상품 상세조회
+    public SavingProductVO getSavingProductInfo(String saving_product_name);
+   
+    // 관리자 페이지 적금 상품 수정
+    public int updateSavingProduct(SavingProductVO vo);
+	
+	// 관리자 페이지 적금 상품 삭제
+	public int deleteSavingProduct(String saving_product_name);	
 	
 	//문의사항 갯수 (지현)
 	public int getInquiryCnt();

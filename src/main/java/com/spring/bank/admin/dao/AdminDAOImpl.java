@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -91,6 +92,56 @@ public class AdminDAOImpl implements AdminDAO {
 	public int deleteDepositProduct(String deposit_product_name) {
 		return sqlSession.getMapper(AdminDAO.class).deleteDepositProduct(deposit_product_name);
 	}
+	
+	// 관리자 페이지 적금 상품 등록
+	@Override
+	public int insertSavingProduct(SavingProductVO vo) {
+		System.out.println("[DAO = insertSavingProduct]");
+		return sqlSession.getMapper(AdminDAO.class).insertSavingProduct(vo);
+	}
+
+	// 관리자 페이지 적금 상품 수
+	@Override
+	public int getSavingProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getSavingProductCnt();
+	}
+
+	// 관리자 페이지 적금 상품 조회
+	@Override
+	public ArrayList<SavingProductVO> selectSavingProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).selectSavingProduct(map);
+	}
+
+	// 관리자 페이지 적금 상품 수(검색결과수)
+	@Override
+	public int getSavingProductSearchCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getSavingProductSearchCnt(search);
+	}
+
+	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).searchSavingProduct(map);
+	}
+
+	// 관리자 페이지 적금 상품 상세조회
+	@Override
+	public SavingProductVO getSavingProductInfo(String saving_product_name) {
+	    return sqlSession.getMapper(AdminDAO.class).getSavingProductInfo(saving_product_name);
+	}
+	   
+	// 관리자 페이지 적금 상품 수정
+	@Override
+	public int updateSavingProduct(SavingProductVO vo) {
+	    return sqlSession.getMapper(AdminDAO.class).updateSavingProduct(vo);
+	}
+	
+	// 관리자 페이지 적금 상품 삭제
+	@Override
+	public int deleteSavingProduct(String deposit_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).deleteSavingProduct(deposit_product_name);
+	}
+
 	
 	//qna 개수(지현)
 	@Override

@@ -215,6 +215,71 @@ public class AdminController {
 		return "manager/depositProduct/depositProductList";
 	}
 	
+	// 관리자 - 적금관리 - 상품등록(지호)
+	@RequestMapping("savingProductInsert")
+	public String savingProductInsert(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> savingProductInsert]");
+	
+		return "manager/savingProduct/savingProductInsert";
+	}
+	
+	// 관리자 - 적금관리 - 상품등록처리(지호)
+	@RequestMapping("savingProductInsertAction")
+	public String savingProductInsertAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /savingProductInsertAction]");
+		service.savingProductInsertAction(req, model);
+		return "manager/savingProduct/savingProductInsertAction";
+	}
+	
+	// 관리자 - 적금관리 - 상품조회(지호)
+	@RequestMapping("savingProductList")
+	public String savingProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /savingProductList]");
+		service.selectSavingProduct(req, model);
+		return "manager/savingProduct/savingProductList";
+	}
+	
+	// 관리자 - 적금관리 - 상품검색(지호)
+	@RequestMapping("savingProductSearch")
+	public String savingProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /savingProductSearch]");
+		service.searchSavingProduct(req, model);
+		return "manager/savingProduct/savingProductSearch";
+	}
+	
+	// 관리자 적금 관리 - 상품 상세조회
+    @RequestMapping("savingProductInfo")
+    public String savingProductInfo(HttpServletRequest req, Model model) {
+        System.out.println("[url ==> /savingProductInfo]");
+        service.getSavingProductInfo(req, model);
+        return "manager/savingProduct/savingProductInfo";
+    }
+   
+    // 관리자 적금 관리 - 상품 수정 페이지
+    @RequestMapping("savingProductUpdate")
+    public String savingProductUpdate(HttpServletRequest req, Model model) {
+        System.out.println("[url ==> /savingProductUpdate]");
+        service.getSavingProductInfo(req, model);
+        return "manager/savingProduct/savingProductUpdate";
+    }
+   
+    // 관리자 적금 관리 - 상품 수정 처리
+    @RequestMapping("savingProductUpdateAction")
+    public String savingProductUpdateAction(HttpServletRequest req, Model model) {
+        System.out.println("[url ==> /savingProductUpdateAction]");
+        service.updateSavingProduct(req, model);
+        return "manager/savingProduct/savingProductUpdateAction";
+    }
+    
+	// 관리자 - 적금관리 - 상품삭제(지호)
+	@RequestMapping("savingProductDelete")
+	public String savingProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /savingProductDelete]");
+		service.deleteSavingProduct(req, model);
+		service.selectSavingProduct(req, model);
+		return "manager/savingProduct/savingProductList";
+	}
+	
 	
 	//qnalist 회원이 작성한것 리스트 가져오기(지현)
 	@RequestMapping("qnaList_mng")
