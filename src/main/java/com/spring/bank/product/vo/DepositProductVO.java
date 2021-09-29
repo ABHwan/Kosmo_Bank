@@ -9,10 +9,11 @@ public class DepositProductVO {
 	deposit_product_summary		VARCHAR2(1000)				예금상품한줄요약	
 	deposit_product_date		DATE						예금등록일	
 	deposit_product_interRate	NUMBER(5,2)					금리	
-	deposit_product_type		NUMBER(1)					복리	예금종류(복리/단리)	(복리:1, 단리:2)
+	deposit_product_type		NUMBER(1)					복리	예금종류(복리/단리)	(복리:0, 단리:1)
 	deposit_product_maxDate		NUMBER(2)					최대예금기간	
 	deposit_product_minDate		NUMBER(2)					최소예금기간	
 	deposit_product_minPrice	NUMBER(20)					최소예치금액	
+	deposit_product_maxPrice	NUMBER(20)					최대예치금액
 	deposit_product_explanation	VARCHAR2(4000)				예금설명	
 	deposit_product_notice		VARCHAR2(4000)				유의사항	
 	deposit_product_bankCode	NUMBER(1)					0(미기재)	은행코드	
@@ -26,6 +27,7 @@ public class DepositProductVO {
 	private int deposit_product_maxDate;
 	private int deposit_product_minDate;
 	private int deposit_product_minPrice;
+	private int deposit_product_maxPrice;
 	private String deposit_product_explanation;
 	private String deposit_product_notice;
 	private int deposit_product_bankCode;
@@ -34,6 +36,14 @@ public class DepositProductVO {
 
 	public String getDeposit_product_name() {
 		return deposit_product_name;
+	}
+
+	public int getDeposit_product_maxPrice() {
+		return deposit_product_maxPrice;
+	}
+
+	public void setDeposit_product_maxPrice(int deposit_product_maxPrice) {
+		this.deposit_product_maxPrice = deposit_product_maxPrice;
 	}
 
 	public void setDeposit_product_name(String deposit_product_name) {

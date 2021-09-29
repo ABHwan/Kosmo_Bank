@@ -206,6 +206,30 @@ public class AdminController {
 		return "manager/depositProduct/depositProductSearch";
 	}
 	
+	// 관리자 - 예금 관리 - 상품 상세조회
+	@RequestMapping("depositProductInfo")
+	public String depositProductInfo(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductInfo]");
+		service.getDepositProductInfo(req, model);
+		return "manager/depositProduct/depositProductInfo";
+	}
+	
+	// 관리자 예금 관리 - 상품 수정 페이지
+	@RequestMapping("depositProductUpdate")
+	public String depositProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductUpdate]");
+		service.getDepositProductInfo(req, model);
+		return "manager/depositProduct/depositProductUpdate";
+	}
+	
+	// 관리자 예금 관리 - 상품 수정 처리
+	@RequestMapping("depositProductUpdateAction")
+	public String depositProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductUpdateAction]");
+		service.updateDepositProduct(req, model);
+		return "manager/depositProduct/depositProductUpdateAction";
+	}
+		
 	// 관리자 - 예금 관리 - 상품삭제
 	@RequestMapping("depositProductDelete")
 	public String depositProductDelete(HttpServletRequest req, Model model) {

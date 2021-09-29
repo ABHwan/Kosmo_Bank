@@ -511,5 +511,31 @@ public class CustomerController {
 		return "exchange";
 	}	
 
-
+	// 가계부 페이지
+	@RequestMapping("accountBook")
+	public String accountBook(HttpServletRequest req, Model model) {
+		System.out.println("url ==> accountBook");
+		service.getAccountBook(req, model);
+		return "customer/accountBook";
+	}
+	
+	// 가계부 내역 추가
+	@RequestMapping("insertAccountBook")
+	public String insertAccountBook(HttpServletRequest req, Model model) {
+		logger.info("url ==> insertAccountBook");
+		
+		service.insertAccountBook(req, model);
+		
+		return "redirect:accountBook";
+	}
+	
+	// 가계부 내역 삭제
+	@RequestMapping("deleteAccountBook")
+	public String deleteAccountBook(HttpServletRequest req, Model model) {
+		logger.info("url ==> deleteAccountBook");
+		
+		service.deleteAccountBook(req, model);
+		
+		return "redirect:accountBook";
+	}
 }

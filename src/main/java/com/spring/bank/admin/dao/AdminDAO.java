@@ -43,6 +43,9 @@ public interface AdminDAO {
 	// 관리자 페이지 예금 상품 검색(입력받아서 검색)
 	public ArrayList<DepositProductVO> searchDepositProduct(Map<String, Object> map);
 	
+	// 관리자 페이지 예금 상품 상세조회
+	public DepositProductVO getDepositProductInfo(String deposit_product_name);
+	
 	// 관리자 페이지 예금 상품 수정
 	public int updateDepositProduct(DepositProductVO vo);
 	
