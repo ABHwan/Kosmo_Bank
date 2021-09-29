@@ -55,9 +55,9 @@
 						    if(cookies != null){
 						        for(Cookie tempCookie : cookies){
 						        	// 쿠키에 userID란 문자열이 있으면
-						            if(tempCookie.getName().equals("userID")){
+						            if(tempCookie.getName().equals("customerID")){
 						                //쿠키값으로 대신 로그인 처리함
-						                session.setAttribute("userID", tempCookie.getValue());
+						                session.setAttribute("customerID", tempCookie.getValue());
 						                
 						            // 쿠키에 adminID란 문자열이 있으면
 						            } else if(tempCookie.getName().equals("adminID")){
