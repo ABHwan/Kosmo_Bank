@@ -10,7 +10,7 @@ public interface CustomerService {
 
 	// 아이디 중복확인 처리
 	public int confirmIdAction(Map<String, Object> map);
-	
+
 	// 명의중복
 	public int duplicateAction(Map<String, Object> map);
 

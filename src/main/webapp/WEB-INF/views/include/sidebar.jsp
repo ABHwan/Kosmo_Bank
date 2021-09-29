@@ -276,6 +276,52 @@
 								</ul>
 							</div>
 						</li>
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#loans">
+								<i class="fas fa-receipt"></i>
+								<p>대출</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="loans">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="loanAccountList.do">
+											<span class="sub-item">대출 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanCancelList.do">
+											<span class="sub-item">대출 해지/만기 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanHistoryList.do">
+											<span class="sub-item">대출 상환 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanDirectDebit.do">
+											<span class="sub-item">대출 자동이체</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanPrincipalList.do">
+											<span class="sub-item">대출 원금 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanRateList.do">
+											<span class="sub-item">대출 이자 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="newLoanList.do">
+											<span class="sub-item">신규 대출</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
 						</ul>
 					</div>
 				</div>

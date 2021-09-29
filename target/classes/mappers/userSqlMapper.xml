@@ -351,4 +351,182 @@
 		WHERE MEMBER_ID = #{member_id}
 		GROUP BY SUBSTR(REGISTER_DATE,0,6)
 	</select>
+    
+    
+    <!-- !지은! -->
+	<!-- 대출 해지 개수 -->
+	<select id="getLoanCancelCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan WHERE loan_state IN(3, 4, 5, 7) AND member_id = #{member_id}
+	</select>
+	
+    <!-- 대출 신청 목록 -->
+	<select id="getLoanCancelList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state IN(3, 4, 5, 7)
+					           AND member_id = #{member_id}
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 가입 개수 -->
+	<select id="getLoanCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan WHERE loan_state IN(1, 2, 7) AND member_id = #{member_id}
+	</select>
+	
+    <!-- 대출 신청 목록 -->
+	<select id="getLoanList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state IN(1, 2, 7)
+					           AND member_id = #{member_id}
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<select id="getSearchLoanProductCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_product WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+	</select>
+	
+	<!-- 대출 상품 목록 -->
+	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_product_name
+			  			   , loan_product_rate
+			  			   , loan_product_summary
+			  			   , loan_product_minPrice
+			  			   , loan_product_maxPrice
+			  			   , loan_product_minDate
+			  			   , loan_product_maxDate
+			  			   , loan_product_bankCode
+			  			   , loan_product_baseDate
+			  			   , loan_product_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_product
+					         ORDER BY loan_product_name ASC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 상품 개수 -->
+	<select id="getLoanProductCnt" resultType="int">
+		SELECT COUNT(*) FROM loan_product
+	</select>
+	
+	<!-- 대출 상품  -->
+	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.user.vo.LoanProductVO">
+    	SELECT * 
+		  FROM loan_product
+		 WHERE loan_product_name = #{loan_product_name} 
+    </select>
+    
+	<!-- 대출 상품 목록 search -->
+	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_product_name
+			  			   , loan_product_rate
+			  			   , loan_product_summary
+			  			   , loan_product_minPrice
+			  			   , loan_product_maxPrice
+			  			   , loan_product_minDate
+			  			   , loan_product_maxDate
+			  			   , loan_product_bankCode
+			  			   , loan_product_baseDate
+			  			   , loan_product_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_product
+					         WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+					            OR loan_product_summary LIKE '%'||#{keyword}||'%'
+					         ORDER BY loan_product_name ASC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    <!-- 대출 상환 목록 -->
+	<select id="getLoanHistoryList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanHistoryVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_history_id
+			  			   , loan_id
+			  			   , transfer_id
+			  			   , loan_history_date
+			  			   , loan_history_state
+			  			   , loan_history_amount
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_history
+					         WHERE member_id = #{member_id}
+					         ORDER BY loan_history_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 가입 개수 -->
+	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_history WHERE member_id = #{member_id}
+	</select>
+    <!-- !지은! -->
 </mapper>

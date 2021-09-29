@@ -10,6 +10,8 @@ import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.LoanHistoryVO;
+import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
@@ -159,4 +161,29 @@ public interface CustomerDAO {
 
 	// 가계부 통계조회
 	public ArrayList<AccountBookVO> getAccountBookReport(String member_id);
+
+	public ArrayList<LoanProductVO> loanList();
+
+	public int getLoanCancelCnt(String member_id);
+
+	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
+
+	public int getLoanCnt(String member_id);
+
+	public int getLoanProductCnt();
+
+	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
+
+	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map);
+
+	public int getSearchLoanProductCnt(String keyword);
+
+	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
+
+	public LoanProductVO getLoanProductInfo(String loan_product_name);
+
+	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map);
+
+	public int getLoanHistoryCnt(String member_id);	
+
 }
