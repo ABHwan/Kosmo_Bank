@@ -54,10 +54,6 @@ public class CustomerController {
 		// service.exchanges(req, model);
 		return "index";
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 	
 	// 회원가입 페이지
 	@RequestMapping("register.do")

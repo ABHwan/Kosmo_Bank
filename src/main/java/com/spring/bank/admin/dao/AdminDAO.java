@@ -98,13 +98,13 @@ public interface AdminDAO {
 	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map);
 	
 	// 관리자 페이지 펀드 상품 상세조회
-    public SavingProductVO getFundProductInfo(String fund_product_name);
+    public FundProductVO getFundProductInfo(String fund_title);
    
     // 관리자 페이지 펀드 상품 수정
     public int updateFundProduct(FundProductVO vo);
 	
 	// 관리자 페이지 펀드 상품 삭제
-	public int deleteFundProduct(String fund_product_name);	
+	public int deleteFundProduct(String fund_title);	
 	
 	//문의사항 갯수 (지현)
 	public int getInquiryCnt();

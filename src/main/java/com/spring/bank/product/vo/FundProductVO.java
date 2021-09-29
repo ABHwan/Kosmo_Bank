@@ -15,7 +15,7 @@ public class FundProductVO {
 	private String fund_mem_name;	// 등록자 이름
 	private String fund_mem_hp;		// 등록자 연락처 
 	private String fund_mem_email;	// 등록자 이메일
-	private int fund_bank_code;	// 은행코드
+	private int fund_bank_code;		// 은행코드
 	private String fund_account;	// 모금계좌
 	private String fund_filename;	// 첨부파일
 	

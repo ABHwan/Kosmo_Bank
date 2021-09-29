@@ -119,10 +119,9 @@ public interface CustomerDAO {
 	// 적금 상품 상세 보기
 	public SavingProductVO getSavingDetail(String saving_product_name);
 
-<<<<<<< HEAD
 	// 적금 신청
 	public int savingProductAction(SavingProductVO vo);
-=======
+	
 	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
 	
@@ -131,7 +130,6 @@ public interface CustomerDAO {
 	
 	//예금 신청 시 계좌 생성
 	public int insertAccount(AccountVO vo);
->>>>>>> master
 	
 	// 환율 저장 후 출력
 	public int exchangeIn(CrawlerVO vo);

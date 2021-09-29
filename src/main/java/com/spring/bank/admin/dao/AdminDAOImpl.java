@@ -186,8 +186,8 @@ public class AdminDAOImpl implements AdminDAO {
 
 	// 관리자 페이지 펀드 상품 상세조회
 	@Override
-	public SavingProductVO getFundProductInfo(String fund_product_name) {
-	    return sqlSession.getMapper(AdminDAO.class).getFundProductInfo(fund_product_name);
+	public FundProductVO getFundProductInfo(String fund_title) {
+	    return sqlSession.getMapper(AdminDAO.class).getFundProductInfo(fund_title);
 	}
 	   
 	// 관리자 페이지 펀드 상품 수정
@@ -198,8 +198,8 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	// 관리자 페이지 펀드 상품 삭제
 	@Override
-	public int deleteFundProduct(String fund_product_name) {
-		return sqlSession.getMapper(AdminDAO.class).deleteFundProduct(fund_product_name);
+	public int deleteFundProduct(String fund_title) {
+		return sqlSession.getMapper(AdminDAO.class).deleteFundProduct(fund_title);
 	}
 	
 	

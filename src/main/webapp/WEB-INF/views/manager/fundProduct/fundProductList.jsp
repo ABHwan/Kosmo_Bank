@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 
 		<!-- 메인 콘텐츠 -->
@@ -81,14 +81,18 @@
 			          <c:if test="${cnt > 0}">
 			          	<c:forEach var="dto" items="${dtos}">
 				         <tr>
+				           <td>
+				           <input type="checkbox" name="check" class="user_check"/>
+				           </td>
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>
 				           <td>
-				           	<img src="${dto.fund_filename}">
+				           		<a href="fundProductInfo?pageNum=${currentPage}&fund_title=${dto.fund_title}">
+				           		<img src="${dto.fund_filename}" width="100px" height="100px"></a>
 				           </td>
 				           <td>${dto.fund_category}</td>
-				           <td><input type="checkbox" name="check" class="user_check" value="${dto.fund_title}" /></td>
+				           <td>${dto.fund_title}</td>
 				           
 				           <td>${dto.fund_summary}</td>
 				           <td>${dto.fund_start_date} ~ ${dto.fund_end_date}</td>
@@ -102,7 +106,7 @@
 				      <!-- 게시글이 없으면 -->
 			          <c:if test="${cnt == 0}">
 			          	<td colspan="6" align="center">
-								등록된 예금 상품이 없습니다.
+								등록된 펀드 상품이 없습니다.
 						</td>
 			          </c:if>
 			        </table>
@@ -115,8 +119,8 @@
 				            <li>
 					            <!-- 처음[◀◀] / 이전블록[◀] /  -->
 								<c:if test="${startPage > pageBlock}">
-									<a href="depositProductList"> [◀◀] </a>
-									<a href="depositProductList?pageNum=${startPage - pageBlock}"> [◀] </a>
+									<a href="fundProductList"> [◀◀] </a>
+									<a href="fundProductList?pageNum=${startPage - pageBlock}"> [◀] </a>
 								</c:if>
 				            </li>
 				            
@@ -128,15 +132,15 @@
 									</c:if>
 									
 									<c:if test="${i != currentPage}">
-										<a href="depositProductList?pageNum=${i}">[${i}]</a>
+										<a href="fundProductList?pageNum=${i}">[${i}]</a>
 									</c:if>
 								</c:forEach>
 				            </li>
 				            <li>
 					            <!-- 다음블록[▶] / 마지막▶[▶] -->
 								<c:if test="${pageCount > endPage}">
-									<a href="depositProductList?pageNum=${startPage + pageBlock}"> [▶] </a>
-									<a href="depositProductList?pageNum=${pageCount}"> [▶▶] </a>
+									<a href="fundProductList?pageNum=${startPage + pageBlock}"> [▶] </a>
+									<a href="fundProductList?pageNum=${pageCount}"> [▶▶] </a>
 								</c:if>
 							</li>
 							
@@ -147,7 +151,7 @@
 			       <div class="contents__bottom">
 			          <div class="bottom__one">
 			           <!--  <button onclick="javascript:fn_process('1')">회원정보 수정</button> -->
-			            <button onclick="javascript:fn_process('2')">예금상품 삭제</button>
+			            <button onclick="javascript:fn_process('2')">펀드상품 삭제</button>
 			          </div>
 			        </div>
 			      </div>
@@ -157,7 +161,7 @@
 		</div>
 	</div>
 	
-	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

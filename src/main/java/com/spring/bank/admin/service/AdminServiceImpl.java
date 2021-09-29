@@ -1,8 +1,9 @@
 package com.spring.bank.admin.service;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -812,11 +813,12 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 
-<<<<<<< HEAD
 	// 관리자 페이지 펀드 상품 등록 처리
 	@Override
 	public void fundProductInsertAction(HttpServletRequest req, Model model) {
 		FundProductVO vo = new FundProductVO();
+		
+		DateFormat sbFormat;
 		vo.setFund_title(req.getParameter("fund_name"));
 		vo.setFund_content(req.getParameter("fund_content"));
 		vo.setFund_summary(req.getParameter("fund_summary"));
@@ -841,8 +843,10 @@ public class AdminServiceImpl implements AdminService {
 		vo.setFund_mem_email(email);
 		
 		vo.setFund_bank_code(Integer.parseInt(req.getParameter("fund_bank_code")));
+		System.out.println("req.getParameter('fund_bank_code') : " + req.getParameter("fund_bank_code"));
 		vo.setFund_account(req.getParameter("fund_account"));
-		vo.setFund_filename(req.getParameter("fund_filename"));
+		String img = "../resources/images/admin/upload/" + req.getParameter("fund_filename");
+		vo.setFund_filename(img);
 		
 	
 		int insertCnt = dao.insertFundProduct(vo);
@@ -928,10 +932,10 @@ public class AdminServiceImpl implements AdminService {
 				map.put("start", start);
 				map.put("end", end);
 				
-				ArrayList<SavingProductVO> dtos = null;
+				ArrayList<FundProductVO> dtos = null;
 				if(cnt > 0) {
 					// 5-2단계. 회원수 조회
-					dtos = dao.selectSavingProduct(map);
+					dtos = dao.selectFundProduct(map);
 				}
 				
 				// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
@@ -1055,11 +1059,11 @@ public class AdminServiceImpl implements AdminService {
 	// 관리자 페이지 펀드 상품 상세 조회
     @Override
     public void getFundProductInfo(HttpServletRequest req, Model model) {
-       String fund_product_name = req.getParameter("fund_product_name");
+       String fund_title = req.getParameter("fund_title");
        int pageNum= Integer.parseInt(req.getParameter("pageNum"));
        System.out.println("req.getParameter('pageNum')" + req.getParameter("pageNum"));
-       System.out.println(fund_product_name+" 상품 상세조회");
-       SavingProductVO vo = dao.getFundProductInfo(fund_product_name);
+       System.out.println(fund_title+" 상품 상세조회");
+       FundProductVO vo = dao.getFundProductInfo(fund_title);
        model.addAttribute("vo", vo);
        model.addAttribute("pageNum", pageNum);
     }
@@ -1082,11 +1086,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void deleteFundProduct(HttpServletRequest req, Model model) {
 		int deleteCnt = 0;
-		String fund_product_names[] = req.getParameterValues("check");
-		if(fund_product_names != null) {
-			for(int i=0; i<fund_product_names.length; i++) {
-				deleteCnt = dao.deleteSavingProduct(fund_product_names[i]);
-				System.out.println("삭제선택된 펀드상품명: " + fund_product_names[i]);
+		String fund_title[] = req.getParameterValues("check");
+		if(fund_title != null) {
+			for(int i=0; i<fund_title.length; i++) {
+				deleteCnt = dao.deleteFundProduct(fund_title[i]);
+				System.out.println("삭제선택된 펀드상품명: " + fund_title[i]);
 			}
 			model.addAttribute("msg", "펀드상품 삭제처리되었습니다");
 		} else {
@@ -1096,30 +1100,6 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 	
-	//qna 조회(지현)
-		@Override
-		public void qnaList_mng(HttpServletRequest req, Model model) {
-			// 3단계. 화면으로부터 입력받은 값을 받아온다.
-			// 페이징
-			int pageSize = 5; // 한페이지당 출력할 글 갯수
-			int pageBlock = 3; // 한 블록당 페이지 갯수
-
-			int cnt = 0; // 글 갯수
-			int start = 0; // 현재페이지 시작 글 번호
-			int end = 0; // 현재페이지 마지막 글 번호
-			int number = 0; // 출력용 글번호
-			String pageNum = ""; // 페이지 번호
-			int currentPage = 0; // 현재 페이지
-
-			int pageCount = 0; // 페이지 갯수
-			int startPage = 0; // 시작페이지
-			int endPage = 0; // 마지막페이지
-
-			// 5-1단계. 게시글 갯수 조회
-			cnt = dao.getInquiryCnt();
-
-			System.out.println("cnt ==> " + cnt);
-=======
 	// qna 조회(지현)
 	@Override
 	public void qnaList_mng(HttpServletRequest req, Model model) {
@@ -1138,7 +1118,6 @@ public class AdminServiceImpl implements AdminService {
 		int pageCount = 0; // 페이지 갯수
 		int startPage = 0; // 시작페이지
 		int endPage = 0; // 마지막페이지
->>>>>>> master
 
 		// 5-1단계. 게시글 갯수 조회
 		cnt = dao.getInquiryCnt();
@@ -2497,7 +2476,7 @@ public class AdminServiceImpl implements AdminService {
 		vo.setNotice_content(req.getParameter("notice_content"));
 		
 		// 작성일
-		vo.setNotice_date(new Date());
+		vo.setNotice_date(new Date()); // date안에 아무것도 안들어가나요??
 		
 		// insert
 		int insertCnt = dao.mngNoticeWriteAction(vo);

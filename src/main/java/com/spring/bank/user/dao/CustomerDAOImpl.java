@@ -244,10 +244,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	// 적금 상품 상세 보기
 	@Override
 	public SavingProductVO getSavingDetail(String saving_product_name) {
-<<<<<<< HEAD
-		SavingProductVO vo = sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getSavingDetail",saving_product_name);
-		System.out.println("상세보기 : "+vo.getSaving_product_name());
-		return vo;
+		
+		return sqlSession.getMapper(CustomerDAO.class).getSavingDetail(saving_product_name);
 	}
 
 	// 적금 신청
@@ -256,10 +254,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.savingProductAction",vo);
 	}
 
-=======
-
-		return sqlSession.getMapper(CustomerDAO.class).getSavingDetail(saving_product_name);
-	}
 	 
 	//멤버의 unique_key가져오기 
 	@Override
@@ -281,7 +275,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		return sqlSession.getMapper(CustomerDAO.class).insertDeposit(vo);
 	}
->>>>>>> master
 	
 	// 환율 저장 후 출력
 	@Override
