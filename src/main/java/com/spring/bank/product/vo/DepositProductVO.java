@@ -106,6 +106,7 @@ public class DepositProductVO {
 		this.deposit_product_minPrice = deposit_product_minPrice;
 	}
 
+
 	public String getDeposit_product_explanation() {
 		return deposit_product_explanation;
 	}

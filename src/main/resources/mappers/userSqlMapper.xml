@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        
+
 <mapper namespace="com.spring.bank.user.dao.CustomerDAO">
     
     <!-- 회원가입 아이디 중복확인 -->
@@ -10,10 +10,15 @@
     	SELECT COUNT(*) as cnt FROM members WHERE member_id = #{member_id}
     </select>
     
+    <!-- 회원가입 명의 중복확인 -->
+    <select id="duplicateCheck" parameterType="java.util.Map" resultType="int">
+    	SELECT COUNT(*) as cnt FROM members WHERE unique_key = #{unique_key}
+    </select>
+    
     <!-- 회원가입 처리 -->
     <insert id="insertUser" parameterType="com.spring.bank.user.vo.UserVO">
-    	INSERT INTO members(member_id, member_password, member_name, member_birth, member_hp, member_email, member_zipcode, member_addr1,  member_addr2, member_addr3, member_indate, member_enabled, member_authority, access_token, refresh_token, user_seq_no)
-    	 VALUES(#{member_id}, #{member_password}, #{member_name}, #{member_birth}, #{member_hp}, #{member_email}, #{member_zipcode}, #{member_addr1}, #{member_addr2}, #{member_addr3}, sysdate, 1, 'ROLE_USER', #{access_token}, #{refresh_token}, #{user_seq_no})
+    	INSERT INTO members(member_id, member_password, member_name, member_birth, member_hp, member_email, member_zipcode, member_addr1,  member_addr2, member_addr3, member_indate, member_enabled, member_authority, unique_key)
+    	 VALUES(#{member_id}, #{member_password}, #{member_name}, #{member_birth}, #{member_hp}, #{member_email}, #{member_zipcode}, #{member_addr1}, #{member_addr2}, #{member_addr3}, sysdate, 1, 'ROLE_USER', #{unique_key})
     </insert>
     
     <!-- 이메일 인증 성공 처리 -->
@@ -54,17 +59,21 @@
 	<select id="idFind" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.UserVO">
 		SELECT * FROM members WHERE member_name=#{member_name} AND member_email=#{member_email}
 	</select>
-	
+
 	<!-- 비밀번호 재설정 전에 멤버 정보 가져오기 -->
-	<select id="customerFind" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.UserVO">
-		SELECT * FROM members WHERE member_name=#{member_name} AND member_email=#{member_email} AND member_id=#{member_id}
+	<select id="customerFind" parameterType="java.util.Map"
+		resultType="com.spring.bank.user.vo.UserVO">
+		SELECT * FROM members WHERE member_name=#{member_name} AND
+		member_email=#{member_email} AND member_id=#{member_id}
 	</select>
-	
+
 	<!-- 비밀번호 재설정 -->
-	<update id="updatePassword" parameterType="com.spring.bank.user.vo.UserVO">
-		UPDATE members set member_password=#{member_password} WHERE member_id=#{member_id}
+	<update id="updatePassword"
+		parameterType="com.spring.bank.user.vo.UserVO">
+		UPDATE members set member_password=#{member_password}
+		WHERE member_id=#{member_id}
 	</update>
-	
+
 	<!-- 진지현 작성 -->
 	<!-- 문의사항 갯수 -->
 	<select resultType="int" id="getInquiryCnt">
@@ -72,7 +81,8 @@
 	</select>
 
 	<!-- 문의사항 리스트 조회 -->
-	<select resultType="com.spring.bank.user.vo.InquiryVO" parameterType="java.util.Map" id="getInquiryList">
+	<select resultType="com.spring.bank.user.vo.InquiryVO"
+		parameterType="java.util.Map" id="getInquiryList">
 		<![CDATA[
 			SELECT * 
 				FROM (SELECT inquiry_id, inquiry_title, inquiry_content, member_id, inquiry_ref, inquiry_regDate
@@ -83,47 +93,58 @@
 	</select>
 
 	<!-- 문의사항 추가 처리 -->
-	<insert parameterType="com.spring.bank.user.vo.InquiryVO" id="insertInquiry">
-		INSERT INTO inquiry(inquiry_id, inquiry_title,inquiry_content,member_id, inquiry_ref,inquiry_regDate)
-		VALUES(inquiry_seq.nextval, #{inquiry_title}, #{inquiry_content}, #{member_id}, inquiry_seq.currval,#{inquiry_regDate}) 
-		</insert>
+	<insert parameterType="com.spring.bank.user.vo.InquiryVO"
+		id="insertInquiry">
+		INSERT INTO inquiry(inquiry_id,
+		inquiry_title,inquiry_content,member_id, inquiry_ref,inquiry_regDate)
+		VALUES(inquiry_seq.nextval, #{inquiry_title}, #{inquiry_content},
+		#{member_id}, inquiry_seq.currval,#{inquiry_regDate})
+	</insert>
 
 	<!-- 게시글 증가 -->
 	<update parameterType="int" id="addReadCnt">
-		UPDATE inquiry SET readCnt = readCnt+1
-		WHERE inquiry_id=#{inquiry_id} 
+		UPDATE inquiry SET readCnt =
+		readCnt+1
+		WHERE inquiry_id=#{inquiry_id}
 	</update>
 
 	<!-- qna 상세페이지, 수정상세페이지 -->
-	<select resultType="com.spring.bank.user.vo.InquiryVO" parameterType="int" id="getInquiryDetail">
-		SELECT * FROM inquiry 
-		WHERE inquiry_id=#{inquiry_id} 
-		</select>
+	<select resultType="com.spring.bank.user.vo.InquiryVO"
+		parameterType="int" id="getInquiryDetail">
+		SELECT * FROM inquiry
+		WHERE
+		inquiry_id=#{inquiry_id}
+	</select>
 
 	<!-- 게시글 수정 삭제시 비밀번호 인증 -->
 	<!-- <select id="numPasswordCheck" parameterType ="java.util.Map" resultType="int">SELECT 
 		COUNT(*) FROM inquiry WHERE inquiry_id=#{inquiry_id} AND inquiry_password=#{inquiry_password}</select> -->
 
 	<!-- 게시글 수정 처리 -->
-	<update parameterType="com.spring.bank.user.vo.InquiryVO" id="updateQna">
+	<update parameterType="com.spring.bank.user.vo.InquiryVO"
+		id="updateQna">
 		UPDATE inquiry SET inquiry_id=#{inquiry_id},
-		inquiry_title=#{inquiry_title}, inquiry_content=#{inquiry_content} 
+		inquiry_title=#{inquiry_title}, inquiry_content=#{inquiry_content}
 		WHERE inquiry_id=#{inquiry_id}
 	</update>
 
 	<!-- 게시글 삭체 처리 -->
 	<delete parameterType="int" id="deleteQna">
-		DELETE FROM inquiry 
-		WHERE inquiry_id=#{inquiry_id} 
+		DELETE FROM inquiry
+		WHERE
+		inquiry_id=#{inquiry_id}
 	</delete>
-	
+
 	<!-- 자주묻는 질문 갯수 -->
-	<select id="getFaqCnt" resultType="int" >
-		SELECT COUNT(*) as cnt FROM faq
+	<select id="getFaqCnt" resultType="int">
+		SELECT COUNT(*) as cnt
+		FROM faq
 	</select>
-	
-	<!-- 자주묻는 질문조회-->
-	<select id="getFaqList" resultType="com.spring.bank.user.vo.faqVO" parameterType="java.util.Map" >
+
+	<!-- 자주묻는 질문조회 -->
+	<select id="getFaqList"
+		resultType="com.spring.bank.user.vo.faqVO"
+		parameterType="java.util.Map">
 		<![CDATA[
 			SELECT * 
 				FROM (SELECT faq_id, faq_title, faq_content, faq_regDate,rowNUM rNum 
@@ -131,14 +152,16 @@
 				WHERE rNum >= #{start} AND rNum <= #{end}
 		]]>
 	</select>
-	
+
 	<!-- 예금 상품 개수 -->
 	<select id="getDepositCnt" resultType="int">
-		SELECT COUNT(*) as cnt FROM deposit_product
+		SELECT COUNT(*) as cnt
+		FROM deposit_product
 	</select>
-	
-	<!-- 예금 상품 조회  -->
-	<select id="getDepositList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.DepositProductVO">
+
+	<!-- 예금 상품 조회 -->
+	<select id="getDepositList" parameterType="java.util.Map"
+		resultType="com.spring.bank.product.vo.DepositProductVO">
 		<![CDATA[
 			SELECT * FROM 
 				(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interRate, deposit_product_type, deposit_product_maxDate, deposit_product_minDate, deposit_product_minPrice, deposit_product_explanation, deposit_product_notice, deposit_product_bankCode, rowNUM rNum 
@@ -146,29 +169,143 @@
 				WHERE rNum >= #{start} AND rNum <= #{end}
 		]]>
 	</select>
-	
-	<!-- 관리자 페이지 예금 상품 수(검색결과수)  -->
-	<select id="getDepositProductSearchCnt" parameterType="String" resultType="int">
+
+	<!-- 관리자 페이지 예금 상품 수(검색결과수) -->
+	<select id="getDepositProductSearchCnt" parameterType="String"
+		resultType="int">
 		<![CDATA[ 
 		SELECT COUNT(*) as cnt FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%'
 		]]>
 	</select>
-	
+
 	<!-- 관리자 페이지 예금 상품 검색(입력받아서 검색) -->
-	<select id="searchDepositProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.DepositProductVO">
+	<select id="searchDepositProduct" parameterType="java.util.Map"
+		resultType="com.spring.bank.product.vo.DepositProductVO">
 		<![CDATA[
 		SELECT * FROM
-			(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
+		s	(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
 				FROM (SELECT * FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%' ORDER BY deposit_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>
+	</select>
+
+	<!--예금 상품 상세 조회 -->
+	<select id="getDepositDetail" parameterType="String"
+		resultType="com.spring.bank.product.vo.DepositProductVO">
+		SELECT * FROM deposit_product
+		WHERE
+		deposit_product_name=#{deposit_product_name}
+	</select>
+
+	<!-- 회원 계좌 찾기 -->
+	<select id="accountFind" parameterType="String"
+		resultType="String">
+		select ac.account_id AS account_id
+		from members m, account
+		ac
+		WHERE ac.member_id = m.member_id
+		AND ac.member_id=#{strId}
+	</select>
+
+	<!-- 회원 계좌 비밀번호 확인 -->
+	<select id="account_pwd" parameterType="String"
+		resultType="java.util.Map">
+		SELECT COUNT(*) FROM account WHERE account_password =
+		#{strId}
+	</select>
+
+	<!-- 이체 확인 -->
+	<!-- <select id="transfer_confirm" parameterType="com.spring.bank.user.vo.TransferVO" 
+		resultType="int"> </select> -->
+
+	<!-- 회원 이체 -->
+	<insert id="transferSenderConfirm"
+		parameterType="com.spring.bank.user.vo.TransferVO">
+		INSERT INTO transfer
+		VALUES(transfer_seq.nextval,
+		#{account_id}, #{member_id} #{transfer_senderAccount},
+		#{transfer_money},
+		'출금',
+		SYSDATE, #{transfer_outComment},
+		#{transfer_inComment},#{transfer_senderName},
+		#{transfer_reseiverName}, #{transfer_bankCode})
+	</insert>
+
+	<!-- 보낸사람 계좌 정보 변경(금액) -->
+	<update id="transfer_sender"
+		parameterType="com.spring.bank.user.vo.AccountVO">
+		UPDATE account
+		SET
+		account_balance=#{account_balance}
+		WHERE
+		account_id=#{account_id}
+	</update>
+
+	<!-- 받는사람 계좌 정보 변경(금액) -->
+	<update id="transfer_receiver"
+		parameterType="com.spring.bank.user.vo.AccountVO">
+		UPDATE account
+		SET
+		account_balance=#{account_balance}
+		WHERE
+		account_id=#{account_id}
+	</update>
+
+	<!-- 적금 상품 개수 -->
+	<select id="getSavingCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM saving_product
+	</select>
+	
+	<!-- 적금 상품 조회  -->
+	<select id="getSavingList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.SavingProductVO">
+		<![CDATA[
+			SELECT * FROM 
+				(SELECT saving_product_name, saving_product_summary, saving_product_date, saving_product_interRate, saving_product_type, saving_product_maxDate, saving_product_minDate, saving_product_minPrice, saving_product_explanation, saving_product_notice, saving_product_bankCode, rowNUM rNum 
+					 FROM (SELECT * FROM saving_product ORDER BY saving_product_date DESC))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	<!--적금 상품 수(검색결과수)  -->
+	<select id="getSavingProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM saving_product WHERE saving_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 적금 상품 검색(입력받아서 검색) -->
+	<select id="searchSavingProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.SavingProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT saving_product_name, saving_product_summary, saving_product_date, saving_product_interrate, saving_product_type, saving_product_maxdate, saving_product_mindate, saving_product_minprice, saving_product_bankcode, rowNum rNum 
+				FROM (SELECT * FROM saving_product WHERE saving_product_name LIKE '%'||#{search}||'%' ORDER BY saving_product_date DESC)
 			) WHERE rNum >= #{start} and rNum <= #{end}
 		]]>	
 	</select>
 	
-	<!--예금 상품 상세 조회 -->
-	<select id="getDepositDetail" parameterType="String" resultType="com.spring.bank.product.vo.DepositProductVO">
-		SELECT * FROM  deposit_product
-		WHERE deposit_product_name=#{deposit_product_name} 	
+	<!-- 적금 상품 상세 조회 -->
+	<select id="getSavingDetail" parameterType="String" resultType="com.spring.bank.product.vo.SavingProductVO">
+		SELECT * FROM  saving_product
+		WHERE saving_product_name=#{saving_product_name} 	
+	</select>	
+
+	<!-- 예금 신청시필요한 unique_key -->
+	<select id="getUniqueKey" parameterType="String" resultType="String">
+		SELECT unique_key FROM members
+		WHERE member_id = #{id}
 	</select>
+	
+	<!-- 예금 가입 시 account 테이블 insert   -->
+	<insert id="insertAccount" parameterType="com.spring.bank.user.vo.AccountVO">
+		INSERT INTO account(account_id,account_password, member_id, account_type, account_newDate, account_bankCode, account_balance)
+		VALUES(#{account_id}, #{account_password}, #{member_id}, 0, sysdate, #{account_bankCode}, #{account_balance})
+	</insert>
+	
+	<!-- 예금 신청 처리 -->
+	<insert id="insertDeposit" parameterType="com.spring.bank.user.vo.DepositVO" >
+		INSERT INTO deposit(deposit_id, deposit_product_name, account_id,deposit_joinDate, deposit_rate, deposit_type, deposit_endDate)
+		VALUES(deposit_seq.nextval, #{deposit_product_name}, #{account_id}, sysdate, #{deposit_rate}, #{deposit_type}, #{deposit_endDate})
+	</insert>
 	
 	<!-- 환율 저장 후 출력(지호) -->
     <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">
@@ -185,16 +322,22 @@
     <!-- 환율 최신화(지호) -->
     <update id="exchangeUpd" parameterType="com.spring.bank.user.vo.CrawlerVO">
     	UPDATE exchange_rate
-    	   SET exchange_rate=#{exchange_rate}
+    	   SET exchange_rate=#{exchange_rate}, exchange_com=#{exchange_com}
     	 WHERE exchange_country=#{exchange_country}
     </update>
     
     <!-- db에 있는 환율  출력 -->
     <select id="exchangeVary" parameterType="String" resultType="String">
-    	SELECT exchange_rate 
+    	 SELECT exchange_rate
     	  FROM exchange_rate
     	 WHERE exchange_country=#{exchange_country}
     </select>
+    
+    <!-- test -->
+<!--     <insert id="jsonIn" parameterType="String">
+    	INSERT INTO test(json, json2)
+    	VALUES (#{json1}, #{json2})
+    </insert> -->
     
     <!-- 가계부 내역추가 -->
     <insert id="insertAccountBook" parameterType="com.spring.bank.user.vo.AccountBookVO">
@@ -226,4 +369,264 @@
 		WHERE MEMBER_ID = #{member_id}
 		GROUP BY SUBSTR(REGISTER_DATE,0,6)
 	</select>
+    
+    
+    <!-- !지은! -->
+	<!-- 대출 해지 개수 -->
+	<select id="getLoanCancelCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan WHERE loan_state IN(3, 4, 5, 7) AND member_id = #{member_id}
+	</select>
+	
+    <!-- 대출 신청 목록 -->
+	<select id="getLoanCancelList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state IN(3, 4, 5, 7)
+					           AND member_id = #{member_id}
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 가입 개수 -->
+	<select id="getLoanCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan WHERE loan_state IN(1, 2, 7) AND member_id = #{member_id}
+	</select>
+	
+    <!-- 대출 신청 목록 -->
+	<select id="getLoanList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state IN(1, 2, 7)
+					           AND member_id = #{member_id}
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<select id="getSearchLoanProductCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_product WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+	</select>
+	
+	<!-- 대출 상품 목록 -->
+	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_product_name
+			  			   , loan_product_rate
+			  			   , loan_product_summary
+			  			   , loan_product_minPrice
+			  			   , loan_product_maxPrice
+			  			   , loan_product_minDate
+			  			   , loan_product_maxDate
+			  			   , loan_product_bankCode
+			  			   , loan_product_baseDate
+			  			   , loan_product_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_product
+					         ORDER BY loan_product_name ASC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 상품 개수 -->
+	<select id="getLoanProductCnt" resultType="int">
+		SELECT COUNT(*) FROM loan_product
+	</select>
+	
+	<!-- 대출 상품  -->
+	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.user.vo.LoanProductVO">
+    	SELECT * 
+		  FROM loan_product
+		 WHERE loan_product_name = #{loan_product_name} 
+    </select>
+    
+	<!-- 대출 상품 목록 search -->
+	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_product_name
+			  			   , loan_product_rate
+			  			   , loan_product_summary
+			  			   , loan_product_minPrice
+			  			   , loan_product_maxPrice
+			  			   , loan_product_minDate
+			  			   , loan_product_maxDate
+			  			   , loan_product_bankCode
+			  			   , loan_product_baseDate
+			  			   , loan_product_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_product
+					         WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+					            OR loan_product_summary LIKE '%'||#{keyword}||'%'
+					         ORDER BY loan_product_name ASC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    <!-- 대출 상환 목록 -->
+	<select id="getLoanHistoryList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanHistoryVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_history_id
+			  			   , loan_id
+			  			   , transfer_id
+			  			   , loan_history_date
+			  			   , loan_history_state
+			  			   , loan_history_amount
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_history
+					         WHERE member_id = #{member_id}
+					         ORDER BY loan_history_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 가입 개수 -->
+	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_history WHERE member_id = #{member_id}
+	</select>
+    <!-- !지은! -->
+
+    <!-- 회원 이름 불러오기(민재) -->
+    <select id="getName" parameterType="String" resultType="String">
+    	SELECT member_name FROM members WHERE member_id=#{id}
+    </select>
+    
+    <!-- 예금 리스트 전체(민재)-->
+    <select id="depositList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MyDepositVO">
+    	SELECT d.deposit_product_name AS "deposit_product_name", a.account_id AS "account_id", a.account_bankCode AS "deposit_product_bankCode", d.deposit_joinDate AS "deposit_joinDate", d.deposit_state AS "deposit_state",
+    		   d.deposit_rate AS "deposit_rate", d.deposit_balance AS "deposit_balance", d.deposit_endDate AS "deposit_endDate"
+    	  FROM deposit d JOIN account a ON d.account_id = a.account_id
+    	  				 JOIN deposit_product p ON d.deposit_product_name = p.deposit_product_name
+    	 WHERE d.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    </select>
+    
+    <!-- 은행별 예금 리스트 (민재)-->
+    <select id="depositSubList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MyDepositVO">
+    	SELECT d.deposit_product_name AS "deposit_product_name", a.account_id AS "account_id", a.account_bankCode AS "deposit_product_bankCode", d.deposit_joinDate AS "deposit_joinDate", d.deposit_state AS "deposit_state",
+    		   d.deposit_rate AS "deposit_rate", d.deposit_balance AS "deposit_balance", d.deposit_endDate AS "deposit_endDate"
+    	  FROM deposit d JOIN account a ON d.account_id = a.account_id
+    	  				 JOIN deposit_product p ON d.deposit_product_name = p.deposit_product_name
+    	 WHERE d.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    	   AND a.account_bankCode = #{account_bankCode}
+    </select>
+    
+    <!-- 적금 리스트 전체(민재)-->
+    <select id="savingList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MySavingVO">
+    	SELECT s.saving_product_name AS "saving_product_name", a.account_id AS "account_id", a.account_bankCode AS "saving_product_bankCode", s.saving_joinDate AS "saving_joinDate", s.saving_state AS "saving_state",
+    		   s.saving_rate AS "saving_rate", s.saving_money AS "saving_money", s.saving_endDate AS "saving_endDate"
+    	  FROM saving s JOIN account a ON s.account_id = a.account_id
+    	  				JOIN saving_product p ON s.saving_product_name = p.saving_product_name
+    	 WHERE s.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    </select>
+    
+    <!-- 은행별 적금 리스트(민재) -->
+    <select id="savingSubList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MySavingVO">
+    	SELECT s.saving_product_name AS "saving_product_name", a.account_id AS "account_id", a.account_bankCode AS "saving_product_bankCode", s.saving_joinDate AS "saving_joinDate", s.saving_state AS "saving_state",
+    		   s.saving_rate AS "saving_rate", s.saving_money AS "saving_money", s.saving_endDate AS "saving_endDate"
+    	  FROM saving s JOIN account a ON s.account_id = a.account_id
+    	  				JOIN saving_product p ON s.saving_product_name = p.saving_product_name
+    	 WHERE s.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    	   AND a.account_bankCode = #{account_bankCode}
+    </select>
+    
+    <!-- 연금 리스트(민재)-->
+    <select id="irpList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.MyIRPVO">
+    	SELECT i.irp_product_name AS "irp_product_name", a.account_id AS "account_id", a.account_bankCode AS "irp_product_bankCode", i.irp_joinDate AS "irp_joinDate", i.irp_state AS "irp_state",
+    		   i.irp_rate AS "irp_rate", i.irp_money AS "irp_money", i.irp_endDate AS "irp_endDate"
+    	  FROM IRP i JOIN account a ON i.account_id = a.account_id
+    	  			 JOIN IRP_product p ON i.irp_product_name = p.irp_product_name
+    	 WHERE i.account_id IN (SELECT account_id FROM account WHERE member_id = #{member_id} AND account_type = #{account_type})
+    </select>
+    
+    <!-- 공지사항 게시글 개수(민재) -->
+    <select id="getNoticeCnt" resultType="Integer">
+    	SELECT COUNT(*) FROM NOTICE
+    </select>
+    
+    <!-- 공지사항 게시글 리스트(민재) -->
+    <select id="getNoticeList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.NoticeVO">
+    	<![CDATA[
+    	SELECT * 
+    	  FROM (SELECT notice_num, notice_writer, notice_subject, notice_password, notice_content, notice_readCnt, notice_date, rowNum rNum
+    	  		  FROM (SELECT * FROM NOTICE
+    	  		 		 ORDER BY notice_num DESC
+    	  		 		)
+    	  		 )
+    	 WHERE rNum >= #{start} AND rNum <= #{end}
+    	]]>
+    </select>
+    
+    <!-- 공지사항 조회수 증가(민재) -->
+    <update id="addNoticeReadCnt" parameterType="int">
+    	UPDATE NOTICE SET notice_readCnt = notice_readCnt + 1 
+    	 WHERE notice_num = #{notice_num}
+    </update> 
+    
+    <!-- 공지사항 상세페이지(민재) -->
+    <select id="getNoticeDetail" parameterType="int" resultType="com.spring.bank.user.vo.NoticeVO">
+    	SELECT * FROM NOTICE WHERE notice_num = #{notice_num}
+    </select>
+    
 </mapper>

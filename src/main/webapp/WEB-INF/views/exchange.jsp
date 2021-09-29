@@ -11,7 +11,7 @@
 </head>
 <body onload="change();">
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 
 		<!-- 메인 폼-->
@@ -34,8 +34,11 @@
 												<th><b>*</b>환전신청금액</th>
 												<c:choose>
 												<c:when test="${exchange =! null}">
-												
+													<td>
+													<input type="text" class="exchange" value="${exchange}" disabled>
+													</td>
 												</c:when>
+												<c:otherwise>
 												<td>
 													<select class="select">
 													 	<option value="미국 USD">USD (미국 달러) </option>
@@ -89,6 +92,7 @@
 														<option value="헝가리 HUF">HUF (헝가리 포린트) </option>
 													</select>
 												</td>
+												</c:otherwise>
 												</c:choose>
 												<td>
 													<input type="text" id="price" class="price" placeholder="최소금액 10" required>
@@ -198,7 +202,7 @@
 			</div>
 		</div>		
 	</div>
-		<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		<!-- End Sidebar -->
 		
 	<!--   Core JS Files   -->

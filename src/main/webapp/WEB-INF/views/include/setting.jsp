@@ -16,5 +16,12 @@
 
 <script src="${rePath}js/script.js"></script>
 
-
+<!-- datepicker -->
+<link href="${rePath}css/datepicker.min.css" rel="stylesheet" type="text/css">
+<script src="${rePath}js/datepicker.min.js"></script>
+<!-- Include English language -->
+<script src="${rePath}js/datepicker.en.js"></script>
+<!-- Include Korean language -->
+<script src="${rePath}js/datepicker.ko.js"></script>
+<!-- datepicker -->
 
