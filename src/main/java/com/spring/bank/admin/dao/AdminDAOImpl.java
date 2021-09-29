@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -176,5 +177,40 @@ public class AdminDAOImpl implements AdminDAO {
 	// 관리자 페이지 회원계좌 검색결과목록
 	public ArrayList<CustomerAccountVO> getSearchCustomerAccountList(Map<String, Object> map){
 		return sqlSession.getMapper(AdminDAO.class).getSearchCustomerAccountList(map);
+	}
+	
+	// 공지사항 쓰기 처리(민재)
+	@Override
+	public int mngNoticeWriteAction(NoticeVO vo) {
+		
+		return sqlSession.insert("com.spring.bank.admin.dao.AdminDAO.mngNoticeWriteAction", vo);
+	}
+	
+	// 공지사항 - 비밀번호 인증(민재)
+	@Override
+	public int noticePWDCheck(Map<String, Object> map) {
+		
+		return sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.noticePWDCheck", map);
+	}
+	
+	// 공지사항 상세페이지(민재)
+	@Override
+	public NoticeVO getNoticeDetail(int notice_num) {
+		
+		return sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.getNoticeDetail", notice_num);
+	}
+	
+	// 공지사항 수정처리(민재)
+	@Override
+	public int noticeModifyAction(NoticeVO vo) {
+		
+		return sqlSession.update("com.spring.bank.admin.dao.AdminDAO.noticeModifyAction", vo);
+	}
+	
+	// 공지사항 수정처리(민재)
+	@Override
+	public int noticeDeleteAction(int notice_num) {
+		
+		return sqlSession.delete("com.spring.bank.admin.dao.AdminDAO.noticeDeleteAction", notice_num);
 	}
 }

@@ -1,6 +1,7 @@
 package com.spring.bank.admin.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.spring.bank.admin.dao.AdminDAOImpl;
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -322,7 +324,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		System.out.println("number : " + number);
 		System.out.println("pageSize : " + pageSize);
-		
+
 		// 시작 페이지
 		// 1 = (1 / 3) * 3 + 1;
 		// startPage = (currentPage / pageBlock) * pageBlock + 1;
@@ -980,5 +982,93 @@ public class AdminServiceImpl implements AdminService {
 			model.addAttribute("pageCount", pageCount);		// 페이지 갯수
 			model.addAttribute("currentPage", currentPage);	// 현재 페이지
 		}
+	}
+	
+	// 공지사항 쓰기 처리(민재)
+	@Override
+	public void mngNoticeWriteAction(HttpServletRequest req, Model model) {
+		System.out.println("여기들어와?");
+		NoticeVO vo = new NoticeVO();
+
+		// 히든값 받아오기 -> 바구니에 넣기
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		vo.setNotice_writer(req.getParameter("notice_writer"));
+		
+		// input값 받아오기 -> 바구니에 넣기
+		vo.setNotice_subject(req.getParameter("notice_subject"));
+		vo.setNotice_password(req.getParameter("notice_password"));
+		vo.setNotice_content(req.getParameter("notice_content"));
+		
+		// 작성일
+		vo.setNotice_date(new Date());
+		
+		// insert
+		int insertCnt = dao.mngNoticeWriteAction(vo);
+		System.out.println("insertCnt : " + insertCnt);
+		
+		// jsp로 insertCnt값 넘기기
+		model.addAttribute("insertCnt", insertCnt);
+		model.addAttribute("pageNum", pageNum);
+	}
+
+	// 공지사항 수정인증(민재)
+	@Override
+	public void mngNoticeModifyDetail(HttpServletRequest req, Model model) {
+		
+		// 히든값
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int notice_num = Integer.parseInt(req.getParameter("notice_num"));
+		
+		map.put("notice_num", notice_num);
+		map.put("notice_password", req.getParameter("notice_password"));
+	
+		// 비밀번호 인증 
+		// 인증성공 :: selectCnt = 1, 인증실패 :: selectCnt = 0
+		int selectCnt = dao.noticePWDCheck(map);
+		
+		// 상세페이지 조회
+		NoticeVO vo = dao.getNoticeDetail(notice_num);
+		
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("selectCnt", selectCnt);
+		model.addAttribute("vo", vo);
+	
+	}
+	
+	// 공지사항 수정처리(민재)
+	@Override
+	public void mngNoticeModifyAction(HttpServletRequest req, Model model) {
+	
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		
+		NoticeVO vo = new NoticeVO();
+		
+		vo.setNotice_num(Integer.parseInt(req.getParameter("notice_num")));
+		vo.setNotice_subject(req.getParameter("notice_subject"));
+		vo.setNotice_password(req.getParameter("notice_password"));
+		vo.setNotice_content(req.getParameter("notice_content"));
+		
+		int updateCnt = dao.noticeModifyAction(vo);
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("updateCnt", updateCnt);
+	}
+	
+	// 공지사항 삭제처리(민재)
+	@Override
+	public void mngNoticeDeleteAction(HttpServletRequest req, Model model) {
+	
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		int notice_num = (Integer.parseInt(req.getParameter("notice_num")));
+
+		
+		int deleteCnt = dao.noticeDeleteAction(notice_num);
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("deleteCnt", deleteCnt);
 	}
 }

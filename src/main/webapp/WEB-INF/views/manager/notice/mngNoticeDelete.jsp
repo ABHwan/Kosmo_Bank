@@ -38,39 +38,30 @@
 				</div>
 				
 				<div class="notice">
-					<form action="noticeWriteAction.do" method="post">
-					<input type="hidden" name="notice_writer" value = "${notice_writer}">
-					<input type="hidden" name="pageNum" value ="${pageNum}">
-					<!-- 관리자 공지사항 -->
-						<h2 align:center> 공지사항 글쓰기!!</h2>
-						<table style="width:1000px; margin:auto">
-							<tr style="border-bottom: 1px solid #444444; width:500px;">
-								<th align="center">
-									글제목 : 
+					<form action="mngNoticeDeleteAction" method="post" name="passwordform">
+					<sec:csrfInput/>
+						<!-- input type="hidden"은 form 태그안에 지정해야 한다. -->
+						<input type="hidden" name="notice_num" value="${notice_num}">
+						<input type="hidden" name="pageNum" value="${pageNum}">
+						<table align="center">
+							<tr>
+								<th colspan="2">
+									공지사항삭제 비밀번호 인증
 								</th>
-								<td align="center" colspan="3">
-									<input type="text" name="notice_subject" size="80px"/>
-								</td>
 							</tr>
-							<tr style="border-bottom: 1px solid #444444; width:500px;">
-								<th> 작성자 : </th>
-								<td>${notice_writer} </td>
-								<th> 비밀번호 : </th>
+							
+							<tr>
+								<th> 비밀번호 </th>
 								<td>
-									<input type="password" name="notice_password" />
-								</td>
-								<td></td>
-							</tr>
-							<tr style = "border-bottom: 1px solid #444444; width:500px; text-align:center">
-								<th> 글내용 : </th>
-								<td colspan="3" style="width:800px">
-									<textarea rows="10" cols="50" name="notice_content" word-break:break-all></textarea>
+									<input class="input" type="password" name="notice_password" maxlength="20" placeholder="비밀번호 입력" autofocus>
 								</td>
 							</tr>
-							<tr style="text-align:center; border-spacing:0 20px">
-								<th colspan="4">
-									<input type="submit" value="글쓰기완료"/>
-									<input type="reset" value="취소"/>
+							
+							<tr>
+								<th colspan="2">
+								<input class="button" type="submit" value="확인">
+									<input class="button" type="reset" value="취소"
+											onclick="window.history.back();">
 								</th>
 							</tr>
 						</table>

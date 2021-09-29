@@ -40,80 +40,59 @@
 				
 				<div class="notice">
 					<!-- 관리자 공지사항 -->
-					<sec:authorize access="hasRole('ROLE_ADMIN')">
-					</sec:authorize>
-
-					<table style="width:1000px; margin:auto">
-						<tr style="border-bottom: 1px solid #444444; width:500px;">
-							<td align="center" colspan="3"> ${vo.notice_subject} </td>
-						</tr>
-						<tr style="border-bottom: 1px solid #444444; width:500px;">
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<td style="width:20%; align:center"> 작성자 : ${vo.notice_writer} </td>
-							<td style="width:60%; align:left"> 조회수 : ${vo.notice_readCnt} </td>
-							<td style="width:20%; align:right">
-								작성일 : <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-							</td>
-							</sec:authorize>
-							<sec:authorize access="hasRole('ROLE_USER')">
-							<td></td>
-							<td></td>
-							<td align="center">
-								<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-							</td>
-							</sec:authorize>
-						</tr>
-						<tr style = "border-bottom: 1px solid #444444; width:500px; text-align:center">
-							<td colspan="3" style="width:1000px" word-break:break-all>
-								${vo.notice_content}
-							</td>
-						</tr>
-						<tr style="text-align:center; border-spacing:0 20px">
-							<th colspan="3">
-								<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<input class="button" type="button" value="글수정"
-									onclick="window.location='${mngPath}mngNoticeModify?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
-								<input class="button" type="button" value="글삭제"
-									onclick="window.location='${mngPath}mngNoticeDelete?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
-								</sec:authorize>
-								<input class="button" type="button" value="목록"
-									onclick="window.location='noticeList.do?pageNum=${pageNum}'">
-							</th>
-						</tr>
-					</table>
 					
-					<!-- 페이지 컨트롤 -->
-					<table style="width:1000px" align="center">
-				    	<tr>
-				        	<th align="center">
-				            	<!-- 게시글이 있으면 -->
-				            	<c:if test="${cnt > 0}">
-				            		<!-- 처음[◀◀] / 이전블록[◀]  -->
-				            		<c:if test="${startPage > pageBlock}">
-				            			<a href="noticeList.do"> [◀◀] </a>
-				            			<a href="noticeList.do?pageNum=${startPage - pageBlock}"> [◀] </a>
-				            		</c:if>
-				            		
-				            		<!-- 블록내의 페이지번호 -->
-				            		<c:forEach var="i" begin="${startPage}" end="${endPage}">
-				            			<c:if test="${i == currentPage}">
-				            				<span><b>[${i}]</b></span>
-				            			</c:if>
-				            			
-				            			<c:if test="${i != currentPage}">
-				            				<a href="noticeList.do?pageNum=${i}"> [${i}] </a>
-				            			</c:if>
-				            		</c:forEach>
-				            		
-				            		<!-- 다음블록[▶] / 마지막[▶▶]  -->
-				            		<c:if test="${pageCount > endPage}">
-				            			<a href="noticeList.do?pageNum=${startPage + pageBlock}"> [▶] </a>
-				            			<a href="noticeList.do?pageNum=${pageCount}"> [▶▶] </a>
-				            		</c:if>
-				            	</c:if>
-				        	</th>
-				    	</tr>
-					</table>
+					<c:if test="${selectCnt == 0}">
+						<script type="text/javascript">
+							alert("비밀번호가 틀렸습니다!");
+							window.history.back();
+						</script>
+					</c:if>
+
+					<!-- 비밀번호 인증 성공 -->
+					<c:if test="${selectCnt != 0}">
+						<form action="mngNoticeModifyAction" method="post" name="modifyform">
+						<sec:csrfInput/>
+							<!-- input type="hidden"은 form 태그안에 지정해야 한다. -->
+							<input type="hidden" name="notice_num" value="${vo.notice_num}"> 
+							<input type="hidden" name="pageNum" value="${pageNum}">
+				
+							<h2 align="center"> 공지사항 수정하기!!</h2>
+							
+							<table style="width:1000px; margin:auto">
+								<tr style="border-bottom: 1px solid #444444; width:500px;">
+									<th align="center">
+										글제목 : 
+									</th>
+									<td align="center" colspan="3">
+										<input type="text" name="notice_subject" value="${vo.notice_subject}" size="80px"/>
+									</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #444444; width:500px;">
+									<th> 작성자 : </th>
+									<td>${vo.notice_writer} </td>
+									<th> 비밀번호 : </th>
+									<td>
+										<input type="password" value="${vo.notice_password}" name="notice_password" />
+									</td>
+								</tr>
+								<tr style = "border-bottom: 1px solid #444444; width:500px; text-align:center">
+									<th> 글내용 : </th>
+									<td colspan="3" style="width:800px">
+										<textarea rows="10" cols="50" name="notice_content" word-break:break-all>${vo.notice_content}</textarea>
+									</td>
+								</tr>
+				
+								<tr>
+									<th colspan="4">
+									<input class="button" type="submit" value="글수정">
+									<input class="button" type="reset" value="초기화">
+									<input class="button" type="submit" value="목록"
+										formaction="noticeList.do?pageNum=${pageNum}">
+									</th>
+								</tr>
+							</table>
+						</form>
+					</c:if>
 				</div>
 			</div>
 		</div>

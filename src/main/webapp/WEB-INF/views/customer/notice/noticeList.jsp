@@ -81,7 +81,7 @@
 							</c:if>
 						</table>
 						
-						<button type="button" onclick="location.href='${mngPath}mngNoticeWrite.do?pageNum=${pageNum}'"> 글쓰기 </button>
+						<button type="button" onclick="location.href='${mngPath}mngNoticeWrite?pageNum=${pageNum}'"> 글쓰기 </button>
 					</sec:authorize>
 					
 					<!-- 고객 공지사항 -->

@@ -251,7 +251,7 @@
 										<a href="${mngPath}faq">
 											<span class="sub-item">자주묻는 질문</span>
 										</a>
-										<a href="${mngPath}mngNoticeList.do">
+										<a href="${mngPath}mngNoticeList">
 											<span class="sub-item">공지사항 관리</span>
 										</a>
 									</li>
