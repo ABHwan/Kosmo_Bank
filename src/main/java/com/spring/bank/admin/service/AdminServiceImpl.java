@@ -2052,7 +2052,7 @@ public class AdminServiceImpl implements AdminService {
 			
 			TransferVO trans = new TransferVO();
 			trans.setAccount_id(loan.getAccount_id());
-			trans.setTransfer_money(loan.getLoan_amount());
+			trans.setTransfer_money((int)loan.getLoan_amount());
 			trans.setTransfer_inOut("입금");
 			trans.setTransfer_inComment(loan.getLoan_product_name() + " 승인 " + date);
 			trans.setTransfer_senderName(loan.getLoan_product_name());
@@ -2078,7 +2078,7 @@ public class AdminServiceImpl implements AdminService {
 				
 					TransferVO trans2 = new TransferVO();
 					trans2.setAccount_id(loan.getAccount_id());
-					trans2.setTransfer_money(-loan.getLoan_amount());
+					trans2.setTransfer_money(-(int)loan.getLoan_amount());
 					trans2.setTransfer_inOut("입금정정");
 					trans2.setTransfer_inComment(loan.getLoan_product_name() + " 입금정정 " + date);
 					trans2.setTransfer_senderName(loan.getLoan_product_name());
