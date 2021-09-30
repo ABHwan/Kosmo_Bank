@@ -156,6 +156,61 @@
 	</delete>
 	
 	<!-- 진지현 작성 -->
+	
+	<!-- 관리자 페이지 연금 상품 등록 -->
+	<insert id="insertIrpProduct" parameterType="com.spring.bank.product.vo.IrpProductVO">
+		INSERT INTO irp_product(irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_expiryTerm, irp_product_explanation,irp_product_money, irp_product_notice, irp_product_bankCode)
+		VALUES(#{irp_product_name}, #{irp_product_summary}, sysdate, #{irp_product_interRate}, #{irp_product_expiryTerm}, #{irp_product_explanation}, #{irp_product_money},#{irp_product_notice}, #{irp_product_bankCode})
+	</insert>
+	
+	<!-- 관리자 페이지연금 상품 수 -->
+	<select id="getIrpProductCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM irp_product
+	</select> 
+	
+	<!-- 관리자 페이지 연금 상품 조회 -->
+	<select id="selectIrpProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.IrpProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_expiryTerm, irp_product_explanation,irp_product_money, irp_product_notice, irp_product_bankCode, rowNum rNum 
+				FROM (SELECT * FROM irp_product ORDER BY irp_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select> 
+	
+	<!-- 관리자 페이지 연금 상품 수(검색결과수)  -->
+	 <select id="getIrpProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM irp_product WHERE irp_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	 
+	<!-- 관리자 페이지 연금 상품 검색(입력받아서 검색) -->
+	 <select id="searchIrpProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.IrpProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_expiryTerm, irp_product_explanation,irp_product_money, irp_product_notice, irp_product_bankCode, rowNum rNum 
+				FROM (SELECT * FROM irp_product WHERE irp_product_name LIKE '%'||#{search}||'%' ORDER BY irp_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	 
+	<!-- 관리자 페이지 연금 상품 상세조회 -->
+	<select id="getIrpProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.IrpProductVO">
+		SELECT * FROM irp_product WHERE irp_product_name=#{irp_product_name}
+	</select>
+	
+	<!-- 관리자 페이지 연금 상품 수정 -->
+	 <update id="updateIrpProduct" parameterType="com.spring.bank.product.vo.IrpProductVO">
+		UPDATE irp_product SET irp_product_summary=#{irp_product_summary}, irp_product_interRate=#{irp_product_interRate}, irp_product_expiryTerm=#{irp_product_expiryTerm}, irp_product_explanation=#{irp_product_explanation},irp_product_money=#{irp_product_money}, irp_product_notice=#{irp_product_notice}, irp_product_bankCode=#{irp_product_bankCode}
+			WHERE irp_product_name=#{irp_product_name}
+	</update> 
+	
+	<!-- 관리자 페이지 연금 상품 삭제 -->
+ 	<delete id="deleteIrpProduct" parameterType="String">
+		DELETE FROM irp_product WHERE irp_product_name IN ( #{irp_product_name} )
+	</delete> 
+	
 	<!-- 문의사항 갯수 -->
 	<select id="getInquiryCnt" resultType="int" >
 		SELECT COUNT(*) as cnt FROM inquiry

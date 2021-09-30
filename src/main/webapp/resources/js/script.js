@@ -16,8 +16,6 @@ function errorAlert(errorMsg) {
 	window.history.back(); // 이전 페이지로 이동
 }
 
-
-
 //-- 회원가입 페이지
 function signIncheck() {
 	// 이름
@@ -86,6 +84,9 @@ function signIncheck() {
 	
 	
 }
+
+
+
 
 
 // 로그인 페이지
@@ -419,3 +420,62 @@ function savingList() {
 
 
 //-----------------------------------------------------------------
+
+//진지현
+//연금상품등록 유효성 체크
+function irpProductInsertCheck() {
+	if(!document.irpProductInsertForm.irp_product_name.value) {
+		alert("연금 상품 이름을 입력하세요!!");
+		document.irpProductInsertForm.irp_product_name.focus();
+		return false;
+	} else if(!document.irpProductInsertForm.irp_product_summary.value) {
+		alert("연금 상품 요약을 입력하세요!!");
+		document.irpProductInsertForm.irp_product_summary.focus();
+		return false;
+	} else if(!document.irpProductInsertForm.irp_product_interRate.value) {
+		alert("금리를 입력하세요!!");
+		document.irpProductInsertForm.irp_product_interRate.focus();
+		return false;
+	} else if(!document.irpProductInsertForm.irp_product_expiryTerm.value) {
+		alert("연금 가입 기간을 입력하세요!!");
+		document.irpProductInsertForm.irp_product_expiryTerm.focus();
+		return false;
+	} else if(!document.irpProductInsertForm.irp_product_explanation.value) {
+		alert("연금 설명을 입력하세요!!");
+		document.irpProductInsertForm.irp_product_explanation.focus();
+		return false;
+	} else if(!document.irpProductInsertForm.irp_product_notice.value) {
+		alert("유의 사항을 입력하세요!!");
+		document.irpProductInsertForm.irp_product_notice.focus();
+		return false;
+	} else if(!document.irpProductInsertForm.irp_product_bankCode.value) {
+		alert("은행코드를 선택하세요!!");
+		document.irpProductInsertForm.irp_product_bankCode.focus();
+		return false;
+	}
+	
+}
+
+//연금 상품 가입 시 체크 
+function irpJoinInCheck() {
+	var sysdate = convertDateFormat(new Date());
+	
+	if(!account_limit){
+		alert("한도를 입력해주세요");
+		return false;
+		
+	// 비밀번호
+	} else if(!document.depositProductForm.account_password.value) {
+		alert("비밀번호를 입력하세요!!");
+		document.depositProductForm.account_password.focus();
+		return false;
+		
+	// 비밀번호 확인
+	} else if(document.depositProductForm.account_password.value != document.depositProductForm.REaccount_password.value) {
+		alert("비밀번호가 일치하지않습니다!!");
+		document.depositProductForm.REaccount_password.focus();
+		return false;
+	}
+	
+}
+

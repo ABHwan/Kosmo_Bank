@@ -18,7 +18,7 @@ function errorAlert(errorMsg) {
 
 
 
-//-- 회원가입 페이지
+//-- 예금 가입 페이지
 function joinInCheck() {
 	var currentMonth = $("#currentMonth").val().replaceAll('-','');
 	var account_limit = $("#account_limit").val();
@@ -26,25 +26,26 @@ function joinInCheck() {
 	
 	console.log('currentMonth', currentMonth);
 	
-	// 
+	/*// 
 	if(sysdate > currentMonth){
 		alert("가입기간을 다시 확인해주세요");
-		return false;
+		return false;*/
 	// 한도금액
-	} else if(!account_limit){
+	//} 
+	if(!account_limit){
 		alert("한도를 입력해주세요");
 		return false;
 		
 	// 비밀번호
 	} else if(!document.depositProductForm.account_password.value) {
 		alert("비밀번호를 입력하세요!!");
-		document.testDataForm.account_password.focus();
+		document.depositProductForm.account_password.focus();
 		return false;
 		
 	// 비밀번호 확인
-	} else if(document.depositProductForm.account_password.value != document.testDataForm.REaccount_password.value) {
+	} else if(document.depositProductForm.account_password.value != document.depositProductForm.REaccount_password.value) {
 		alert("비밀번호가 일치하지않습니다!!");
-		document.testDataForm.REaccount_password.focus();
+		document.depositProductForm.REaccount_password.focus();
 		return false;
 	}
 	

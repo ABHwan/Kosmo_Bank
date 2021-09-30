@@ -176,6 +176,16 @@ public class AdminController {
 		return "manager/customerInfo/customerInfo";
 	}
 	
+	//관리자 - 금융상품 관리
+	@RequestMapping("bankingAccept")
+	public String bankingAccept(HttpServletRequest req, Model model) {
+		logger.info("url => bankingAccept");
+		
+		service.selectBanking(req, model);
+		
+		return "manager/customerInfo/bankingAccept";
+	}
+	
 	// 관리자 - 예금관리 - 상품등록페이지
 	@RequestMapping("depositProductInsert")
 	public String depositProductInsert(HttpServletRequest req, Model model) {
@@ -401,6 +411,83 @@ public class AdminController {
 		return "manager/qna/faqDeleteAction";
 	}
 
+	//관리자 - 연금 추가(지현)
+	@RequestMapping("irpProductInsert")
+	public String irpAdd(HttpServletRequest req, Model model) {
+		logger.info("url => irpInsert");
+		
+		return "manager/irp/irpProductInsert";
+	}
+	
+	//관리자 - 연금 추가 처리 (지현)
+	@RequestMapping("irpProductInsertAction")
+	public String irpProductInsertAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductInsertAction");
+		
+		service.insertIrpProduct(req, model);
+		
+		return "manager/irp/irpProductInsertAction";
+	}
+	
+	// 관리자 - 연금관리 - 상품조회페이지
+	@RequestMapping("IrpProductList")
+	public String IrpProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /IrpProductList]");
+		
+		service.selectIrpProduct(req, model);
+		
+		return "manager/irp/irpProductList";
+	}
+	
+	// 관리자 - 연금관리 - 상품검색
+	@RequestMapping("irpProductSearch")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		service.searchIrpProduct(req, model);
+		return "manager/irp/irpProductSearch";
+	}
+	
+	// 관리자 - 연금 관리 - 상품 상세조회
+	@RequestMapping("irpProductInfo")
+	public String irpProductInfo(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductInfo]");
+		
+		service.getIrpProductInfo(req, model);
+		
+		return "manager/irp/irpProductInfo";
+	}
+	
+	// 관리자 연금 관리 - 상품 수정 페이지
+	@RequestMapping("irpProductUpdate")
+	public String irpProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductUpdate]");
+		
+		service.getIrpProductInfo(req, model);
+		
+		return "manager/irp/irpProductUpdate";
+	}
+	
+	// 관리자 연금 관리 - 상품 수정 처리
+	@RequestMapping("irpProductUpdateAction")
+	public String irpProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductUpdateAction]");
+		
+		service.updateIrpProduct(req, model);
+		
+		return "manager/irp/irpProductUpdateAction";
+	}
+		
+	// 관리자 - 연금 관리 - 상품삭제
+	@RequestMapping("irpProductDelete")
+	public String irpProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductDelete]");
+		
+		service.deleteIrpProduct(req, model);
+		service.selectIrpProduct(req, model);
+		
+		return "manager/irp/irpProductList";
+	}
+	
 	// 회원별 계좌목록페이지
 	@RequestMapping("customerAccountInfo")
 	public String customerAccountInfo(HttpServletRequest req, Model model) {

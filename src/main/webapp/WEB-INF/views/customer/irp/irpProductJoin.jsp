@@ -35,15 +35,15 @@
 			
 				<section id="main">
 			      <div class="main__container">
-					<h2 class="title">예금 가입 정보 입력 </h2>
+					<h2 class="title">연금 가입 정보 입력 </h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-title">${dto.deposit_product_name}</div>
+									<div class="card-title">${dto.irp_product_name}</div>
 								</div>
 								<div class="card-body">
-									 <form action="depositProductAction" method="post" name="depositProductForm" onsubmit="return joinInCheck()">
+									 <form action="irpProductAction" method="post" name="irpProductForm" onsubmit="return irpJoinInCheck()">
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
 								         <input type="hidden" name ="unique_key" value="${unique_key}">
@@ -56,60 +56,31 @@
 						        
 						          <tr>
 						            <th scope="col">상품명</th>
-						             <td>${dto.deposit_product_name} 
-						             <input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}">
+						             <td>${dto.irp_product_name} 
+						             <input type="hidden" name="irp_product_name" class="user_check" value="${dto.irp_product_name}">
 						             </td>
 						          </tr>
 						          <tr>
 						            <th scope="col">상품 요약</th>
-						            <td>${dto.deposit_product_summary}</td>
+						            <td>${dto.irp_product_summary}</td>
 						          </tr>
 						          <tr>
 						            <th scope="col">금리</th>
-						              <td>${dto.deposit_product_interRate}%
-						               <input type="hidden" name="deposit_product_interRate" class="user_check" value="${dto.deposit_product_interRate}">
+						              <td>${dto.irp_product_interRate}%
+						               <input type="hidden" name="irp_product_interRate" class="user_check" value="${dto.irp_product_interRate}">
 						              </td>
 						          </tr>
-						          <tr>
-						          	 <th scope="col">종류</th>
-						          	 <td>
-						          	 <c:if test="${dto.deposit_product_type==1}">
-								           	복리
-								           </c:if>
-								           
-								           <c:if test="${dto.deposit_product_type!=1}">
-								           	단리
-								           </c:if>
-								           <input type="hidden" value="${dto.deposit_product_type}" name ="deposit_product_type">
-						          	 </td>
-						           </tr>
+						         
 						           <tr>
-							           <th scope="col">기간 설정 </th>
-							           <td>
-											<input type="date" id="currentMonth" name="deposit_endDate">
-						           		<script>
-						           			document.getElementById('currentMonth').value= new Date().toISOString().substring(0,10);
-						           		</script>				
-						           		<select class="form-control form-control" style="width:40%;" name="loan_month" onchange="setEndDate();">
-											<c:forEach var="i" begin="12" step="6" end="120">
-												<option value="${i}">${i}&nbsp;개월&nbsp;&nbsp;(${i/12}&nbsp;년)</option>
-											</c:forEach>
-										</select>
-							           </td>
-						           </tr>
-						           
-						           <tr>
-						           		<th scope="col">예치금      <small>*10만원 이상</small>
+						           		<th scope="col">연금 금액     <small>*10만원 단위</small>
 						           		 </th>
-						           		<td>
-						           		<input type="number" name="account_balance" id="account_limit"  min="10">만원</td>
-						           		<!-- deposit_balance -->
+						           		 <td><fmt:formatNumber name="account_balance" id="irp_product_money" value="${dto.irp_product_money}" type="number"/>만원</td>
 						           </tr>
 						      		
 						      		<tr>
 						      			<th scope="col">은행코드</th>
 						      			<td>
-							           		<c:choose> 
+							           		<c:choose>
 							           			<c:when test="${dto.deposit_product_bankCode==0}">
 							           				미기재
 							           			</c:when>
@@ -126,13 +97,13 @@
 							           				신한은행
 							           			</c:when>
 							           			<c:when test="${dto.deposit_product_bankCode==5}">
-							           				하나은행
+							           				하나은행 
 							           			</c:when>
 							           			<c:when test="${dto.deposit_product_bankCode==6}">
-							           				코스모 은행
+							           				코스모 뱅크  
 							           			</c:when>
 							           		</c:choose>
-							           		<input type="hidden" value="${dto.deposit_product_bankCode}" name ="account_bankCode">
+							           		<input type="hidden" value="${dto.irp_product_bankCode}" name ="account_bankCode">
 							           </td>
 						      		</tr>
 						      		<tr>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
@@ -152,7 +153,54 @@ public class AdminDAOImpl implements AdminDAO {
 		return sqlSession.getMapper(AdminDAO.class).deleteSavingProduct(deposit_product_name);
 	}
 
+	// 관리자 페이지 연금 상품 등록
+	@Override
+	public int insertIrpProduct(IrpProductVO vo) {
+		return sqlSession.getMapper(AdminDAO.class).insertIrpProduct(vo);
+	};
 	
+	// 관리자 페이지 연금  상품 수
+	@Override
+	public int getIrpProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getIrpProductCnt();
+	}
+	
+	// 관리자 페이지 연금  상품 조회
+	@Override
+	public ArrayList<IrpProductVO> selectIrpProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).selectIrpProduct(map);
+	}
+
+	// 관리자 페이지 연금 상품 수(검색결과수)
+	@Override
+	public int getIrpProductSearchCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getIrpProductSearchCnt(search);
+	}
+	
+	// 관리자 페이지 연금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).searchIrpProduct(map);
+	}
+		
+	// 관리자 페이지 연금 상품 상세조회
+	@Override
+	public IrpProductVO getIrpProductInfo(String irp_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).getIrpProductInfo(irp_product_name);
+	}
+	
+	// 관리자 페이지 연금 상품 수정
+	@Override
+	public int updateIrpProduct(IrpProductVO vo) {
+		return sqlSession.getMapper(AdminDAO.class).updateIrpProduct(vo);
+	}
+
+	// // 관리자 페이지 연금 상품 삭제
+	@Override
+	public int deleteIrpProduct(String irp_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).deleteIrpProduct(irp_product_name);
+	}
+		
 	//qna 개수(지현)
 	@Override
 	public int getInquiryCnt() {

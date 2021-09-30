@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -103,7 +104,25 @@ public interface CustomerDAO {
 
 	// 예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+	
+	// 연금 상품갯수
+	public int getIrpCnt();
 
+	// 연금 상품 조회
+	public List<IrpProductVO> getIrpList(Map<String, Integer> map);
+	
+	// 연금 상품 수(검색결과수)
+	public int getIrpProductSearchCnt(String search);
+	
+	// 연금 상품 검색(입력받아서 검색)
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map);
+	
+	// 연금 상품 상세 보기
+	public IrpProductVO getIrpDetail(String irp_product_name);
+
+	//연금 상품 신청하기 
+//	public int irpInsert(IrpProductVO vo);
+	
 	// 적금 상품갯수
 	public int getSavingCnt();
 
@@ -122,7 +141,7 @@ public interface CustomerDAO {
 	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
 	
-	//멤버의 unique_key가져오기 
+	//멤버의 unique_key가져오기
 	public String getUniqueKey(String id);
 	
 	//예금 신청 시 계좌 생성

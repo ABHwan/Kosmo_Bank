@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -215,6 +216,41 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).getDepositDetail(deposit_product_name);
 	}
 
+	// 연금 상품 갯수
+	@Override
+	public int getIrpCnt(){
+		
+		return sqlSession.getMapper(CustomerDAO.class).getIrpCnt();
+	}		
+	
+	// 연금 상품 조회
+	@Override
+	public List<IrpProductVO> getIrpList(Map<String, Integer> map){
+		
+		return sqlSession.getMapper(CustomerDAO.class).getIrpList(map);
+	}
+	
+	// 관리자 페이지 연금 상품 수(검색결과수)
+	@Override
+	public int getIrpProductSearchCnt(String search) {
+		return sqlSession.getMapper(CustomerDAO.class).getIrpProductSearchCnt(search);
+	}
+	
+	// 관리자 페이지 연금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map){
+		
+		return sqlSession.getMapper(CustomerDAO.class).searchIrpProduct(map);
+	}
+	
+	// 연금 상품 상세 보기
+	@Override
+	public IrpProductVO getIrpDetail(String irp_product_name) {
+
+		return sqlSession.getMapper(CustomerDAO.class).getIrpDetail(irp_product_name);
+	}
+	 
+	
 	// 적금 상품 갯수
 	@Override
 	public int getSavingCnt(){

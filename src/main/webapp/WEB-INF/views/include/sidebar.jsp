@@ -155,7 +155,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="${custPath}irpProductList.do">
 											<span class="sub-item">연금</span>
 										</a>
 									</li>

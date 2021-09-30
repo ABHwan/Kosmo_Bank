@@ -78,7 +78,9 @@
 		authentication-manager-ref="adminAuthManager" >
 		
 		<!-- 권한에 관계없이 접속 가능한 영역(guest도 접속 가능) -->
-		<security:intercept-url pattern="/manager/**.do" access="permitAll" />
+		<!-- <security:intercept-url pattern="/manager/**.do" access="permitAll" /> -->
+		<security:intercept-url pattern="/manager/mngLogin.do" access="permitAll" />
+      	<security:intercept-url pattern="/manager/logoutAction.do" access="permitAll" />
 		
 		<!-- 관리자 영역 설정 -->
 		<security:intercept-url pattern="/manager/**" access="hasRole('ROLE_ADMIN')" />

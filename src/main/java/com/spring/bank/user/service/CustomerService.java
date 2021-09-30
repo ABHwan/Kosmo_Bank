@@ -74,7 +74,7 @@ public interface CustomerService {
 	// 예금 상품 상세보기
 	public void depositDetail(HttpServletRequest req, Model model);
 	
-	//예금 신청 시 계좌번호 생성 insert
+	//금융상품 신청 시 계좌번호 생성 insert
 	public void makeAccount(HttpServletRequest req, Model model);
 	
 	//예금 신청 
@@ -89,6 +89,21 @@ public interface CustomerService {
 	// 회원 이체 최종 확인
 	public void transferConfirm(HttpServletRequest req, Model model);
 	
+	// 연금 상품 조회
+	public void irpList(HttpServletRequest req, Model model);
+	
+	// 연금 상품 검색 
+	public void irpProductSearch(HttpServletRequest req, Model model);
+	
+	// 연금 상품 상세보기 
+	public void irpDetail(HttpServletRequest req, Model model);
+	
+	// 연금 상품 신청 화면 
+	public void irpProductJoin(HttpServletRequest req, Model model);
+	
+	// 연금 신청 irp insert
+	public void insertIrp(HttpServletRequest req, Model model);
+		
 	// 적금 상품 조회
 	public void savingList(HttpServletRequest req, Model model);
 	

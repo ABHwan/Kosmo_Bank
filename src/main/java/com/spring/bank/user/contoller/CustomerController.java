@@ -385,20 +385,68 @@ public class CustomerController {
          
          System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
          
-         //연금 상품  insert
+         //예금 상품  insert
          service.insertDeposit(req, model);
          
 		return "customer/depositProduct/depositAction";
 	}
 	
-	//연금 상품 목록 
+	//연금 상품 목록 (지현)
 	@RequestMapping("irpProductList.do")
 	public String irpProductList(HttpServletRequest req, Model model) {
 		logger.info("url => irpProductList");
 		
+		service.irpList(req, model);
 		
 		return "customer/irp/irpProductList";
 	}
+	
+	//연금 상품검색(지현) - 고객
+	@RequestMapping("irpProductSearch.do")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		
+		service.irpProductSearch(req, model);
+		
+		return "customer/irp/irpProductSearch";
+	}
+	
+	//연금 상품 상세 보기 (지현) -고객
+	@RequestMapping("irpDetail.do")
+	public String irpDetail(HttpServletRequest req, Model model) {
+		logger.info("url => irpDetail");
+		
+		service.irpDetail(req, model);
+		
+		return "customer/irp/irpDetail";
+	}
+	
+	//연금 상품 신청화면(지현) - 고객
+	@RequestMapping("irpProductJoin")
+	public String irpProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductJoin");
+		
+		service.irpProductJoin(req, model);
+		
+		return "customer/irp/irpProductJoin";
+	}	
+	
+	//연금 상품 신청 화면에서 확인 눌렀을때 -> account 계좌 생성 & irp 테이블에 insert(지현)
+	@RequestMapping("irpProductAction")
+	public String irpAccess(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductAction");
+	      
+		 //계좌개설 insert account
+         service.makeAccount(req, model);
+         
+         System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
+         
+         //연금 상품  insert
+         service.insertIrp(req, model);
+         
+		return "customer/irp/irpAction";
+	}
+		
 
 	//적금 상품 조회(지호) - 고객
 	@RequestMapping("savingList")

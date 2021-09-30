@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
@@ -81,6 +82,31 @@ public interface AdminDAO {
 	// 관리자 페이지 적금 상품 삭제
 	public int deleteSavingProduct(String saving_product_name);	
 	
+	//지현
+	// 관리자 페이지 연금 상품 등록
+	public int insertIrpProduct(IrpProductVO vo);
+	
+	// 관리자 페이지 연금 상품 수
+	public int getIrpProductCnt(); 
+	
+	// 관리자 페이지 연금 상품 조회
+	public ArrayList<IrpProductVO> selectIrpProduct(Map<String, Object> map);
+
+	// 관리자 페이지 연금 상품 수(검색결과수)
+	public int getIrpProductSearchCnt(String search);
+	
+	// 관리자 페이지 연금 상품 검색(입력받아서 검색)
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 연금 상품 상세조회
+	public IrpProductVO getIrpProductInfo(String deposit_product_name);
+	
+	// 관리자 페이지 연금 상품 수정
+	public int updateIrpProduct(IrpProductVO vo);
+	
+	// 관리자 페이지 연금 상품 삭제
+	public int deleteIrpProduct(String irp_product_name);
+		
 	//문의사항 갯수 (지현)
 	public int getInquiryCnt();
 	
