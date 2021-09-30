@@ -818,8 +818,7 @@ public class AdminServiceImpl implements AdminService {
 	public void fundProductInsertAction(HttpServletRequest req, Model model) {
 		FundProductVO vo = new FundProductVO();
 		
-		DateFormat sbFormat;
-		vo.setFund_title(req.getParameter("fund_name"));
+		vo.setFund_title(req.getParameter("fund_title"));
 		vo.setFund_content(req.getParameter("fund_content"));
 		vo.setFund_summary(req.getParameter("fund_summary"));
 		vo.setFund_start_date(Date.valueOf(req.getParameter("fund_start_date")));
@@ -1074,6 +1073,35 @@ public class AdminServiceImpl implements AdminService {
 
        int pageNum = Integer.parseInt(req.getParameter("pageNum"));
        FundProductVO vo = new FundProductVO();
+       
+        vo.setFund_title(req.getParameter("fund_title"));
+		vo.setFund_content(req.getParameter("fund_content"));
+		vo.setFund_summary(req.getParameter("fund_summary"));
+		vo.setFund_start_date(Date.valueOf(req.getParameter("fund_start_date")));
+		vo.setFund_end_date(Date.valueOf(req.getParameter("fund_end_date")));
+		vo.setFund_goal_money(Integer.parseInt(req.getParameter("fund_goal_money")));
+		vo.setFund_category(req.getParameter("fund_category"));
+		vo.setFund_approve(req.getParameter("saving_product_explanation"));
+		vo.setFund_mem_name(req.getParameter("fund_mem_name"));
+		
+		String hp1 = req.getParameter("fund_mem_hp1");
+		String hp2 = req.getParameter("fund_mem_hp2");
+		String hp3 = req.getParameter("fund_mem_hp3");
+		
+		String hp = hp1 + "-" + hp2 + "-" + hp3;
+		vo.setFund_mem_hp(hp);
+		
+		String email1 = req.getParameter("fund_mem_email1");
+		String email2 = req.getParameter("fund_mem_email2");
+		
+		String email = email1 + "@" + email2;
+		vo.setFund_mem_email(email);
+		
+		vo.setFund_bank_code(Integer.parseInt(req.getParameter("fund_bank_code")));
+		System.out.println("req.getParameter('fund_bank_code') : " + req.getParameter("fund_bank_code"));
+		vo.setFund_account(req.getParameter("fund_account"));
+		String img = "../resources/images/admin/upload/" + req.getParameter("fund_filename");
+		vo.setFund_filename(img);
        
        int updateCnt = dao.updateFundProduct(vo);
        System.out.println("펀드 상품 updateCnt : " + updateCnt);
@@ -2476,7 +2504,7 @@ public class AdminServiceImpl implements AdminService {
 		vo.setNotice_content(req.getParameter("notice_content"));
 		
 		// 작성일
-		vo.setNotice_date(new Date()); // date안에 아무것도 안들어가나요??
+		//vo.setNotice_date(new Date()); // date안에 아무것도 안들어가나요??
 		
 		// insert
 		int insertCnt = dao.mngNoticeWriteAction(vo);

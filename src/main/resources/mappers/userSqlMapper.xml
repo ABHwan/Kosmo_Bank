@@ -295,6 +295,50 @@
 		VALUES (saving_id.nextval, )
 	</insert>	
 
+	<!-- 펀드 상품 개수 -->
+	<select id="getFundCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM fund
+	</select>
+	
+	<!-- 펀드 상품 조회  -->
+	<select id="getFundList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.FundProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, rowNum rNum 
+				FROM (SELECT * FROM fund ORDER BY fund_start_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>
+	</select>
+	
+	<!--펀드 상품 수(검색결과수)  -->
+	<select id="getFundProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM fund WHERE fund_title LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 펀드 상품 검색(입력받아서 검색) -->
+	<select id="searchFundProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.FundProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT fund_title, fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, rowNum rNum 
+				FROM (SELECT * FROM fund WHERE fund_title LIKE '%'||#{search}||'%' ORDER BY fund_start_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 펀드 상품 상세 조회 -->
+	<select id="getFundDetail" parameterType="String" resultType="com.spring.bank.product.vo.FundProductVO">
+		SELECT * FROM  fund
+		WHERE fund_title=#{fund_title} 	
+	</select>
+	
+	<!-- 펀드 신청 -->
+	<insert id="fundProductAction" parameterType="com.spring.bank.product.vo.FundProductVO">
+		INSERT INTO fund(saving_id, saving_product_name, account_id, saving_joinDate, saving_state, saving_rate, saving_money, saving_type, saving_totalMoney, saving_method, saving_endDate)
+		VALUES (saving_id.nextval, )
+	</insert>
+	
 	<!-- 예금 신청시필요한 unique_key -->
 	<select id="getUniqueKey" parameterType="String" resultType="String">
 		SELECT unique_key FROM members

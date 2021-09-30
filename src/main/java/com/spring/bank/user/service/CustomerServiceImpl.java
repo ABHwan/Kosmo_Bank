@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.customer.encrypt.UserAuthenticationService;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
 import com.spring.bank.user.vo.AccountBookVO;
@@ -1022,7 +1023,7 @@ public class CustomerServiceImpl implements CustomerService {
 		int endPage = 0; // 마지막페이지
 
 		// 5-1단계. 게시글 갯수 조회
-		cnt = dao.getDepositCnt();
+		cnt = dao.getSavingCnt();
 
 		System.out.println("cnt ==> " + cnt);
 
@@ -1114,10 +1115,10 @@ public class CustomerServiceImpl implements CustomerService {
 		System.out.println("관리자 페이지 회원 검색어 : " + search);
 		
 		// 페이징
-		int pageSize = 10;		// 한 페이지당 출력할 예금상품
+		int pageSize = 10;		// 한 페이지당 출력할 적금상품
 		int pageBlock = 3;		// 한 블럭당 페이지 갯수
 		
-		int cnt = 0;			// 예금상품 수
+		int cnt = 0;			// 적금상품 수
 		int start = 0;			// 현재 페이지 시작 글 번호
 		int end = 0;			// 현재 페이지 마지막 글 번호
 		int number = 0;			// 출력용 글 번호
@@ -1233,6 +1234,17 @@ public class CustomerServiceImpl implements CustomerService {
 	public void savingProductAction(HttpServletRequest req, Model model) {
 		
 		//작은바구니 생성
+		
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+		int number = Integer.parseInt(req.getParameter("number"));
+		String id = (String)req.getSession().getAttribute("customerID");
+		
+		// members 테이블에 있는 unique키 가져오기
+		String unique_key = dao.getUniqueKey(id);
+		
+		// 계좌생성 메서드 -> 은행코드 가져와서 생성
+		String account_id = createAccountId(Integer.parseInt(req.getParameter("deposit_product_bankCode")));
+		
 		SavingProductVO vo = new SavingProductVO();
         vo.setSaving_product_name(req.getParameter("saving_product_name"));
         vo.setSaving_product_interRate(Float.parseFloat(req.getParameter("saving_product_interRate")));
@@ -1241,11 +1253,263 @@ public class CustomerServiceImpl implements CustomerService {
         vo.setSaving_product_minDate(Integer.parseInt(req.getParameter("saving_product_minDate")));
         vo.setSaving_product_minPrice(Integer.parseInt(req.getParameter("saving_product_minPrice")));
         vo.setSaving_product_bankCode(Integer.parseInt(req.getParameter("saving_product_bankCode")));
+        vo.setSaving_product_summary(req.getParameter("saving_product_summary"));
         
         int insertCnt = dao.savingProductAction(vo);
         
+        model.addAttribute("unique_key", unique_key);
+        model.addAttribute("account_id", account_id);
+        model.addAttribute("vo", vo);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("number", number);
         model.addAttribute("inserCnt", insertCnt);
-	}	
+	}
+	
+	//
+	// 적금 상품 조회
+		@Override
+		public void fundList(HttpServletRequest req, Model model) {
+			// 3단계. 화면으로부터 입력받은 값을 받아온다.
+			// 페이징
+			int pageSize = 8; // 한페이지당 출력할 글 갯수
+			int pageBlock = 3; // 한 블록당 페이지 갯수
+
+			int cnt = 0; // 글 갯수
+			int start = 0; // 현재페이지 시작 글 번호
+			int end = 0; // 현재페이지 마지막 글 번호
+			int number = 0; // 출력용 글번호
+			String pageNum = ""; // 페이지 번호
+			int currentPage = 0; // 현재 페이지
+
+			int pageCount = 0; // 페이지 갯수
+			int startPage = 0; // 시작페이지
+			int endPage = 0; // 마지막페이지
+
+			// 5-1단계. 게시글 갯수 조회
+			cnt = dao.getFundCnt();
+
+			System.out.println("cnt ==> " + cnt);
+
+			// 5-2단계. 게시글 목록 조회
+			pageNum = req.getParameter("pageNum");
+
+			if (pageNum == null) {
+				pageNum = "1"; // 첫페이지를 1페이지로 지정
+			}
+
+			// 글 30건 기준
+			currentPage = Integer.parseInt(pageNum);
+			System.out.println("currentPage : " + currentPage);
+
+			// 페이지 갯수 6 = (30/5) + (0)
+			pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지 있으면 1페이지
+
+			// 현재페이지 시작 글번호(페이지별)
+			// start = (currentPage - 1) * pageSize +1;
+			// 1 = (1 - 1 )* 5 + 1
+			start = (currentPage - 1) * pageSize + 1;
+
+			// 현재페이지 마지막 글번호(페이지별)
+			// end = start + pageSize - 1;
+			// 5 = 1 + 5 - 1
+			end = start + pageSize - 1;
+
+			System.out.println("start : " + start);
+			System.out.println("end : " + end);
+
+			// 출력용 글번호
+			// 30 = 30 - (1 - 1) * 5 //1페이지
+			// number = cnt- (currentPage - 1) * pageSize;
+			number = cnt - (currentPage - 1) * pageSize;
+
+			System.out.println("number : " + number);
+			System.out.println("pageSize : " + pageSize);
+
+			// 시작페이지
+			// 1 = (1 / 3) * 3 + 1;
+			// startPage = (currentPage / pageBlock) * pageBlock + 1;
+			startPage = (currentPage / pageBlock) * pageBlock + 1;
+			if (currentPage % pageBlock == 0)
+				startPage -= pageBlock;
+
+			System.out.println("startPage : " + startPage);
+
+			// 마지막 페이지
+			// 3 = 1 + 3 - 1
+			endPage = startPage + pageBlock - 1;
+			if (endPage > pageCount)
+				endPage = pageCount;
+
+			System.out.println("endPage : " + endPage);
+
+			System.out.println("--------------------------");
+
+			List<FundProductVO> dtos = null;
+
+			if (cnt > 0) {
+				// 5-2단계. 게시글 목록 조회
+				Map<String, Integer> map = new HashMap<String, Integer>();
+				map.put("start", start);
+				map.put("end", end);
+				dtos = dao.getFundList(map);
+			}
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("dtos", dtos); // 게시글 목록
+			req.setAttribute("cnt", cnt); // 글개수
+			req.setAttribute("pageNum", pageNum); // 페이지 번호
+			req.setAttribute("number", number); // 출력용 글번호
+
+			if (cnt > 0) {
+				req.setAttribute("startPage", startPage); // 시작페이지
+				req.setAttribute("endPage", endPage); // 마지막 페이지
+				req.setAttribute("pageBlock", pageBlock); // 한블럭당 페이지 갯수
+				req.setAttribute("pageCount", pageCount); // 페이지 갯수
+				req.setAttribute("currentPage", currentPage); // 현재페이지
+			}
+		}
+		
+		// 펀드 상품 검색 
+		@Override
+		public void fundProductSearch(HttpServletRequest req, Model model) {
+
+			// 입력받은 검색어
+			String search = req.getParameter("search");
+			System.out.println("관리자 페이지 회원 검색어 : " + search);
+			
+			// 페이징
+			int pageSize = 10;		// 한 페이지당 출력할 펀드상품
+			int pageBlock = 3;		// 한 블럭당 페이지 갯수
+			
+			int cnt = 0;			// 펀드상품 수
+			int start = 0;			// 현재 페이지 시작 글 번호
+			int end = 0;			// 현재 페이지 마지막 글 번호
+			int number = 0;			// 출력용 글 번호
+			String pageNum = "";	// 페이지 번호
+			int currentPage = 0;	// 현재 페이지
+			
+			int pageCount = 0;		// 페이지 갯수
+			int startPage = 0;		// 시작 페이지
+			int endPage = 0;		// 마지막 페이지
+			
+			// 검색 된 펀드 상품 수 조회
+			cnt = dao.getFundProductSearchCnt(search);
+			System.out.println("검색 된 펀드 상품 수 : " + cnt);
+			
+			pageNum = req.getParameter("pageNum");
+			
+			if(pageNum == null) {
+				pageNum = "1";	// 첫 페이지를 1페이지로 지정
+			}
+			
+			// 상품 30건 기준
+			currentPage = Integer.parseInt(pageNum);
+			System.out.println("currentPage : " + currentPage);
+			
+			// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+			pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+			
+			// 현재 페이지 시작 글 번호(페이지별)
+			// start = (currentPage - 1) * pageSize + 1;
+			// 1 = (1 - 1) * 10 + 1
+			start = (currentPage - 1) * pageSize + 1;
+			
+			// 현재 페이지 시작 글 번호(페이지별)
+			// end = start + pageSize - 1;
+			// 10 = 1 + 10 - 1
+			end = start + pageSize - 1 ;
+			
+			System.out.println("start : " + start);
+			System.out.println("end : " + end);
+			
+			// 출력용 글 번호
+			//number = cnt - (currentPage - 1) * pageSize; 
+			number = cnt - (currentPage - 1) * pageSize;
+			
+			System.out.println("number : " + number);
+			System.out.println("pageSize : " + pageSize);
+			
+			// 시작 페이지
+			// 1 = (1 / 3) * 3 + 1;
+			// startPage = (currentPage / pageBlock) * pageBlock + 1;
+			startPage = (currentPage / pageBlock) * pageBlock + 1;
+			if(currentPage % pageBlock == 0) {
+				startPage -= pageBlock;
+			}
+			System.out.println("startPage : " + startPage);
+			
+			// 마지막 페이지
+			// 3 = 1 + 3 - 1
+			endPage = startPage + pageBlock - 1;
+			if(endPage > pageCount) {
+				endPage = pageCount;
+			}
+			System.out.println("endPage : " + endPage);
+			
+			System.out.println("===================================");
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("start", start);
+			map.put("end", end);
+			map.put("search", search);
+			
+			ArrayList<FundProductVO> dtos = null;
+			if(cnt > 0) {
+				// 5-2단계. 회원수 조회
+				dtos = dao.searchFundProduct(map);
+			}
+			
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+			model.addAttribute("dtos", dtos);			// 검색된 펀드 상품 목록
+			model.addAttribute("cnt", cnt);				// 적금 상품 수
+			model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+			model.addAttribute("number", number);		// 출력용 번호
+			model.addAttribute("search", search);		// 검색어
+			if(cnt > 0) {
+				model.addAttribute("startPage", startPage);		// 시작 페이지
+				model.addAttribute("endPage", endPage);			// 마지막 페이지
+				model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+				model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+				model.addAttribute("currentPage", currentPage);	// 현재 페이지
+			}
+		}
+		
+		// 펀드 상품 상세보기
+		@Override
+		public void fundDetail(HttpServletRequest req, Model model) {
+			String fund_title = req.getParameter("fund_title");
+			System.out.println("fund_title : " + fund_title);
+			int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+			int number = Integer.parseInt(req.getParameter("number"));
+
+			// 5-2단계. 게시글 상세페이지 조회
+			// getQnaDetail
+			FundProductVO vo = dao.getFundDetail(fund_title);
+
+			// 6단계. jsp로 전달하기 위해 request나 session에 처리 결과를 저장
+			req.setAttribute("dto", vo);
+			req.setAttribute("pageNum", pageNum);
+			req.setAttribute("number", number);
+		}
+		
+		// 펀드 신청 
+		@Override
+		public void fundProductAction(HttpServletRequest req, Model model) {
+			
+			//작은바구니 생성
+			FundProductVO vo = new FundProductVO();
+//	        vo.setSaving_product_name(req.getParameter("saving_product_name"));
+//	        vo.setSaving_product_interRate(Float.parseFloat(req.getParameter("saving_product_interRate")));
+//	        vo.setSaving_product_type(Integer.parseInt(req.getParameter("saving_product_type")));
+//	        vo.setSaving_product_maxDate(Integer.parseInt(req.getParameter("saving_product_maxDate")));
+//	        vo.setSaving_product_minDate(Integer.parseInt(req.getParameter("saving_product_minDate")));
+//	        vo.setSaving_product_minPrice(Integer.parseInt(req.getParameter("saving_product_minPrice")));
+//	        vo.setSaving_product_bankCode(Integer.parseInt(req.getParameter("saving_product_bankCode")));
+	        
+	        int insertCnt = dao.fundProductAction(vo);
+	        
+	        model.addAttribute("inserCnt", insertCnt);
+		}
 	
 	
 	// 예금 가입시 계좌 개설(insert account)
@@ -2405,6 +2669,17 @@ public class CustomerServiceImpl implements CustomerService {
 	         
 	         System.out.println("account_id : " + account_id);
 	         
+	      
+	      }else if(account_type ==6){
+	         // 코스모뱅크(14) > 4 - 4 - 6
+	         String st1 = String.format("%04d", (int)(Math.random()*10000));
+	         String st2 = String.format("%04d", (int)(Math.random()*10000));
+	         String st3 = String.format("%06d", (int)(Math.random()*1000000));
+	
+	         account_id = st1 + "-" + st2 + "-" + st3;
+	         
+	         System.out.println("account_id : " + account_id);
+	    
 	      }
 	      
 	      return account_id;

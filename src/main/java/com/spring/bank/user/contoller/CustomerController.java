@@ -434,16 +434,74 @@ public class CustomerController {
 		
 		service.savingProductAction(req, model);
 		
-		return "customer/savingProduct/savingProductInsert";
+		return "customer/savingProduct/savingProductJoin";
 	}	
 	
-	// 적금 상품 신청 처리(지호)
+	// 적금 상품 신청 처리(지호) 해야함
 	@RequestMapping("savingProductAction")
 	public String savingProductAction(HttpServletRequest req, Model model) {
 		logger.info("url => savingProductAction");
 		
 		return "customer/savingProduct/savingProductAction";
 	}
+	
+	//예금 상품 상세에서 신청하기 누르면  신청 화면 (지현)
+//	@RequestMapping("depositProductJoin")
+//	public String depositProductInsert(HttpServletRequest req, Model model) {
+//		logger.info("url => depositProductJoin");
+//		
+//		service.setDepositProductJoin(req, model);
+//		
+//		return "customer/depositProduct/depositProductJoin";
+//	}
+	
+	//
+	// 펀드 상품 조회(지호) - 고객
+	@RequestMapping("fundList")
+	public String fundList(HttpServletRequest req, Model model) {
+		logger.info("url => fundList");
+		
+		service.fundList(req, model);
+		
+		return "customer/fundProduct/fundList";
+	}
+	
+	// 펀드 상품검색(지호) - 고객
+	@RequestMapping("fundProductSearch")
+	public String fundProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /fundProductSearch]");
+		service.fundProductSearch(req, model);
+		return "customer/fundProduct/fundProductSearch";
+	}
+	
+	// 펀드 상품 상세 보기 (지호) -고객
+	@RequestMapping("fundDetail")
+	public String fundDetail(HttpServletRequest req, Model model) {
+		logger.info("url => savingDetail");
+		
+		service.fundDetail(req, model);
+		
+		return "customer/fundProduct/fundDetail";
+	}
+	
+	// 펀드 상품 신청(지호)
+	@RequestMapping("fundProductInsert")
+	public String fundProductInsert(HttpServletRequest req, Model model) {
+		logger.info("url => fundProductInsert");
+		
+		service.fundProductAction(req, model);
+		
+		return "customer/fundProduct/fundProductInsert";
+	}	
+	
+	// 펀드 상품 신청 처리(지호) 해야함
+	@RequestMapping("fundProductAction")
+	public String fundProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => fundProductAction");
+		
+		return "customer/fundProduct/fundProductAction";
+	}
+	
 	//qna 게시판(지현)
 	@RequestMapping("qnaList")
 	public String qnaList(HttpServletRequest req, Model model) {

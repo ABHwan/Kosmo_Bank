@@ -6,10 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자 페이지 - 예금 상품 조회</title>
+<title>관리자 페이지 - 펀드 상품 조회</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-    
+<link rel="stylesheet" href="${rePath}css/manager/fund.css" />
 <script type="text/javascript">
       $(function() {
 			$("#all_check").change(function() {
@@ -20,13 +20,13 @@
 	  });
       
       function fn_process(val){
-    	  var form = document.depositProductForm
+    	  var form = document.fundProductForm
     	  if(val == '1'){
     		  // 회원정보수정시
     		  form.action = "";
     		  form.submit();
     	  }else{
-    		  form.action = "depositProductDelete";
+    		  form.action = "fundProductDelete";
     		  form.submit();
     	  }
       }
@@ -46,14 +46,26 @@
 		<!-- 메인 콘텐츠 -->
 		<div class="main-panel">
 			<div class="content">
-				
+				<!-- 고정헤더 -->
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner py-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
+								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br />
+									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
+							</div>
+						</div>
+					</div>
+				</div>
 				<section id="main">
 			      <div class="main__container">
 			      <h2 class="title">펀드 상품 리스트</h2>
 			       
 					<form action="depositProductSearch" method="post" class="contents__top2" name="searchForm">
 			          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			          <input type="search" name="search" placeholder="예금상품검색" />
+			          <input type="search" name="search" placeholder="펀드상품검색" />
 			          <button type="submit">
 			            <i class="fas fa-search"></i>
 			          </button>
@@ -62,9 +74,13 @@
 			        <div class="contents__middle">
 			          <div>전체 펀드 상품 수 ${cnt}건</div>
 			        </div>
-			        <form action="" name="depositProductForm">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			        <table class="admin__table">
+			        
+			        <!-- 카테고리 -->
+			        <form action="" name="fundProductForm">
+			        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			         <input type="hidden" name="pageNum" value="${pageNum}">
+			         <input type="hidden" name="number" value="${number}">
+			        <table class="table table-hover card-table">
 			          <tr class="table__head">
 			            <th class="zero"><input type="checkbox" id="all_check"></th>
 			            <th>번호</th>
@@ -82,7 +98,7 @@
 			          	<c:forEach var="dto" items="${dtos}">
 				         <tr>
 				           <td>
-				           <input type="checkbox" name="check" class="user_check"/>
+				           <input type="checkbox" name="check" class="user_check" value="${dto.fund_title}"/>
 				           </td>
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
@@ -95,7 +111,7 @@
 				           <td>${dto.fund_title}</td>
 				           
 				           <td>${dto.fund_summary}</td>
-				           <td>${dto.fund_start_date} ~ ${dto.fund_end_date}</td>
+				           <td><fmt:formatDate value="${dto.fund_start_date}" type="date" /> ~ <fmt:formatDate value="${dto.fund_end_date}" type="date"/></td>
 				           <td><fmt:formatNumber value="${dto.fund_goal_money}" type="number"/>원</td>
 				           <td>${dto.fund_mem_name}</td>
 				           <td>${dto.fund_mem_hp}</td>
@@ -116,11 +132,11 @@
 			          <ul>
 			          	<!-- 게시글이 있으면 -->
 			          	<c:if test="${cnt > 0}">
-				            <li>
+				            <li class="page-item">
 					            <!-- 처음[◀◀] / 이전블록[◀] /  -->
 								<c:if test="${startPage > pageBlock}">
-									<a href="fundProductList"> [◀◀] </a>
-									<a href="fundProductList?pageNum=${startPage - pageBlock}"> [◀] </a>
+									<a class="page-link" href="fundProductList"> [◀◀] </a>
+									<a class="page-link" href="fundProductList?pageNum=${startPage - pageBlock}"> [◀] </a>
 								</c:if>
 				            </li>
 				            
@@ -128,11 +144,11 @@
 				              <!-- 블록내의 페이지번호 -->
 								<c:forEach var="i" begin="${startPage}" end="${endPage}">
 									<c:if test="${i == currentPage}">
-										<span><b>[${i}]</b></span>
+										<a class="page-link"><b>[${i}]</b></a>
 									</c:if>
 									
 									<c:if test="${i != currentPage}">
-										<a href="fundProductList?pageNum=${i}">[${i}]</a>
+										<a class="page-link" href="fundProductList?pageNum=${i}">[${i}]</a>
 									</c:if>
 								</c:forEach>
 				            </li>

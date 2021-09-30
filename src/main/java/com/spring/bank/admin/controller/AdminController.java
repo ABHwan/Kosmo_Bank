@@ -379,7 +379,7 @@ public class AdminController {
 		System.out.println("[url ==> /fundProductDelete]");
 		service.deleteFundProduct(req, model);
 		service.selectFundProduct(req, model);
-		return "manager/fundProduct/fundProductDelete";
+		return "manager/fundProduct/fundProductList";
 	}
 	
 	//qnalist 회원이 작성한것 리스트 가져오기(지현)
