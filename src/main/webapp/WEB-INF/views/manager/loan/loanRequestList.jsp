@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -69,6 +69,7 @@
 													<th scope="col">이자잔액</th>
 													<th scope="col">익월 상환액</th>
 													<th scope="col">요약</th>
+													<th scope="col"></th>
 													<th scope="col"></th>
 												</tr>
 											</thead>
@@ -143,7 +144,10 @@
 														</td>
 														<td>
 															<input type="hidden" value="${l.loan_id}" name="loan_id">
-															<button type="button" id="approvalBtn" class="btn btn-primary btn-xs">대출 승인</button>
+															<button formaction="loanRequestAction.do" id="approvalBtn" class="btn btn-primary btn-xs">승인</button>
+														</td>
+														<td>
+															<button formaction="loanRefusalAction.do" id="RefusalBtn" class="btn btn-primary btn-xs">거절</button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -203,15 +207,15 @@
 		</div>
 	</div>
 
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
 	
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		$("#approvalBtn").click(
 			function() {
 				$("#loanRequestform").attr("action", "/bank/manager/loanRequestAction.do");
 				$("#loanRequestform").submit();
 			});
-	</script>
+	</script> -->
 
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

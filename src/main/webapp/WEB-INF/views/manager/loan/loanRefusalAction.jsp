@@ -36,15 +36,15 @@
 	 
 	<jsp:include page="/WEB-INF/views/include/footerB.jsp" /> 
  
- 	<c:if test="${deleteCnt == 1}">
+ 	<c:if test="${updateCnt == 1}">
 		<script type="text/javascript">
-			alert("대출 상품 삭제 완료");
-			window.location="loanProductList.do";
+			alert("대출 거절 완료");
+			window.location="loanRequestList.do";
 		</script>
  	</c:if>
- 	<c:if test="${deleteCnt != 1}">
+ 	<c:if test="${updateCnt != 1}">
 		<script type="text/javascript">
-			alert("대출 상품 삭제가 완료되지 않았습니다. 다시 시도하세요.");
+			alert("대출이 거절되지 않았습니다. 다시 시도하세요.");
 			window.history.back();
 		</script>
  	</c:if>

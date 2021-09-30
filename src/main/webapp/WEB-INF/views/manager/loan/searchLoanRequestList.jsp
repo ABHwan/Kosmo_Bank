@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -203,7 +203,7 @@
 		</div>
 	</div>
 
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
 	
 	<script type="text/javascript">
 		$("#approvalBtn").click(

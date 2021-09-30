@@ -10,7 +10,7 @@
 </head>
 <body>	
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -34,12 +34,12 @@
 		</div>
 	</div>
 	 
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" /> 
+	<jsp:include page="/WEB-INF/views/include/footerB.jsp" /> 
  
  	<c:if test="${updateCnt == 1}">
 		<script type="text/javascript">
 			alert("대출 승인 완료");
-			window.location="loanProductList.do";
+			window.location="loanRequestList.do";
 		</script>
  	</c:if>
  	<c:if test="${updateCnt != 1}">

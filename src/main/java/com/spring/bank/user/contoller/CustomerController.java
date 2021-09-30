@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -600,13 +601,15 @@ public class CustomerController {
 
 		return "customer/bank/account_confirm";
 	}
+	
 	//!!!!!!!!!!지은!!!!!!!!!!!
 
-	// 대출중인 상품 목록
+
+	// 대출 상환 목록
 	@RequestMapping("loanHistoryList.do")
 	public String loanHistoryList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanHistoryList]");
-		service.loanHistoryList(req, model);
+		//service.loanHistoryList(req, model);
 		return "customer/loan/loanHistoryList";
 	}
 	
@@ -652,6 +655,14 @@ public class CustomerController {
 	public String loanPrincipalList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanPrincipalList]");
 		return "customer/loan/loanPrincipalList";
+	}
+	
+	// 대출 상환 상세
+	@RequestMapping("loanPrincipalRateList.do")
+	public String loanPrincipalRateList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalRateList]");
+		service.loanPrincipalRateList(req, model);
+		return "customer/loan/loanPrincipalRateList";
 	}
 
 	// 대출 원금 상세
@@ -706,14 +717,23 @@ public class CustomerController {
 		return "customer/loan/newLoanDetail";
 	}
 
-	// 신규대출
+	// 신규대출폼
 	@RequestMapping("newLoanSign.do")
 	public String newLoanSign(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /newLoanSign]");
+		service.signInfo(req, model);
 		return "customer/loan/newLoanSign";
 	}
+	
+	// 신규대출신청
+	@RequestMapping("newLoanSignAction.do")
+	public String newLoanSignAction(HttpServletRequest req, Model model) throws ParseException {
+		logger.info("[url ==> /newLoanSign]");
+		service.newLoanSignAction(req, model);
+		return "customer/loan/newLoanSignAction";
+	}
 
-	// 신규대출
+	// 대출약관
 	@RequestMapping("terms.do")
 	public String terms(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /terms]");
@@ -726,7 +746,6 @@ public class CustomerController {
 		service.searchLoanProductList(req, model);
 		return "customer/loan/searchLoanProductList";
 	}
-
 	//!!!!!!!!!!지은!!!!!!!!!!!
 
 	// 회원 자동 이체(유성)

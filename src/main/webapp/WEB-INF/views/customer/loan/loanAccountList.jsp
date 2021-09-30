@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -66,11 +66,12 @@
 													<th scope="col">대출기간</th>
 													<th scope="col">상환방법</th>
 													<th scope="col">대출금리</th>
-													<th scope="col">대출원금</th>
+													<!-- <th scope="col">대출원금</th> -->
 													<th scope="col">대출잔액</th>
-													<th scope="col">이자잔액</th>
+													<!-- <th scope="col">이자잔액</th> -->
 													<th scope="col">익월 상환액</th>
-													<th scope="col">요약</th>
+													<!-- <th scope="col">요약</th> -->
+													<th scope="col"></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -115,33 +116,36 @@
 														<td>
 															<c:choose>
 																<c:when test="${l.loan_repaymentType == 1}">
-																	원금균등상환
+																	원금
 																</c:when>
 																<c:when test="${l.loan_repaymentType == 2}">
-																	원리금균등상환
+																	원리금
 																</c:when>
 																<c:when test="${l.loan_repaymentType == 3}">
-																	만기일시상환
+																	만기
 																</c:when>
 															</c:choose>
 														</td>
 														<td>${l.loan_rate}&nbsp;%</td>
-														<td><fmt:formatNumber value="${l.loan_amount}" pattern="#,###.##" />&nbsp;원</td>
+														<%-- <td><fmt:formatNumber value="${l.loan_amount}" pattern="#,###.##" />&nbsp;원</td> --%>
 														<td><fmt:formatNumber value="${l.loan_balance}" pattern="#,###.##" />&nbsp;원</td>
-														<td><fmt:formatNumber value="${l.loan_interest}" pattern="#,###.##" />&nbsp;원</td>
+														<%-- <td><fmt:formatNumber value="${l.loan_interest}" pattern="#,###.##" />&nbsp;원</td> --%>
 														<td><fmt:formatNumber value="${l.loan_monthlyRepayment}" pattern="#,###.##" />&nbsp;원
-															<details>
+															<%-- <details>
 																<summary class="btn-link"></summary>
 																	익월 납입원금 : <fmt:formatNumber value="${l.loan_tranAmount}" pattern="#,###.##" />&nbsp;원<br>
 																	익월 납입이자 : <fmt:formatNumber value="${l.loan_tranInterest}" pattern="#,###.##" />&nbsp;원
-															</details>
+															</details> --%>
 														</td>
-														<td>
+														<%-- <td>
 															<details>
 																<summary class="btn-link"></summary>
 																체납액 : <fmt:formatNumber value="${l.loan_delinquency}" pattern="#,###.##" />&nbsp;원<br>
 																중도상환수수료 요율 : ${l.loan_prepaymentRate}&nbsp;%
 															</details>
+														</td> --%>
+														<td>
+															<button type="button" class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalRateList.do?loan_id=${l.loan_id}'">상환표</button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -201,7 +205,7 @@
 		</div>
 	</div>
 
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footerB.jsp" />
 
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

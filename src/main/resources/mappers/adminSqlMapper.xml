@@ -249,7 +249,8 @@
 		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0)
     </insert>
 
-	<!-- 지은 -->
+		<!-- 지은 -->
+	
 	<!-- 대출 상품 개수 -->
 	<select id="getLoanProductCnt" resultType="int">
 		SELECT COUNT(*) FROM loan_product
@@ -565,6 +566,60 @@
 			   AND rNum <= #{end}
 		]]>
     </select>
+    
+    <!-- 대출 정보 가져오기 -->
+	<select id="getLoanInfo" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM loan
+			 WHERE loan_id = #{loan_id} 
+		]]>
+    </select>
+    
+    <!-- 대출 승인 후 대출 계좌에 대출금 이체 -->
+	<insert id="transNewLoanAccount" parameterType="com.spring.bank.user.vo.TransferVO">
+		INSERT INTO transfer(transfer_id
+		                     , account_id
+		                     , transfer_senderAccount
+		                     , transfer_money
+		                     , transfer_inOut
+		                     , transfer_inOutDate 
+		                     , transfer_inComment
+		                     , transfer_senderName
+		                     , transfer_receiverName
+		                     , transfer_bankCode
+							)
+		VALUES(transfer_seq.nextval
+		       , #{account_id}
+		       , #{account_id}
+		       , #{transfer_money}
+		       , #{transfer_inOut}
+			   , SYSDATE 
+			   , #{transfer_inComment}
+			   , #{transfer_senderName}
+			   , #{transfer_receiverName}
+			   , #{transfer_bankCode}
+			  )
+	</insert>    
+	
+    <!-- 대출 승인 후 대출 계좌에 대출금 이체 취소 -->
+	<delete id="resetNewLoanAccount" parameterType="java.util.Map">
+		DELETE transfer WHERE transfer_inComment LIKE '%'||#{transfer_inComment}||'%'
+	</delete>
+	
+	<!-- 대출 계좌 잔고에 돈 넣어주기 -->
+	<update id="setNewLoanAccount" parameterType="java.util.Map">
+		UPDATE account
+		   SET account_balance = account_balance + #{loan_amount}
+         WHERE account_id = #{account_id}
+	</update>
+	
+	
+    <!-- 회원정보 상세 페이지 -->
+    <select id="getUserInfo" parameterType="String" resultType="com.spring.bank.user.vo.UserVO">
+    	SELECT * FROM members WHERE member_id = #{member_id}
+    </select>
+    
 	<!-- 지은 -->
 	
 	<!-- 공지사항 쓰기 처리(민재) -->

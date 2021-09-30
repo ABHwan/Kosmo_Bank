@@ -10,7 +10,7 @@
 </head>
 <body>	
 	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
@@ -45,22 +45,24 @@
 										
 											<tr>
 												<th><label for="loan_product_name">대출 상품명</label></th>
-												<td><input type="text" id="loan_product_name" name="loan_product_name" class="form-control input-border-bottom" readonly></td>
+												<td><input type="text" value="${loanProduct.loan_product_name}" id="loan_product_name" name="loan_product_name" class="form-control input-border-bottom" readonly></td>
 											</tr>
 											<tr>
 												<th><label for="member_id">아이디</label></th>
-												<td><input type="text" id="member_id" name="member_id" class="form-control input-border-bottom" readonly></td>
+												<td><input type="text" value="${loanMember.member_id}" id="member_id" name="member_id" class="form-control input-border-bottom" readonly></td>
 											</tr>
 											<tr>
-												<th><label for="">이름</label></th>
-												<td><input type="text" id="" name="" class="form-control input-border-bottom" readonly></td>
+												<th><label for="member_name">이름</label></th>
+												<td><input type="text" value="${loanMember.member_name}" id="member_name" name="member_name" class="form-control input-border-bottom" readonly></td>
 											</tr>
 											<tr>
 												<th><label for="account_id">계좌번호</label></th>
 												<td style="display:flex;">
 													<select class="form-control form-control" style="width:30%;" name="account_id_select" onchange="setAccount();">
-														<option value="0">직접입력</option>
-														<option value="01010201201002324">01010201201002324</option>
+														<option value="0">계좌생성</option>
+														<c:forEach var="j" items="${loanAccount}">
+															<option value="${j.account_id}">${j.account_id}</option>
+														</c:forEach>
 													</select>
 													<input type="text" id="account_id" name="account_id" style="width:70%;" class="form-control input-border-bottom">
 												</td>
@@ -69,7 +71,7 @@
 												<th><label for="loan_month">대출기간</label></th>
 												<td style="display:flex;">
 													<select class="form-control form-control" style="width:40%;" name="loan_month" onchange="setEndDate();">
-														<c:forEach var="i" begin="12" step="6" end="120">
+														<c:forEach var="i" begin="${loanProduct.loan_product_minDate * 12}" step="6" end="${loanProduct.loan_product_maxDate * 12}">
 															<option value="${i}">${i}&nbsp;개월&nbsp;&nbsp;(${i/12}&nbsp;년)</option>
 														</c:forEach>
 													</select>
@@ -99,11 +101,11 @@
 											</tr>
 											<tr>
 												<th><label for="loan_rate">대출금리</label></th>
-												<td><input value="2.0" type="text" id="loan_rate" name="loan_rate" class="form-control input-border-bottom" readonly></td>
+												<td><input value="${loanProduct.loan_product_rate}" type="text" id="loan_rate" name="loan_rate" class="form-control input-border-bottom" readonly></td>
 											</tr>
 											<tr>
 												<th><label for="loan_prepaymentRate">중도상환수수료요율</label></th>
-												<td><input type="text" id="loan_prepaymentRate" name="loan_prepaymentRate" class="form-control input-border-bottom" readonly></td>
+												<td><input type="text" value="${loanProduct.loan_product_prepaymentRate}" id="loan_prepaymentRate" name="loan_prepaymentRate" class="form-control input-border-bottom" readonly></td>
 											</tr>
 											<tr style="height:100px;">
 												<th colspan="2">
@@ -165,7 +167,7 @@
 			</div>
 		</div>
 		 
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" /> 
+	<jsp:include page="/WEB-INF/views/include/footerB.jsp" /> 
 	    
  	<script type="text/javascript">
 	 	$('#loan_startDate').datepicker({
@@ -238,6 +240,9 @@
 					//1차 납입원금
 					tranAmount.value = "0";
 					
+					//1차 납입이자
+					tranInterest.value = Math.round((amount * (rate / 12)));
+					
 					//1차 상환액
 					monthlyRepayment.value = parseInt(tranInterest.value) + parseInt(tranAmount.value);
 					
@@ -286,7 +291,7 @@
  		function openTerms() {
  			var popupX = (window.screen.width / 2) - (800 / 2); // 윈도우 픽셀 기준 X축 중간
  			var popupY = (window.screen.height / 2) - (1000 / 2); // 윈도우 픽셀 기준 Y축 중간
- 			var url = "http://localhost/bank/customer/terms.do";
+ 			var url = "http://localhost:8092/bank/customer/terms.do";
  			window.open(url, "about:blank", "width=800, height=1000, left="+popupX + ",top="+popupY);
  			var btn = document.querySelector("#termsBtn");
  			btn.classList.remove('btn-warning');  // 대상 요소의 클래스 목록에서 클래스 btn-warning 제외

@@ -21,6 +21,7 @@ import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
+import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -1293,792 +1294,6 @@ public class AdminServiceImpl implements AdminService {
 			model.addAttribute("currentPage", currentPage); // 현재 페이지
 		}
 	}
-
-	public void loanProductList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => loanProductList()]");
-
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getLoanProductCnt();
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanProductVO> loanProducts = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loanProducts = dao.getLoanProductList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loanProducts", loanProducts); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-
-	}
-
-	public void loanCancelList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => loanCancelList()]");
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getLoanCancelCnt();
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanProductVO> loanProducts = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loanProducts = dao.getLoanCancelList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loanProducts", loanProducts); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-
-	}
-
-	public void searchLoanProductList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => loanProductList()]");
-
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-		String keyword = (String) req.getParameter("keyword");
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getSearchLoanProductCnt(keyword);
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanProductVO> loanProducts = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-		map.put("keyword", keyword);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loanProducts = dao.searchLoanProductList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loanProducts", loanProducts); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-		model.addAttribute("keyword", keyword); // keyword
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-
-	}
-
-	public void loanProductDelete(HttpServletRequest req, Model model) {
-		String loan_product_name = req.getParameter("loan_product_name");
-		int deleteCnt = dao.loanProductDelete(loan_product_name);
-		model.addAttribute("deleteCnt", deleteCnt);
-	}
-
-	public void loanProductUpdateAction(HttpServletRequest req, Model model) {
-		String loan_product_name = req.getParameter("loan_product_name");
-		float loan_product_rate = (float) Double.parseDouble((String) req.getParameter("loan_product_rate"));
-		String loan_product_summary = req.getParameter("loan_product_summary");
-		int loan_product_minPrice = Integer.parseInt((String) req.getParameter("loan_product_minPrice"));
-		int loan_product_maxPrice = Integer.parseInt((String) req.getParameter("loan_product_maxPrice"));
-		int loan_product_minDate = Integer.parseInt((String) req.getParameter("loan_product_minDate"));
-		int loan_product_maxDate = Integer.parseInt((String) req.getParameter("loan_product_maxDate"));
-		int loan_product_bankCode = Integer.parseInt((String) req.getParameter("loan_product_bankCode"));
-		float loan_product_prepaymentRate = (float) Double
-				.parseDouble((String) req.getParameter("loan_product_prepaymentRate"));
-		String pre_loan_product_name = req.getParameter("pre_loan_product_name");
-
-		LoanProductVO l = new LoanProductVO();
-		l.setLoan_product_name(loan_product_name);
-		l.setPre_loan_product_name(pre_loan_product_name);
-		l.setLoan_product_rate(loan_product_rate);
-		l.setLoan_product_summary(loan_product_summary);
-		l.setLoan_product_minPrice(loan_product_minPrice);
-		l.setLoan_product_maxPrice(loan_product_maxPrice);
-		l.setLoan_product_minDate(loan_product_minDate);
-		l.setLoan_product_maxDate(loan_product_maxDate);
-		l.setLoan_product_bankCode(loan_product_bankCode);
-		l.setLoan_product_prepaymentRate(loan_product_prepaymentRate);
-
-		int updateCnt = dao.loanProductUpdate(l);
-		model.addAttribute("updateCnt", updateCnt);
-	}
-
-	public void loanProductUpdate(HttpServletRequest req, Model model) {
-		LoanProductVO loanProduct = dao.getLoanProductInfo(req.getParameter("loan_product_name"));
-		model.addAttribute("loanProduct", loanProduct);
-	}
-
-	public void loanProductInsertAction(HttpServletRequest req, Model model) {
-		String loan_product_name = req.getParameter("loan_product_name");
-		float loan_product_rate = (float) Double.parseDouble((String) req.getParameter("loan_product_rate"));
-		String loan_product_summary = req.getParameter("loan_product_summary");
-		int loan_product_minPrice = Integer.parseInt((String) req.getParameter("loan_product_minPrice"));
-		int loan_product_maxPrice = Integer.parseInt((String) req.getParameter("loan_product_maxPrice"));
-		int loan_product_minDate = Integer.parseInt((String) req.getParameter("loan_product_minDate"));
-		int loan_product_maxDate = Integer.parseInt((String) req.getParameter("loan_product_maxDate"));
-		int loan_product_bankCode = Integer.parseInt((String) req.getParameter("loan_product_bankCode"));
-		float loan_product_prepaymentRate = (float) Double
-				.parseDouble((String) req.getParameter("loan_product_prepaymentRate"));
-
-		LoanProductVO l = new LoanProductVO();
-		l.setLoan_product_name(loan_product_name);
-		l.setLoan_product_rate(loan_product_rate);
-		l.setLoan_product_summary(loan_product_summary);
-		l.setLoan_product_minPrice(loan_product_minPrice);
-		l.setLoan_product_maxPrice(loan_product_maxPrice);
-		l.setLoan_product_minDate(loan_product_minDate);
-		l.setLoan_product_maxDate(loan_product_maxDate);
-		l.setLoan_product_bankCode(loan_product_bankCode);
-		l.setLoan_product_prepaymentRate(loan_product_prepaymentRate);
-
-		int insertCnt = dao.loanProductInsert(l);
-		model.addAttribute("insertCnt", insertCnt);
-	}
-
-	public void loanRequestList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => loanRequestList()]");
-
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getLoanRequestCnt();
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanVO> loans = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loans = dao.getLoanRequestList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loans", loans); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-	}
-
-	public void loanList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => loanList()]");
-
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getLoanCnt();
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanVO> loans = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loans = dao.getLoanList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loans", loans); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-	}
-
-	public void loanRequestAction(HttpServletRequest req, Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("loan_id", req.getParameter("loan_id"));
-		map.put("state", 2); // 승인
-		int updateCnt = dao.loanRequestAction(map);
-		model.addAttribute("updateCnt", updateCnt);
-	}
-
-	public void searchLoanRequestList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => searchLoanRequestList()]");
-
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-		String keyword = (String) req.getParameter("keyword");
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getSearchLoanRequestCnt(keyword);
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanVO> loans = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-		map.put("keyword", keyword);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loans = dao.searchLoanRequestList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loans", loans); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-		model.addAttribute("keyword", keyword); // keyword
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-	}
-
-	public void searchLoanList(HttpServletRequest req, Model model) {
-		System.out.println("[AdminService => searchLoanList()]");
-
-		// 페이징
-		int pageSize = 5; // 한 페이지당 출력할 글 갯수
-		int pageBlock = 3; // 한 블럭당 페이지 갯수
-
-		int cnt = 0; // 글 갯수
-		int start = 0; // 현재 페이지 시작 글 번호
-		int end = 0; // 현재 페이지 마지막 글 번호
-		int number = 0; // 출력용 글번호
-		String pageNum = ""; // 페이지 번호
-		int currentPage = 0; // 현재 페이지
-
-		int pageCount = 0; // 페이지 갯수
-		int startPage = 0; // 시작 페이지
-		int endPage = 0; // 마지막 페이지
-		String keyword = (String) req.getParameter("keyword");
-
-		pageNum = req.getParameter("pageNum");
-
-		if (pageNum == null) {
-			pageNum = "1"; // 첫 페이지를 1페이지로 지정
-		}
-
-		cnt = dao.getSearchLoanCnt(keyword);
-		System.out.println("cnt : " + cnt);
-
-		// 글 30건 기준
-		currentPage = Integer.parseInt(pageNum);
-		System.out.println("currentPage : " + currentPage);
-
-		// 페이지 갯수 6= (30/5) + (0)
-		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
-
-		// 현재페이지 시작 글번호(페이지별)
-		// start = (currentPage - 1) * pageSize + 1;
-		// 1 = (1-1) * 5 + 1
-		start = (currentPage - 1) * pageSize + 1;
-
-		// 현재페이지 마지막 글번호(페이지별)
-		// end = start + pageSize - 1;
-		// 5 = 1 + 5 - 1
-		end = start + pageSize - 1;
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-
-		// 출력용 글번호
-		// 30 = 30 - (1 - 1) * 5; // 1페이지
-		// number = cnt - (currentPage - 1) * pageSize;
-		number = cnt - (currentPage - 1) * pageSize;
-
-		System.out.println("number : " + number);
-		System.out.println("pageSize : " + pageSize);
-
-		// 시작 페이지
-		// 1 = (1 / 3) * 3 + 1;
-		// startPage = (currentPage / pageBlock) * pageBlock + 1;
-		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		if (currentPage % pageBlock == 0)
-			startPage -= pageBlock;
-
-		System.out.println("startPage : " + startPage);
-
-		// 마지막 페이지
-		// 3 = 1 + 3 - 1
-		endPage = startPage + pageBlock - 1;
-		if (endPage > pageCount)
-			endPage = pageCount;
-
-		System.out.println("endPage : " + endPage);
-
-		System.out.println("==============================================");
-
-		ArrayList<LoanVO> loans = null;
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("start", start);
-		map.put("end", end);
-		map.put("keyword", keyword);
-
-		if (cnt > 0) {
-			// 5-2 게시글 목록 조회
-			loans = dao.searchLoanList(map);
-		}
-
-		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
-		model.addAttribute("loans", loans); // 게시글 목록
-		model.addAttribute("cnt", cnt); // 게시글 갯수
-		model.addAttribute("pageNum", pageNum); // 페이지 번호
-		model.addAttribute("number", number); // 출력용 글번호
-		model.addAttribute("keyword", keyword); // keyword
-
-		if (cnt > 0) {
-			model.addAttribute("startPage", startPage); // 시작페이지
-			model.addAttribute("endPage", endPage); // 마지막페이지
-			model.addAttribute("pageBlock", pageBlock); // 한 블럭당 페이지 갯수
-			model.addAttribute("pageCount", pageCount); // 페이지 갯수
-			model.addAttribute("currentPage", currentPage); // 현재페이지
-		}
-	}
 	
 	// 관리자 페이지 TEST계좌생성(복환)
 	@Override
@@ -2257,4 +1472,843 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
+	
+
+	public void loanProductList(HttpServletRequest req, Model model) { // 지은
+		System.out.println("[AdminService => loanProductList()]");
+		
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getLoanProductCnt();
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanProductVO> loanProducts = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loanProducts = dao.getLoanProductList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loanProducts", loanProducts); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+
+	}
+
+	public void loanCancelList(HttpServletRequest req, Model model) { // 지은
+		System.out.println("[AdminService => loanCancelList()]");	
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getLoanCancelCnt();
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanProductVO> loanProducts = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loanProducts = dao.getLoanCancelList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loanProducts", loanProducts); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+
+	}
+	
+	public void searchLoanProductList(HttpServletRequest req, Model model) { // 지은
+		System.out.println("[AdminService => loanProductList()]");
+		
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		String keyword = (String)req.getParameter("keyword");
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getSearchLoanProductCnt(keyword);
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanProductVO> loanProducts = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("keyword", keyword);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loanProducts = dao.searchLoanProductList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loanProducts", loanProducts); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		model.addAttribute("keyword", keyword); // keyword
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+
+	}
+
+	public void loanProductDelete(HttpServletRequest req, Model model) { // 지은
+		String loan_product_name = req.getParameter("loan_product_name");
+		int deleteCnt = dao.loanProductDelete(loan_product_name);
+		model.addAttribute("deleteCnt", deleteCnt);
+	}
+
+	public void loanProductUpdateAction(HttpServletRequest req, Model model) { // 지은
+		String loan_product_name = req.getParameter("loan_product_name");
+		float loan_product_rate = (float) Double.parseDouble((String)req.getParameter("loan_product_rate"));
+		String loan_product_summary = req.getParameter("loan_product_summary");
+		int loan_product_minPrice = Integer.parseInt((String)req.getParameter("loan_product_minPrice"));
+		long loan_product_maxPrice = Long.parseLong((String)req.getParameter("loan_product_maxPrice"));
+		int loan_product_minDate = Integer.parseInt((String)req.getParameter("loan_product_minDate"));
+		int loan_product_maxDate = Integer.parseInt((String)req.getParameter("loan_product_maxDate"));
+		int loan_product_bankCode = Integer.parseInt((String)req.getParameter("loan_product_bankCode"));
+		float loan_product_prepaymentRate = (float) Double.parseDouble((String)req.getParameter("loan_product_prepaymentRate"));
+		String pre_loan_product_name = req.getParameter("pre_loan_product_name");
+		
+		LoanProductVO l = new LoanProductVO();
+		l.setLoan_product_name(loan_product_name);
+		l.setPre_loan_product_name(pre_loan_product_name);
+		l.setLoan_product_rate(loan_product_rate);
+		l.setLoan_product_summary(loan_product_summary);
+		l.setLoan_product_minPrice(loan_product_minPrice);
+		l.setLoan_product_maxPrice(loan_product_maxPrice);
+		l.setLoan_product_minDate(loan_product_minDate);
+		l.setLoan_product_maxDate(loan_product_maxDate);
+		l.setLoan_product_bankCode(loan_product_bankCode);
+		l.setLoan_product_prepaymentRate(loan_product_prepaymentRate);
+		
+		int updateCnt = dao.loanProductUpdate(l);
+		model.addAttribute("updateCnt", updateCnt);
+	}
+
+	public void loanProductUpdate(HttpServletRequest req, Model model) { // 지은
+		LoanProductVO loanProduct = dao.getLoanProductInfo(req.getParameter("loan_product_name"));
+		model.addAttribute("loanProduct", loanProduct);
+	}
+
+	public void loanProductInsertAction(HttpServletRequest req, Model model) { // 지은
+		String loan_product_name = req.getParameter("loan_product_name");
+		float loan_product_rate = (float) Double.parseDouble((String)req.getParameter("loan_product_rate"));
+		String loan_product_summary = req.getParameter("loan_product_summary");
+		int loan_product_minPrice = Integer.parseInt((String)req.getParameter("loan_product_minPrice"));
+		int loan_product_maxPrice = Integer.parseInt((String)req.getParameter("loan_product_maxPrice"));
+		int loan_product_minDate = Integer.parseInt((String)req.getParameter("loan_product_minDate"));
+		int loan_product_maxDate = Integer.parseInt((String)req.getParameter("loan_product_maxDate"));
+		int loan_product_bankCode = Integer.parseInt((String)req.getParameter("loan_product_bankCode"));
+		float loan_product_prepaymentRate = (float) Double.parseDouble((String)req.getParameter("loan_product_prepaymentRate"));
+		
+		LoanProductVO l = new LoanProductVO();
+		l.setLoan_product_name(loan_product_name);
+		l.setLoan_product_rate(loan_product_rate);
+		l.setLoan_product_summary(loan_product_summary);
+		l.setLoan_product_minPrice(loan_product_minPrice);
+		l.setLoan_product_maxPrice(loan_product_maxPrice);
+		l.setLoan_product_minDate(loan_product_minDate);
+		l.setLoan_product_maxDate(loan_product_maxDate);
+		l.setLoan_product_bankCode(loan_product_bankCode);
+		l.setLoan_product_prepaymentRate(loan_product_prepaymentRate);
+		
+		int insertCnt = dao.loanProductInsert(l);
+		model.addAttribute("insertCnt", insertCnt);
+	}
+
+	public void loanRequestList(HttpServletRequest req, Model model) { // 지은
+		System.out.println("[AdminService => loanRequestList()]");
+		
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getLoanRequestCnt();
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanVO> loans = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loans = dao.getLoanRequestList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loans", loans); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+	}
+
+	public void loanList(HttpServletRequest req, Model model) { // 지은
+		System.out.println("[AdminService => loanList()]");
+		
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getLoanCnt();
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanVO> loans = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loans = dao.getLoanList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loans", loans); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+	}
+
+	public void loanRequestAction(HttpServletRequest req, Model model) { // 지은
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loan_id", req.getParameter("loan_id"));
+		map.put("state", 2); // 승인
+		int updateCnt = dao.loanRequestAction(map);
+		
+		if(updateCnt == 1) { // 승인 완료
+			// 대출 정보 가져오기
+			LoanVO loan = dao.getLoanInfo(map);
+			System.out.println(loan);
+			// bankCode 가져오기
+			UserVO loanMember = dao.getUserInfo(loan.getMember_id());
+			LoanProductVO loanProduct = dao.getLoanProductInfo(loan.getLoan_product_name());
+			
+			java.util.Date date = new java.util.Date();
+			
+			TransferVO trans = new TransferVO();
+			trans.setAccount_id(loan.getAccount_id());
+			trans.setTransfer_money(loan.getLoan_amount());
+			trans.setTransfer_inOut("입금");
+			trans.setTransfer_inComment(loan.getLoan_product_name() + " 승인 " + date);
+			trans.setTransfer_senderName(loan.getLoan_product_name());
+			trans.setTransfer_receiverName(loanMember.getMember_name());
+			trans.setTransfer_bankCode(loanProduct.getLoan_product_bankCode());
+			
+			// 대출금 신청계좌로 이체
+			int insertCnt = dao.transNewLoanAccount(trans);
+			
+			if(insertCnt == 1) {
+				// 신청계좌 잔고 갱신
+				map.clear();
+				map.put("loan_amount", loan.getLoan_amount());
+				map.put("account_id", loan.getAccount_id()); 
+				int updateCnt2 = dao.setNewLoanAccount(map);
+				
+				if(updateCnt2 == 0) {
+					map.clear();
+					map.put("loan_id", req.getParameter("loan_id"));
+					map.put("state", 1); // 신청
+					updateCnt = dao.loanRequestAction(map);
+					updateCnt = 0;
+				
+					TransferVO trans2 = new TransferVO();
+					trans2.setAccount_id(loan.getAccount_id());
+					trans2.setTransfer_money(-loan.getLoan_amount());
+					trans2.setTransfer_inOut("입금정정");
+					trans2.setTransfer_inComment(loan.getLoan_product_name() + " 입금정정 " + date);
+					trans2.setTransfer_senderName(loan.getLoan_product_name());
+					trans2.setTransfer_receiverName(loanMember.getMember_name());
+					trans2.setTransfer_bankCode(loanProduct.getLoan_product_bankCode());
+
+					dao.transNewLoanAccount(trans2);
+				}
+				
+			} else {
+				map.clear();
+				map.put("loan_id", req.getParameter("loan_id"));
+				map.put("state", 1); // 신청
+				updateCnt = dao.loanRequestAction(map);
+				updateCnt = 0;
+			}
+			
+		}
+		
+		model.addAttribute("updateCnt", updateCnt); 
+	}
+
+	public void searchLoanRequestList(HttpServletRequest req, Model model) { // 지은
+		System.out.println("[AdminService => searchLoanRequestList()]");
+		
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		String keyword = (String)req.getParameter("keyword");
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getSearchLoanRequestCnt(keyword);
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanVO> loans = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("keyword", keyword);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loans = dao.searchLoanRequestList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loans", loans); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		model.addAttribute("keyword", keyword); // keyword
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+	}
+
+	public void searchLoanList(HttpServletRequest req, Model model) { // 지은
+	System.out.println("[AdminService => searchLoanList()]");
+		
+		// 페이징
+		int pageSize = 5; 	 // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; 	 // 한 블럭당 페이지 갯수
+		
+		int cnt = 0;		 // 글 갯수
+		int start = 0;		 // 현재 페이지 시작 글 번호
+		int end = 0;		 // 현재 페이지 마지막 글 번호
+		int number = 0;		 // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+		
+		int pageCount = 0;	 // 페이지 갯수
+		int startPage = 0;	 // 시작 페이지
+		int endPage = 0;	 // 마지막 페이지
+		String keyword = (String)req.getParameter("keyword");
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		} 
+		
+		cnt = dao.getSearchLoanCnt(keyword);
+		System.out.println("cnt : " + cnt);
+		
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1:0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재페이지 시작 글번호(페이지별) 
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage -1) * pageSize + 1;
+		
+		// 현재페이지 마지막 글번호(페이지별) 
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) startPage -= pageBlock;
+		
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) endPage = pageCount;
+		
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("==============================================");
+		
+		ArrayList<LoanVO> loans = null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("keyword", keyword);
+		
+		if(cnt > 0) {
+			// 5-2 게시글 목록 조회
+			loans = dao.searchLoanList(map);
+		}
+			
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("loans", loans); // 게시글 목록
+		model.addAttribute("cnt", cnt);   // 게시글 갯수
+		model.addAttribute("pageNum", pageNum); // 페이지 번호
+		model.addAttribute("number", number); // 출력용 글번호
+		model.addAttribute("keyword", keyword); // keyword
+		
+		if(cnt > 0 ) {
+			model.addAttribute("startPage", startPage);	// 시작페이지
+			model.addAttribute("endPage", endPage);		// 마지막페이지
+			model.addAttribute("pageBlock", pageBlock);	// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);	// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재페이지
+		}
+	}
+
+	public void loanRefusalAction(HttpServletRequest req, Model model) { // 지은
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loan_id", req.getParameter("loan_id"));
+		map.put("state", 3); // 거절
+		int updateCnt = dao.loanRequestAction(map);
+		model.addAttribute("updateCnt", updateCnt); 
+	}
+
 }
