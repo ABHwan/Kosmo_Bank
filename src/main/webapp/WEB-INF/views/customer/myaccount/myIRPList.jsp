@@ -36,7 +36,7 @@
 				<div class="card">
 				<div class="select">	
 					<p> &nbsp;&nbsp;&nbsp;${member_name}님의 ${boardName}리스트 </p>
-					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/icon.ico"></button>
+<%-- 					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/icon.ico"></button>
 					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/국민.PNG"></button>
 					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/우리.PNG"></button>
 					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/농협.PNG"></button>
@@ -45,7 +45,7 @@
 				<!-- account_type만 선택시 해당 전체리스트
 					account_bank로 sub select시 bank에 따른 쿼리
 				 -->
-				 	<br> <p>버튼은 보류</p>
+				 	<br> <p>버튼은 보류</p> --%>
 				 	<br>
 				</div>
 				

@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -29,6 +31,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	AdminDAOImpl dao;
+	
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	// 관리자 페이지 회원목록 조회
 	@Override
@@ -2182,11 +2187,11 @@ public class AdminServiceImpl implements AdminService {
 		
 		// input값 받아오기 -> 바구니에 넣기
 		vo.setNotice_subject(req.getParameter("notice_subject"));
-		vo.setNotice_password(req.getParameter("notice_password"));
+		vo.setNotice_password(bCryptPasswordEncoder.encode(req.getParameter("notice_password")));
 		vo.setNotice_content(req.getParameter("notice_content"));
 		
 		// 작성일
-		vo.setNotice_date(new Date());
+		// vo.setNotice_date(new Date());
 		
 		// insert
 		int insertCnt = dao.mngNoticeWriteAction(vo);
@@ -2203,18 +2208,24 @@ public class AdminServiceImpl implements AdminService {
 		
 		// 히든값
 		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
-	
-		Map<String, Object> map = new HashMap<String, Object>();
-		
 		int notice_num = Integer.parseInt(req.getParameter("notice_num"));
 		
-		map.put("notice_num", notice_num);
-		map.put("notice_password", req.getParameter("notice_password"));
-	
+		String rawPwd = (String)req.getParameter("notice_password");
+		
+		// 암호화된 비밀번호 가져오기
+		String bCryptPasswordEncoderPwd = dao.noticePWDCheck(notice_num);
+		
+		int selectCnt = 0;
+		boolean result = bCryptPasswordEncoder.matches(rawPwd, bCryptPasswordEncoderPwd);
+		
 		// 비밀번호 인증 
 		// 인증성공 :: selectCnt = 1, 인증실패 :: selectCnt = 0
-		int selectCnt = dao.noticePWDCheck(map);
+		if(result == true) {
+			selectCnt = 1;
+		}
 		
+		
+		System.out.println("공지사항 수정인증 selectCnt : " + selectCnt);
 		// 상세페이지 조회
 		NoticeVO vo = dao.getNoticeDetail(notice_num);
 		
@@ -2250,9 +2261,22 @@ public class AdminServiceImpl implements AdminService {
 	
 		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
 		int notice_num = (Integer.parseInt(req.getParameter("notice_num")));
-
 		
-		int deleteCnt = dao.noticeDeleteAction(notice_num);
+		String rawPwd = (String)req.getParameter("notice_password");
+		
+		// 암호화된 비밀번호 가져오기
+		String bCryptPasswordEncoderPwd = dao.noticePWDCheck(notice_num);
+		
+		int deleteCnt = 0;
+		boolean result = bCryptPasswordEncoder.matches(rawPwd, bCryptPasswordEncoderPwd);
+		
+		// 비밀번호 인증 
+		// 인증성공 :: selectCnt = 1, 인증실패 :: selectCnt = 0
+		if(result == true) {
+			deleteCnt = dao.noticeDeleteAction(notice_num);
+		}
+		
+		System.out.println("공지사항 삭제인증 deleteCnt : " + deleteCnt);
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("deleteCnt", deleteCnt);

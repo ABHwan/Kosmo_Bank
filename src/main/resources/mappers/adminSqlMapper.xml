@@ -569,13 +569,13 @@
 	
 	<!-- 공지사항 쓰기 처리(민재) -->
 	<insert id="mngNoticeWriteAction" parameterType="com.spring.bank.user.vo.NoticeVO">
-		INSERT INTO NOTICE
-		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0, #{notice_date})
+		INSERT INTO NOTICE(NOTICE_NUM, NOTICE_WRITER, NOTICE_SUBJECT, NOTICE_PASSWORD, NOTICE_CONTENT, NOTICE_READCNT)
+		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0)
 	</insert>
 	
 	<!-- 공지사항 - 비밀번호 인증(민재) -->
-	<select id="noticePWDCheck" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(*) FROM NOTICE WHERE notice_num = #{notice_num} AND notice_password = #{notice_password}
+	<select id="noticePWDCheck" parameterType="int" resultType="String">
+		SELECT notice_password FROM NOTICE WHERE notice_num = #{notice_num}
 	</select>
 	
 	<!-- 공지사항 상세페이지(민재) -->

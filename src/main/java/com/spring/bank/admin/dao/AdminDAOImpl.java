@@ -375,9 +375,9 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	// 공지사항 - 비밀번호 인증(민재)
 	@Override
-	public int noticePWDCheck(Map<String, Object> map) {
+	public String noticePWDCheck(int notice_num) {
 		
-		return sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.noticePWDCheck", map);
+		return sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.noticePWDCheck", notice_num);
 	}
 	
 	// 공지사항 상세페이지(민재)

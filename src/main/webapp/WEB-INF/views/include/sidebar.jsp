@@ -140,8 +140,18 @@
 							<div class="collapse" id="forms">
 								<ul class="nav nav-collapse">
 									<li>
+										<a href="${custPath}saving.do">
+											<span class="sub-item">${sessionScope.customerID}님의 적금</span>
+										</a>
+									</li>
+									<li>
 										<a href="savingList">
 											<span class="sub-item">적금</span>
+										</a>
+									</li>
+									<li>
+										<a href="${custPath}deposit.do">
+											<span class="sub-item">${sessionScope.customerID}님의 예금</span>
 										</a>
 									</li>
 									<li>
@@ -151,7 +161,17 @@
 									</li>
 									<li>
 										<a href="#">
+											<span class="sub-item">${sessionScope.customerID}님의 대출</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
 											<span class="sub-item">대출</span>
+										</a>
+									</li>
+									<li>
+										<a href="${custPath}irp.do">
+											<span class="sub-item">${sessionScope.customerID}님의 연금</span>
 										</a>
 									</li>
 									<li>
