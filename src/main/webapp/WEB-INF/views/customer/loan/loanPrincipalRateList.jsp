@@ -1,3 +1,4 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.sql.Date" %>
 <%@ page import="com.spring.bank.user.vo.LoanVO" %>
@@ -66,6 +67,9 @@
 													//out.println("month : " + month);
 													LocalDate loan_startDate = loan.getLoan_startDate().toLocalDate();
 													//out.println("loan_startDate : " + loan_startDate);
+													DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+
 												%>
 												<c:if test="${loan.loan_repaymentType == 1}">
 													<%
@@ -96,7 +100,7 @@
 														//out.println("first_monthlyRepayment : " + first_monthlyRepayment);
 													%>
 													<tr>
-														<td>0차</td>
+														<td></td>
 														<td>${loan.loan_amount}</td>
 														<td><%=sum_interest%></td>
 														<td></td>
@@ -116,10 +120,12 @@
 														//out.println("tran_interest : " + tran_interest);
 														LocalDate return_date = loan_startDate.plusMonths(1);
 														//out.println("return_date : " + return_date);
+														String date = return_date.format(formatter);
 														for(int i = 1; i <= month; i++) {
 															//out.println("i : " + i);
 															return_date = loan_startDate.plusMonths(i);
 															//out.println("return_date : " + return_date);
+															date = return_date.format(formatter);
 															sum_amount -= tran_amount;
 															//out.println("sum_amount : " + sum_amount);
 															sum_interest -= tran_interest;
@@ -134,7 +140,7 @@
 														<td><%=monthly%></td>
 														<td><%=tran_amount%></td>
 														<td><%=tran_interest%></td>
-														<td><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
+														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
 															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
 														</td>
@@ -158,7 +164,7 @@
 														long sum_interest = Math.round((monthlyRepayment * month) - amount);
 													%>
 													<tr>
-														<td>0차</td>
+														<td></td>
 														<td>${loan.loan_amount}</td>
 														<td><%=sum_interest%></td>
 														<td></td>
@@ -171,8 +177,10 @@
 														long tran_amount = first_tran_amount;
 														long tran_interest = first_tran_interest;
 														LocalDate return_date = loan_startDate.plusMonths(1);
+														String date = return_date.format(formatter);
 														for(int i = 1; i <= month; i++) {
 															return_date = loan_startDate.plusMonths(i);
+															date = return_date.format(formatter);
 															sum_amount -= tran_amount;
 															sum_interest -= tran_interest;
 													%>
@@ -183,7 +191,7 @@
 														<td><%=monthlyRepayment%></td>
 														<td><%=tran_amount%></td>
 														<td><%=tran_interest%></td>
-														<td><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
+														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
 															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
 														</td>
@@ -217,8 +225,10 @@
 														long tran_amount = first_tran_amount;
 														long tran_interest = first_tran_interest;
 														LocalDate return_date = loan_startDate.plusMonths(1);
+														String date = return_date.format(formatter);
 														for(int i = 1; i <= month; i++) {
 															return_date = loan_startDate.plusMonths(i);
+															date = return_date.format(formatter);
 															sum_amount -= tran_amount;
 															sum_interest -= tran_interest;
 															monthly = tran_interest + tran_amount;
@@ -230,7 +240,7 @@
 														<td><%=monthly%></td>
 														<td><%=tran_amount%></td>
 														<td><%=tran_interest%></td>
-														<td><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
+														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
 															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
 														</td>
