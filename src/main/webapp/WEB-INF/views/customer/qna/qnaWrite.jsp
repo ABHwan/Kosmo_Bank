@@ -42,7 +42,7 @@
 	<div class="wrapper">
 
 		<div class="main-header">
-		<jsp:include page="/WEB-INF/views/include/headerB.jsp" />
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 
 			<div class="qna_form_div">

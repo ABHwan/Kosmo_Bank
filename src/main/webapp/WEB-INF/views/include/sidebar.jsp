@@ -61,6 +61,11 @@
 												<span class="link-collapse">나의 금융상품</span>
 											</a>
 										</li>
+										<li>
+											<a href="${path}customer/accountBook">
+												<span class="link-collapse">나만의 가계부</span>
+											</a>
+										</li>
 									</c:if>
 								</ul>
 							</div>
@@ -135,7 +140,7 @@
 							<div class="collapse" id="forms">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="savingList">
 											<span class="sub-item">적금</span>
 										</a>
 									</li>
@@ -166,30 +171,30 @@
 							<div class="collapse" id="tables">
 								<ul class="nav nav-collapse">
 									<li>
-		                               <a href="forms/forms.html">
+		                               <a href="transfer">
 		                                  <span class="sub-item">이체</span>
 		                               </a>
 		                            </li>
 		                            <li>
-		                               <a href="forms/forms.html">
-		                                  <span class="sub-item">다중이체</span>
+		                               <a href="transfer_one_to_num">
+		                                  <span class="sub-item">다계좌이체</span>
 		                               </a>
 		                            </li>
 									<li>
-										<a href="#">
-											<span class="sub-item">이체내역</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
+										<a href="auto_transfer">
 											<span class="sub-item">자동이체</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="transfer_List">
+											<span class="sub-item">이체내역</span>
+										</a>
+									</li>
+									<li>
+										<a href="auto_transfer_List">
 											<span class="sub-item">자동이체 관리</span>
 										</a>
-									</li>									
+									</li>							
 								</ul>
 							</div>
 						</li>
@@ -223,17 +228,17 @@
 							<div class="collapse" id="charts">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="apt_maintenance">
 											<span class="sub-item">아파트 관리비</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="tuition">
 											<span class="sub-item">등록금</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="localTex">
 											<span class="sub-item">지방세</span>
 										</a>
 									</li>
@@ -254,7 +259,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="noticeList.do">
 											<span class="sub-item">공지사항</span>
 										</a>
 									</li>
@@ -266,6 +271,52 @@
 									<li>
 										<a href="${custPath}qnaList">
 											<span class="sub-item">1대1 문의하기</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#loans">
+								<i class="fas fa-receipt"></i>
+								<p>대출</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="loans">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="loanAccountList.do">
+											<span class="sub-item">대출 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanCancelList.do">
+											<span class="sub-item">대출 해지/만기 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanHistoryList.do">
+											<span class="sub-item">대출 상환 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanDirectDebit.do">
+											<span class="sub-item">대출 자동이체</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanPrincipalList.do">
+											<span class="sub-item">대출 원금 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanRateList.do">
+											<span class="sub-item">대출 이자 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="newLoanList.do">
+											<span class="sub-item">신규 대출</span>
 										</a>
 									</li>
 								</ul>

@@ -85,15 +85,76 @@
 		]]>	
 	</select>
 	
+	<!-- 관리자 페이지 예금 상품 상세조회 -->
+	<select id="getDepositProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.DepositProductVO">
+		SELECT * FROM deposit_product WHERE deposit_product_name=#{deposit_product_name}
+	</select>
+	
 	<!-- 관리자 페이지 예금 상품 수정 -->
 	<update id="updateDepositProduct" parameterType="com.spring.bank.product.vo.DepositProductVO">
-	
+		UPDATE deposit_product set deposit_product_summary=#{deposit_product_summary}, deposit_product_interRate=#{deposit_product_interRate}, deposit_product_type=#{deposit_product_type}, deposit_product_maxDate=#{deposit_product_maxDate}, deposit_product_minDate=#{deposit_product_minDate}, deposit_product_minPrice=#{deposit_product_minPrice}, deposit_product_explanation=#{deposit_product_explanation}, deposit_product_notice=#{deposit_product_notice}
+			WHERE deposit_product_name=#{deposit_product_name}
 	</update>
 	
 	<!-- 관리자 페이지 예금 상품 삭제 -->
 	<delete id="deleteDepositProduct" parameterType="String">
 		DELETE FROM deposit_product WHERE deposit_product_name IN ( #{deposit_product_name} )
 	</delete>
+	
+	<!-- 관리자 페이지 적금 상품 등록 -->
+	<insert id="insertSavingProduct" parameterType="com.spring.bank.product.vo.SavingProductVO">
+		INSERT INTO saving_product(saving_product_name, saving_product_summary, saving_product_date, saving_product_interRate, saving_product_type, saving_product_maxDate, saving_product_minDate, saving_product_minPrice, saving_product_explanation, saving_product_notice, saving_product_bankCode)
+		VALUES(#{saving_product_name}, #{saving_product_summary}, sysdate, #{saving_product_interRate}, #{saving_product_type}, #{saving_product_maxDate}, #{saving_product_minDate}, #{saving_product_minPrice}, #{saving_product_explanation}, #{saving_product_notice}, #{saving_product_bankCode})
+	</insert>
+	
+	<!-- 관리자 페이지 적금 상품 수 -->
+	<select id="getSavingProductCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM saving_product
+	</select>
+	
+	<!-- 관리자 페이지 적금 상품 조회 -->
+	<select id="selectSavingProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.SavingProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT saving_product_name, saving_product_summary, saving_product_date, saving_product_interrate, saving_product_type, saving_product_maxdate, saving_product_mindate, saving_product_minprice, saving_product_bankcode, rowNum rNum 
+				FROM (SELECT * FROM saving_product ORDER BY saving_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 관리자 페이지 적금 상품 수(검색결과수)  -->
+	<select id="getSavingProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM saving_product WHERE saving_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 적금 상품 검색(입력받아서 검색) -->
+	<select id="searchSavingProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.SavingProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT saving_product_name, saving_product_summary, saving_product_date, saving_product_interrate, saving_product_type, saving_product_maxdate, saving_product_mindate, saving_product_minprice, saving_product_bankcode, rowNum rNum 
+				FROM (SELECT * FROM saving_product WHERE saving_product_name LIKE '%'||#{search}||'%' ORDER BY saving_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 관리자 페이지 적금 상품 상세조회 -->
+    <select id="getSavingProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.SavingProductVO">
+        SELECT * FROM saving_product WHERE saving_product_name=#{saving_product_name}
+    </select>
+   
+    <!-- 관리자 페이지 적금 상품 수정 -->
+    <update id="updateSavingProduct" parameterType="com.spring.bank.product.vo.SavingProductVO">
+        UPDATE saving_product set saving_product_summary=#{saving_product_summary}, saving_product_interRate=#{saving_product_interRate}, saving_product_type=#{saving_product_type}, saving_product_maxDate=#{saving_product_maxDate}, saving_product_minDate=#{saving_product_minDate}, saving_product_minPrice=#{saving_product_minPrice}, saving_product_explanation=#{saving_product_explanation}, saving_product_notice=#{saving_product_notice}, saving_product_bankCode=#{saving_product_bankCode}
+         WHERE saving_product_name=#{saving_product_name}
+     </update>
+	
+	<!-- 관리자 페이지 적금 상품 삭제 -->
+	<delete id="deleteSavingProduct" parameterType="String">
+		DELETE FROM saving_product WHERE saving_product_name IN ( #{saving_product_name} )
+	</delete>
+	
 	<!-- 진지현 작성 -->
 	<!-- 문의사항 갯수 -->
 	<select id="getInquiryCnt" resultType="int" >
@@ -181,4 +242,356 @@
       				 ) where rNum>=#{start} and rNum<=#{end}
       	]]>	
 	</select>
+	
+	<!-- 관리자 TEST 계좌 생성(복환) -->
+    <insert id="insertTestAccount" parameterType="com.spring.bank.user.vo.AccountVO">
+    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked)
+		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0)
+    </insert>
+
+	<!-- 지은 -->
+	<!-- 대출 상품 개수 -->
+	<select id="getLoanProductCnt" resultType="int">
+		SELECT COUNT(*) FROM loan_product
+	</select>
+	
+	<!-- 대출 내역 개수 -->
+	<select id="getLoanCnt" resultType="int">
+		SELECT COUNT(*) FROM loan
+	</select>
+	
+	<!-- 대출 신청 개수 -->
+	<select id="getLoanRequestCnt" resultType="int">
+		SELECT COUNT(*) FROM loan WHERE loan_state = 1
+	</select>
+	
+	<!-- 대출 해지 개수 -->
+	<select id="getLoanCancelCnt" resultType="int">
+		SELECT COUNT(*) FROM loan WHERE loan_state = 4
+	</select>
+	
+	<select id="getSearchLoanProductCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_product WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+	</select>
+	
+	<!-- 대출 상품 목록 -->
+	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_product_name
+			  			   , loan_product_rate
+			  			   , loan_product_summary
+			  			   , loan_product_minPrice
+			  			   , loan_product_maxPrice
+			  			   , loan_product_minDate
+			  			   , loan_product_maxDate
+			  			   , loan_product_bankCode
+			  			   , loan_product_baseDate
+			  			   , loan_product_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_product
+					         ORDER BY loan_product_name ASC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+	<!-- 대출 상품  -->
+	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.user.vo.LoanProductVO">
+    	SELECT * 
+		  FROM loan_product
+		 WHERE loan_product_name = #{loan_product_name} 
+    </select>
+    
+	<!-- 대출 상품 목록 search -->
+	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_product_name
+			  			   , loan_product_rate
+			  			   , loan_product_summary
+			  			   , loan_product_minPrice
+			  			   , loan_product_maxPrice
+			  			   , loan_product_minDate
+			  			   , loan_product_maxDate
+			  			   , loan_product_bankCode
+			  			   , loan_product_baseDate
+			  			   , loan_product_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan_product
+					         WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+					            OR loan_product_summary LIKE '%'||#{keyword}||'%'
+					         ORDER BY loan_product_name ASC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    <insert id="loanProductInsert" parameterType="com.spring.bank.user.vo.LoanProductVO">
+    	INSERT INTO loan_product(loan_product_name
+    							 , loan_product_rate
+    							 , loan_product_minPrice
+    							 , loan_product_maxPrice
+    							 , loan_product_minDate
+    							 , loan_product_maxDate
+    							 , loan_product_bankCode
+    							 , loan_product_baseDate
+    							 , loan_product_prepaymentRate
+    							 , loan_product_summary
+    							)
+    	VALUES(#{loan_product_name}
+    	       , #{loan_product_rate}
+    	       , #{loan_product_minPrice}
+    	       , #{loan_product_maxPrice}
+    	       , #{loan_product_minDate}
+    	       , #{loan_product_maxDate}
+    	       , #{loan_product_bankCode}
+    	       , sysdate
+    	       , #{loan_product_prepaymentRate}
+    	       , #{loan_product_summary}
+    	      )
+    </insert>
+    
+    <update id="loanProductUpdate" parameterType="com.spring.bank.user.vo.LoanProductVO">
+    	UPDATE loan_product 
+    	   SET loan_product_name = #{loan_product_name}
+    	       , loan_product_rate = #{loan_product_rate}
+    	       , loan_product_minPrice = #{loan_product_minPrice}
+    	       , loan_product_maxPrice = #{loan_product_maxPrice}
+    	       , loan_product_minDate = #{loan_product_minDate}
+    	       , loan_product_maxDate = #{loan_product_maxDate}
+    	       , loan_product_bankCode = #{loan_product_bankCode}
+    	       , loan_product_prepaymentRate = #{loan_product_prepaymentRate}
+    	       , loan_product_summary = #{loan_product_summary}
+    	 WHERE loan_product_name = #{pre_loan_product_name}
+    </update>
+    
+    <delete id="loanProductDelete" parameterType="String">
+    	DELETE loan_product
+    	 WHERE loan_product_name = #{loan_product_name}
+    </delete>
+    
+    <!-- 대출 목록 -->
+	<select id="getLoanList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    <!-- 대출 신청 목록 -->
+	<select id="getLoanRequestList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state = 1
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    
+    <!-- 대출 신청 목록 -->
+	<select id="getLoanCancelList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state = 4
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    <update id="loanRequestAction" parameterType="java.util.Map">
+    	UPDATE loan
+    	   SET loan_state = #{state}
+    	 WHERE loan_id = #{loan_id}
+    </update>
+    
+	<select id="getSearchLoanCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_product 
+		 WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+		   
+	</select>
+	
+	<select id="getSearchLoanRequestCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM loan_product WHERE loan_state = 1
+		   AND loan_product_name LIKE '%'||#{keyword}||'%'
+		   
+	</select>
+	
+    <!-- 대출 목록 -->
+	<select id="searchLoanList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_product_name LIKE '%'||#{keyword}||'%'
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+    
+    <!-- 대출 신청 목록 -->
+	<select id="searchLoanRequestList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM (SELECT loan_id
+			  			   , loan_product_name
+			  			   , member_id
+			  			   , account_id
+			  			   , loan_state
+			  			   , loan_startDate
+			  			   , loan_endDate
+			  			   , loan_month
+			  			   , loan_monthlyRepayment
+			  			   , loan_repaymentType
+			  			   , loan_rate
+			  			   , loan_amount
+			  			   , loan_balance
+			  			   , loan_interest
+			  			   , loan_tranAmount
+			  			   , loan_tranInterest
+			  			   , loan_delinquency
+			  			   , loan_prepaymentRate
+			  		       , rowNum rNum  
+					  FROM (SELECT * 
+					          FROM loan
+					         WHERE loan_state = 1
+							   AND loan_product_name LIKE '%'||#{keyword}||'%'
+					         ORDER BY loan_id DESC
+					       ) 
+				   )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+    </select>
+	<!-- 지은 -->
+	
+	<!-- 공지사항 쓰기 처리(민재) -->
+	<insert id="mngNoticeWriteAction" parameterType="com.spring.bank.user.vo.NoticeVO">
+		INSERT INTO NOTICE
+		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0, #{notice_date})
+	</insert>
+	
+	<!-- 공지사항 - 비밀번호 인증(민재) -->
+	<select id="noticePWDCheck" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) FROM NOTICE WHERE notice_num = #{notice_num} AND notice_password = #{notice_password}
+	</select>
+	
+	<!-- 공지사항 상세페이지(민재) -->
+	<select id="getNoticeDetail" parameterType="int" resultType="com.spring.bank.user.vo.NoticeVO">
+		SELECT * FROM NOTICE WHERE notice_num = #{notice_num}
+	</select>
+	
+	<!-- 공지사항 수정처리(민재) -->
+	<update id="noticeModifyAction" parameterType="com.spring.bank.user.vo.NoticeVO">
+		UPDATE NOTICE SET notice_subject = #{notice_subject}, notice_password = #{notice_password}, notice_content = #{notice_content}
+		 WHERE notice_num = #{notice_num}
+	</update>
+	
+	<!-- 공지사항 삭제처리(민재) -->
+	<delete id="noticeDeleteAction" parameterType="int">
+		DELETE FROM NOTICE WHERE notice_num = #{notice_num}
+	</delete>
+	
 </mapper>
