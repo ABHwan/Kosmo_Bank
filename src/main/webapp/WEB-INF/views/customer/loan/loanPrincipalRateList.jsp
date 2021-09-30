@@ -57,27 +57,43 @@
 											<tbody id="tblBody">
 												<% 
 													LoanVO loan = (LoanVO) request.getAttribute("loan");	
-													float rate = loan.getLoan_rate();
+												//out.println("loan : " + loan);
+													float rate = loan.getLoan_rate() / 100;
+													//out.println("rate : " + rate);
 													long amount = loan.getLoan_amount();
+													//out.println("amount : " + amount);
 													int month = loan.getLoan_month();
+													//out.println("month : " + month);
 													LocalDate loan_startDate = loan.getLoan_startDate().toLocalDate();
+													//out.println("loan_startDate : " + loan_startDate);
 												%>
 												<c:if test="${loan.loan_repaymentType == 1}">
 													<%
 														long first_tran_amount = Math.round(amount / month);
+														//out.println("first_tran_amount : " + first_tran_amount);
 														long first_tran_interest = Math.round((amount * (rate / 12)));
+														//out.println("first_tran_interest : " + first_tran_interest);
 														
 														long ta = first_tran_amount;
+														//out.println("ta : " + ta);
 														long ti = first_tran_interest;
+														//out.println("ti : " + ti);
 														long sum_amount = amount;
+														//out.println("sum_amount : " + sum_amount);
 														long sum_interest = first_tran_interest;
+														//out.println("sum_interest : " + sum_interest);
 														for(int i = 1; i <= month; i++) {
+															//out.println("i : " + i);
 															sum_amount -= ta;
+															//out.println("sum_amount : " + sum_amount);
 															ti = Math.round((sum_amount * (rate / 12)));
+															//out.println("ti : " + ti);
 															sum_interest += ti;
+															//out.println("sum_interest : " + sum_interest);
 														}
 										 	 			
 														long first_monthlyRepayment = first_tran_amount + first_tran_interest;
+														//out.println("first_monthlyRepayment : " + first_monthlyRepayment);
 													%>
 													<tr>
 														<td>0차</td>
@@ -91,15 +107,25 @@
 													</tr>
 													<%
 														sum_amount = amount;
+														//out.println("sum_amount : " + sum_amount);
 														long monthly = first_monthlyRepayment;
+														//out.println("monthly : " + monthly);
 														long tran_amount = first_tran_amount;
+														//out.println("tran_amount : " + tran_amount);
 														long tran_interest = first_tran_interest;
+														//out.println("tran_interest : " + tran_interest);
 														LocalDate return_date = loan_startDate.plusMonths(1);
+														//out.println("return_date : " + return_date);
 														for(int i = 1; i <= month; i++) {
+															//out.println("i : " + i);
 															return_date = loan_startDate.plusMonths(i);
+															//out.println("return_date : " + return_date);
 															sum_amount -= tran_amount;
+															//out.println("sum_amount : " + sum_amount);
 															sum_interest -= tran_interest;
+															//out.println("sum_interest : " + sum_interest);
 															monthly = tran_interest + tran_amount;
+															//out.println("monthly : " + monthly);
 													%>
 													<tr>
 														<td><%=i%>차</td>
@@ -108,13 +134,14 @@
 														<td><%=monthly%></td>
 														<td><%=tran_amount%></td>
 														<td><%=tran_interest%></td>
-														<td><fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /></td>
+														<td><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
-															<button class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalDetail.do'">상세</button>
+															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
 														</td>
 													</tr>
 													<% 		
 															tran_interest = Math.round((sum_amount * (rate / 12)));
+															//out.println("tran_interest : " + tran_interest);
 														} 
 													%>			
 												</c:if>
@@ -156,9 +183,9 @@
 														<td><%=monthlyRepayment%></td>
 														<td><%=tran_amount%></td>
 														<td><%=tran_interest%></td>
-														<td><fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /></td>
+														<td><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
-															<button class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalDetail.do'">상세</button>
+															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
 														</td>
 													</tr>
 													<% 		
@@ -203,9 +230,9 @@
 														<td><%=monthly%></td>
 														<td><%=tran_amount%></td>
 														<td><%=tran_interest%></td>
-														<td><fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /></td>
+														<td><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
-															<button class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalDetail.do'">상세</button>
+															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
 														</td>
 													</tr>
 													<% 		
