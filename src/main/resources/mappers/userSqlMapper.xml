@@ -345,7 +345,6 @@
 	<insert id="insertDeposit" parameterType="com.spring.bank.user.vo.DepositVO" >
 		INSERT INTO deposit(deposit_id, deposit_product_name, account_id,deposit_joinDate, deposit_rate, deposit_type, deposit_endDate)
 		VALUES(deposit_seq.nextval, #{deposit_product_name}, #{account_id}, sysdate, #{deposit_rate}, #{deposit_type}, #{deposit_endDate})
->>>>>>> master
 	</insert>
 	
 	<!-- 연금 상품 개수 -->

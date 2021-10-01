@@ -88,7 +88,6 @@
 											<c:otherwise>
 												<div class="status">대표계좌</div>
 												<div class="username"><h2 style="color:#4d7edc; font-weight:500;">대표를 계좌를 설정해주세요!</h2></div>
-												<div class="status">01202-30934-023 국민</div>
 											</c:otherwise>
 											
 											</c:choose>

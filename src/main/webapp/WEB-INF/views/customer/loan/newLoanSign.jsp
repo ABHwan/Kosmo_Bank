@@ -291,7 +291,7 @@
  		function openTerms() {
  			var popupX = (window.screen.width / 2) - (800 / 2); // 윈도우 픽셀 기준 X축 중간
  			var popupY = (window.screen.height / 2) - (1000 / 2); // 윈도우 픽셀 기준 Y축 중간
- 			var url = "http://localhost:8092/bank/customer/terms.do";
+ 			var url = "http://localhost/bank/customer/terms.do";
  			window.open(url, "about:blank", "width=800, height=1000, left="+popupX + ",top="+popupY);
  			var btn = document.querySelector("#termsBtn");
  			btn.classList.remove('btn-warning');  // 대상 요소의 클래스 목록에서 클래스 btn-warning 제외

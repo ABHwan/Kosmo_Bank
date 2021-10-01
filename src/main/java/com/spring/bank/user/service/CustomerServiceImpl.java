@@ -2198,7 +2198,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", strId);
-		map.put("account_type", 0);
+		map.put("account_type", 1);
 		
 		List<MyDepositVO> list;
 		// 리스트 가져오기
@@ -2249,7 +2249,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", strId);
-		map.put("account_type", 1);
+		map.put("account_type", 2);
 		
 		List<MySavingVO> list;
 		// 리스트 가져오기
@@ -3047,7 +3047,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public void newLoanSignAction(HttpServletRequest req, Model model) throws ParseException {
 		String loan_product_name = (String) req.getParameter("loan_product_name");
 		String member_id = (String) req.getParameter("member_id");
-		String account_id = (String) req.getParameter("account_id");
+		String account_id = req.getParameter("account_id");
 		int loan_state = 1; // final static int선언해야됨. 1:신청
 		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd");

@@ -303,6 +303,3 @@ function emailChk() {
 }
 // -- 회원가입이메일인증
 
-function detailPage() {
-	alert("된다");
-}
