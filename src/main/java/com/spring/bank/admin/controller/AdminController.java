@@ -716,7 +716,6 @@ public class AdminController {
 	// 공지사항 글쓰기처리 - 관리자(민재)
 	@RequestMapping("mngNoticeWriteAction")
 	public String mngNoticeWriteAction(HttpServletRequest req, Model model) {
-		System.out.println("글쓰기처리 시작");
 		logger.info("[url ==> /mngNoticeWriteAction.us]");
 		
 		service.mngNoticeWriteAction(req, model);
@@ -741,7 +740,6 @@ public class AdminController {
 	// 공지사항 수정페이지
 	@RequestMapping("mngNoticeModifyDetail")
 	public String mngNoticeModifyDetail(HttpServletRequest req, Model model) {
-		System.out.println("안떠..");
 		logger.info("[url ==> /mngNoticeModifyDetail.us]");
 		
 		service.mngNoticeModifyDetail(req, model);

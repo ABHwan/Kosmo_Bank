@@ -213,7 +213,7 @@ public interface AdminDAO {
 	public int mngNoticeWriteAction(NoticeVO vo);
 	
 	// 공지사항 - 비밀번호 인증(민재)
-	public int noticePWDCheck(Map<String, Object> map);
+	public String noticePWDCheck(int notice_num);
 	
 	// 공지사항 상세페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);

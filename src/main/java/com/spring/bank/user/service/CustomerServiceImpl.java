@@ -171,7 +171,7 @@ public class CustomerServiceImpl implements CustomerService {
 		boolean chk = bCryptPasswordEncoder.matches(password, encodePassword);
 
 		System.out.println(chk);
-
+ 
 		System.out.println("password : " + password);
 		System.out.println("ecPassword : " + ecPassword);
 
@@ -2951,20 +2951,6 @@ public class CustomerServiceImpl implements CustomerService {
 	         
 	         System.out.println("account_id : " + account_id);
 	         
-<<<<<<< HEAD
-	       } else if(account_type ==6){
-	            // 코스모뱅크(14) > 4 - 4 - 6
-	            String st1 = String.format("%04d", (int)(Math.random()*10000));
-	            String st2 = String.format("%04d", (int)(Math.random()*10000));
-	            String st3 = String.format("%06d", (int)(Math.random()*1000000));
-
-	            account_id = st1 + "-" + st2 + "-" + st3;
-	            
-	            System.out.println("account_id : " + account_id);
-	       
-	       }
-=======
-	      
 	      }else if(account_type ==6){
 	         // 코스모뱅크(14) > 4 - 4 - 6
 	         String st1 = String.format("%04d", (int)(Math.random()*10000));
@@ -2977,7 +2963,6 @@ public class CustomerServiceImpl implements CustomerService {
 	    
 	      }
 	      
->>>>>>> 1f97f5ab1ba19338ef478c8feeed153fa32cdc0f
 	      return account_id;
 	   }
 	
