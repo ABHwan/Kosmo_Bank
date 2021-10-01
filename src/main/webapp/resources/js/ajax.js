@@ -22,9 +22,6 @@ function confirm() {
 	 		access_token = rsp.response.token;
 	 });
 	
-	
-	
-	
 	IMP.certification({
 	    merchant_uid : 'merchant_' + new Date().getTime() //본인인증과 연관된 가맹점 내부 주문번호가 있다면 넘겨주세요
 	}, function(rsp) {
@@ -79,6 +76,11 @@ function confirm() {
 					 		document.registerform.userBirth.value = info.birthday;
 					 		document.registerform.hp.value = info.phone;
 					 		document.registerform.unique_key.value = info.unique_key;
+					 		
+					 		$("#pass").val("본인인증완료");
+					 		$("#pass").attr("diabled", true);
+					 		$("#pass").css("color", "black");
+					 		
 						} else {
 							alert("이미 가입된 계정이 존재합니다.");
 							return false;
@@ -88,7 +90,6 @@ function confirm() {
 						alert("요청 실패");
 					
 					})
-				 
 			 		
 			 });
 	        	
@@ -301,3 +302,7 @@ function emailChk() {
 
 }
 // -- 회원가입이메일인증
+
+function detailPage() {
+	alert("된다");
+}

@@ -79,6 +79,7 @@ public class AdminController {
 	@RequestMapping("index")
 	public String index(HttpServletRequest req, Model model) {
 		System.out.println("[index.ad]");
+
 		
 		// 이동할 페이지
 		return "index(manager)";

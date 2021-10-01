@@ -278,4 +278,22 @@ public interface CustomerDAO {
 	
 	// 공지사항 상세 페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);
+	
+	// 대표 계좌 불러오기
+	public AccountVO getAccountDefault(String unique_key);
+	
+	// 계좌 불러오기(연동 O)
+	public List<AccountVO> getAccountLinked(String unique_key);
+	
+	// 계좌 불러오기(연동 X)
+	public List<AccountVO> getAccountUnLinked(String unique_key);
+	
+	// 계좌 연동하기
+	public int accountLinkAction(Map<String, Object> map);
+	
+	// 계좌 연동해지
+	public int accountUnLinkAction(Map<String, Object> map);
+	
+	// 대표 계좌 설정
+	
 }

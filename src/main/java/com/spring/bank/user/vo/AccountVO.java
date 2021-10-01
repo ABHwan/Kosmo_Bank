@@ -19,6 +19,9 @@ public class AccountVO {
 	String unique_key;
 	int account_default;
 	int account_linked;
+	
+	// 은행 logo 이미지
+	String account_bankImg;
 
 	public int getAccount_bankCode() {
 		return account_bankCode;
@@ -139,5 +142,15 @@ public class AccountVO {
 	public void setAccount_linked(int account_linked) {
 		this.account_linked = account_linked;
 	}
+
+	public String getAccount_bankImg() {
+		return account_bankImg;
+	}
+
+	public void setAccount_bankImg(String account_bankImg) {
+		this.account_bankImg = account_bankImg;
+	}
+	
+	
 
 }

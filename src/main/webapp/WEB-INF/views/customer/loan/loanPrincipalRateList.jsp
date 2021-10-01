@@ -40,7 +40,7 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<form id="monthlyPrincipalRateform">
+									<form id="monthlyPrincipalRateform" action="#" method="post">
 										<sec:csrfInput/>
 										<table class="table table-hover card-table">
 											<thead>
@@ -101,8 +101,8 @@
 													%>
 													<tr>
 														<td></td>
-														<td>${loan.loan_amount}</td>
-														<td><%=sum_interest%></td>
+														<td><fmt:formatNumber value="${loan.loan_amount}" />원</td>
+														<td><fmt:formatNumber value="<%=sum_interest%>" />원</td>
 														<td></td>
 														<td></td>
 														<td></td>
@@ -135,11 +135,11 @@
 													%>
 													<tr>
 														<td><%=i%>차</td>
-														<td><%=sum_amount%></td>
-														<td><%=sum_interest%></td>
-														<td><%=monthly%></td>
-														<td><%=tran_amount%></td>
-														<td><%=tran_interest%></td>
+														<td><fmt:formatNumber value="<%=sum_amount%>" />원</td>
+														<td><fmt:formatNumber value="<%=sum_interest%>" />원</td>
+														<td><fmt:formatNumber value="<%=monthly%>" />원</td>
+														<td><fmt:formatNumber value="<%=tran_amount%>" />원</td>
+														<td><fmt:formatNumber value="<%=tran_interest%>" />원</td>
 														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
 															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
@@ -165,8 +165,8 @@
 													%>
 													<tr>
 														<td></td>
-														<td>${loan.loan_amount}</td>
-														<td><%=sum_interest%></td>
+														<td><fmt:formatNumber value="${loan.loan_amount}" />원</td>
+														<td><fmt:formatNumber value="<%=sum_interest%>" />원</td>
 														<td></td>
 														<td></td>
 														<td></td>
@@ -186,11 +186,11 @@
 													%>
 													<tr>
 														<td><%=i%>차</td>
-														<td><%=sum_amount%></td>
-														<td><%=sum_interest%></td>
-														<td><%=monthlyRepayment%></td>
-														<td><%=tran_amount%></td>
-														<td><%=tran_interest%></td>
+														<td><fmt:formatNumber value="<%=sum_amount%>" />원</td>
+														<td><fmt:formatNumber value="<%=sum_interest%>" />원</td>
+														<td><fmt:formatNumber value="<%=monthlyRepayment%>" />원</td>
+														<td><fmt:formatNumber value="<%=tran_amount%>" />원</td>
+														<td><fmt:formatNumber value="<%=tran_interest%>" />원</td>
 														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
 															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
@@ -212,8 +212,8 @@
 													%>
 													<tr>
 														<td></td>
-														<td>${loan.loan_amount}</td>
-														<td><%=sum_interest%></td>
+														<td><fmt:formatNumber value="${loan.loan_amount}" />원</td>
+														<td><fmt:formatNumber value="<%=sum_interest%>" />원</td>
 														<td></td>
 														<td></td>
 														<td></td>
@@ -235,11 +235,11 @@
 													%>
 													<tr>
 														<td><%=i%>차</td>
-														<td><%=sum_amount%></td>
-														<td><%=sum_interest%></td>
-														<td><%=monthly%></td>
-														<td><%=tran_amount%></td>
-														<td><%=tran_interest%></td>
+														<td><fmt:formatNumber value="<%=sum_amount%>" />원</td>
+														<td><fmt:formatNumber value="<%=sum_interest%>" />원</td>
+														<td><fmt:formatNumber value="<%=monthly%>" />원</td>
+														<td><fmt:formatNumber value="<%=tran_amount%>" />원</td>
+														<td><fmt:formatNumber value="<%=tran_interest%>" />원</td>
 														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
 														<td>
 															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
