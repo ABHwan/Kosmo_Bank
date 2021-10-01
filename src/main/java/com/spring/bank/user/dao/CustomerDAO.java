@@ -77,7 +77,7 @@ public interface CustomerDAO {
 
 //			//qna 게시글 비밀번호 인증,(수정, 삭제 )
 //			public int numPasswordCheck(Map<String, Object> map);
-	
+
 	// qna 수정 처리
 	public int updateQna(InquiryVO vo);
 
@@ -147,6 +147,9 @@ public interface CustomerDAO {
 	// 회원 계좌 비밀번호 확인
 	public AccountVO account_pwd(Map<String, Object> map);
 
+	// 계좌 인증
+	public AccountVO selectAccount(String account_id);
+
 	// 회원 이체 확인
 	public int transfer_confirm(TransferVO vo);
 
@@ -186,6 +189,11 @@ public interface CustomerDAO {
 	// 회원 계좌 잔액, 공과금 비용 비교
 	public int compareMoney(Map<String, Object> map);
 
+	// 공과금 납부 목록 갯수 구하기
+	public int getUtilityCnt(String member_id);
+
+	// 공과금 납부 목록 조회
+	public List<UtilityVO> getUtilityList(Map<String, Object> map);
 
 	// json db에 넣기
 	// public int jsonIn(List<String> list);
@@ -255,4 +263,5 @@ public interface CustomerDAO {
 
 	// 공지사항 상세 페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);
+
 }

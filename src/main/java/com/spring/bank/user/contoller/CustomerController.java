@@ -886,31 +886,38 @@ public class CustomerController {
 		return "customer/utility_bill/localTex";
 	}
 
-	// 회원 공과금 납부 처리(아파트 관리비)
-	@RequestMapping("utilityConfirm_Apt")
-	public String utilityConfirm_Apt(HttpServletRequest req, Model model) {
-		logger.info("url => utilityConfirm_Apt");
-		service.getAptPay(req, model);
+	// 납부에서 비밀번호체크창(유성)
+	@RequestMapping("account_pwdConfirm")
+	public String account_pwdConfirm(HttpServletRequest req, Model model) {
+		System.out.println("url => account_pwdConfirm");
+		logger.info("url ==> account_pwdConfirm");
+		String account_id = req.getParameter("account_id");
+		int utility_num = Integer.parseInt(req.getParameter("utility_num"));
+		int utility_money = Integer.parseInt(req.getParameter("utility_money"));
+		model.addAttribute("account_id", account_id);
+		model.addAttribute("utility_num", utility_num);
+		model.addAttribute("utility_money", utility_money);
+
+		return "customer/utility_bill/account_passwordCheck";
+	}
+
+	// 납부에서 비밀번호 입력받고 체크 후 납부처리(유성)
+	@RequestMapping("utilityConfirm")
+	public String utilityConfirm(HttpServletRequest req, Model model) {
+		System.out.println("url => utilityConfirm");
+		logger.info("url ==> utilityConfirm");
+		service.accountPwdConfirm(req, model);
 
 		return "customer/utility_bill/utilityConfirm";
 	}
 
-	// 회원 공과금 납부 처리(등록금)
-	@RequestMapping("utilityConfirm_Tuition")
-	public String utilityConfirm_Tuition(HttpServletRequest req, Model model) {
-		logger.info("url => utilityConfirm_Tuition");
-		service.getTuitionPay(req, model);
-
-		return "customer/utility_bill/utilityConfirm";
-	}
-
-	// 회원 공과금 납부 처리(지방세)
-	@RequestMapping("utilityConfirm_Local")
-	public String utilityConfirm_localTex(HttpServletRequest req, Model model) {
-		logger.info("url => utilityConfirm_localTex");
-		service.getLocalPay(req, model);
-
-		return "customer/utility_bill/utilityConfirm";
+	// 공과금 목록
+	@RequestMapping("utilityList")
+	public String utility_List(HttpServletRequest req, Model model) {
+		System.out.println("url ==> utilityList");
+		service.utilityList(req, model);
+		
+		return "customer/utility_bill/utilityList";
 	}
 
 	// 가계부 페이지
@@ -940,5 +947,5 @@ public class CustomerController {
 
 		return "redirect:accountBook";
 	}
-	
+
 }

@@ -106,6 +106,9 @@ public interface CustomerService {
 
 	// 회원 지방세 납부 처리
 	public void getLocalPay(HttpServletRequest req, Model model);
+	
+	// 공과금 목록
+	public void utilityList(HttpServletRequest req, Model model);
 
 	// 적금 상품 조회
 	public void savingList(HttpServletRequest req, Model model);

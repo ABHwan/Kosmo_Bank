@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -1470,17 +1471,54 @@ public class CustomerServiceImpl implements CustomerService {
 	// 회원 계좌 비밀번호 확인
 	@Override
 	public void accountPwdConfirm(HttpServletRequest req, Model model) {
+		// get 방식으로 받아온 ?account_id=150644-18-250692&utility_num=43&utility_money=25000
+		// 직접입력하는 비밀번호
+		
 		String account_id = req.getParameter("account_id");
-		String account_password = req.getParameter("account_id");
+		int utility_num = Integer.parseInt(req.getParameter("utility_num"));
+		int utility_money = Integer.parseInt(req.getParameter("utility_money"));
+		String account_password = req.getParameter("account_password");
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("account_id", account_id);
-		map.put("account_password", account_password);
-
-		boolean test = bCryptPasswordEncoder.matches(req.getParameter("account_password"), account_password);
-		System.out.println("matches :: " + test);
+		int updateCnt = 0;
+		String msg = "";
 		
-		model.addAttribute("account_password", map);
+		AccountVO vo = dao.selectAccount(account_id);
+		if(bCryptPasswordEncoder.matches(account_password, vo.getAccount_password()) == true) {
+			if(utility_money <= vo.getAccount_balance()) {
+				UtilityVO vo1 = new UtilityVO();
+				vo1.setAccount_id(account_id);
+				vo1.setUtility_num(utility_num);
+				updateCnt = dao.getUtilityConfirm(vo1);
+				msg = "정상적으로 납부되었습니다";
+				
+			} else {
+				System.out.println("잔액이부족");
+				msg = "계좌잔액이 부족합니다.";
+			} 
+		} else {
+			System.out.println("비밀번호가 틀립니다.");
+			//selectCnt = -1;
+			msg="계좌 비밀번호가 일치하지 않습니다. ";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("updateCnt", updateCnt);
+		
+		/*
+		 * String account_id = req.getParameter("account_id"); String account_password =
+		 * req.getParameter("account_password"); System.out.println(account_id + ", " +
+		 * account_password);
+		 * 
+		 * Map<String, Object> map = sqlSession.selectOne(
+		 * "com.spring.bank.user.dao.CustomerDAO.selectAccount", account_id);
+		 * System.out.println(map.get("ACCOUNT_PASSWORD").toString());
+		 * 
+		 * AccountVO vo = new AccountVO();
+		 * if(bCryptPasswordEncoder.matches(account_password,
+		 * map.get("ACCOUNT_PASSWORD").toString())) { vo =
+		 * dao.getUtilityConfirm(account_id); } model.addAttribute("account_password",
+		 * map);
+		 */
+		
 	}
 
 	// 회원 이체
@@ -1620,6 +1658,7 @@ public class CustomerServiceImpl implements CustomerService {
 	// 등록금 납부
 	@Override
 	public void getTuitionPay(HttpServletRequest req, Model model) {
+		
 		String member_id = (String) req.getSession().getAttribute("customerID");
 		String account_id = req.getParameter("account_id");
 		int utility_num = Integer.parseInt(req.getParameter("utility_num"));
@@ -1702,10 +1741,10 @@ public class CustomerServiceImpl implements CustomerService {
 		int utility_num = Integer.parseInt(req.getParameter("utility_num"));
 		int utility_money = Integer.parseInt(req.getParameter("utility_money"));
 
-		System.out.println("서비스 확인(지방세 납부)(member_id): " + member_id);
-		System.out.println("서비스 확인(지방세 납부)(account_id): " + account_id);
-		System.out.println("서비스 확인(지방세 납부)(utility_num): " + utility_num);
-		System.out.println("서비스 확인(지방세 납부)(utility_money): " + utility_money);
+		System.out.println("서비스 확인(등록금 납부)(member_id): " + member_id);
+		System.out.println("서비스 확인(등록금 납부)(account_id): " + account_id);
+		System.out.println("서비스 확인(등록금 납부)(utility_num): " + utility_num);
+		System.out.println("서비스 확인(등록금 납부)(utility_money): " + utility_money);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", member_id);
@@ -1749,6 +1788,108 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		model.addAttribute("msg", msg);
 		model.addAttribute("updateCnt", updateCnt);
+	}
+	
+	// 공과금 목록
+	@Override
+	public void utilityList(HttpServletRequest req, Model model) {
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		int pageSize = 5; // 한 페이지당 출력할 글 갯수
+		int pageBlock = 3; // 한 블럭당 페이지 갯수
+
+		int cnt = 0; // 글 갯수
+		int start = 0; // 현재 페이지 시작 글 번호
+		int end = 0; // 현재 페이지 마지막 글 번호
+		int number = 0; // 출력용 글번호
+		String pageNum = ""; // 페이지 번호
+		int currentPage = 0; // 현재 페이지
+
+		int pageCount = 0; // 페이지 갯수
+		int startPage = 0; // 시작 페이지
+		int endPage = 0; // 마지막 페이지
+
+		pageNum = req.getParameter("pageNum");
+
+		if (pageNum == null) {
+			pageNum = "1"; // 첫 페이지를 1페이지로 지정
+		}
+		
+		cnt = dao.getUtilityCnt(member_id);
+		System.out.println("cnt : " + cnt);
+
+		// 글 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+
+		// 페이지 갯수 6= (30/5) + (0)
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0); // 페이지 갯수 + 나머지가 있으면 1페이지 추가
+
+		// 현재페이지 시작 글번호(페이지별)
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1-1) * 5 + 1
+		start = (currentPage - 1) * pageSize + 1;
+
+		// 현재페이지 마지막 글번호(페이지별)
+		// end = start + pageSize - 1;
+		// 5 = 1 + 5 - 1
+		end = start + pageSize - 1;
+
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+
+		// 출력용 글번호
+		// 30 = 30 - (1 - 1) * 5; // 1페이지
+		// number = cnt - (currentPage - 1) * pageSize;
+		number = cnt - (currentPage - 1) * pageSize;
+
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if (currentPage % pageBlock == 0)
+			startPage -= pageBlock;
+
+		System.out.println("startPage : " + startPage);
+
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if (endPage > pageCount)
+			endPage = pageCount;
+
+		System.out.println("endPage : " + endPage);
+
+		System.out.println("==============================================");
+		
+		List<UtilityVO> dtos = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("member_id", member_id);
+		
+		if(cnt > 0) {
+			dtos = dao.getUtilityList(map);
+		}
+		
+		model.addAttribute("dtos", dtos);
+		model.addAttribute("cnt", cnt);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("number", number);
+		
+		if(cnt > 0) {
+			model.addAttribute("startPage", startPage);
+			model.addAttribute("endPage", endPage);
+			model.addAttribute("pageBlock", pageBlock);
+			model.addAttribute("pageCount", pageCount);
+			model.addAttribute("currentPage", currentPage);
+		}
+		
+		
+		
 	}
 
 	// test
@@ -2678,5 +2819,5 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("number", number);
 	}
 
-}
 
+}

@@ -732,7 +732,8 @@
 	<select id="accountFind" parameterType="String"
 		resultType="String">
 		select ac.account_id AS account_id
-		from members m, account ac
+		from members m, account
+		ac
 		WHERE ac.member_id = m.member_id
 		AND ac.member_id=#{strId}
 	</select>
@@ -740,9 +741,18 @@
 	<!-- 회원 계좌 비밀번호 확인 -->
 	<select id="account_pwd" parameterType="java.util.Map"
 		resultType="com.spring.bank.user.vo.AccountVO">
-		SELECT COUNT(*) FROM account 
-		WHERE 
+		SELECT COUNT(*) FROM account
+		WHERE
 		account_id = #{account_id} AND account_password = #{account_password}
+	</select>
+
+	<select id="selectAccount" parameterType="String"
+		resultType="com.spring.bank.user.vo.AccountVO">
+		SELECT account_id, account_password, member_id,
+		account_balance
+		FROM account
+		WHERE
+		account_id=#{account_id}
 	</select>
 
 	<!-- 회원 이체 -->
@@ -888,8 +898,26 @@
 		]]>
 	</select>
 
-	<!-- 공과금 이체 내역 추가 -->
+	<!-- 공과금 갯수 -->
+	<select id="getUtilityCnt"
+		parameterType="String" resultType="int">
+		SELECT
+		COUNT(*) AS cnt
+		FROM utility_bill
+		WHERE member_id = #{member_id} AND utility_state = 1
+	</select>
 
-
+	<!-- 납부 공과금 조회 -->
+	<select id="getUtilityList"
+		parameterType="java.util.Map"
+		resultType="com.spring.bank.user.vo.UtilityVO">
+		<![CDATA[
+		select * from 
+    		(SELECT utility_date, utility_num, utility_id, account_id, utility_money, member_id, utility_state, rowNum rNum
+        		from ( select * from utility_bill where member_id=#{member_id} and utility_state = 1 order by utility_date desc)
+    		) where rNum>=#{start} and rNum<=#{end}
+		]]>
+	</select>
+	
 
 </mapper>

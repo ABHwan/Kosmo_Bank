@@ -16,6 +16,10 @@
 <form action="utilityConfirm" method="post" name="passwordform"
 			onsubmit="return passwordCheck();">
 			<sec:csrfInput/>
+			<input type="hidden" name="account_id" value="${account_id}">
+			<input type="hidden" name="utility_num" value="${utility_num}">
+			<input type="hidden" name="utility_money" value="${utility_money}">
+			
 		<table class="userUpdate_table">
 			<tr>
 				<th class=tx_sub colspan="2">
@@ -25,7 +29,7 @@
 			<tr>
 				<th class="tbl_th"> 비밀번호 </th>
 				<td>
-					<input class="input" type="password" name="password" maxlength="20" autofocus>
+					<input class="input" type="password" name="account_password" maxlength="20" autofocus>
 				</td>
 			</tr>
 			<tr>

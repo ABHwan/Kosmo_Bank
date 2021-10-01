@@ -23,16 +23,15 @@
 <!-- 계좌 비밀번호가 맞으면 -->
 
 	<!-- 잔액이 부족하면 -->
-	<c:if test="${updateCnt == 0}">
+	<c:if test="${updateCnt != 1}">
 		<script type="text/javascript">
 			errorAlert("${msg}");
 		</script>
 	</c:if>
-	<c:if test="${updateCnt != 0}">
+	<c:if test="${updateCnt == 1}">
 		<script type="text/javascript">
 			alert("${msg}");
-			history.back();
-			/* window.location = 'apt_maintenance'; */
+			window.location = 'utility_List';
 		</script>
 	</c:if>
 
