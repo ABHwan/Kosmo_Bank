@@ -6,17 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>적금 상세 보기</title>
+<title>펀드신청하기</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-
-
-<script>
-	var msg = "<%=request.getAttribute("msg") %>";
-	if(msg != 'null'){
-		 alert(msg);
-	}
-</script>
 </head>
 <body>
 
@@ -42,7 +34,7 @@
 				</div>
 				<section id="main">
 			      <div class="main__container">
-					<h2 class="title">적금상품 상세</h2>
+					<h2 class="title">펀드상품 신청</h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
@@ -50,7 +42,7 @@
 									<div class="card-title">${dto.saving_product_name}</div>
 								</div>
 								<div class="card-body">
-									 <form action="savingProductInsert" name="savingProductForm">
+									 <form action="savingProductAction" name="savingProductForm">
 									 	<sec:csrfInput/>
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
@@ -62,19 +54,19 @@
 						             </td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">상품 설명</th>
-						            <td>${dto.saving_product_explanation}
-						            <input type="hidden" name="saving_product_explanation" class="user_check" value="${dto.saving_product_explanation}">
-						            </td>
+						            <th class="table__head">펀드 금리</th>
+									<td>
+										<input type="text" class="input" name="saving_rate">
+									</td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">금리</th>
-						              <td>${dto.saving_product_interRate}%
-						              <input type="hidden" name="saving_product_interRate" class="user_check" value="${dto.saving_product_interRate}">
+						            <th class="table__head">납입 금액</th>
+						              <td>
+						              <input type="text" name="saving_money" class="user_check">
 						              </td>
 						          </tr>
 						          <tr>
-						          	 <th class="table__head">종류</th>
+						          	 <th class="table__head">펀드종류</th>
 						          	 <td>
 						          	 <c:if test="${dto.saving_product_type==0}">
 								           	복리
@@ -86,7 +78,7 @@
 								           <input type="hidden" name="saving_product_type" class="user_check" value="${dto.saving_product_type}">
 						          	 </td>
 						           </tr>
-						           <tr>
+						           <%-- <tr>
 							           <th class="table__head">최소기간</th>
 							           <td>${dto.saving_product_minDate}개월
 							           <input type="hidden" name="saving_product_minDate" class="user_check" value="${dto.saving_product_minDate}">
@@ -149,11 +141,10 @@
 						      			 <td>${dto.saving_product_date}
 						      			 <input type="hidden" name="saving_product_date" class="user_check" value="${dto.saving_product_date}">
 						      			 </td>
-						      		</tr>
+						      		</tr> --%>
 						        </table>
 						        <div align ="right">
-						          	<!-- <input type="submit" class="btn btn-primary btn-border" value="적금상품 신청하기" > -->
-						          	<input type="button" class="btn btn-primary btn-border" value="적금상품 신청하기" >
+						          	<input type="submit" class="btn btn-primary btn-border" value="신청하기" >
 						        </div>
 			        </form>
 								</div>
@@ -164,7 +155,7 @@
 				</section>
 			</div>
 		</div>
-	
+
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>
 	<script src="${rePath}js/core/bootstrap.min.js"></script>

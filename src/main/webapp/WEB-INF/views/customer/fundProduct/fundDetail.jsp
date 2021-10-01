@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/setting.jsp" %>
 <%@ include file="/WEB-INF/views/include/bootstrap.jsp" %>
@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>적금 상세 보기</title>
+<title>펀드 상세 보기</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 
@@ -42,118 +42,104 @@
 				</div>
 				<section id="main">
 			      <div class="main__container">
-					<h2 class="title">적금상품 상세</h2>
+					<h2 class="title">펀드상품 상세</h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-title">${dto.saving_product_name}</div>
+									<div class="card-title">${dto.fund_title}</div>
 								</div>
 								<div class="card-body">
-									 <form action="savingProductInsert" name="savingProductForm">
+									 <form action="fundProductInsert" name="fundProductForm">
 									 	<sec:csrfInput/>
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
 						        <table class="admin__table">
 						          <tr>
-						            <th class="table__head">상품명</th>
-						             <td>${dto.saving_product_name} 
-						             <input type="hidden" name="saving_product_name" class="user_check" value="${dto.saving_product_name}">
+						            <th class="table__head">펀드상품 한줄요약</th>
+						             <td>${dto.fund_summary} 
+						             <input type="hidden" name="fund_summary" class="user_check" value="${dto.fund_summary}">
 						             </td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">상품 설명</th>
-						            <td>${dto.saving_product_explanation}
-						            <input type="hidden" name="saving_product_explanation" class="user_check" value="${dto.saving_product_explanation}">
+						            <td>${dto.fund_filename}
+						            <input type="hidden" name="fund_filename" class="user_check" value="${dto.fund_filename}">
 						            </td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">금리</th>
-						              <td>${dto.saving_product_interRate}%
-						              <input type="hidden" name="saving_product_interRate" class="user_check" value="${dto.saving_product_interRate}">
+						            <th class="table__head">펀딩 기간</th>
+						              <td><fmt:formatDate value="${dto.fund_start_date}" type="date" /> ~ <fmt:formatDate value="${dto.fund_end_date}" type="date"/>
+						              <input type="hidden" name="fund_start_date" class="user_check" value="${dto.fund_start_date}">
+						              <input type="hidden" name="fund_end_date" class="user_check" value="${dto.fund_end_date}">
 						              </td>
 						          </tr>
 						          <tr>
-						          	 <th class="table__head">종류</th>
+						          	 <th class="table__head">달성도</th>
 						          	 <td>
-						          	 <c:if test="${dto.saving_product_type==0}">
-								           	복리
-								           </c:if>
-								           
-								           <c:if test="${dto.saving_product_type!=0}">
-								           	단리
-								           </c:if>
-								           <input type="hidden" name="saving_product_type" class="user_check" value="${dto.saving_product_type}">
 						          	 </td>
 						           </tr>
 						           <tr>
-							           <th class="table__head">최소기간</th>
-							           <td>${dto.saving_product_minDate}개월
-							           <input type="hidden" name="saving_product_minDate" class="user_check" value="${dto.saving_product_minDate}">
+							           <th class="table__head">목표 금액</th>
+							           <td><fmt:formatNumber value="${dto.fund_goal_money}" type="number"/>원
+							           <input type="hidden" name="fund_product_minDate" class="user_check" value="${dto.fund_goal_money}">
 							           </td>
 						           </tr>
 						           
 						           <tr>
-						           		<th class="table__head">최대기간</th>
-						           		<td>${dto.saving_product_maxDate}개월
-						           		<input type="hidden" name="saving_product_maxDate" class="user_check" value="${dto.saving_product_maxDate}">
-						           		</td>
-						           </tr>
+								<th>입금 계좌</th>
+								<td>
+									<c:choose>
+				           			<c:when test="${vo.fund_bank_code==0}">
+				           				미기재
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==1}">
+				           				국민은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==2}">
+				           				우리은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==3}">
+				           				농협은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==4}">
+				           				신한은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==5}">
+				           				하나은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==6}">
+				           				코스모은행
+				           			</c:when>
+				           			</c:choose>
+								</td>
+								<td>${vo.fund_account}</td>
+							</tr>
 						           
-						           <tr>
-						           		<th class="table__head">최소금액</th>
-						           		<td><fmt:formatNumber value="${dto.saving_product_minPrice}" type="number"/>원
-						           		<input type="hidden" name="saving_product_minPrice" class="user_check" value="${dto.saving_product_minPrice}">
-						           		</td>
-						           </tr>
-						           
-						      	   <tr>
-						                <th class="table__head">유의사항</th>
-						                <td>${dto.saving_product_notice}
-						                <input type="hidden" name="saving_product_notice" class="user_check" value="${dto.saving_product_notice}">
-						                </td>
-						           </tr>
-						      		
-						      		<tr>
-						      			<th class="table__head">은행코드</th>
-						      			<td>
-							           		<c:choose>
-							           			<c:when test="${dto.saving_product_bankCode==0}">
-							           				미기재
-							           			</c:when>
-							           			<c:when test="${dto.saving_product_bankCode==1}">
-							           				국민은행
-							           			</c:when>
-							           			<c:when test="${dto.saving_product_bankCode==2}">
-							           				우리은행
-							           			</c:when>
-							           			<c:when test="${dto.saving_product_bankCode==3}">
-							           				농협은행
-							           			</c:when>
-							           			<c:when test="${dto.saving_product_bankCode==4}">
-							           				신한은행
-							           			</c:when>
-							           			<c:when test="${dto.saving_product_bankCode==5}">
-							           				하나은행
-							           			</c:when>
-							           			<c:when test="${dto.saving_product_bankCode==6}">
-							           				코스모은행
-							           			</c:when>
-							           		</c:choose>
-							           		<input type="hidden" name="saving_product_bankCode" class="user_check" value="${dto.saving_product_bankCode}">
-							           </td>
-						      		</tr>
-						      		
-						      		<tr>
-						      			 <th class="table__head">등록일</th>
-						      			 <td>${dto.saving_product_date}
-						      			 <input type="hidden" name="saving_product_date" class="user_check" value="${dto.saving_product_date}">
-						      			 </td>
-						      		</tr>
+						    <tr class="form__row">
+								<td>${vo.fund_content}</td>
+							</tr>
+							
+							<tr class="form__row">
+								<th>등록자 이름</th>
+								<td>
+									${vo.fund_mem_name}
+								</td>
+							</tr>
+							
+							<tr class="form__row">
+								<th>등록자 연락처</th>
+								<td>
+									${vo.fund_mem_hp}
+								</td>
+							</tr>
+							
+							<tr class="form__row">
+								<th>등록자 이메일</th>
+								<td>${vo.fund_mem_email}</td>
+							</tr>
 						        </table>
 						        <div align ="right">
-						          	<!-- <input type="submit" class="btn btn-primary btn-border" value="적금상품 신청하기" > -->
-						          	<input type="button" class="btn btn-primary btn-border" value="적금상품 신청하기" >
+						          	<input type="submit" class="btn btn-primary btn-border" value="펀드상품 신청하기" >
 						        </div>
 			        </form>
 								</div>

@@ -159,6 +159,11 @@
 											<span class="sub-item">연금</span>
 										</a>
 									</li>
+									<li>
+										<a href="fundList">
+											<span class="sub-item">펀드</span>
+										</a>
+									</li>
 								</ul>
 							</div>
 						</li>

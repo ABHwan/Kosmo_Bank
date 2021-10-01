@@ -139,6 +139,29 @@
 								</ul>
 							</div>
 						</li>
+						
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#펀드">
+								<i class="fas fa-coins"></i>
+								<p>펀드관리</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="펀드">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="fundProductInsert">
+											<span class="sub-item"> 등록</span>
+										</a>
+									</li>
+									<li>
+										<a href="fundProductList">
+											<span class="sub-item"> 조회</span>
+										</a>
+									</li>									
+								</ul>
+							</div>
+						</li>
+						
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#irp">
 								<i class="fas fa-coins"></i>

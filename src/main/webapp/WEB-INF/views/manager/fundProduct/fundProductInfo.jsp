@@ -6,7 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자 페이지 - 적금 상품 등록</title>
+<title>관리자 페이지 - 펀드 상품 상세조회</title>
+<!-- CSS -->
+<%-- <link rel="stylesheet" href="${rePath}css/manager/depositProductInfo.css" /> --%>
 <script src="${rePath}js/script.js"></script>
 </head>
 <body>
@@ -30,105 +32,104 @@
 						</div>
 					</div>
 				</div>
-				<main id="main">
-			      <div class="container">
-			        <h1 class="title">적금상품등록</h1>
-			        <hr>
-			        <form action="savingProductInsertAction" method="post" name="savingProductInsertForm" class="main__form" onsubmit="return savingProductInsertCheck();">
-					  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			          
+				<section id="main">
+     			 <div class="main__container">
+        			<h1 class="main__title">펀드상품 상세조회</h1>
+	       			<div class="row">
+	                 <div class="col">
+	                    <div class="card">
+	                       <div class="card-header">
 			          	<table class="table table-hover card-table">
+							
 							<tr class="form__row">
-								<th>적금상품이름</th>
+								<td rowspan="2"><img src="${vo.fund_filename}" width="200px" height="200px"></td>
+								<th>펀드상품 한줄요약</th>
+							</tr>
+							
+							<tr class="form__row">
 								<td>
-									<input class="form-control input-border-bottom" type="text" name="saving_product_name" placeholder="상품이름을 입력하세요">
+									${vo.fund_summary}
 								</td>
 							</tr>
 							
 							<tr class="form__row">
-								<th>적금상품 한줄요약</th>
+								<th>펀딩 기간</th>
+								<td><fmt:formatDate value="${vo.fund_start_date}" type="date" /> ~ <fmt:formatDate value="${vo.fund_end_date}" type="date"/></td>
+							</tr>
+							
+							<tr class="form__row">
+								<th>달성도</th>
+								<td></td>
+							</tr>
+							
+							<tr class="form__row">
+								<th>목표 금액</th>
+								<td><fmt:formatNumber value="${dto.fund_goal_money}" type="number"/>원</td>
+							</tr>
+							
+							<tr>
+								<th>입금 계좌</th>
 								<td>
-									<input class="form-control input-border-bottom" type="text" name="saving_product_summary" placeholder="상품에 대한 간략한 소개를 적어주세요">
+									<c:choose>
+				           			<c:when test="${vo.fund_bank_code==0}">
+				           				미기재
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==1}">
+				           				국민은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==2}">
+				           				우리은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==3}">
+				           				농협은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==4}">
+				           				신한은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==5}">
+				           				하나은행
+				           			</c:when>
+				           			<c:when test="${vo.fund_bank_code==6}">
+				           				코스모은행
+				           			</c:when>
+				           			</c:choose>
+								: ${vo.fund_account}</td>
+							</tr>
+							
+							<tr class="form__row">
+								<td colspan="2">${vo.fund_content}</td>
+							</tr>
+							
+							<tr class="form__row">
+								<th>등록자 이름</th>
+								<td>
+									${vo.fund_mem_name}
 								</td>
 							</tr>
 							
 							<tr class="form__row">
-								<th>적금종류(과목)</th>
+								<th>등록자 연락처</th>
 								<td>
-									<select class="form-control input-border-bottom" name="saving_product_type">
-										<option value="0">복리</option>
-										<option value="1">단리</option>
-									</select>
+									${vo.fund_mem_hp}
 								</td>
 							</tr>
 							
 							<tr class="form__row">
-								<th>금리(%)</th>
-								<td>
-									<input class="form-control input-border-bottom" type="text" name="saving_product_interRate" placeholder="예) 5.8%">
-								</td>
+								<th>등록자 이메일</th>
+								<td>${vo.fund_mem_email}</td>
 							</tr>
-							
-							<tr class="form__row">
-								<th>최소적금기간(6개월~)</th>
-								<td>
-									<input class="form-control input-border-bottom" type="text" name="saving_product_minDate" placeholder="최소 적금기간을 적어주세요">
-								</td>
-							</tr>
-							
-							<tr class="form__row">
-								<th>최대적금기간(~36개월)</th>
-								<td>
-									<input class="form-control input-border-bottom" type="text" name="saving_product_maxDate" placeholder="최대 적금기간을 적어주세요">
-								</td>
-							</tr>
-							
-							<tr class="form__row">
-								<th>최소예치금액</th>
-								<td>
-									<input class="form-control input-border-bottom" type="text" name="saving_product_minPrice" placeholder="최소금액을 적어주세요">
-								</td>
-							</tr>
-							
-							<tr class="form__row">
-								<th>적금설명</th>
-								<td>
-									<textarea class="form-control input-border-bottom" name="saving_product_explanation" placeholder="적금설명을 자세히 입력해주세요."></textarea>
-								</td>
-							</tr>
-							
-							<tr class="form__row">
-								<th>유의사항</th>
-								<td>
-									<textarea class="form-control input-border-bottom" name="saving_product_notice" placeholder="유의사항을 입력해주세요."></textarea>
-								</td>
-							</tr>
-							
-							<tr class="form__row">
-								<th>은행코드</th>
-								<td>
-									<select class="form-control input-border-bottom" name="saving_product_bankCode">
-										<option value="0">미기재</option>
-										<option value="1">국민은행</option>
-										<option value="2">우리은행</option>
-										<option value="3">농협은행</option>
-										<option value="4">신한은행</option>
-										<option value="5">하나은행</option>
-										<option value="6">코스모은행</option>
-									</select>
-								</td>
-							</tr>
-							
-							<tr class="form__row submit">
-								<th colspan="2">
-									<input class="btn btn-default" type="submit" id="alert_demo_3_3" value="상품등록">
-									<input class="btn btn-default" type="reset" value="초기화">
-								</th>
-							</tr>
-					   </table>
-			        </form>
+						</table>
+						
+						<div class="btnList">
+							<button onclick="window.location='fundProductUpdate?fund_title=${vo.fund_title}&pageNum=${pageNum}'">상품 수정</button>
+							<button onclick="window.location='fundProductList?pageNum=${pageNum}'">목록으로</button>
+						</div>
 			      </div>
-			    </main>
+			      </div>
+			      </div>
+			      </div>
+			      </div>
+			    </section>
 			</div>
 		</div>
 	</div>

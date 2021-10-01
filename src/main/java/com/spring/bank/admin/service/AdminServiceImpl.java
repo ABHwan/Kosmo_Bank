@@ -1,7 +1,7 @@
 package com.spring.bank.admin.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.admin.dao.AdminDAOImpl;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -1098,6 +1099,321 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 
+	// 관리자 페이지 펀드 상품 등록 처리
+	@Override
+	public void fundProductInsertAction(HttpServletRequest req, Model model) {
+		FundProductVO vo = new FundProductVO();
+		
+		vo.setFund_title(req.getParameter("fund_title"));
+		vo.setFund_content(req.getParameter("fund_content"));
+		vo.setFund_summary(req.getParameter("fund_summary"));
+		vo.setFund_start_date(Date.valueOf(req.getParameter("fund_start_date")));
+		vo.setFund_end_date(Date.valueOf(req.getParameter("fund_end_date")));
+		vo.setFund_goal_money(Integer.parseInt(req.getParameter("fund_goal_money")));
+		vo.setFund_category(req.getParameter("fund_category"));
+		vo.setFund_approve(req.getParameter("saving_product_explanation"));
+		vo.setFund_mem_name(req.getParameter("fund_mem_name"));
+		
+		String hp1 = req.getParameter("fund_mem_hp1");
+		String hp2 = req.getParameter("fund_mem_hp2");
+		String hp3 = req.getParameter("fund_mem_hp3");
+		
+		String hp = hp1 + "-" + hp2 + "-" + hp3;
+		vo.setFund_mem_hp(hp);
+		
+		String email1 = req.getParameter("fund_mem_email1");
+		String email2 = req.getParameter("fund_mem_email2");
+		
+		String email = email1 + "@" + email2;
+		vo.setFund_mem_email(email);
+		
+		vo.setFund_bank_code(Integer.parseInt(req.getParameter("fund_bank_code")));
+		System.out.println("req.getParameter('fund_bank_code') : " + req.getParameter("fund_bank_code"));
+		vo.setFund_account(req.getParameter("fund_account"));
+		String img = "../resources/images/admin/upload/" + req.getParameter("fund_filename");
+		vo.setFund_filename(img);
+		
+	
+		int insertCnt = dao.insertFundProduct(vo);
+		System.out.println("펀드상품등록 insertCnt : " + insertCnt);
+		model.addAttribute("insertCnt", insertCnt);
+	}
+
+	// 관리자 페이지 펀드 상품 조회
+	@Override
+	public void selectFundProduct(HttpServletRequest req, Model model) {
+		// 페이징
+				int pageSize = 10;		// 한 페이지당 출력할 펀드상품
+				int pageBlock = 3;		// 한 블럭당 페이지 갯수
+				
+				int cnt = 0;			// 펀드상품 수
+				int start = 0;			// 현재 페이지 시작 글 번호
+				int end = 0;			// 현재 페이지 마지막 글 번호
+				int number = 0;			// 출력용 글 번호
+				String pageNum = "";	// 페이지 번호
+				int currentPage = 0;	// 현재 페이지
+				
+				int pageCount = 0;		// 페이지 갯수
+				int startPage = 0;		// 시작 페이지
+				int endPage = 0;		// 마지막 페이지
+				
+				// 펀드상품 수  조회
+				cnt = dao.getFundProductCnt();
+				System.out.println("등록 된 펀드 상품 수 : " + cnt);
+				
+				pageNum = req.getParameter("pageNum");
+				
+				if(pageNum == null) {
+					pageNum = "1";	// 첫 페이지를 1페이지로 지정
+				}
+				
+				// 상품 30건 기준
+				currentPage = Integer.parseInt(pageNum);
+				System.out.println("currentPage : " + currentPage);
+				
+				// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+				pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+				
+				// 현재 페이지 시작 글 번호(페이지별)
+				// start = (currentPage - 1) * pageSize + 1;
+				// 1 = (1 - 1) * 10 + 1
+				start = (currentPage - 1) * pageSize + 1;
+				
+				// 현재 페이지 시작 글 번호(페이지별)
+				// end = start + pageSize - 1;
+				// 10 = 1 + 10 - 1
+				end = start + pageSize - 1 ;
+				
+				System.out.println("start : " + start);
+				System.out.println("end : " + end);
+				
+				// 출력용 글 번호
+				//number = cnt - (currentPage - 1) * pageSize; 
+				number = cnt - (currentPage - 1) * pageSize;
+				
+				System.out.println("number : " + number);
+				System.out.println("pageSize : " + pageSize);
+				
+				// 시작 페이지
+				// 1 = (1 / 3) * 3 + 1;
+				// startPage = (currentPage / pageBlock) * pageBlock + 1;
+				startPage = (currentPage / pageBlock) * pageBlock + 1;
+				if(currentPage % pageBlock == 0) {
+					startPage -= pageBlock;
+				}
+				System.out.println("startPage : " + startPage);
+				
+				// 마지막 페이지
+				// 3 = 1 + 3 - 1
+				endPage = startPage + pageBlock - 1;
+				if(endPage > pageCount) {
+					endPage = pageCount;
+				}
+				System.out.println("endPage : " + endPage);
+				
+				System.out.println("===================================");
+				
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("start", start);
+				map.put("end", end);
+				
+				ArrayList<FundProductVO> dtos = null;
+				if(cnt > 0) {
+					// 5-2단계. 회원수 조회
+					dtos = dao.selectFundProduct(map);
+				}
+				
+				// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+				model.addAttribute("dtos", dtos);			// 펀드 상품 목록
+				model.addAttribute("cnt", cnt);				// 펀드 상품 수
+				model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+				model.addAttribute("number", number);		// 출력용 번호
+				if(cnt > 0) {
+					model.addAttribute("startPage", startPage);		// 시작 페이지
+					model.addAttribute("endPage", endPage);			// 마지막 페이지
+					model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+					model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+					model.addAttribute("currentPage", currentPage);	// 현재 페이지
+				}
+	}
+
+	// 관리자 페이지 펀드 상품 검색
+	@Override
+	public void searchFundProduct(HttpServletRequest req, Model model) {
+		// 입력받은 검색어
+		String search = req.getParameter("search");
+		System.out.println("관리자 페이지 회원 검색어 : " + search);
+		
+		// 페이징
+		int pageSize = 10;		// 한 페이지당 출력할 펀드상품
+		int pageBlock = 3;		// 한 블럭당 페이지 갯수
+		
+		int cnt = 0;			// 펀드상품 수
+		int start = 0;			// 현재 페이지 시작 글 번호
+		int end = 0;			// 현재 페이지 마지막 글 번호
+		int number = 0;			// 출력용 글 번호
+		String pageNum = "";	// 페이지 번호
+		int currentPage = 0;	// 현재 페이지
+		
+		int pageCount = 0;		// 페이지 갯수
+		int startPage = 0;		// 시작 페이지
+		int endPage = 0;		// 마지막 페이지
+		
+		// 검색 된 펀드 상품 수 조회
+		cnt = dao.getSavingProductSearchCnt(search);
+		System.out.println("검색 된 펀드 상품 수 : " + cnt);
+		
+		pageNum = req.getParameter("pageNum");
+		
+		if(pageNum == null) {
+			pageNum = "1";	// 첫 페이지를 1페이지로 지정
+		}
+		
+		// 상품 30건 기준
+		currentPage = Integer.parseInt(pageNum);
+		System.out.println("currentPage : " + currentPage);
+		
+		// 페이지 갯수 6 = (회원수 30건 / 한 페이지당 10개) + 나머지0
+		pageCount = (cnt / pageSize) + (cnt % pageSize > 0 ? 1 : 0);	// 페이지 갯수 + 나머지가 있으면 1페이지 추가
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// start = (currentPage - 1) * pageSize + 1;
+		// 1 = (1 - 1) * 10 + 1
+		start = (currentPage - 1) * pageSize + 1;
+		
+		// 현재 페이지 시작 글 번호(페이지별)
+		// end = start + pageSize - 1;
+		// 10 = 1 + 10 - 1
+		end = start + pageSize - 1 ;
+		
+		System.out.println("start : " + start);
+		System.out.println("end : " + end);
+		
+		// 출력용 글 번호
+		//number = cnt - (currentPage - 1) * pageSize; 
+		number = cnt - (currentPage - 1) * pageSize;
+		
+		System.out.println("number : " + number);
+		System.out.println("pageSize : " + pageSize);
+		
+		// 시작 페이지
+		// 1 = (1 / 3) * 3 + 1;
+		// startPage = (currentPage / pageBlock) * pageBlock + 1;
+		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		if(currentPage % pageBlock == 0) {
+			startPage -= pageBlock;
+		}
+		System.out.println("startPage : " + startPage);
+		
+		// 마지막 페이지
+		// 3 = 1 + 3 - 1
+		endPage = startPage + pageBlock - 1;
+		if(endPage > pageCount) {
+			endPage = pageCount;
+		}
+		System.out.println("endPage : " + endPage);
+		
+		System.out.println("===================================");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("search", search);
+		
+		ArrayList<SavingProductVO> dtos = null;
+		if(cnt > 0) {
+
+			dtos = dao.searchSavingProduct(map);
+		}
+		
+		// 6단계. jsp로 전달하기 위해 request나 session에 처리결과를 저장
+		model.addAttribute("dtos", dtos);			// 검색된 펀드 상품 목록
+		model.addAttribute("cnt", cnt);				// 펀드 상품 수
+		model.addAttribute("pageNum", pageNum); 	// 페이지 번호
+		model.addAttribute("number", number);		// 출력용 번호
+		model.addAttribute("search", search);		// 검색어
+		if(cnt > 0) {
+			model.addAttribute("startPage", startPage);		// 시작 페이지
+			model.addAttribute("endPage", endPage);			// 마지막 페이지
+			model.addAttribute("pageBlock", pageBlock);		// 한 블럭당 페이지 갯수
+			model.addAttribute("pageCount", pageCount);		// 페이지 갯수
+			model.addAttribute("currentPage", currentPage);	// 현재 페이지
+		}
+	}
+	
+	// 관리자 페이지 펀드 상품 상세 조회
+    @Override
+    public void getFundProductInfo(HttpServletRequest req, Model model) {
+       String fund_title = req.getParameter("fund_title");
+       int pageNum= Integer.parseInt(req.getParameter("pageNum"));
+       System.out.println("req.getParameter('pageNum')" + req.getParameter("pageNum"));
+       System.out.println(fund_title+" 상품 상세조회");
+       FundProductVO vo = dao.getFundProductInfo(fund_title);
+       model.addAttribute("vo", vo);
+       model.addAttribute("pageNum", pageNum);
+    }
+
+	// 관리자 페이지 펀드 상품 수정
+    @Override
+    public void updateFundProduct(HttpServletRequest req, Model model) {
+
+       int pageNum = Integer.parseInt(req.getParameter("pageNum"));
+       FundProductVO vo = new FundProductVO();
+       
+        vo.setFund_title(req.getParameter("fund_title"));
+		vo.setFund_content(req.getParameter("fund_content"));
+		vo.setFund_summary(req.getParameter("fund_summary"));
+		vo.setFund_start_date(Date.valueOf(req.getParameter("fund_start_date")));
+		vo.setFund_end_date(Date.valueOf(req.getParameter("fund_end_date")));
+		vo.setFund_goal_money(Integer.parseInt(req.getParameter("fund_goal_money")));
+		vo.setFund_category(req.getParameter("fund_category"));
+		vo.setFund_approve(req.getParameter("saving_product_explanation"));
+		vo.setFund_mem_name(req.getParameter("fund_mem_name"));
+		
+		String hp1 = req.getParameter("fund_mem_hp1");
+		String hp2 = req.getParameter("fund_mem_hp2");
+		String hp3 = req.getParameter("fund_mem_hp3");
+		
+		String hp = hp1 + "-" + hp2 + "-" + hp3;
+		vo.setFund_mem_hp(hp);
+		
+		String email1 = req.getParameter("fund_mem_email1");
+		String email2 = req.getParameter("fund_mem_email2");
+		
+		String email = email1 + "@" + email2;
+		vo.setFund_mem_email(email);
+		
+		vo.setFund_bank_code(Integer.parseInt(req.getParameter("fund_bank_code")));
+		System.out.println("req.getParameter('fund_bank_code') : " + req.getParameter("fund_bank_code"));
+		vo.setFund_account(req.getParameter("fund_account"));
+		String img = "../resources/images/admin/upload/" + req.getParameter("fund_filename");
+		vo.setFund_filename(img);
+       
+       int updateCnt = dao.updateFundProduct(vo);
+       System.out.println("펀드 상품 updateCnt : " + updateCnt);
+       System.out.println("pageNum : " + pageNum);
+       model.addAttribute("updateCnt", updateCnt);
+       model.addAttribute("pageNum", pageNum);
+    }
+    
+	// 관리자 페이지 펀드 상품 삭제
+	@Override
+	public void deleteFundProduct(HttpServletRequest req, Model model) {
+		int deleteCnt = 0;
+		String fund_title[] = req.getParameterValues("check");
+		if(fund_title != null) {
+			for(int i=0; i<fund_title.length; i++) {
+				deleteCnt = dao.deleteFundProduct(fund_title[i]);
+				System.out.println("삭제선택된 펀드상품명: " + fund_title[i]);
+			}
+			model.addAttribute("msg", "펀드상품 삭제처리되었습니다");
+		} else {
+			model.addAttribute("msg", "삭제하실 상품을 선택해주세요.");
+		}
+		System.out.println("펀드상품 삭제여부 : " + deleteCnt);
+		model.addAttribute("deleteCnt", deleteCnt);
+	}
+	
 	// qna 조회(지현)
 	@Override
 	public void qnaList_mng(HttpServletRequest req, Model model) {
@@ -2474,7 +2790,7 @@ public class AdminServiceImpl implements AdminService {
 		vo.setNotice_content(req.getParameter("notice_content"));
 		
 		// 작성일
-		vo.setNotice_date(new Date());
+		//vo.setNotice_date(new Date()); // date안에 아무것도 안들어가나요??
 		
 		// insert
 		int insertCnt = dao.mngNoticeWriteAction(vo);

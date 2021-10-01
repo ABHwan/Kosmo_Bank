@@ -155,6 +155,62 @@
 		DELETE FROM saving_product WHERE saving_product_name IN ( #{saving_product_name} )
 	</delete>
 	
+	<!-- 펀드 -->
+	<!-- 관리자 페이지 펀드 상품 등록 -->
+	<insert id="insertFundProduct" parameterType="com.spring.bank.product.vo.FundProductVO">
+		INSERT INTO fund(fund_id, fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, fund_bank_code)
+		VALUES(fund_id.nextval, #{fund_title}, #{fund_content}, #{fund_start_date}, #{fund_end_date}, #{fund_goal_money}, #{fund_category}, 0, #{fund_mem_name}, #{fund_mem_hp}, #{fund_mem_email}, #{fund_account}, #{fund_filename}, #{fund_summary}, #{fund_bank_code})
+	</insert>
+	
+	<!-- 관리자 페이지 펀드 상품 수 -->
+	<select id="getFundProductCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM fund
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 조회 -->
+	<select id="selectFundProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.FundProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, rowNum rNum 
+				FROM (SELECT * FROM fund ORDER BY fund_start_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 수(검색결과수)  -->
+	<select id="getFundProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM fund WHERE fund_title LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 검색(입력받아서 검색) -->
+	<select id="searchFundProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.FundProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT fund_title, fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, rowNum rNum 
+				FROM (SELECT * FROM fund WHERE fund_title LIKE '%'||#{search}||'%' ORDER BY fund_start_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 상세조회 -->
+    <select id="getFundProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.FundProductVO">
+        SELECT * FROM fund WHERE fund_title=#{fund_title}
+    </select>
+   
+    <!-- 관리자 페이지 펀드 상품 수정 -->
+    <update id="updateFundProduct" parameterType="com.spring.bank.product.vo.FundProductVO">
+        UPDATE fund set fund_content=#{fund_content}, fund_start_date=#{fund_start_date}, fund_end_date=#{fund_end_date}, fund_goal_money=#{fund_goal_money}, fund_category=#{fund_category}
+        , fund_mem_name=#{fund_mem_name}, fund_mem_hp=#{fund_mem_hp}, fund_mem_email=#{fund_mem_email}, fund_account=#{fund_account}, fund_filename=#{fund_filename}, fund_summary=#{fund_summary}, fund_bank_code=#{fund_bank_code}
+         WHERE fund_title=#{fund_title}
+     </update>
+	
+	<!-- 관리자 페이지 펀드 상품 삭제 -->
+	<delete id="deleteFundProduct" parameterType="String">
+		DELETE FROM fund WHERE fund_title IN ( #{fund_title} )
+	</delete>
+		
 	<!-- 진지현 작성 -->
 	
 	<!-- 관리자 페이지 연금 상품 등록 -->
@@ -625,7 +681,7 @@
 	<!-- 공지사항 쓰기 처리(민재) -->
 	<insert id="mngNoticeWriteAction" parameterType="com.spring.bank.user.vo.NoticeVO">
 		INSERT INTO NOTICE
-		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0, #{notice_date})
+		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0, sysdate)
 	</insert>
 	
 	<!-- 공지사항 - 비밀번호 인증(민재) -->

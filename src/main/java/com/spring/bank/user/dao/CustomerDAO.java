@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
@@ -137,6 +138,27 @@ public interface CustomerDAO {
 	
 	// 적금 상품 상세 보기
 	public SavingProductVO getSavingDetail(String saving_product_name);
+
+	// 적금 신청
+	public int savingProductAction(SavingProductVO vo);
+	
+	// 펀드 상품갯수
+	public int getFundCnt();
+
+	// 펀드 상품 조회
+	public List<FundProductVO> getFundList(Map<String, Integer> map);
+	
+	// 펀드 상품 수(검색결과수)
+	public int getFundProductSearchCnt(String search);
+	
+	// 펀드 상품 검색(입력받아서 검색)
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map);
+	
+	// 펀드 상품 상세 보기
+	public FundProductVO getFundDetail(String fund_title);
+
+	// 펀드 신청
+	public int fundProductAction(FundProductVO vo);
 
 	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
