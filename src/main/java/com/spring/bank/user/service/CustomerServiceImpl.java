@@ -2024,7 +2024,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", strId);
-		map.put("account_type", 0);
+		map.put("account_type", 1);
 		
 		List<MyDepositVO> list;
 		// 리스트 가져오기
@@ -2034,11 +2034,12 @@ public class CustomerServiceImpl implements CustomerService {
 			map.put("account_bankCode", selectValue);
 			list = dao.depositSubList(map);
 		}
-		
+		int account_type = (int) map.get("account_type");
 		int cnt = list.size();
 		System.out.println("cnt : " + cnt);
 		System.out.println("list : " + list);
 		System.out.println("서브리스트");
+		System.out.println("account_type : " + account_type);
 		req.setAttribute("boardName", "예금");
 		req.setAttribute("list", list);
 		req.setAttribute("cnt", cnt);
@@ -2075,7 +2076,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", strId);
-		map.put("account_type", 1);
+		map.put("account_type", 2);
 		
 		List<MySavingVO> list;
 		// 리스트 가져오기
@@ -2115,7 +2116,7 @@ public class CustomerServiceImpl implements CustomerService {
 		// 리스트 가져오기
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", strId);
-		map.put("account_type", 3);
+		map.put("account_type", 4);
 		
 		list = dao.irpList(map);
 		

@@ -25,60 +25,86 @@
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-				<div class="panel-header bg-primary-gradient" style="height: 300px;">
-					<div class="page-inner py-5">
-						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
-							<div>
-								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
-								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
-									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
-							</div>
-						</div>
+				<div class="page-inner">
+					<div class="page-header">
+							<h4 class="page-title"> 고객센터 </h4>
+						<ul class="breadcrumbs">
+							<li class="nav-home">
+								<a href="#">
+									<i class="flaticon-home"></i>
+								</a>
+							</li>
+							<li class="separator">
+								<i class="flaticon-right-arrow"></i>
+							</li>
+							<li class="nav-item">
+								<a href="#">고객센터</a>
+							</li>
+							<li class="separator">
+								<i class="flaticon-right-arrow"></i>
+							</li>
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<li class="nav-item">
+								<a href="#">공지사항</a>
+							</li>
+							</sec:authorize>
+							
+						</ul>
 					</div>
-				</div>
-				
-				<div class="notice">
-					<!-- 관리자 공지사항 -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+									<h4 class="card-title">공지사항</h4>
+								</sec:authorize>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<!-- 관리자 공지사항 -->
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-						<table border="1" style="width:1000px; align:center">
-							<tr>
-								<th style="width:15%"> 글번호 </th>
-								<th style="width:45%"> 글제목 </th>
-								<th style="width:15%"> 작성자 </th>
-								<th style="width:15%"> 작성일 </th>
-								<th style="width:5%"> 조회수 </th>
-							</tr>
-							
-							<!-- 게시글이 있으면 -->
-							<c:if test="${cnt>0}">
-								<c:forEach var="vo" items="${list}">
-									<tr>
-										<td> ${number} 
-											<c:set var="number" value="${number -1 }" />
-										</td>									
-										<td> 
-											<a href="../customer/noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
-												${vo.notice_subject}
-											</a>
-										</td>
-										<td> ${vo.notice_writer} </td>
-										<td> 
-											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-										</td>
-										<td> ${vo.notice_readCnt} </td>
-									</tr>
-								</c:forEach> 
-							</c:if>
-							
-							<!-- 게시글이 없으면 -->
-							<c:if test="${cnt==0}">
+						<table id="basic-datatables" class="display table table-striped table-hover" >
+							<thead>
 								<tr>
-									<td colspan="5" align="center">
-										게시글이 없습니다. 글을 작성해주세요!!
-									</td>
+									<th style="width:15%"> 글번호 </th>
+									<th style="width:45%"> 글제목 </th>
+									<th style="width:15%"> 작성자 </th>
+									<th style="width:15%"> 작성일 </th>
+									<th style="width:5%"> 조회수 </th>
 								</tr>
-							</c:if>
+							</thead>
+							<tbody>
+								<!-- 게시글이 있으면 -->
+								<c:if test="${cnt>0}">
+									<c:forEach var="vo" items="${list}">
+										<tr>
+											<td> ${number} 
+												<c:set var="number" value="${number -1 }" />
+											</td>									
+											<td> 
+												<a href="../customer/noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
+													${vo.notice_subject}
+												</a>
+											</td>
+											<td> ${vo.notice_writer} </td>
+											<td> 
+												<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
+											</td>
+											<td> ${vo.notice_readCnt} </td>
+										</tr>
+									</c:forEach> 
+								</c:if>
+							</tbody>
+							<!-- 게시글이 없으면 -->
+							<tbody>
+								<c:if test="${cnt==0}">
+									<tr>
+										<td colspan="5" align="center">
+											게시글이 없습니다. 글을 작성해주세요!!
+										</td>
+									</tr>
+								</c:if>
+							</tbody>
 						</table>
 						
 						<button type="button" onclick="location.href='${mngPath}mngNoticeWrite?pageNum=${pageNum}'"> 글쓰기 </button>
@@ -86,32 +112,34 @@
 					
 					<!-- 고객 공지사항 -->
 					<sec:authorize access="hasRole('ROLE_USER')">
-						<table border="1" style="width:1000px; align:center">
-							<tr>
-								<th style="width:15%"> 글번호 </th>
-								<th style="width:55%"> 글제목 </th>
-								<th style="width:15%"> 작성일 </th>
-							</tr>
-							
+						<table id="basic-datatables" class="display table table-striped table-hover" >
+							<thead>
+								<tr>
+									<th style="width:15%"> 글번호 </th>
+									<th style="width:55%"> 글제목 </th>
+									<th style="width:15%"> 작성일 </th>
+								</tr>
+							</thead>
 							<!-- 게시글이 있으면 -->
-							<c:if test="${cnt>0}">
-								<c:forEach var="vo" items="${list}">
-									<tr>
-										<td> ${number} 
-											<c:set var="number" value="${number -1 }" />
-										</td>									
-										<td> 
-											<a href="noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
-												${vo.notice_subject}
-											</a>
-										</td>
-										<td> 
-											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-										</td>
-									</tr>
-								</c:forEach>
-							</c:if>
-							
+							<tbody>
+								<c:if test="${cnt>0}">
+									<c:forEach var="vo" items="${list}">
+										<tr>
+											<td> ${number} 
+												<c:set var="number" value="${number -1 }" />
+											</td>									
+											<td> 
+												<a href="noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
+													${vo.notice_subject}
+												</a>
+											</td>
+											<td> 
+												<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
+											</td>
+										</tr>
+									</c:forEach>
+								</c:if>
+							</tbody>
 							<!-- 게시글이 없으면 -->
 							<c:if test="${cnt==0}">
 								<tr>
