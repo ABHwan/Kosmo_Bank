@@ -2085,8 +2085,8 @@ public class AdminServiceImpl implements AdminService {
 	public int insertTestAccount(HttpServletRequest req, Model model) {
 		System.out.println("Service => insertTestAccount");
 		
-		String account_bankCode = req.getParameter("account_bankCode");
-		String account_id = createAccountId(Integer.parseInt(account_bankCode));
+		int account_bankCode = Integer.parseInt(req.getParameter("account_bankCode"));
+		String account_id = createAccountId(account_bankCode);
 		String account_password = req.getParameter("account_password");
 		String account_balance = req.getParameter("account_balance");
 		String account_type = req.getParameter("account_type");
@@ -2094,10 +2094,11 @@ public class AdminServiceImpl implements AdminService {
 		String account_stateContent = req.getParameter("account_stateContent");
 		String account_limit = req.getParameter("account_limit");
 		String unique_key = req.getParameter("unique_key");
+		String account_bankImg = getBankImg(account_bankCode);
 		
 		AccountVO vo = new AccountVO();
 		
-		vo.setAccount_bankCode(Integer.parseInt(account_bankCode));
+		vo.setAccount_bankCode(account_bankCode);
 		vo.setAccount_id(account_id);
 		vo.setAccount_password(account_password);
 		vo.setAccount_balance(Integer.parseInt(account_balance));
@@ -2106,6 +2107,8 @@ public class AdminServiceImpl implements AdminService {
 		vo.setAccount_stateContent(account_stateContent);
 		vo.setAccount_limit(Integer.parseInt(account_limit));
 		vo.setUnique_key(unique_key);
+		vo.setAccount_bankImg(account_bankImg);
+		
 		
 		return dao.insertTestAccount(vo);
 	}
@@ -2256,5 +2259,34 @@ public class AdminServiceImpl implements AdminService {
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("deleteCnt", deleteCnt);
+	}
+	
+	// 은행별 img
+	public String getBankImg(int account_bankCode) {
+		// 은행코드 0(미기재) 1(국민) 2(우리) 3(농협) 4(신한) 5(하나) 6(코스모)
+		
+		String bankImg = "";
+		switch(account_bankCode) {
+			case 1 : bankImg = "/bank/resources/images/bank/gookminicon.jpg";
+				break;
+				
+			case 2 : bankImg = "/bank/resources/images/bank/uriicon.jpg";
+				break;
+			
+			case 3 : bankImg = "/bank/resources/images/bank/nhicon.jpg";
+				break;
+			
+			case 4 : bankImg = "/bank/resources/images/bank/shinhanicon.png";
+				break;
+			
+			case 5 : bankImg = "/bank/resources/images/bank/hanaicon.jpg";
+				break;
+			
+			case 6 : bankImg = "/bank/resources/images/bank/uriicon.jpg";
+				break;
+		
+		}
+		
+		return bankImg;
 	}
 }

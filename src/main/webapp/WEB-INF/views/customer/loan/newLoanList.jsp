@@ -12,6 +12,7 @@
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
+
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">

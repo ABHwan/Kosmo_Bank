@@ -55,9 +55,9 @@
 						    if(cookies != null){
 						        for(Cookie tempCookie : cookies){
 						        	// 쿠키에 userID란 문자열이 있으면
-						            if(tempCookie.getName().equals("userID")){
+						            if(tempCookie.getName().equals("customerID")){
 						                //쿠키값으로 대신 로그인 처리함
-						                session.setAttribute("userID", tempCookie.getValue());
+						                session.setAttribute("customerID", tempCookie.getValue());
 						                
 						            // 쿠키에 adminID란 문자열이 있으면
 						            } else if(tempCookie.getName().equals("adminID")){
@@ -70,6 +70,9 @@
 						<c:choose>
 							<c:when test="${sessionScope.adminID != null}">
 								<li class="nav-item dropdown hidden-caret">
+									<a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="window.location='/bank/manager/index'">
+										관리자 페이지
+									</a>
 		                           <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="document.getElementById('logout').submit();">
 										로그아웃
 									</a>
@@ -153,45 +156,47 @@
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
 								<div class="dropdown-user-scroll scrollbar-outer">
-								
-								<!-- 관리자 로그인하고 이미지 클릭시 -->
-								<c:if test="${sessionScope.adminID != null}">
-									<li>
-										<div class="user-box">
-											<div class="avatar-lg"><img src="${rePath}images/img/person2.png" alt="image profile" class="avatar-img rounded"></div>
-											<div class="u-text">
-												<h4>관리자</h4>
-												<p class="text-muted">host@naver.com</p>
+								<c:choose>
+									
+									<c:when test="${sessionScope.adminID != null}">
+									<!-- 관리자 로그인하고 이미지 클릭시 -->
+										<li>
+											<div class="user-box">
+												<div class="avatar-lg"><img src="${rePath}images/img/person2.png" alt="image profile" class="avatar-img rounded"></div>
+												<div class="u-text">
+													<h4>관리자</h4>
+													<p class="text-muted">host@naver.com</p>
+												</div>
 											</div>
-										</div>
-									</li>
-								</c:if>
-								
-								<!-- 사용자 로그인하고 이미지 클릭시(아이디, 로그아웃버튼) -->
-								<c:if test="${sessionScope.customerID != null}">
-									<li>
-										<div class="user-box">
-											<div class="avatar-lg"><img src="${rePath}images/img/person2.png" alt="image profile" class="avatar-img rounded"></div>
-											<div class="u-text">
-												<h4>${sessionScope.customerID}님 환영합니다!</h4>
-												<p class="text-muted"></p><a href="${path}customer/myPage" class="btn btn-xs btn-secondary btn-sm" >마이페이지</a>
+										</li>
+									</c:when>
+									
+									
+									<c:when test="${sessionScope.customerID != null}">
+									<!-- 사용자 로그인하고 이미지 클릭시(아이디, 로그아웃버튼) -->
+										<li>
+											<div class="user-box">
+												<div class="avatar-lg"><img src="${rePath}images/img/person2.png" alt="image profile" class="avatar-img rounded"></div>
+												<div class="u-text">
+													<h4>${sessionScope.customerID}님 환영합니다!</h4>
+													<p class="text-muted"></p><a href="${path}customer/myPage" class="btn btn-xs btn-secondary btn-sm" >마이페이지</a>
+												</div>
+												
 											</div>
-											
-										</div>
-									</li>
-								</c:if>
-								
-								<!-- 사용자 로그인하고 이미지 클릭시(아이디, 로그아웃버튼) -->
-								<c:if test="${sessionScope.customerID == null}">
-									<li>
-										<div class="user-box">
-											<div class="u-text">
-												<h4>로그인해주세요!</h4>
+										</li>
+									</c:when>
+									
+									<c:otherwise>
+									<!-- 사용자 로그인하고 이미지 클릭시(아이디, 로그아웃버튼) -->
+										<li>
+											<div class="user-box">
+												<div class="u-text">
+													<h4><a href="/bank/customer/login.do">로그인해주세요!</a></h4>
+												</div>
 											</div>
-										</div>
-									</li>
-								</c:if>	
-															
+										</li>
+									</c:otherwise>	
+								</c:choose>				
 								</div>
 							</ul>
 						</li>

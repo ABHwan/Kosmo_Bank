@@ -10,7 +10,6 @@
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 
-
 </head>
 <body>
 <!-- 메인 콘텐츠 -->
@@ -63,15 +62,21 @@
 			            <th>최소금액</th>
 			            <th>은행코드</th>
 			            <th>등록일</th>
-			            <th>상세정보</th>
 			          </tr>
 			          <c:if test="${cnt > 0}">
 			          	<c:forEach var="dto" items="${dtos}">
+			          	
 				         <tr>
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>
-				           <td>${dto.deposit_product_name} <input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}"></td>
+				           <td>	
+				           		<label for="btn btn-link" onmouseover="style='font-weight: bold;'" onmouseout="style='font-weight: none;'">${dto.deposit_product_name}</label> 
+				           		<input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}">
+				           		
+				           		<input type="button" class="btn btn-link" id="btn btn-link" value="상세"
+			          				onclick="window.location='depositDetail.do?pageNum=${pageNum}&number=${number}&deposit_product_name=${dto.deposit_product_name}'" style="display:none;">
+				           </td>
 				           <td>${dto.deposit_product_summary}</td>
 				           <td>${dto.deposit_product_interRate}%</td>
 				           <td>
@@ -109,9 +114,8 @@
 				           		</c:choose>
 				           </td>
 				           <td>${dto.deposit_product_date}</td>
-			          		<td><input type="button" class="btn btn-link" value="상세"
-			          				onclick="window.location='depositDetail.do?pageNum=${pageNum}&number=${number}&deposit_product_name=${dto.deposit_product_name}'"></td>
 				         </tr>
+				         
 				        </c:forEach>
 				      </c:if>
 				      

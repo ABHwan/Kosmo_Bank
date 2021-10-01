@@ -21,16 +21,6 @@
     	 VALUES(#{member_id}, #{member_password}, #{member_name}, #{member_birth}, #{member_hp}, #{member_email}, #{member_zipcode}, #{member_addr1}, #{member_addr2}, #{member_addr3}, sysdate, 1, 'ROLE_USER', #{unique_key})
     </insert>
     
-    <!-- 이메일 인증 성공 처리 -->
-    <update id="emailSuccess" parameterType="com.spring.bank.user.vo.UserVO">
-    	UPDATE members SET member_enabled = #{member_enabled} WHERE member_email = #{member_email}
-    </update>
-    
-    <!-- 이메일 체크 -->
-    <select id="emailChk" parameterType="String" resultType="int">
-    	SELECT member_enabled FROM members WHERE member_id = #{member_id}
-    </select>
-    
     <!-- 로그인 및 회원인증 -->
     <select id="SelectUser" parameterType="String" resultType="com.spring.bank.user.vo.UserVO">
     	SELECT * FROM members WHERE member_id = #{member_id}
@@ -629,4 +619,50 @@
     	SELECT * FROM NOTICE WHERE notice_num = #{notice_num}
     </select>
     
+    <!-- 대표 계좌 불러오기(복환) -->
+    <select id="getAccountDefault" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 1 AND account_default = 1
+    </select>
+    
+    <!-- 계좌 불러오기(복환 - 연동 O) -->
+    <select id="getAccountLinked" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 1
+    </select>
+    
+    
+    <!-- 계좌 불러오기(복환 - 연동 X) -->
+    <select id="getAccountUnLinked" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 0
+    </select>
+    
+    <!-- 계좌 연동하기(복환) - 연동하면 member_id 가 등록됨. -->
+    <update id="accountLinkAction" parameterType="java.util.Map">
+    	UPDATE account SET account_linked = 1, member_id = #{member_id} WHERE account_id = #{account_id} AND unique_key = #{unique_key} AND account_liked = 0 
+    </update>
+    
+    <!-- 계좌 연동해제(복환) - 연동해제하면 member_id 등록해제 -->
+    <update id="accountUnLinkAction" parameterType="java.util.Map">
+    	UPDATE account SET account_linked = 0, member_id = null WHERE account_id = #{account_id} AND member_id = #{member_id} AND account_liked = 1
+    </update>
+    
+    
+    <!-- 대표계좌설정(복환) 시작 -->
+    <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 시작 -->
+    <select id="defaultDeliveryCnt" resultType="int">
+    	SELECT COUNT(*) FROM account WHERE member_id = #{member_id} AND account_default = 1
+    </select>
+    
+    <update id="defaultDeliveryUpdate">
+    	UPDATE account SET account_default = 0 WHERE member_id = #{member_id} AND account_default = 1
+    </update>
+    
+    <!-- 계좌 관리 -->
+    <update id="updateDelivery">
+    	UPDATE account SET account_password = #{account_password}, account_default = #{account_default} 
+    	WHERE unique_key = #{unique_key} AND account_id = #{account_id}
+    </update>
+    <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 끝 -->
+    
+    
+    <!-- 대표계좌설정(복환) 끝 -->
 </mapper>

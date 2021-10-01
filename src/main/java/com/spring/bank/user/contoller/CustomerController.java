@@ -52,6 +52,13 @@ public class CustomerController {
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
 		// service.exchanges(req, model);
+		
+		// 로그인 시 계좌 불러오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		if(member_id != null) {
+			service.accountLoad(req, model);
+		}
+		
 		return "index";
 	}
 
@@ -885,5 +892,21 @@ public class CustomerController {
 		service.deleteAccountBook(req, model);
 		
 		return "redirect:accountBook";
+	}
+	
+	// 계좌연동
+	@RequestMapping("myAccountList")
+	public String myAccountList(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/myAccountList";
+	}
+	
+	// 계좌연동
+	@RequestMapping("accountConnect")
+	public String accountConnect(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/accountConnect";
 	}
 }

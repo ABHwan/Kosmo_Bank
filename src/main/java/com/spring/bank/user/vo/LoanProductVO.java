@@ -7,7 +7,7 @@ public class LoanProductVO {
 	private float loan_product_rate;
 	private String loan_product_summary;
 	private int loan_product_minPrice;
-	private int loan_product_maxPrice;
+	private long loan_product_maxPrice;
 	private int loan_product_minDate;
 	private int loan_product_maxDate;
 	private int loan_product_bankCode;
@@ -40,10 +40,10 @@ public class LoanProductVO {
 	public void setLoan_product_minPrice(int loan_product_minPrice) {
 		this.loan_product_minPrice = loan_product_minPrice;
 	}
-	public int getLoan_product_maxPrice() {
+	public long getLoan_product_maxPrice() {
 		return loan_product_maxPrice;
 	}
-	public void setLoan_product_maxPrice(int loan_product_maxPrice) {
+	public void setLoan_product_maxPrice(long loan_product_maxPrice) {
 		this.loan_product_maxPrice = loan_product_maxPrice;
 	}
 	public int getLoan_product_minDate() {

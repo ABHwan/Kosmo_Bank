@@ -56,6 +56,28 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	JavaMailSender mailSender;
+	
+	// 로그인 시 index 에 계좌 불러오기
+	@Override
+	public void accountLoad(HttpServletRequest req, Model model) {
+		System.out.println("[서비스 => 계좌불러오기]");
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		// 세션 ID를 받아와 멤버 정보에 있는 고유키(unique_key)를 받아온다.
+		String unique_key = dao.getUniqueKey(member_id);
+		
+		// 고유키를 통해 해당하는 연동된 계좌들을 불러온다.
+		List<AccountVO> dtos = dao.getAccountLinked(unique_key);
+		
+		// 대표계좌 불러오기
+		AccountVO vo = dao.getAccountDefault(unique_key);
+		
+		req.setAttribute("vo", vo);
+		req.setAttribute("dtos", dtos);
+		
+		
+	}
 
 	// 아이디 중복확인
 	@Override
@@ -2406,9 +2428,8 @@ public class CustomerServiceImpl implements CustomerService {
 	         
 	      }
 	      
-	      return account_id;
-	   }
-	
+	    return account_id;
+	 }
 	
 	// 공지사항 상세페이지(민재)
 	@Override
@@ -2435,5 +2456,7 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("pageNum", pageNum);
 		req.setAttribute("number", number);
 	}
+	
+
 	
 }

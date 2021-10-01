@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 public interface CustomerService {
+	
+	// 로그인 시 계좌 불러오기
+	public void accountLoad(HttpServletRequest req, Model model);
 
 	// 아이디 중복확인 처리
 	public int confirmIdAction(Map<String, Object> map);
@@ -16,9 +19,6 @@ public interface CustomerService {
 
 	// 회원가입 처리
 	public void registerAction(HttpServletRequest req, Model model);
-
-	// 이메일 인증 성공 처리
-	// public void emailSuccess(HttpServletRequest req, Model model);
 
 	// 회원정보 인증
 	public void confirmAction(HttpServletRequest req, Model model);

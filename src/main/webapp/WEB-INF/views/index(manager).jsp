@@ -126,7 +126,7 @@
 			</div>
 		</div>
 		 
-		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
  
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

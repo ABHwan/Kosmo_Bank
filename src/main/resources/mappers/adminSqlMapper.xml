@@ -245,8 +245,8 @@
 	
 	<!-- 관리자 TEST 계좌 생성(복환) -->
     <insert id="insertTestAccount" parameterType="com.spring.bank.user.vo.AccountVO">
-    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked)
-		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0)
+    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked, account_bankImg)
+		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0, #{account_bankImg})
     </insert>
 
 	<!-- 지은 -->

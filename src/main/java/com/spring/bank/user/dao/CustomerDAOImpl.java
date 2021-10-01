@@ -512,4 +512,38 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeDetail", notice_num);
 		
 	}
+	
+	// 대표 계좌 불러오기
+	@Override
+	public AccountVO getAccountDefault(String unique_key) {
+		System.out.println("DAO - 대표계좌불러오기");
+		
+		return sqlSession.getMapper(CustomerDAO.class).getAccountDefault(unique_key);
+	}
+
+	// 계좌 불러오기(연동 O)
+	@Override
+	public List<AccountVO> getAccountLinked(String unique_key) {
+		System.out.println("DAO - 연동계좌불러오기");
+		return sqlSession.getMapper(CustomerDAO.class).getAccountLinked(unique_key);
+	}
+
+	// 계좌 불러오기(연동 X)
+	@Override
+	public List<AccountVO> getAccountUnLinked(String unique_key) {
+		System.out.println("DAO - 비연동계좌불러오기");
+		return sqlSession.getMapper(CustomerDAO.class).getAccountUnLinked(unique_key);
+	}
+
+	@Override
+	public int accountLinkAction(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).accountLinkAction(map);
+	}
+
+	@Override
+	public int accountUnLinkAction(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).accountUnLinkAction(map);
+	}
+
+	
 }

@@ -78,6 +78,7 @@ public class AdminController {
 	@RequestMapping("index")
 	public String index(HttpServletRequest req, Model model) {
 		System.out.println("[index.ad]");
+
 		
 		// 이동할 페이지
 		return "index(manager)";
@@ -126,7 +127,7 @@ public class AdminController {
         String src = mRequest.getParameter("src");
         MultipartFile mf = mRequest.getFile("file");
 
-        String path = "G:\\dev88\\workspace\\SPRING_PJ_ABH\\src\\main\\webapp\\resources\\images\\upload\\";
+        String path = "G:\\dev88\\workspace\\KOSMO_BANK_PJ\\src\\main\\webapp\\resources\\images\\upload\\";
 
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈
