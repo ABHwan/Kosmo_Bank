@@ -36,15 +36,15 @@
 	 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" /> 
  
- 	<c:if test="${updateCnt == 1}">
+ 	<c:if test="${insertCnt == 1}">
 		<script type="text/javascript">
-			alert("대출 승인 완료");
-			window.location="loanRequestList.do";
+			alert("신규 대출 신청 완료");
+			window.location="loanAccountList.do";
 		</script>
  	</c:if>
- 	<c:if test="${updateCnt != 1}">
+ 	<c:if test="${insertCnt != 1}">
 		<script type="text/javascript">
-			alert("대출이 승인되지 않았습니다. 다시 시도하세요.");
+			alert("신규 대출 신청이 완료되지 않았습니다. 다시 시도하세요.");
 			window.history.back();
 		</script>
  	</c:if>

@@ -658,6 +658,14 @@ public class AdminController {
 		service.loanRequestAction(req, model);
 		return "manager/loan/loanRequestAction";
 	}
+
+	// 대출 거절
+	@RequestMapping("loanRefusalAction.do")
+	public String loanRefusalAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanRefusalAction(req, model);
+		return "manager/loan/loanRefusalAction";
+	}
 	
 	@RequestMapping("loanList.do")
 	public String loanList(HttpServletRequest req, Model model) {

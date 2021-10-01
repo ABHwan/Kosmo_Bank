@@ -38,13 +38,13 @@
  
  	<c:if test="${updateCnt == 1}">
 		<script type="text/javascript">
-			alert("대출 승인 완료");
+			alert("대출 거절 완료");
 			window.location="loanRequestList.do";
 		</script>
  	</c:if>
  	<c:if test="${updateCnt != 1}">
 		<script type="text/javascript">
-			alert("대출이 승인되지 않았습니다. 다시 시도하세요.");
+			alert("대출이 거절되지 않았습니다. 다시 시도하세요.");
 			window.history.back();
 		</script>
  	</c:if>

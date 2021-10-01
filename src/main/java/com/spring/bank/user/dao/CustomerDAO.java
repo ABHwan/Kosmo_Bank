@@ -10,11 +10,13 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
+import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.MyDepositVO;
 import com.spring.bank.user.vo.MyIRPVO;
 import com.spring.bank.user.vo.MySavingVO;
@@ -219,27 +221,33 @@ public interface CustomerDAO {
 
 	public ArrayList<LoanProductVO> loanList();
 
+	public ArrayList<LoanVO> getLoanCancelList(Map<String, Object> map);
+
 	public int getLoanCancelCnt(String member_id);
-
-	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
-
-	public int getLoanCnt(String member_id);
-
-	public int getLoanProductCnt();
-
-	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
 
 	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map);
 
-	public int getSearchLoanProductCnt(String keyword);
+	public int getLoanCnt(Map<String, Object> map);
 
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
+
+	public int getSearchLoanProductCnt(String keyword);
+
+	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
+
+	public int getLoanProductCnt();
 
 	public LoanProductVO getLoanProductInfo(String loan_product_name);
 
 	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map);
 
-	public int getLoanHistoryCnt(String member_id);	
+	public int getLoanHistoryCnt(String member_id);
+
+	public ArrayList<AccountVO_old> loanAccountInfo(String member_id);
+
+	public int newLoanSignAction(LoanVO loan);
+
+	public LoanVO getLoanInfo(Map<String, Object> map);
 
 	// 회원이름 불러오기(민재)
 	public String getName(String strId);

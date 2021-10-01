@@ -325,21 +325,16 @@
 											<span class="sub-item">대출 상환 목록</span>
 										</a>
 									</li>
-									<li>
+									<!-- <li>
 										<a href="loanDirectDebit.do">
 											<span class="sub-item">대출 자동이체</span>
 										</a>
-									</li>
-									<li>
-										<a href="loanPrincipalList.do">
-											<span class="sub-item">대출 원금 목록</span>
+									</li> -->
+									<!-- <li>
+										<a href="loanPrincipalRateList.do">
+											<span class="sub-item">대출 원금/이자 조회</span>
 										</a>
-									</li>
-									<li>
-										<a href="loanRateList.do">
-											<span class="sub-item">대출 이자 목록</span>
-										</a>
-									</li>
+									</li> -->
 									<li>
 										<a href="newLoanList.do">
 											<span class="sub-item">신규 대출</span>

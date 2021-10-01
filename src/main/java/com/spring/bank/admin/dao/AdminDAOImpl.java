@@ -18,6 +18,7 @@ import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
+import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -462,6 +463,40 @@ public class AdminDAOImpl implements AdminDAO {
 		return dao.getLoanCancelList(map);	
 	}
 
+	public LoanVO getLoanInfo(Map<String, Object> map) {
+		System.out.println("[AdminDAO => getLoanInfo()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.getLoanInfo(map);	
+	}
+
+	public int transNewLoanAccount(TransferVO trans) {
+		System.out.println("[AdminDAO => transNewLoanAccount()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.transNewLoanAccount(trans);	
+	}
+	
+	public int setNewLoanAccount(Map<String, Object> map) {
+		System.out.println("[AdminDAO => setNewLoanAccount()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.setNewLoanAccount(map);	
+	}
+
+	public TransferVO resetNewLoanAccount(Map<String, Object> map) {
+		System.out.println("[AdminDAO => resetNewLoanAccount()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.resetNewLoanAccount(map);	
+	}
+
+	// 회원정보 상세 페이지
+	@Override
+	public UserVO getUserInfo(String member_id) { 
+		System.out.println("[DAO => getUserInfo()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.getUserInfo(member_id);
+	}
+
+	
+	
 	// !지은!
 	
 	// 공지사항 쓰기 처리(민재)

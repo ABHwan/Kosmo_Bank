@@ -2,7 +2,7 @@ package com.spring.bank.user.vo;
 
 import java.sql.Date;
 
-public class AccountVO {
+public class AccountVO_old {
 
 	int account_bankCode;
 	String account_id;
