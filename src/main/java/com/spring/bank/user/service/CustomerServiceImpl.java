@@ -1702,10 +1702,10 @@ public class CustomerServiceImpl implements CustomerService {
 		int utility_num = Integer.parseInt(req.getParameter("utility_num"));
 		int utility_money = Integer.parseInt(req.getParameter("utility_money"));
 
-		System.out.println("서비스 확인(등록금 납부)(member_id): " + member_id);
-		System.out.println("서비스 확인(등록금 납부)(account_id): " + account_id);
-		System.out.println("서비스 확인(등록금 납부)(utility_num): " + utility_num);
-		System.out.println("서비스 확인(등록금 납부)(utility_money): " + utility_money);
+		System.out.println("서비스 확인(지방세 납부)(member_id): " + member_id);
+		System.out.println("서비스 확인(지방세 납부)(account_id): " + account_id);
+		System.out.println("서비스 확인(지방세 납부)(utility_num): " + utility_num);
+		System.out.println("서비스 확인(지방세 납부)(utility_money): " + utility_money);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("member_id", member_id);
@@ -2679,3 +2679,4 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 }
+

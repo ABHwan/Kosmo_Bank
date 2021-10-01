@@ -77,7 +77,7 @@ public interface CustomerDAO {
 
 //			//qna 게시글 비밀번호 인증,(수정, 삭제 )
 //			public int numPasswordCheck(Map<String, Object> map);
-
+	
 	// qna 수정 처리
 	public int updateQna(InquiryVO vo);
 

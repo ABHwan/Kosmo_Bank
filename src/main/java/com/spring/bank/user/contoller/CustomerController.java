@@ -905,7 +905,7 @@ public class CustomerController {
 	}
 
 	// 회원 공과금 납부 처리(지방세)
-	@RequestMapping("utilityConfirm_localTex")
+	@RequestMapping("utilityConfirm_Local")
 	public String utilityConfirm_localTex(HttpServletRequest req, Model model) {
 		logger.info("url => utilityConfirm_localTex");
 		service.getLocalPay(req, model);
@@ -940,6 +940,5 @@ public class CustomerController {
 
 		return "redirect:accountBook";
 	}
-	
 	
 }

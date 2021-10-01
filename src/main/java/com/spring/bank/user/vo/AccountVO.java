@@ -2,6 +2,8 @@ package com.spring.bank.user.vo;
 
 import oracle.sql.DATE;
 
+import java.sql.Date;
+
 public class AccountVO {
 
 	int account_bankCode;
