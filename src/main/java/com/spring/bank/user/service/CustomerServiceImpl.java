@@ -1923,7 +1923,7 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("number", number);
 	}
 	
-
+	// 대출 해지 목록
 	public void loanCancelList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[UserService => loanCancelList()]");
 		// 페이징
@@ -2026,6 +2026,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	// 보유중인 대출 목록
 	public void loanList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[UserService => loanList()]");
 		// 페이징
@@ -2128,6 +2129,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	// 대출 상품 목록
 	public void loanProductList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanProductList()]");
 
@@ -2229,6 +2231,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	// 대출 상품 검색
 	public void searchLoanProductList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanProductList()]");
 
@@ -2333,6 +2336,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	// 대출 상품 상세
 	public void newLoanDetail(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = req.getParameter("loan_product_name");
 
@@ -2342,6 +2346,7 @@ public class CustomerServiceImpl implements CustomerService {
 		model.addAttribute("loan_product_name", loan_product_name);
 	}
 
+	// 대출 신청 폼
 	public void newLoanSign(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = req.getParameter("loan_product_name");
 
@@ -2353,6 +2358,7 @@ public class CustomerServiceImpl implements CustomerService {
 		model.addAttribute("loan_product_name", loan_product_name);
 	}
 
+	// 대출 상환 내역
 	public void loanHistoryList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanHistoryList()]");
 
@@ -2454,6 +2460,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 	}
 
+	// 대출 신청자 정보
 	public void signInfo(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = (String) req.getParameter("loan_product_name");
 		String member_id = (String) req.getSession().getAttribute("customerID");
@@ -2518,6 +2525,7 @@ public class CustomerServiceImpl implements CustomerService {
 		model.addAttribute("insertCnt", insertCnt);
 	}
 
+	// 대출 원금/이자 목록
 	public void loanPrincipalRateList(HttpServletRequest req, Model model) { // 지은
 		String loan_id = (String) req.getParameter("loan_id");
 
