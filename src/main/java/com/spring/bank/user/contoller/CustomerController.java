@@ -53,9 +53,15 @@ public class CustomerController {
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
 		// service.exchanges(req, model);
+		
+		// 로그인 시 계좌 불러오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		if(member_id != null) {
+			service.accountLoad(req, model);
+		}
+		
 		return "index";
 	}
-
 	
 	// 회원가입 페이지
 	@RequestMapping("register.do")
@@ -386,20 +392,68 @@ public class CustomerController {
          
          System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
          
-         //연금 상품  insert
+         //예금 상품  insert
          service.insertDeposit(req, model);
          
 		return "customer/depositProduct/depositAction";
 	}
 	
-	//연금 상품 목록 
+	//연금 상품 목록 (지현)
 	@RequestMapping("irpProductList.do")
 	public String irpProductList(HttpServletRequest req, Model model) {
 		logger.info("url => irpProductList");
 		
+		service.irpList(req, model);
 		
 		return "customer/irp/irpProductList";
 	}
+	
+	//연금 상품검색(지현) - 고객
+	@RequestMapping("irpProductSearch.do")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		
+		service.irpProductSearch(req, model);
+		
+		return "customer/irp/irpProductSearch";
+	}
+	
+	//연금 상품 상세 보기 (지현) -고객
+	@RequestMapping("irpDetail.do")
+	public String irpDetail(HttpServletRequest req, Model model) {
+		logger.info("url => irpDetail");
+		
+		service.irpDetail(req, model);
+		
+		return "customer/irp/irpDetail";
+	}
+	
+	//연금 상품 신청화면(지현) - 고객
+	@RequestMapping("irpProductJoin")
+	public String irpProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductJoin");
+		
+		service.irpProductJoin(req, model);
+		
+		return "customer/irp/irpProductJoin";
+	}	
+	
+	//연금 상품 신청 화면에서 확인 눌렀을때 -> account 계좌 생성 & irp 테이블에 insert(지현)
+	@RequestMapping("irpProductAction")
+	public String irpAccess(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductAction");
+	      
+		 //계좌개설 insert account
+         service.makeAccount(req, model);
+         
+         System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
+         
+         //연금 상품  insert
+         service.insertIrp(req, model);
+         
+		return "customer/irp/irpAction";
+	}
+		
 
 	//적금 상품 조회(지호) - 고객
 	@RequestMapping("savingList")
@@ -430,14 +484,79 @@ public class CustomerController {
 	}
 	
 	//적금 상품 신청(지호)
-	@RequestMapping("savingProductAction")
-	public String savingProductAction(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductInsert");
+	@RequestMapping("savingProductInsert")
+	public String savingProductInsert(HttpServletRequest req, Model model) {
+		logger.info("url => savingProductInsert");
 		
 		service.savingProductAction(req, model);
 		
-		return "customer/savingProduct/savingProductAction";
+		return "customer/savingProduct/savingProductJoin";
 	}	
+	
+	// 적금 상품 신청 처리(지호) 해야함
+	@RequestMapping("savingProductAction")
+	public String savingProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => savingProductAction");
+		
+		return "customer/savingProduct/savingProductAction";
+	}
+	
+	//예금 상품 상세에서 신청하기 누르면  신청 화면 (지현)
+//	@RequestMapping("depositProductJoin")
+//	public String depositProductInsert(HttpServletRequest req, Model model) {
+//		logger.info("url => depositProductJoin");
+//		
+//		service.setDepositProductJoin(req, model);
+//		
+//		return "customer/depositProduct/depositProductJoin";
+//	}
+	
+	//
+	// 펀드 상품 조회(지호) - 고객
+	@RequestMapping("fundList")
+	public String fundList(HttpServletRequest req, Model model) {
+		logger.info("url => fundList");
+		
+		service.fundList(req, model);
+		
+		return "customer/fundProduct/fundList";
+	}
+	
+	// 펀드 상품검색(지호) - 고객
+	@RequestMapping("fundProductSearch")
+	public String fundProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /fundProductSearch]");
+		service.fundProductSearch(req, model);
+		return "customer/fundProduct/fundProductSearch";
+	}
+	
+	// 펀드 상품 상세 보기 (지호) -고객
+	@RequestMapping("fundDetail")
+	public String fundDetail(HttpServletRequest req, Model model) {
+		logger.info("url => savingDetail");
+		
+		service.fundDetail(req, model);
+		
+		return "customer/fundProduct/fundDetail";
+	}
+	
+	// 펀드 상품 신청(지호)
+	@RequestMapping("fundProductInsert")
+	public String fundProductInsert(HttpServletRequest req, Model model) {
+		logger.info("url => fundProductInsert");
+		
+		service.fundProductAction(req, model);
+		
+		return "customer/fundProduct/fundProductInsert";
+	}	
+	
+	// 펀드 상품 신청 처리(지호) 해야함
+	@RequestMapping("fundProductAction")
+	public String fundProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => fundProductAction");
+		
+		return "customer/fundProduct/fundProductAction";
+	}
 	
 	//qna 게시판(지현)
 	@RequestMapping("qnaList")
@@ -904,5 +1023,21 @@ public class CustomerController {
 		service.deleteAccountBook(req, model);
 		
 		return "redirect:accountBook";
+	}
+	
+	// 계좌연동
+	@RequestMapping("myAccountList")
+	public String myAccountList(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/myAccountList";
+	}
+	
+	// 계좌연동
+	@RequestMapping("accountConnect")
+	public String accountConnect(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/accountConnect";
 	}
 }

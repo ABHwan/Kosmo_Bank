@@ -3,6 +3,7 @@ package com.spring.bank.admin.controller;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,12 +50,12 @@ Servlet => 클라이언트의 요청을 받아서 비즈니스 로직 처리, DB
 //여기서 설정한 용량을 넘어갈 경우 location 에 upload_e1969376_b006_4781_b1cc_006e6e948798_00000074.tmp 같은형태로 저장됩니다.
 //ref : https://gs.saro.me/dev?tn=131
 
-@MultipartConfig(location = "C:\\dev88\\workspace\\SPRING_PJ_ABH\\src\\main\\webapp\\resources\\images\\upload", fileSizeThreshold = 1024
+@MultipartConfig(location = "C:\\Dev88\\KOSMO_BANK_PJ\\src\\main\\webapp\\resources\\images\\admin\\upload", fileSizeThreshold = 1024
 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 @Controller
 @RequestMapping("manager")
 public class AdminController {
-	private static final String IMG_UPLOAD_DIR = "C:\\\\dev88\\\\workspace\\\\SPRING_PJ_ABH\\\\src\\\\main\\\\webapp\\\\resources\\\\images\\\\upload";
+	private static final String IMG_UPLOAD_DIR = "C:\\\\Dev88\\\\KOSMO_BANK_PJ\\\\src\\\\main\\\\webapp\\\\resources\\\\images\\\\admin\\\\upload";
     private ImageUploaderHandler uploader;
 	
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
@@ -78,6 +79,7 @@ public class AdminController {
 	@RequestMapping("index")
 	public String index(HttpServletRequest req, Model model) {
 		System.out.println("[index.ad]");
+
 		
 		// 이동할 페이지
 		return "index(manager)";
@@ -126,7 +128,7 @@ public class AdminController {
         String src = mRequest.getParameter("src");
         MultipartFile mf = mRequest.getFile("file");
 
-        String path = "G:\\dev88\\workspace\\SPRING_PJ_ABH\\src\\main\\webapp\\resources\\images\\upload\\";
+        String path = "C:\\Dev88\\KOSMO_BANK_PJ\\src\\main\\webapp\\resources\\images\\admin\\upload\\";
 
         String originFileName = mf.getOriginalFilename(); // 원본 파일 명
         long fileSize = mf.getSize(); // 파일 사이즈
@@ -174,6 +176,16 @@ public class AdminController {
 		service.deleteCustomer(req, model);
 		service.customerList(req, model);
 		return "manager/customerInfo/customerInfo";
+	}
+	
+	//관리자 - 금융상품 관리
+	@RequestMapping("bankingAccept")
+	public String bankingAccept(HttpServletRequest req, Model model) {
+		logger.info("url => bankingAccept");
+		
+		service.selectBanking(req, model);
+		
+		return "manager/customerInfo/bankingAccept";
 	}
 	
 	// 관리자 - 예금관리 - 상품등록페이지
@@ -306,7 +318,80 @@ public class AdminController {
 		service.selectSavingProduct(req, model);
 		return "manager/savingProduct/savingProductList";
 	}
+
+	// 관리자 - 펀드관리 - 상품추가	(지호)
+	@RequestMapping("fundProductInsert")
+	public String fundProductInsert(HttpServletRequest req ,Model model) {
+		System.out.println("url ==> fundProductInsert");
+		
+		return "manager/fundProduct/fundProductInsert";
+	}
 	
+	// 관리자 - 펀드관리 - 상품등록처리(지호)
+	@RequestMapping("fundProductInsertAction")
+	public String fundProductInsertAction(HttpServletRequest req, Model model) throws ServletException, IOException {
+		System.out.println("[url ==> /fundProductInsertAction]");
+		
+		// 이미지 업로드 설정 시작
+		String contentType = req.getContentType();
+		if(contentType != null && contentType.toLowerCase().startsWith("multipart/")) {
+			uploader = new ImageUploaderHandler();
+			System.out.println("IMG_UPLOAD" + IMG_UPLOAD_DIR);
+			uploader.setUploadPath(IMG_UPLOAD_DIR);
+			uploader.imageUpload(req, model);
+		}
+		// 이미지 업로드 설정 끝
+		service.fundProductInsertAction(req, model);
+		return "manager/fundProduct/fundProductInsertAction";
+	}
+	// 관리자 - 펀드관리 - 상품조회(지호)
+	@RequestMapping("fundProductList")
+	public String fundProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /fundProductList]");
+		service.selectFundProduct(req, model);
+		return "manager/fundProduct/fundProductList";
+	}
+	
+	// 관리자 - 펀드관리 - 상품검색(지호)
+	@RequestMapping("fundProductSearch")
+	public String fundProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /fundProductSearch]");
+		service.searchFundProduct(req, model);
+		return "manager/fundProduct/fundProductSearch";
+	}
+	
+	// 관리자 - 펀드관리 - 상품 상세조회
+    @RequestMapping("fundProductInfo")
+    public String fundProductInfo(HttpServletRequest req, Model model) {
+        System.out.println("[url ==> /fundProductInfo]");
+        service.getFundProductInfo(req, model);
+        return "manager/fundProduct/fundProductInfo";
+    }
+   
+    // 관리자 - 펀드관리 - 상품 수정 페이지
+    @RequestMapping("fundProductUpdate")
+    public String fundProductUpdate(HttpServletRequest req, Model model) {
+        System.out.println("[url ==> /fundProductUpdate]");
+        service.getFundProductInfo(req, model);
+        return "manager/fundProduct/fundProductUpdate";
+    }
+   
+    // 관리자 - 펀드관리 - 상품 수정 처리
+    @RequestMapping("fundProductUpdateAction")
+    public String fundProductUpdateAction(HttpServletRequest req, Model model) {
+        System.out.println("[url ==> /fundProductUpdateAction]");
+        service.updateFundProduct(req, model);
+        return "manager/fundProduct/fundProductUpdateAction";
+    }
+    
+	// 관리자 - 펀드관리 - 상품삭제(지호)
+	@RequestMapping("fundProductDelete")
+	public String fundProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /fundProductDelete]");
+		service.deleteFundProduct(req, model);
+		service.selectFundProduct(req, model);
+		return "manager/fundProduct/fundProductList";
+	}
 	
 	//qnalist 회원이 작성한것 리스트 가져오기(지현)
 	@RequestMapping("qnaList_mng")
@@ -401,6 +486,83 @@ public class AdminController {
 		return "manager/qna/faqDeleteAction";
 	}
 
+	//관리자 - 연금 추가(지현)
+	@RequestMapping("irpProductInsert")
+	public String irpAdd(HttpServletRequest req, Model model) {
+		logger.info("url => irpInsert");
+		
+		return "manager/irp/irpProductInsert";
+	}
+	
+	//관리자 - 연금 추가 처리 (지현)
+	@RequestMapping("irpProductInsertAction")
+	public String irpProductInsertAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductInsertAction");
+		
+		service.insertIrpProduct(req, model);
+		
+		return "manager/irp/irpProductInsertAction";
+	}
+	
+	// 관리자 - 연금관리 - 상품조회페이지
+	@RequestMapping("IrpProductList")
+	public String IrpProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /IrpProductList]");
+		
+		service.selectIrpProduct(req, model);
+		
+		return "manager/irp/irpProductList";
+	}
+	
+	// 관리자 - 연금관리 - 상품검색
+	@RequestMapping("irpProductSearch")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		service.searchIrpProduct(req, model);
+		return "manager/irp/irpProductSearch";
+	}
+	
+	// 관리자 - 연금 관리 - 상품 상세조회
+	@RequestMapping("irpProductInfo")
+	public String irpProductInfo(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductInfo]");
+		
+		service.getIrpProductInfo(req, model);
+		
+		return "manager/irp/irpProductInfo";
+	}
+	
+	// 관리자 연금 관리 - 상품 수정 페이지
+	@RequestMapping("irpProductUpdate")
+	public String irpProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductUpdate]");
+		
+		service.getIrpProductInfo(req, model);
+		
+		return "manager/irp/irpProductUpdate";
+	}
+	
+	// 관리자 연금 관리 - 상품 수정 처리
+	@RequestMapping("irpProductUpdateAction")
+	public String irpProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductUpdateAction]");
+		
+		service.updateIrpProduct(req, model);
+		
+		return "manager/irp/irpProductUpdateAction";
+	}
+		
+	// 관리자 - 연금 관리 - 상품삭제
+	@RequestMapping("irpProductDelete")
+	public String irpProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductDelete]");
+		
+		service.deleteIrpProduct(req, model);
+		service.selectIrpProduct(req, model);
+		
+		return "manager/irp/irpProductList";
+	}
+	
 	// 회원별 계좌목록페이지
 	@RequestMapping("customerAccountInfo")
 	public String customerAccountInfo(HttpServletRequest req, Model model) {
@@ -576,7 +738,6 @@ public class AdminController {
 	// 공지사항 글쓰기처리 - 관리자(민재)
 	@RequestMapping("mngNoticeWriteAction")
 	public String mngNoticeWriteAction(HttpServletRequest req, Model model) {
-		System.out.println("글쓰기처리 시작");
 		logger.info("[url ==> /mngNoticeWriteAction.us]");
 		
 		service.mngNoticeWriteAction(req, model);
@@ -601,7 +762,6 @@ public class AdminController {
 	// 공지사항 수정페이지
 	@RequestMapping("mngNoticeModifyDetail")
 	public String mngNoticeModifyDetail(HttpServletRequest req, Model model) {
-		System.out.println("안떠..");
 		logger.info("[url ==> /mngNoticeModifyDetail.us]");
 		
 		service.mngNoticeModifyDetail(req, model);

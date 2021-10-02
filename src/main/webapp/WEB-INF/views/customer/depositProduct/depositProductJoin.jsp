@@ -99,34 +99,37 @@
 						           </tr>
 						           
 						           <tr>
-						           		<th scope="col">한도       <small>*100만원 단위</small>
+						           		<th scope="col">예치금      <small>*10만원 이상</small>
 						           		 </th>
 						           		<td>
-						           		<input type="number" name="account_limit" id="account_limit" step="100" min="100">만원</td>
+						           		<input type="number" name="account_balance" id="account_limit"  min="10">만원</td>
 						           		<!-- deposit_balance -->
 						           </tr>
 						      		
 						      		<tr>
 						      			<th scope="col">은행코드</th>
 						      			<td>
-							           		<c:choose>
+							           		<c:choose> 
 							           			<c:when test="${dto.deposit_product_bankCode==0}">
 							           				미기재
 							           			</c:when>
 							           			<c:when test="${dto.deposit_product_bankCode==1}">
-							           				신한은행
-							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==2}">
 							           				국민은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==3}">
+							           			<c:when test="${dto.deposit_product_bankCode==2}">
 							           				우리은행
 							           			</c:when>
+							           			<c:when test="${dto.deposit_product_bankCode==3}">
+							           				농협은행
+							           			</c:when>
 							           			<c:when test="${dto.deposit_product_bankCode==4}">
-							           				기업은행
+							           				신한은행
 							           			</c:when>
 							           			<c:when test="${dto.deposit_product_bankCode==5}">
 							           				하나은행
+							           			</c:when>
+							           			<c:when test="${dto.deposit_product_bankCode==6}">
+							           				코스모 은행
 							           			</c:when>
 							           		</c:choose>
 							           		<input type="hidden" value="${dto.deposit_product_bankCode}" name ="account_bankCode">

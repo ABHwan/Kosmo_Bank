@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예금 상세 보기</title>
+<title>적금 상세 보기</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 
@@ -27,7 +27,19 @@
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-			
+				<!-- 고정헤더 -->
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner py-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
+								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br />
+									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
+							</div>
+						</div>
+					</div>
+				</div>
 				<section id="main">
 			      <div class="main__container">
 					<h2 class="title">적금상품 상세</h2>
@@ -38,7 +50,7 @@
 									<div class="card-title">${dto.saving_product_name}</div>
 								</div>
 								<div class="card-body">
-									 <form action="savingProductAction" name="savingProductForm">
+									 <form action="savingProductInsert" name="savingProductForm">
 									 	<sec:csrfInput/>
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
@@ -140,7 +152,8 @@
 						      		</tr>
 						        </table>
 						        <div align ="right">
-						          	<input type="submit" class="btn btn-primary btn-border" value="적금상품 신청하기" >
+						          	<!-- <input type="submit" class="btn btn-primary btn-border" value="적금상품 신청하기" > -->
+						          	<input type="button" class="btn btn-primary btn-border" value="적금상품 신청하기" >
 						        </div>
 			        </form>
 								</div>

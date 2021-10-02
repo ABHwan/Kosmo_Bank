@@ -30,89 +30,88 @@
 				</div>
 				<div class="page-inner mt--5">
 
-					<div class="row">
-						
-						<div class="col-md-4">
-							<div class="card">
-								<div class="card-body">
-									<div class="card-title fw-mediumbold">보유중인 계좌</div>
-									<div class="card-list">
-										<div class="item-list">
-											<div class="info-user ml-3">
-												<div class="status">대표계좌</div>
-												<div class="username"><h2>200,000,000원</h2></200></div>
-												<div class="status">01202-30934-023 국민</div>
-												
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div><br>
-										<div class="item-list">
-											<div class="avatar">
-												<img src="${rePath}images/bank/gookminicon.jpg" alt="..." class="avatar-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">200,000,000원</div>
-												<div class="status">012-30434-023 국민</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
+					<div class="row" style="margin-bottom: 250px;">
+						<c:if test="${sessionScope.customerID == null && sessionScope.adminID == null }">
+						<div class="col-md-4" style="margin-left: 32%;">
+							<div class="card card-info card-annoucement card-round" 
+								style="background: #e8ecf1 !important; top: 100; border-radius: 100px; border: 4px solid #e8ecf1;">
+								<div class="card-body text-center" style="padding: 30px 25px;">
+									<div class="card-opening" style="color: black; font-size: 30px; font-weight: 600;">Welcome KOSMO BANK,</div>
+									<div class="card-desc" style="color: black; font-weight: 500; font-size: 20px;">
+										환영합니다! 더 많은 서비스를 이용하고 싶다면,<br>
+										 <Strong>로그인</Strong>을 해주세요!
+									</div>
+									<div class="card-detail">
+										<div class="login-btn-wrap">
+											<button type="button" class="login-btn" onclick="window.location='login.do'"
+											onmouseover="style='background-color: lightseagreen !important;'"
+											onmouseout="style='background-color: cadetblue !important;'">
+												로그인 후 이용해주세요!
 											</button>
 										</div>
-										<div class="item-list">
-											<div class="avatar">
-												<img src="${rePath}images/bank/sinhanicon.png" alt="..." class="avatar-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">100,000원</div>
-												<div class="status">10-2031-2157 신한</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="avatar">
-												<img src="${rePath}images/bank/uriicon.jpg" alt="..." class="avatar-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">100,000,000원</div>
-												<div class="status">957-345-2-1-85 우리</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="avatar">
-												<img src="${rePath}images/bank/ibkicon.jpg" alt="..." class="avatar-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">100,000,000원</div>
-												<div class="status">5-3-74865-232 기업</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="avatar">
-												<img src="${rePath}images/bank/hanaicon.png" alt="..." class="avatar-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">100,000,000원</div>
-												<div class="status">3542-34-35747-1 하나</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-									
 									</div>
 								</div>
 							</div>
 						</div>
+						</c:if>
+					
+					
+						<c:if test="${sessionScope.customerID != null}">
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-body">
+								
+									<div class="card-title fw-mediumbold" style="display:flex;">보유중인 계좌
+										<div class="account_link" style="margin-left: auto; margin-top: -3px;">
+											<a href="accountConnect">
+												<button class="btn btn-icon btn-primary btn-round btn-xs">
+													<i class="fa fa-plus"></i>
+												</button>
+												<small>연동추가</small>
+											</a>
+										</div>
+									</div>
+									<div class="card-list">
+										<div class="item-list">
+											<div class="info-user ml-3">
+											<c:choose>
+											<c:when test="${sessionScope.customerID == null }">
+												<div class="login-btn-wrap"><button type="button" class="login-btn" onclick="window.location='login.do'">로그인 후 이용해주세요!</button></div>
+												<div class="status"> </div>
+											</c:when>
+											<c:when test="${vo.account_default == 1 }">
+												<div class="status">대표계좌</div>
+												<div class="username"><h2><fmt:formatNumber value="${vo.account_balance}"/>원</h2></div>
+												<div class="status">${vo.account_id} </div>
+											</c:when>	
+											
+											<c:otherwise>
+												<div class="status">대표계좌</div>
+												<div class="username"><h2 style="color:#4d7edc; font-weight:500;">대표를 계좌를 설정해주세요!</h2></div>
+											</c:otherwise>
+											
+											</c:choose>
+											
+											</div>
+										
+										</div><br>
+										<c:forEach var="dto" items="${dtos}" >
+										<div class="item-list">
+											<div class="avatar">
+												<img src="${dto.account_bankImg}" alt="..." class="avatar-img rounded-circle">
+											</div>
+											<div class="info-user ml-3">
+												<div class="username"><fmt:formatNumber value="${dto.account_balance }" />원</div>
+												<div class="status">${account_id} 국민</div>
+											</div>
+										</div>
+										</c:forEach>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
 						<div class="col-md-4">
 							<div class="card">
 								<div class="card-header">
@@ -170,6 +169,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-md-4">
 							<div class="card full-height">
 								<div class="card-header">
@@ -240,7 +240,7 @@
 								</div>
 							</div>
 						</div>
-						
+						</c:if>
 					</div>
 						
 					<!-- 외환정보 -->
@@ -393,8 +393,10 @@
 
 		
 		</div>
-		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+		
 	</div>
+	
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>

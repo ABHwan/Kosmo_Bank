@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -105,7 +107,25 @@ public interface CustomerDAO {
 
 	// 예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+	
+	// 연금 상품갯수
+	public int getIrpCnt();
 
+	// 연금 상품 조회
+	public List<IrpProductVO> getIrpList(Map<String, Integer> map);
+	
+	// 연금 상품 수(검색결과수)
+	public int getIrpProductSearchCnt(String search);
+	
+	// 연금 상품 검색(입력받아서 검색)
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map);
+	
+	// 연금 상품 상세 보기
+	public IrpProductVO getIrpDetail(String irp_product_name);
+
+	//연금 상품 신청하기 
+//	public int irpInsert(IrpProductVO vo);
+	
 	// 적금 상품갯수
 	public int getSavingCnt();
 
@@ -121,10 +141,31 @@ public interface CustomerDAO {
 	// 적금 상품 상세 보기
 	public SavingProductVO getSavingDetail(String saving_product_name);
 
+	// 적금 신청
+	public int savingProductAction(SavingProductVO vo);
+	
+	// 펀드 상품갯수
+	public int getFundCnt();
+
+	// 펀드 상품 조회
+	public List<FundProductVO> getFundList(Map<String, Integer> map);
+	
+	// 펀드 상품 수(검색결과수)
+	public int getFundProductSearchCnt(String search);
+	
+	// 펀드 상품 검색(입력받아서 검색)
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map);
+	
+	// 펀드 상품 상세 보기
+	public FundProductVO getFundDetail(String fund_title);
+
+	// 펀드 신청
+	public int fundProductAction(FundProductVO vo);
+
 	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
 	
-	//멤버의 unique_key가져오기 
+	//멤버의 unique_key가져오기
 	public String getUniqueKey(String id);
 	
 	//예금 신청 시 계좌 생성
@@ -237,4 +278,22 @@ public interface CustomerDAO {
 	
 	// 공지사항 상세 페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);
+	
+	// 대표 계좌 불러오기
+	public AccountVO getAccountDefault(String unique_key);
+	
+	// 계좌 불러오기(연동 O)
+	public List<AccountVO> getAccountLinked(String unique_key);
+	
+	// 계좌 불러오기(연동 X)
+	public List<AccountVO> getAccountUnLinked(String unique_key);
+	
+	// 계좌 연동하기
+	public int accountLinkAction(Map<String, Object> map);
+	
+	// 계좌 연동해지
+	public int accountUnLinkAction(Map<String, Object> map);
+	
+	// 대표 계좌 설정
+	
 }
