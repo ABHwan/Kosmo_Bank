@@ -15,7 +15,7 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
-import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.product.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.TransferVO;
@@ -497,7 +497,11 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	
-	
+	//대출계좌 정상으로 두기
+	public int changeAccountState0(Map<String, Object> map) {
+		return sqlSession.update("com.spring.bank.admin.dao.AdminDAO.changeAccountState0", map);
+			
+	}
 	// !지은!
 	
 	// 공지사항 쓰기 처리(민재)
@@ -534,4 +538,5 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return sqlSession.delete("com.spring.bank.admin.dao.AdminDAO.noticeDeleteAction", notice_num);
 	}
+
 }

@@ -21,7 +21,7 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
-import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.product.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.TransferVO;
@@ -2680,61 +2680,10 @@ public class AdminServiceImpl implements AdminService {
 		map.put("state", 2); // 승인
 		int updateCnt = dao.loanRequestAction(map);
 
+		LoanVO loan = dao.getLoanInfo(map);
+		map.put("account_id", loan.getAccount_id()); // 승인
 		if (updateCnt == 1) { // 승인 완료
-			// 대출 정보 가져오기
-			LoanVO loan = dao.getLoanInfo(map);
-			System.out.println(loan);
-			// bankCode 가져오기
-			UserVO loanMember = dao.getUserInfo(loan.getMember_id());
-			LoanProductVO loanProduct = dao.getLoanProductInfo(loan.getLoan_product_name());
-
-			java.util.Date date = new java.util.Date();
-
-			TransferVO trans = new TransferVO();
-			trans.setAccount_id(loan.getAccount_id());
-			trans.setTransfer_money((int) loan.getLoan_amount());
-			trans.setTransfer_inOut("입금");
-			trans.setTransfer_inComment(loan.getLoan_product_name() + " 승인 " + date);
-			trans.setTransfer_senderName(loan.getLoan_product_name());
-			trans.setTransfer_receiverName(loanMember.getMember_name());
-			trans.setTransfer_bankCode(loanProduct.getLoan_product_bankCode());
-
-			// 대출금 신청계좌로 이체
-			int insertCnt = dao.transNewLoanAccount(trans);
-
-			if (insertCnt == 1) {
-				// 신청계좌 잔고 갱신
-				map.clear();
-				map.put("loan_amount", loan.getLoan_amount());
-				map.put("account_id", loan.getAccount_id());
-				int updateCnt2 = dao.setNewLoanAccount(map);
-
-				if (updateCnt2 == 0) {
-					map.clear();
-					map.put("loan_id", req.getParameter("loan_id"));
-					map.put("state", 1); // 신청
-					updateCnt = dao.loanRequestAction(map);
-					updateCnt = 0;
-
-					TransferVO trans2 = new TransferVO();
-					trans2.setAccount_id(loan.getAccount_id());
-					trans2.setTransfer_money(-(int) loan.getLoan_amount());
-					trans2.setTransfer_inOut("입금정정");
-					trans2.setTransfer_inComment(loan.getLoan_product_name() + " 입금정정 " + date);
-					trans2.setTransfer_senderName(loan.getLoan_product_name());
-					trans2.setTransfer_receiverName(loanMember.getMember_name());
-					trans2.setTransfer_bankCode(loanProduct.getLoan_product_bankCode());
-
-					dao.transNewLoanAccount(trans2);
-				}
-
-			} else {
-				map.clear();
-				map.put("loan_id", req.getParameter("loan_id"));
-				map.put("state", 1); // 신청
-				updateCnt = dao.loanRequestAction(map);
-				updateCnt = 0;
-			}
+			dao.changeAccountState0(map);
 
 		}
 

@@ -1,5 +1,6 @@
 package com.spring.bank.user.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +11,11 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
-import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
-import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.product.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.MyDepositVO;
 import com.spring.bank.user.vo.MyIRPVO;
@@ -221,6 +221,8 @@ public interface CustomerDAO {
 
 	public ArrayList<LoanProductVO> loanList();
 
+	public Date getLoanDate();
+	
 	public ArrayList<LoanVO> getLoanCancelList(Map<String, Object> map);
 
 	public int getLoanCancelCnt(String member_id);
@@ -242,9 +244,7 @@ public interface CustomerDAO {
 	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map);
 
 	public int getLoanHistoryCnt(String member_id);
-
-	public ArrayList<AccountVO_old> loanAccountInfo(String member_id);
-
+ 
 	public int newLoanSignAction(LoanVO loan);
 
 	public LoanVO getLoanInfo(Map<String, Object> map);
@@ -293,7 +293,28 @@ public interface CustomerDAO {
 	
 	// 계좌 연동해지
 	public int accountUnLinkAction(Map<String, Object> map);
-	
+
+	public int accountPayment(Map<String, Object> map);
+
+	public AccountVO getAccountInfo(Map<String, Object> map);
+
+	public int transferLoan(TransferVO trans);
+
+	public int getTransID(TransferVO trans);
+
+	public ArrayList<AccountVO> getAccountInfos(Map<String, Object> map);
+
+	public int addLoanHistory(LoanHistoryVO history);
+
+	public int updateLoanPayment(LoanVO loan);
+
+	public int loanRequestAction(Map<String, Object> map);
+
+	public int loanAccountState1(Map<String, Object> map);
+
+	public int accountUniqueloan(Map<String, Object> map);
+
+
 	// 대표 계좌 설정
 	
 }

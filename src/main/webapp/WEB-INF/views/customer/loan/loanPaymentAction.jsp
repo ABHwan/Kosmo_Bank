@@ -11,7 +11,7 @@
 <body>	
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
-		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
@@ -36,15 +36,15 @@
 	 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" /> 
  
- 	<c:if test="${insertCnt == 1 && insertCnt2 == 1}">
+ 	<c:if test="${updateCnt2 == 1}">
 		<script type="text/javascript">
-			alert("신규 대출 신청 완료");
+			alert("대출 상품 월 상환 완료");
 			window.location="loanAccountList.do";
 		</script>
  	</c:if>
- 	<c:if test="${insertCnt != 1 || insertCnt2 != 1}">
+ 	<c:if test="${updateCnt2 != 1}">
 		<script type="text/javascript">
-			alert("신규 대출 신청이 완료되지 않았습니다. 다시 시도하세요.");
+			alert("대출 상품 월 상환이 완료되지 않았습니다. 다시 시도하세요.");
 			window.history.back();
 		</script>
  	</c:if>

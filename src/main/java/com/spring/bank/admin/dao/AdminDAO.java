@@ -11,7 +11,7 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
 import com.spring.bank.user.vo.InquiryVO;
-import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.product.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
 import com.spring.bank.user.vo.TransferVO;
@@ -200,6 +200,9 @@ public interface AdminDAO {
 	// 대출 목록 개수
 	public int getLoanCnt();
 
+	// 대출 계좌 정상 변경
+	public int changeAccountState0(Map<String, Object> map);
+	
 	// 대출 요청 목록 개수
 	public int getLoanRequestCnt();
 

@@ -1,5 +1,6 @@
 package com.spring.bank.user.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,11 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
-import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
-import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.product.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.MyDepositVO;
 import com.spring.bank.user.vo.MyIRPVO;
@@ -540,12 +540,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return dao.getLoanHistoryCnt(member_id);	
 	}
 
-	public ArrayList<AccountVO_old> loanAccountInfo(String member_id) {
-		System.out.println("[UserDAO => loanAccountInfo()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.loanAccountInfo(member_id);	
-	}
-
 	public int newLoanSignAction(LoanVO loan) {
 		System.out.println("[UserDAO => newLoanSignAction()]");
 		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
@@ -557,7 +551,60 @@ public class CustomerDAOImpl implements CustomerDAO {
 		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 		return dao.getLoanInfo(map);	
 	}
+
+	public int getLoanHistoryCntToLoan(Map<String, Object> map) {
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getLoanHistoryCntToLoan", map);
+	}
+
+	public Date getLoanDate() {
+		return sqlSession.getMapper(CustomerDAO.class).getLoanDate();
+	}
 	
+	//////
+	public int accountPayment(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).accountPayment(map);
+
+	}
+
+	public AccountVO getAccountInfo(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).getAccountInfo(map);
+	}
+
+	public int transferLoan(TransferVO trans) {
+		return sqlSession.getMapper(CustomerDAO.class).transferLoan(trans);
+	}
+
+	public int getTransID(TransferVO trans) {
+		return sqlSession.getMapper(CustomerDAO.class).getTransID(trans);
+	}
+
+	public ArrayList<AccountVO> getAccountInfos(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).getAccountInfos(map);
+	}
+
+	public int addLoanHistory(LoanHistoryVO history) {
+		return sqlSession.getMapper(CustomerDAO.class).addLoanHistory(history);
+	}
+
+	public int updateLoanPayment(LoanVO loan) {
+		return sqlSession.getMapper(CustomerDAO.class).updateLoanPayment(loan);
+
+	}
+
+	public int loanRequestAction(Map<String, Object> map) {	
+		return sqlSession.getMapper(CustomerDAO.class).loanRequestAction(map);
+	}
+
+	public int loanAccountState1(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).loanAccountState1(map);
+	}
+
+	public int accountUniqueloan(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).accountUniqueloan(map);
+
+	}
+////
+
 	//지은!!!!!!!!1
 	
 	// 회원 이름 불러오기(민재) 
@@ -660,6 +707,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int accountUnLinkAction(Map<String, Object> map) {
 		return sqlSession.getMapper(CustomerDAO.class).accountUnLinkAction(map);
 	}
+
+
 
 	
 }

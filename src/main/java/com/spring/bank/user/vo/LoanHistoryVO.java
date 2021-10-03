@@ -7,8 +7,10 @@ public class LoanHistoryVO {
 	private int loan_id;
 	private int transfer_id;
 	private Date loan_history_date;
-	private int loan_history_state;
+	private int loan_history_state;//1이자/2원금/3중도상환+수수료/4해지로 인한 원금 상환
 	private int loan_history_amount;
+	private int loan_history_tranAmount;
+	private int loan_history_tranInterest;
 	public int getLoan_history_id() {
 		return loan_history_id;
 	}
@@ -45,11 +47,25 @@ public class LoanHistoryVO {
 	public void setLoan_history_amount(int loan_history_amount) {
 		this.loan_history_amount = loan_history_amount;
 	}
+	public int getLoan_history_tranAmount() {
+		return loan_history_tranAmount;
+	}
+	public void setLoan_history_tranAmount(int loan_history_tranAmount) {
+		this.loan_history_tranAmount = loan_history_tranAmount;
+	}
+	public int getLoan_history_tranInterest() {
+		return loan_history_tranInterest;
+	}
+	public void setLoan_history_tranInterest(int loan_history_tranInterest) {
+		this.loan_history_tranInterest = loan_history_tranInterest;
+	}
 	@Override
 	public String toString() {
 		return "LoanHistoryVO [loan_history_id=" + loan_history_id + ", loan_id=" + loan_id + ", transfer_id="
 				+ transfer_id + ", loan_history_date=" + loan_history_date + ", loan_history_state="
-				+ loan_history_state + ", loan_history_amount=" + loan_history_amount + "]";
+				+ loan_history_state + ", loan_history_amount=" + loan_history_amount + ", loan_history_tranAmount="
+				+ loan_history_tranAmount + ", loan_history_tranInterest=" + loan_history_tranInterest + "]";
 	}
+	
 	
 }

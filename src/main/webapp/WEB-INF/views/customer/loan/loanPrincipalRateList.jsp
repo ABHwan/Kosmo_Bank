@@ -41,6 +41,7 @@
 								</div>
 								<div class="card-body">
 									<form id="monthlyPrincipalRateform" action="#" method="post">
+										<input name="loan_id" value="${loan.loan_id}" type="hidden">
 										<sec:csrfInput/>
 										<table class="table table-hover card-table">
 											<thead>
@@ -52,7 +53,6 @@
 													<th scope="col">월납입원금</th>  
 													<th scope="col">월납입이자</th>
 													<th scope="col">상환예정일</th>
-													<th scope="col"></th>
 												</tr>
 											</thead>
 											<tbody id="tblBody">
@@ -106,8 +106,7 @@
 														<td></td>
 														<td></td>
 														<td></td>
-														<td></td>
-														<td></td>
+														<td></td> 
 													</tr>
 													<%
 														sum_amount = amount;
@@ -141,9 +140,7 @@
 														<td><fmt:formatNumber value="<%=tran_amount%>" />원</td>
 														<td><fmt:formatNumber value="<%=tran_interest%>" />원</td>
 														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
-														<td>
-															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
-														</td>
+														 
 													</tr>
 													<% 		
 															tran_interest = Math.round((sum_amount * (rate / 12)));
@@ -170,8 +167,7 @@
 														<td></td>
 														<td></td>
 														<td></td>
-														<td></td>
-														<td></td>
+														<td></td> 
 													</tr>
 													<%
 														long tran_amount = first_tran_amount;
@@ -192,9 +188,7 @@
 														<td><fmt:formatNumber value="<%=tran_amount%>" />원</td>
 														<td><fmt:formatNumber value="<%=tran_interest%>" />원</td>
 														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
-														<td>
-															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
-														</td>
+														 
 													</tr>
 													<% 		
 															tran_interest = Math.round((sum_amount * (rate / 12)));
@@ -217,8 +211,7 @@
 														<td></td>
 														<td></td>
 														<td></td>
-														<td></td>
-														<td></td>
+														<td></td> 
 													</tr>
 													<% 
 														long monthly = first_monthlyRepayment;
@@ -241,9 +234,7 @@
 														<td><fmt:formatNumber value="<%=tran_amount%>" />원</td>
 														<td><fmt:formatNumber value="<%=tran_interest%>" />원</td>
 														<td><%=date%><%-- <fmt:formatDate value="<%=return_date%>" pattern="yyyy/MM/dd" /> --%></td>
-														<td>
-															<button class="btn btn-primary btn-xs" onclick="window.location=''">납부</button>
-														</td>
+														 
 													</tr>
 													<% 		
 															if(i == month - 1) tran_amount = amount;
@@ -252,7 +243,9 @@
 												</c:if>
 											</tbody>
 										</table>
-										<div class="d-flex justify-content-center"><button class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalPayment.do'" type="button">해지하기</button></div>
+										<div class="d-flex justify-content-center">
+										<button class="btn btn-primary btn-xs" formaction="loanPrincipalRatePayment.do">납부</button>
+										<button class="btn btn-primary btn-xs" formaction="loanCancelAction.do">해지하기</button></div>
 									</form>
 								</div>
 							</div>

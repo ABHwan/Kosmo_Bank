@@ -754,6 +754,14 @@ public class CustomerController {
 		service.loanCancelList(req, model);
 		return "customer/loan/loanCancelList";
 	}
+	
+	// 대출 해지 처리
+	@RequestMapping("loanCancelAction.do")
+	public String loanCancelAction(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanCancelAction]");
+		service.loanAccountCancelAction(req, model);
+		return "customer/loan/loanCancelAction";
+	}
 
 	// 대출 해지 상세
 	@RequestMapping("loanCancelDetail.do")
@@ -791,6 +799,22 @@ public class CustomerController {
 		return "customer/loan/loanPrincipalDetail";
 	}
 
+	// 대출 원금 납부
+	@RequestMapping("loanPrincipalRatePayment.do")
+	public String loanPrincipalRatePayment(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalRatePayment]");
+		service.loanPaymentDetail(req, model);
+		return "customer/loan/loanPrincipalRatePayment";
+	}
+
+	// 대출 원금 납부
+	@RequestMapping("loanPaymentAction.do")
+	public String loanPaymentAction(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPaymentAction]");
+		service.loanPaymentAction(req, model);
+		return "customer/loan/loanPaymentAction";
+	}
+	
 	// 대출 원금 납부
 	@RequestMapping("loanPrincipalPayment.do")
 	public String loanPrincipalPayment(HttpServletRequest req, Model model) {

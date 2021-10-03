@@ -1,4 +1,4 @@
-package com.spring.bank.user.vo;
+package com.spring.bank.product.vo;
 
 import java.sql.Date;
 

@@ -362,6 +362,11 @@
 
 		<!-- 지은 -->
 	
+    <!-- 대출 승인 - 계좌 상태 정상으로 토글 -->
+    <update id="changeAccountState0" parameterType="java.util.Map">
+		UPDATE account SET account_state = 0 WHERE account_id = #{account_id}   
+    </update>
+    
 	<!-- 대출 상품 개수 -->
 	<select id="getLoanProductCnt" resultType="int">
 		SELECT COUNT(*) FROM loan_product
@@ -387,7 +392,7 @@
 	</select>
 	
 	<!-- 대출 상품 목록 -->
-	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.LoanProductVO">
    		<![CDATA[
 	    	SELECT * 
 			  FROM (SELECT loan_product_name
@@ -412,14 +417,14 @@
     </select>
     
 	<!-- 대출 상품  -->
-	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.user.vo.LoanProductVO">
+	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.LoanProductVO">
     	SELECT * 
 		  FROM loan_product
 		 WHERE loan_product_name = #{loan_product_name} 
     </select>
     
 	<!-- 대출 상품 목록 search -->
-	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.LoanProductVO">
    		<![CDATA[
 	    	SELECT * 
 			  FROM (SELECT loan_product_name
@@ -445,7 +450,7 @@
 		]]>
     </select>
     
-    <insert id="loanProductInsert" parameterType="com.spring.bank.user.vo.LoanProductVO">
+    <insert id="loanProductInsert" parameterType="com.spring.bank.product.vo.LoanProductVO">
     	INSERT INTO loan_product(loan_product_name
     							 , loan_product_rate
     							 , loan_product_minPrice
@@ -470,7 +475,7 @@
     	      )
     </insert>
     
-    <update id="loanProductUpdate" parameterType="com.spring.bank.user.vo.LoanProductVO">
+    <update id="loanProductUpdate" parameterType="com.spring.bank.product.vo.LoanProductVO">
     	UPDATE loan_product 
     	   SET loan_product_name = #{loan_product_name}
     	       , loan_product_rate = #{loan_product_rate}

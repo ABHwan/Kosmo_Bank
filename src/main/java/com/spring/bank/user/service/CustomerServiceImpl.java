@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -34,13 +35,12 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
-import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.IrpVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
-import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.product.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.MyDepositVO;
 import com.spring.bank.user.vo.MyIRPVO;
@@ -2595,6 +2595,33 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	//대출 해지 액션
+	public void loanAccountCancelAction(HttpServletRequest req, Model model) {
+		//loanid에서 해지state
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loan_id", req.getParameter("loan_id"));
+		map.put("state", 4); // 해지
+		int updateCnt = dao.loanRequestAction(map);
+
+		LoanVO loan = dao.getLoanInfo(map);
+		//account 에서 돈 빠져나가고 해지
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		UserVO user = dao.getUserInfo(member_id);
+		map.clear();
+		map.put("unique_key", user.getUnique_key());
+		map.put("account_id", loan.getAccount_id());
+		AccountVO account = dao.getAccountInfo(map);
+
+		map.put("account_balance", account.getAccount_balance() - loan.getLoan_balance());
+		int updateCnt3 = dao.accountPayment(map);
+		int updateCnt2 = dao.loanAccountState1(map);
+		
+		model.addAttribute("updateCnt", updateCnt); 
+		model.addAttribute("updateCnt2", updateCnt2);
+		model.addAttribute("updateCnt3", updateCnt3);
+
+	}
+	
 	// 보유중인 대출 목록
 	public void loanList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[UserService => loanList()]");
@@ -3039,16 +3066,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 		UserVO loanMember = dao.getUserInfo(member_id);
 		LoanProductVO loanProduct = dao.getLoanProductInfo(loan_product_name);
-		ArrayList<AccountVO_old> loanAccount = dao.loanAccountInfo(member_id);
 		
 		
 		model.addAttribute("loanMember", loanMember);
 		model.addAttribute("loanProduct", loanProduct);
-		model.addAttribute("loanAccount", loanAccount);
 	}
-
-
-		
 		
 	//신규대출신청 insert
 	public void newLoanSignAction(HttpServletRequest req, Model model) throws ParseException {
@@ -3056,6 +3078,30 @@ public class CustomerServiceImpl implements CustomerService {
 		String member_id = (String) req.getParameter("member_id");
 		String account_id = req.getParameter("account_id");
 		int loan_state = 1; // final static int선언해야됨. 1:신청
+		int loan_amount = Integer.parseInt((String) req.getParameter("loan_amount"));
+		
+		String enPassword = bCryptPasswordEncoder.encode(req.getParameter("account_password"));
+		
+		String unique_key = dao.getUniqueKey(member_id);
+		
+		AccountVO account = new AccountVO();
+		account.setAccount_id(account_id);
+		account.setMember_id((String)req.getSession().getAttribute("customerID"));
+		account.setAccount_password(enPassword);
+		account.setAccount_type(3);			//대출
+		// vo.setAccount_limit(account_limit);
+		account.setAccount_bankCode(Integer.parseInt(req.getParameter("account_bankCode")));
+		account.setUnique_key(unique_key);
+		account.setAccount_balance(loan_amount);
+		
+		int insertCnt = dao.insertAccount(account);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("account_id", account_id);
+		map.put("unique_key", unique_key);
+
+		int updateCnt3 = dao.loanAccountState1(map);
+		int updateCnt4 = dao.accountUniqueloan(map);
+		req.setAttribute("insertCnt", insertCnt);
 		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String str_loan_startDate = (String) req.getParameter("loan_startDate");
@@ -3067,7 +3113,6 @@ public class CustomerServiceImpl implements CustomerService {
 		int loan_repaymentType = Integer.parseInt((String) req.getParameter("loan_repaymentType"));
 		float loan_rate = Float.parseFloat((String) req.getParameter("loan_rate"));
 		int loan_monthlyRepayment = Integer.parseInt((String) req.getParameter("loan_monthlyRepayment"));
-		int loan_amount = Integer.parseInt((String) req.getParameter("loan_amount"));
 		int loan_balance = loan_amount;
 		int loan_interest = Integer.parseInt((String) req.getParameter("loan_interest"));
 		int loan_tranAmount = Integer.parseInt((String) req.getParameter("loan_tranAmount"));
@@ -3094,8 +3139,9 @@ public class CustomerServiceImpl implements CustomerService {
 		loan.setLoan_delinquency(loan_delinquency);
 		loan.setLoan_prepaymentRate(loan_prepaymentRate);
 		
-		int insertCnt = dao.newLoanSignAction(loan);
+		int insertCnt2 = dao.newLoanSignAction(loan);
 		model.addAttribute("insertCnt", insertCnt);
+		model.addAttribute("insertCnt2", insertCnt2);
 	}
 
 	// 대출 원금/이자 목록
@@ -3108,5 +3154,158 @@ public class CustomerServiceImpl implements CustomerService {
 		LoanVO loan = dao.getLoanInfo(map);
 		System.out.println(loan);
 		req.setAttribute("loan", loan);
+	}
+
+	public void loanPaymentDetail(HttpServletRequest req, Model model) {
+		String loan_id = (String) req.getParameter("loan_id");
+		String member_id = (String) req.getSession().getAttribute("customerID");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loan_id", loan_id);
+		LoanVO loan = dao.getLoanInfo(map);
+		LoanProductVO loanProduct = dao.getLoanProductInfo(loan.getLoan_product_name());
+		int cnt = dao.getLoanHistoryCntToLoan(map);
+		Date date = dao.getLoanDate();
+		
+		LocalDate cntDate = loan.getLoan_startDate().toLocalDate();
+		LocalDate btnDate = loan.getLoan_startDate().toLocalDate();
+		btnDate = btnDate.plusMonths(cnt);
+		cntDate = cntDate.plusMonths(cnt+1);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		String cnt_date = cntDate.format(formatter);
+		
+		String cnt_state = "";
+		int disabledBtn = 0;
+		if((cntDate.isAfter(date.toLocalDate()) && date.toLocalDate().isAfter(btnDate)) || cntDate.isEqual(date.toLocalDate())) {
+			cnt_state = "정상납부";
+		} else if(cntDate.isBefore(date.toLocalDate())) {
+			cnt_state = "연체";
+		} else {
+			cnt_state = "납부월이 아닙니다.";
+			disabledBtn = 1;
+		}
+		
+		map.put("member_id", member_id);
+		UserVO user = dao.getUserInfo(member_id);
+
+		map.put("unique_key", user.getUnique_key());
+		ArrayList<AccountVO> loanAccount = dao.getAccountInfos(map);
+		
+		model.addAttribute("loan", loan);
+		model.addAttribute("loanProduct", loanProduct);
+		model.addAttribute("date", date);
+		model.addAttribute("cnt", cnt);
+		model.addAttribute("cnt_date", cnt_date);
+		model.addAttribute("cnt_state", cnt_state);
+		model.addAttribute("loanAccount", loanAccount);
+		model.addAttribute("disabledBtn", disabledBtn);
+		
+
+	}
+	public void loanPaymentAction(HttpServletRequest req, Model model) {
+		// 변수 받아오기 
+		String loan_id = (String) req.getParameter("loan_id");
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		int cnt = Integer.parseInt(req.getParameter("cnt"));
+		
+		UserVO user = dao.getUserInfo(member_id);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loan_id", loan_id);
+		LoanVO loan = dao.getLoanInfo(map);
+		
+		String account_id = req.getParameter("account_id");
+		String account_password = req.getParameter("account_password");
+		
+		String transfer_senderAccount = loan.getAccount_id();
+		int transfer_money = Integer.parseInt(req.getParameter("loan_monthlyRepayment"));
+ 
+		TransferVO trans = new TransferVO();
+		trans.setAccount_id(account_id);
+		trans.setMember_id(member_id);
+		trans.setTransfer_senderAccount(transfer_senderAccount);
+		trans.setTransfer_money(transfer_money);
+
+		String transfer_outComment = req.getParameter("transfer_outComment");
+		
+		trans.setTransfer_outComment(transfer_outComment);
+		trans.setTransfer_senderName(user.getMember_name());	
+		trans.setTransfer_receiverName(loan.getLoan_id() + "대출상환");
+
+		map.clear();
+		map.put("unique_key", user.getUnique_key());
+		System.out.println(user.getUnique_key());
+		map.put("account_id", account_id);
+		AccountVO account = dao.getAccountInfo(map);
+
+		trans.setTransfer_bankCode(account.getAccount_bankCode());
+		if(bCryptPasswordEncoder.matches(
+				account_password, 
+				account.getAccount_password())) {
+			//계좌 비밀번호 비교 성공
+
+			map.put("account_balance", account.getAccount_balance() - transfer_money);
+			int updateCnt = dao.accountPayment(map);
+			int insertCnt = dao.transferLoan(trans);
+			int transfer_id = dao.getTransID(trans);
+			
+			LoanHistoryVO history = new LoanHistoryVO();
+			history.setLoan_id(loan.getLoan_id());
+			history.setTransfer_id(transfer_id);
+			history.setLoan_history_amount((int)loan.getLoan_monthlyRepayment());
+			history.setLoan_history_tranAmount((int)loan.getLoan_tranAmount());
+			history.setLoan_history_tranInterest(loan.getLoan_tranInterest());
+			
+			int insertCnt2 = dao.addLoanHistory(history);
+			
+			if(loan.getLoan_repaymentType() == 1) {
+				long balance = loan.getLoan_balance();
+				loan.setLoan_balance(balance - loan.getLoan_tranAmount());
+				int inter = loan.getLoan_interest();
+				loan.setLoan_interest(inter - loan.getLoan_tranInterest());
+				loan.setLoan_tranInterest(Math.round(loan.getLoan_balance() * ((loan.getLoan_rate()/100) /12)));
+				loan.setLoan_monthlyRepayment(loan.getLoan_tranAmount() + loan.getLoan_tranInterest());
+				if(cnt > loan.getLoan_month()) {
+					loan.setLoan_tranAmount(0);
+					loan.setLoan_tranInterest(0);
+					loan.setLoan_monthlyRepayment(0);	
+				}
+			} else if(loan.getLoan_repaymentType() == 2) {//리
+				long balance = loan.getLoan_balance();
+				loan.setLoan_balance(balance - loan.getLoan_tranAmount());
+				int inter = loan.getLoan_interest();
+				loan.setLoan_interest(inter - loan.getLoan_tranInterest());
+				loan.setLoan_tranInterest(Math.round(loan.getLoan_balance() * ((loan.getLoan_rate()/100) /12)));
+				loan.setLoan_tranAmount(loan.getLoan_monthlyRepayment() - loan.getLoan_tranInterest());
+				if(cnt > loan.getLoan_month()) {
+					loan.setLoan_tranAmount(0);
+					loan.setLoan_tranInterest(0);
+					loan.setLoan_monthlyRepayment(0);	
+				}
+			} else if(loan.getLoan_repaymentType() == 3) {//만
+				if(cnt == loan.getLoan_month()) {
+					loan.setLoan_tranAmount(loan.getLoan_amount());
+					loan.setLoan_monthlyRepayment(loan.getLoan_tranAmount() + loan.getLoan_tranInterest());
+				} else if(cnt < loan.getLoan_month()) {
+					int inter = loan.getLoan_interest();
+					loan.setLoan_interest(inter - loan.getLoan_tranInterest());
+				} else {
+					int inter = loan.getLoan_interest();
+					loan.setLoan_interest(inter - loan.getLoan_tranInterest());
+					long balance = loan.getLoan_balance();
+					loan.setLoan_balance(balance - loan.getLoan_tranAmount());
+					loan.setLoan_tranInterest(0);
+					loan.setLoan_tranAmount(0);
+					loan.setLoan_monthlyRepayment(0);
+				}
+			}
+			
+			int updateCnt2 = dao.updateLoanPayment(loan);
+
+			model.addAttribute("updateCnt2", updateCnt2);
+			model.addAttribute("updateCnt", updateCnt);
+			model.addAttribute("insertCnt2", insertCnt2);
+			model.addAttribute("insertCnt", insertCnt);
+		}
 	}
 }

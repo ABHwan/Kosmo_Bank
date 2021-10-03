@@ -489,6 +489,94 @@
 			   AND rNum <= #{end}
 		]]>
     </select>
+   	<!-- 해지 시 사용 -->
+   	<update id="loanRequestAction" parameterType="java.util.Map">
+    	UPDATE loan
+    	   SET loan_state = #{state}
+    	 WHERE loan_id = #{loan_id}
+    </update>
+    <!-- 대출 납부 - 계좌찾기 -->
+    <select id="getAccountInfo" resultType="com.spring.bank.user.vo.AccountVO" parameterType="java.util.Map">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_id = #{account_id}
+    </select>
+    
+    <!-- 대출 납부 - 계좌찾기 -->
+    <select id="getAccountInfos" resultType="com.spring.bank.user.vo.AccountVO" parameterType="java.util.Map">
+    	SELECT * FROM account WHERE unique_key = #{unique_key}
+    </select>
+    
+    <!-- 대출 납부 - 계좌에서 돈 까기 -->
+    <update id="accountPayment" parameterType="java.util.Map">
+    	UPDATE account SET account_balance = #{account_balance} WHERE account_id = #{account_id}
+    </update>
+    <!-- 대출 해지 - 계좌 state 휴면 변경 -->
+    <update id="loanAccountState1" parameterType="java.util.Map">
+    	UPDATE account SET account_state = 1 WHERE account_id = #{account_id}
+    </update>
+    <!-- 대출계좌 uniquekey설정 -->
+    <update id="accountUniqueloan" parameterType="java.util.Map">
+    	UPDATE account SET unique_key = #{unique_key} WHERE account_id = #{account_id}
+    </update>
+    <!-- 대출 납부 - 이체 -->
+    <insert id="transferLoan" parameterType="com.spring.bank.user.vo.TransferVO">
+		INSERT INTO transfer(transfer_id
+							, account_id
+							, member_id
+							, transfer_senderAccount
+							, transfer_money
+							, transfer_inOut
+							, transfer_inOutDate
+							, transfer_outComment
+							, transfer_senderName
+							, transfer_receiverName
+							, transfer_bankCode
+							)
+		VALUES(transfer_seq.nextval, #{account_id}, #{member_id}
+							, #{transfer_senderAccount}
+							, #{transfer_money}
+							, '출금'
+							, sysdate
+							, #{transfer_outComment}
+							, #{transfer_senderName}
+							, #{transfer_receiverName}
+							, #{transfer_bankCode})
+    </insert>
+    
+    <!-- 대출 납부 - loan 수정 -->
+    <update id="updateLoanPayment" parameterType="com.spring.bank.user.vo.LoanVO">
+    	UPDATE loan
+    	   SET loan_monthlyRepayment = #{loan_monthlyRepayment}
+    	     , loan_balance = #{loan_balance}
+    	     , loan_interest = #{loan_interest}
+    	     , loan_tranAmount = #{loan_tranAmount}
+    	     , loan_tranInterest = #{loan_tranInterest}
+    	 WHERE loan_id = #{loan_id}
+    </update>
+    
+    <!-- 대출 납부 - transfer_id 가져오기 -->
+    <select id="getTransID" resultType = "int" parameterType="com.spring.bank.user.vo.TransferVO">
+    	SELECT transfer_id FROM transfer WHERE transfer_outComment = #{transfer_outComment} AND transfer_inOutDate = sysdate AND transfer_money = #{transfer_money} 
+    </select>
+    
+    <!-- 대출 납부 - loan history 추가 -->
+    <insert id="addLoanHistory" parameterType="com.spring.bank.user.vo.LoanHistoryVO">
+    	INSERT INTO loan_history(loan_history_id
+    							, loan_id
+    							, transfer_id
+    							, loan_history_date
+    							, loan_history_state
+    							, loan_history_amount
+    							, loan_history_tranInterest
+    							, loan_history_tranAmount)
+    	VALUES(loan_history_seq.nextval
+    		  , #{loan_id}
+    		  , #{transfer_id}
+    		  , sysdate
+    		  , 1
+    		  , #{loan_history_amount}
+    		  , #{loan_history_tranInterest}
+    		  , #{loan_history_tranAmount})
+    </insert>
     
 	<!-- 대출 가입 개수 -->
 	<select id="getLoanCnt" parameterType="java.util.Map" resultType="int">
@@ -535,7 +623,7 @@
 	</select>
 	
 	<!-- 대출 상품 목록 -->
-	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+	<select id="getLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.LoanProductVO">
    		<![CDATA[
 	    	SELECT * 
 			  FROM (SELECT loan_product_name
@@ -565,17 +653,10 @@
 	</select>
 	
 	<!-- 대출 상품  -->
-	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.user.vo.LoanProductVO">
+	<select id="getLoanProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.LoanProductVO">
     	SELECT * 
 		  FROM loan_product
 		 WHERE loan_product_name = #{loan_product_name} 
-    </select>
-    
-	<!-- 계좌 조회  -->
-	<select id="loanAccountInfo" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
-    	SELECT * 
-		  FROM account
-		 WHERE member_id = #{member_id} 
     </select>
     
 	<!-- 대출 조회  -->
@@ -584,9 +665,10 @@
 		  FROM loan
 		 WHERE loan_id = #{loan_id} 
     </select>
+
     
 	<!-- 대출 상품 목록 search -->
-	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
+	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.LoanProductVO">
    		<![CDATA[
 	    	SELECT * 
 			  FROM (SELECT loan_product_name
@@ -634,6 +716,20 @@
 		]]>
     </select>
     
+        
+	<!-- 대출 내역 개수  -->
+	<select id="getLoanHistoryCntToLoan" parameterType="java.util.Map" resultType="int">
+    	SELECT COUNT(*) 
+		  FROM loan_history
+		 WHERE loan_id = #{loan_id} 
+    </select>
+    
+        
+	<!-- 대출 내역 개수  -->
+	<select id="getLoanDate" resultType="java.sql.Date">
+    	SELECT * 
+		  FROM loan_date
+    </select>
     
 	<!-- 대출 가입 개수 -->
 	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">
