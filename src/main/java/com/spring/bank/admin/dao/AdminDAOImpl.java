@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
@@ -148,10 +149,59 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	// 관리자 페이지 적금 상품 삭제
 	@Override
-	public int deleteSavingProduct(String deposit_product_name) {
-		return sqlSession.getMapper(AdminDAO.class).deleteSavingProduct(deposit_product_name);
+	public int deleteSavingProduct(String saving_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).deleteSavingProduct(saving_product_name);
 	}
 
+	// 관리자 페이지 펀드 상품 등록
+	@Override
+	public int insertFundProduct(FundProductVO vo) {
+		System.out.println("[DAO = insertFundProduct]");
+		return sqlSession.getMapper(AdminDAO.class).insertFundProduct(vo);
+	}
+
+	// 관리자 페이지 펀드 상품 수
+	@Override
+	public int getFundProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getFundProductCnt();
+	}
+
+	// 관리자 페이지 펀드 상품 조회
+	@Override
+	public ArrayList<FundProductVO> selectFundProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).selectFundProduct(map);
+	}
+
+	// 관리자 페이지 펀드 상품 수(검색결과수)
+	@Override
+	public int getFundProductSearchCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getFundProductSearchCnt(search);
+	}
+
+	// 관리자 페이지 펀드 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).searchFundProduct(map);
+	}
+
+	// 관리자 페이지 펀드 상품 상세조회
+	@Override
+	public FundProductVO getFundProductInfo(String fund_title) {
+	    return sqlSession.getMapper(AdminDAO.class).getFundProductInfo(fund_title);
+	}
+	   
+	// 관리자 페이지 펀드 상품 수정
+	@Override
+	public int updateFundProduct(FundProductVO vo) {
+	    return sqlSession.getMapper(AdminDAO.class).updateFundProduct(vo);
+	}
+	
+	// 관리자 페이지 펀드 상품 삭제
+	@Override
+	public int deleteFundProduct(String fund_title) {
+		return sqlSession.getMapper(AdminDAO.class).deleteFundProduct(fund_title);
+	}
+	
 	
 	//qna 개수(지현)
 	@Override

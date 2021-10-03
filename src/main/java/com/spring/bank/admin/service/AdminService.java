@@ -51,6 +51,24 @@ public interface AdminService {
     // 관리자 페이지 적금 상품 삭제
 	public void deleteSavingProduct(HttpServletRequest req, Model model);
 	
+	// 관리자 페이지 펀드 상품 등록 처리
+	public void fundProductInsertAction(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 펀드 상품 조회
+	public void selectFundProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 펀드 상품 검색
+	public void searchFundProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 펀드 상품 상세 조회
+    public void getFundProductInfo(HttpServletRequest req, Model model);
+   
+    // 관리자 페이지 펀드 상품 수정
+    public void updateFundProduct(HttpServletRequest req, Model model);
+	
+    // 관리자 페이지 펀드 상품 삭제
+	public void deleteFundProduct(HttpServletRequest req, Model model);	
+	
 	//qna게시글 조회(지현)
 	public void qnaList_mng(HttpServletRequest req,  Model model);
 	

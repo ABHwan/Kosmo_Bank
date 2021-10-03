@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -229,13 +230,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).getSavingList(map);
 	}
 	
-	// 관리자 페이지 적금 상품 수(검색결과수)
+	// 적금 상품 수(검색결과수)
 	@Override
 	public int getSavingProductSearchCnt(String search) {
 		return sqlSession.getMapper(CustomerDAO.class).getSavingProductSearchCnt(search);
 	}
 	
-	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	// 적금 상품 검색(입력받아서 검색)
 	@Override
 	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map){
 		return sqlSession.getMapper(CustomerDAO.class).searchSavingProduct(map);
@@ -244,8 +245,53 @@ public class CustomerDAOImpl implements CustomerDAO {
 	// 적금 상품 상세 보기
 	@Override
 	public SavingProductVO getSavingDetail(String saving_product_name) {
-
+		
 		return sqlSession.getMapper(CustomerDAO.class).getSavingDetail(saving_product_name);
+	}
+
+	// 적금 신청
+	@Override
+	public int savingProductAction(SavingProductVO vo) {
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.savingProductAction",vo);
+	}
+	
+	// 펀드 상품 갯수
+	@Override
+	public int getFundCnt(){
+		
+		return sqlSession.getMapper(CustomerDAO.class).getFundCnt();
+	}		
+	
+	// 적금 상품 조회
+	@Override
+	public List<FundProductVO> getFundList(Map<String, Integer> map){
+		
+		return sqlSession.getMapper(CustomerDAO.class).getFundList(map);
+	}
+	
+	// 관리자 페이지 적금 상품 수(검색결과수)
+	@Override
+	public int getFundProductSearchCnt(String search) {
+		return sqlSession.getMapper(CustomerDAO.class).getFundProductSearchCnt(search);
+	}
+	
+	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map){
+		return sqlSession.getMapper(CustomerDAO.class).searchFundProduct(map);
+	}
+	
+	// 펀드 상품 상세 보기
+	@Override
+	public FundProductVO getFundDetail(String fund_title) {
+		
+		return sqlSession.getMapper(CustomerDAO.class).getFundDetail(fund_title);
+	}
+
+	// 펀드 신청
+	@Override
+	public int fundProductAction(FundProductVO vo) {
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.savingProductAction",vo);
 	}
 	 
 	//멤버의 unique_key가져오기 
