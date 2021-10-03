@@ -25,100 +25,56 @@
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-				<div class="panel-header bg-primary-gradient" style="height: 300px;">
-					<div class="page-inner py-5">
-						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
-							<div>
-								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
-								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
-									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
-							</div>
-						</div>
-					</div>
-				</div>
-				
 				<div class="notice">
 					<!-- 관리자 공지사항 -->
-					<sec:authorize access="hasRole('ROLE_ADMIN')">
-					</sec:authorize>
-
-					<table style="width:1000px; margin:auto">
-						<tr style="border-bottom: 1px solid #444444; width:500px;">
-							<td align="center" colspan="3"> ${vo.notice_subject} </td>
-						</tr>
-						<tr style="border-bottom: 1px solid #444444; width:500px;">
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<td style="width:20%; align:center"> 작성자 : ${vo.notice_writer} </td>
-							<td style="width:60%; align:left"> 조회수 : ${vo.notice_readCnt} </td>
-							<td style="width:20%; align:right">
-								작성일 : <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-							</td>
-							</sec:authorize>
-							<sec:authorize access="hasRole('ROLE_USER')">
-							<td></td>
-							<td></td>
-							<td align="center">
-								<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-							</td>
-							</sec:authorize>
-						</tr>
-						<tr style = "border-bottom: 1px solid #444444; width:500px; text-align:center">
-							<td colspan="3" style="width:1000px" word-break:break-all>
-								${vo.notice_content}
-							</td>
-						</tr>
-						<tr style="text-align:center; border-spacing:0 20px">
-							<th colspan="3">
-								<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<input class="button" type="button" value="글수정"
-									onclick="window.location='${mngPath}mngNoticeModify?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
-								<input class="button" type="button" value="글삭제"
-									onclick="window.location='${mngPath}mngNoticeDelete?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
-								</sec:authorize>
-								<input class="button" type="button" value="목록"
-									onclick="window.location='noticeList.do?pageNum=${pageNum}'">
-							</th>
-						</tr>
-					</table>
-					
-					<!-- 페이지 컨트롤 -->
-					<table style="width:1000px" align="center">
-				    	<tr>
-				        	<th align="center">
-				            	<!-- 게시글이 있으면 -->
-				            	<c:if test="${cnt > 0}">
-				            		<!-- 처음[◀◀] / 이전블록[◀]  -->
-				            		<c:if test="${startPage > pageBlock}">
-				            			<a href="noticeList.do"> [◀◀] </a>
-				            			<a href="noticeList.do?pageNum=${startPage - pageBlock}"> [◀] </a>
-				            		</c:if>
-				            		
-				            		<!-- 블록내의 페이지번호 -->
-				            		<c:forEach var="i" begin="${startPage}" end="${endPage}">
-				            			<c:if test="${i == currentPage}">
-				            				<span><b>[${i}]</b></span>
-				            			</c:if>
-				            			
-				            			<c:if test="${i != currentPage}">
-				            				<a href="noticeList.do?pageNum=${i}"> [${i}] </a>
-				            			</c:if>
-				            		</c:forEach>
-				            		
-				            		<!-- 다음블록[▶] / 마지막[▶▶]  -->
-				            		<c:if test="${pageCount > endPage}">
-				            			<a href="noticeList.do?pageNum=${startPage + pageBlock}"> [▶] </a>
-				            			<a href="noticeList.do?pageNum=${pageCount}"> [▶▶] </a>
-				            		</c:if>
-				            	</c:if>
-				        	</th>
-				    	</tr>
-					</table>
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">공지사항</div>
+						</div>
+						<div class="card-body">
+							<table class="table mt-3">
+								<thead>
+									<tr align="center">
+										<th scope="col" colspan="3"> ${vo.notice_subject} </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr align="center">
+										<sec:authorize access="hasRole('ROLE_ADMIN')">
+										<td>작성자&emsp;:&emsp;${vo.notice_writer}</td>
+										<td>조회수&emsp;:&emsp;${vo.notice_readCnt}</td>
+										</sec:authorize>
+										<sec:authorize access="hasRole('ROLE_USER')">
+										<td></td>
+										<td></td>
+										</sec:authorize>
+										<td>작성일&emsp;:&emsp;<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.notice_date}"/></td>
+									</tr>
+									<tr height="600">
+										<td colspan="3">
+											${vo.notice_content}										
+										</td>
+									</tr>
+									<tr style="text-align:center; border-spacing:0 20px">
+									<th colspan="3">
+										<sec:authorize access="hasRole('ROLE_ADMIN')">
+										<input type="button" value="글수정" class="btn btn-primary"
+											onclick="window.location='${mngPath}mngNoticeModify?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
+										<input type="button" value="글삭제" class="btn btn-primary"
+											onclick="window.location='${mngPath}mngNoticeDelete?notice_num=${vo.notice_num}&pageNum=${pageNum}'">
+										</sec:authorize>
+										<input type="button" value="목록" class="btn btn-primary btn-border"
+											onclick="window.location='noticeList.do?pageNum=${pageNum}'">
+									</th>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
-		</div>
 	</div>
 
 	

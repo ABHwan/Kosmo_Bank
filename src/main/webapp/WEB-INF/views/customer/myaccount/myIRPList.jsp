@@ -134,7 +134,6 @@
 						</table>
 						</c:if>
 						<c:if test="${cnt == 0}">
-							<hr>
 							<c:out value="해당 은행에 계좌가 없습니다."></c:out>
 						</c:if>
 					</div>

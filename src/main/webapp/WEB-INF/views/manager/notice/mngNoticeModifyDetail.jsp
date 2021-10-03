@@ -25,72 +25,61 @@
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-				<div class="panel-header bg-primary-gradient" style="height: 300px;">
-					<div class="page-inner py-5">
-						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
-							<div>
-								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
-								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
-									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
-							</div>
-						</div>
-					</div>
-				</div>
-				
 				<div class="notice">
-					<!-- 관리자 공지사항 -->
-					
+					<!-- 비밀번호 오류 -->
 					<c:if test="${selectCnt == 0}">
 						<script type="text/javascript">
 							alert("비밀번호가 틀렸습니다!");
 							window.history.back();
 						</script>
 					</c:if>
-
-					<!-- 비밀번호 인증 성공 -->
+					
+					<!-- 공지사항 수정 -->
 					<c:if test="${selectCnt != 0}">
 						<form action="mngNoticeModifyAction" method="post" name="modifyform">
 						<sec:csrfInput/>
-							<!-- input type="hidden"은 form 태그안에 지정해야 한다. -->
-							<input type="hidden" name="notice_num" value="${vo.notice_num}"> 
-							<input type="hidden" name="pageNum" value="${pageNum}">
-				
-							<h2 align="center"> 공지사항 수정하기!!</h2>
-							
-							<table style="width:1000px; margin:auto">
-								<tr style="border-bottom: 1px solid #444444; width:500px;">
-									<th align="center">
-										글제목 : 
-									</th>
-									<td align="center" colspan="3">
-										<input type="text" name="notice_subject" value="${vo.notice_subject}" size="80px"/>
-									</td>
-								</tr>
-								<tr style="border-bottom: 1px solid #444444; width:500px;">
-									<th> 작성자 : </th>
-									<td>${vo.notice_writer} </td>
-									<th> 비밀번호 : </th>
-									<td>
-										<input type="password" value="${vo.notice_password}" name="notice_password" />
-									</td>
-								</tr>
-								<tr style = "border-bottom: 1px solid #444444; width:500px; text-align:center">
-									<th> 글내용 : </th>
-									<td colspan="3" style="width:800px">
-										<textarea rows="10" cols="50" name="notice_content" word-break:break-all>${vo.notice_content}</textarea>
-									</td>
-								</tr>
-				
-								<tr>
-									<th colspan="4">
-									<input class="button" type="submit" value="글수정">
-									<input class="button" type="reset" value="초기화">
-									<input class="button" type="submit" value="목록"
-										formaction="noticeList.do?pageNum=${pageNum}">
-									</th>
-								</tr>
-							</table>
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">공지사항 수정페이지</div>
+								</div>
+								<div class="card-body">
+									<table class="table mt-3">
+										<thead>
+											<tr align="center">
+												<th scope="col" colspan="3"> 
+													<input type="text" value="${vo.notice_subject}" size="100" name="notice_subject">
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr align="center">
+												<td width="25%">작성자&emsp;:&emsp;${vo.notice_writer}</td>
+												<td>조회수&emsp;:&emsp;${vo.notice_readCnt}</td>
+												<td>작성일&emsp;:&emsp;<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.notice_date}"/></td>
+											</tr>
+											<tr align="center">
+												<td> 비밀번호 수정&emsp;:&emsp; <input type="password" value="${vo.notice_password}" size="20" name="notice_password">
+												<td></td>
+												<td></td>
+											</tr>
+											<tr height="600">
+												<td colspan="3">
+													<textarea rows="30" cols="220" name="notice_content">${vo.notice_content}</textarea>
+												</td>
+											</tr>
+											<tr style="text-align:center; border-spacing:0 20px">
+											<tr align="center">
+												<th colspan="3">
+													<input class="button" type="submit" value="글수정">
+													<input class="button" type="reset" value="초기화">
+													<input class="button" type="submit" value="목록"
+														formaction="noticeList.do?pageNum=${pageNum}">
+												</th>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
 						</form>
 					</c:if>
 				</div>

@@ -2214,9 +2214,9 @@ public class AdminServiceImpl implements AdminService {
 		
 		// 암호화된 비밀번호 가져오기
 		String bCryptPasswordEncoderPwd = dao.noticePWDCheck(notice_num);
-		
 		int selectCnt = 0;
 		boolean result = bCryptPasswordEncoder.matches(rawPwd, bCryptPasswordEncoderPwd);
+		System.out.println("결과 : " + result);
 		
 		// 비밀번호 인증 
 		// 인증성공 :: selectCnt = 1, 인증실패 :: selectCnt = 0
@@ -2246,8 +2246,18 @@ public class AdminServiceImpl implements AdminService {
 		
 		vo.setNotice_num(Integer.parseInt(req.getParameter("notice_num")));
 		vo.setNotice_subject(req.getParameter("notice_subject"));
-		vo.setNotice_password(req.getParameter("notice_password"));
 		vo.setNotice_content(req.getParameter("notice_content"));
+
+		String inputPWD = req.getParameter("notice_password");
+		String bCryptPasswordEncoderPwd = dao.noticePWDCheck(Integer.parseInt(req.getParameter("notice_num")));
+		
+		// 비밀번호가 바뀌지않았다면,
+		if(inputPWD.equals(bCryptPasswordEncoderPwd)) {
+			vo.setNotice_password(inputPWD);
+		} else {
+			// 비밀번호가 바뀌었다면
+			vo.setNotice_password(bCryptPasswordEncoder.encode(inputPWD));
+		}
 		
 		int updateCnt = dao.noticeModifyAction(vo);
 		

@@ -12,14 +12,6 @@
 </head>
 <body>
 <div class="wrapper">
-	<jsp:include page="/WEB-INF/views/include/header.jsp" />
-	
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
-	</sec:authorize>
-	<sec:authorize access="hasRole('ROLE_USER')">
-		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />		
-	</sec:authorize>
 	
 	<!-- 메인 폼-->
 	<div class="main-panel">
@@ -115,7 +107,6 @@
 									</table>
 									</c:if>
 									<c:if test="${cnt == 0}">
-										<hr>
 										<c:out value="해당 은행에 계좌가 없습니다."></c:out>
 									</c:if>
 								</div>
