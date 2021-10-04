@@ -211,33 +211,17 @@ public class AdminController {
 	@RequestMapping("depositProductList")
 	public String depositProductList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /depositProductList]");
-		service.selectDepositProduct(req, model);
+		
 		return "manager/depositProduct/depositProductList";
 	}
 	
-	// 관리자 - 예금관리 - 상품조회페이지
-	@RequestMapping("depositProductListTest")
-	public String depositProductListTest(HttpServletRequest req, Model model) {
-		System.out.println("[url ==> /depositProductList]");
-		
-		return "manager/depositProduct/test";
-	}
-	
-	// 관리자 - 예금관리 - 상품조회페이지
+	// 관리자 - 예금관리 - 조회
 	@ResponseBody
-	@RequestMapping("depositProductListTestSelect")
+	@RequestMapping("depositProductListSelect")
 	public ArrayList<DepositVO> depositProductListTestSelect(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /depositProductListTestSelect]");
 		
-		return service.selectDepositProductTest();
-	}
-	
-	// 관리자 - 예금관리 - 상품검색
-	@RequestMapping("depositProductSearch")
-	public String depositProductSearch(HttpServletRequest req, Model model) {
-		System.out.println("[url ==> /depositProductSearch]");
-		service.searchDepositProduct(req, model);
-		return "manager/depositProduct/depositProductSearch";
+		return service.selectDepositProduct();
 	}
 	
 	// 관리자 - 예금 관리 - 상품 상세조회
@@ -269,7 +253,6 @@ public class AdminController {
 	public String depositProductDelete(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /depositProductDelete]");
 		service.deleteDepositProduct(req, model);
-		service.selectDepositProduct(req, model);
 		return "manager/depositProduct/depositProductList";
 	}
 	
@@ -813,5 +796,21 @@ public class AdminController {
 		return "manager/notice/mngNoticeDeleteAction";
 	}
 	
+	// 관리자 고객 가입 상품 목록
+	@RequestMapping("customerProductList")
+	public String customerProductList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /customerProductList]");
+		service.selectCustomerProduct(req, model);
+		// 이동할 페이지 
+		return "manager/customerInfo/customerProductList";
+	}
 	
+	// 관리자 고객 가입 상품 검색
+	@RequestMapping("customerProductSearch")
+	public String customerProductSearch(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /customerProductSearch]");
+		service.searchCustomerProduct(req, model);
+		// 이동할 페이지 
+		return "manager/customerInfo/customerProductSearch";
+	}
 }

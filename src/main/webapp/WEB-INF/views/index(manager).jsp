@@ -166,9 +166,6 @@
 	<!-- Atlantis JS -->
 	<script src="${rePath}js/atlantis.min.js"></script>
 
-	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="${rePath}js/setting-demo.js"></script>
-	<script src="${rePath}js/demo.js"></script>
 	<script>
 	/* 카드별 차트 */
 	var myPieChart = new Chart(pieChartCard, {

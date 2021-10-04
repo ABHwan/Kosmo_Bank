@@ -26,13 +26,7 @@ public interface AdminService {
 	public void insertDepositProduct(HttpServletRequest req, Model model);
 	
 	// 관리자 페이지 예금 상품 조회
-	public void selectDepositProduct(HttpServletRequest req, Model model);
-	
-	// test
-	public ArrayList<DepositVO> selectDepositProductTest();
-	
-	// 관리자 페이지 예금 상품 검색
-	public void searchDepositProduct(HttpServletRequest req, Model model);
+	public ArrayList<DepositVO> selectDepositProduct();
 	
 	// 관리자 페이지 예금 상품 상세 조회
 	public void getDepositProductInfo(HttpServletRequest req, Model model);
@@ -135,4 +129,10 @@ public interface AdminService {
 	
 	// 공지사항 삭제처리(민재)
 	public void mngNoticeDeleteAction(HttpServletRequest req, Model model);
+	
+    // 관리자 페이지 회원별 가입상품조회
+    public void selectCustomerProduct(HttpServletRequest req, Model model);
+    
+    // 관리자 페이지 회월별 가입상품검색
+    public void searchCustomerProduct(HttpServletRequest req, Model model);
 }

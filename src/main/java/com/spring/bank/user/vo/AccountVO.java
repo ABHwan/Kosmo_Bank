@@ -21,10 +21,10 @@ public class AccountVO {
 	int account_linked;
 	
 	// Request
-	String member_name;
-	String product_name;
-	String join_date;
-	String rNum;
+	private String member_name;
+	private String product_name;
+	private String join_date;
+	private String rNum;
 	
 	// 은행 logo 이미지
 	String account_bankImg;

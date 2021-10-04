@@ -84,11 +84,11 @@
 											<span class="sub-item">금융상품 승인 / 거절</span>
 										</a>
 									</li> 
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item">고객 상품가입 목록</span>
+									<li>
+										<a href="customerProductList">
+											<span class="sub-item">회원 상품가입 목록</span>
 										</a>
-									</li>	 -->								
+									</li>								
 								</ul>
 							</div>
 						</li>

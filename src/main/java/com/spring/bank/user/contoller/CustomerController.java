@@ -54,8 +54,7 @@ public class CustomerController {
 	@RequestMapping("index.do")
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
-		// service.exchanges(req, model);
-		
+		//service.exchanges(model);
 		// 로그인 시 계좌 불러오기
 		String member_id = (String) req.getSession().getAttribute("customerID");
 		if(member_id != null) {
@@ -688,7 +687,7 @@ public class CustomerController {
 	public String exchangeList(HttpServletRequest req, Model model) {
 		System.out.println("url ==> exchangeList.do");
 
-		service.exchangeList(req, model);
+		//service.exchangeList(req, model);
 
 		return "exchangeList";
 	}
@@ -1044,7 +1043,7 @@ public class CustomerController {
 		return service.getAccountList(req, model);
 	}
 	
-	// 계좌화면
+	// 계좌연동
 	@RequestMapping("accountConnect")
 	public String accountConnect(HttpServletRequest req, Model model) {
 		
@@ -1058,7 +1057,6 @@ public class CustomerController {
 	@ResponseBody
 	@RequestMapping("accountConnectAction")
 	public int accountConnectAction(HttpServletRequest req, Model model) {
-		
 		// 계좌 연동
 		return service.accountConnectAction(req, model);
 	}
@@ -1090,4 +1088,35 @@ public class CustomerController {
 		return "common/sessionErr";
 	}
 	
+	// 회원 - 자동이체 신청 페이지
+	@RequestMapping("autoTransferInsert")
+	public String autoTransferInsert(HttpServletRequest req, Model model) {
+		logger.info("url ==> autoTransferInsert");
+		service.accountLoad(req, model); // 회원연동계좌조회
+		return "customer/bank/autoTransferInsert";
+	}
+
+	// 회원 - 자동이체 신청 액션
+	@RequestMapping("autoTransferInsertAction")
+	public String autoTransferInsertAction(HttpServletRequest req, Model model) {
+		logger.info("url ==> autoTransferInsertAction");
+		service.insertAutoTransfer(req, model);
+		return "customer/bank/autoTransferInsertAction";
+	}
+		
+	// 회원 - 자동이체 내역조회
+	@RequestMapping("autoTransferList")
+	public String autoTransferList(HttpServletRequest req, Model model) {
+		logger.info("url ==> autoTransferList");
+		service.getMyAutoTransfer(req, model);
+		return "customer/bank/autoTransferList";
+	}
+	
+	// 회원 - 자동이체 해지
+	@RequestMapping("autoTransferDelete")
+	public String autoTransferDelete(HttpServletRequest req, Model model) {
+		logger.info("url ==> autoTransferDelete");
+		service.deleteAutoTransfer(req, model);
+		return "customer/bank/autoTransferDelete";
+	}
 }

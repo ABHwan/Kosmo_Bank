@@ -407,6 +407,8 @@
 				<i class="flaticon-settings"></i>
 			</div>
 		</div>
+		
+		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		<!-- End Custom template -->
 	</div>
 	<!--   Core JS Files   -->

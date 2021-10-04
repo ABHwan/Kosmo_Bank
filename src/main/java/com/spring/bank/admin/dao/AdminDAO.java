@@ -40,17 +40,11 @@ public interface AdminDAO {
 	// 관리자 페이지 예금 상품 등록
 	public int insertDepositProduct(DepositProductVO vo);
 	
-	// 관리자 페이지 예금 상품 수
-	public int getDepositProductCnt(); 
-	
 	// 관리자 페이지 예금 상품 조회
 	public ArrayList<DepositProductVO> selectDepositProduct(Map<String, Object> map);
-	
-	// 관리자 페이지 예금 상품 수(검색결과수)
-	public int getDepositProductSearchCnt(String search);
-	
-	// 관리자 페이지 예금 상품 검색(입력받아서 검색)
-	public ArrayList<DepositProductVO> searchDepositProduct(Map<String, Object> map);
+
+	// 관리자 페이지 예금 상품 조회
+	public ArrayList<DepositVO> selectDepositProduct();
 	
 	// 관리자 페이지 예금 상품 상세조회
 	public DepositProductVO getDepositProductInfo(String deposit_product_name);
@@ -239,8 +233,16 @@ public interface AdminDAO {
 
 	// 공지사항 수정처리(민재)
 	public int noticeDeleteAction(int notice_num);
-	
-	// test
-	public ArrayList<DepositVO> selectDepositProductTest();
 
+	// 관리자 페이지 회원별 가입상품 수
+	public int getCustomerProductCnt();
+	
+	// 관리자 페이지 회원별 가입상품리스트
+	public ArrayList<AccountVO> getCustomerProductList(Map<String, Object> map);
+	
+	// 관리자 페이지 회원별 가입상품 검색결과 수
+	public int getSearchCustomerProductCnt(String search);
+	
+	// 관리자 페이지 회원별 가입상품 검색결과 리스트
+	public ArrayList<AccountVO> getSearchCustomerProductList(Map<String, Object> map);
 }

@@ -222,17 +222,17 @@
 		                               </a>
 		                            </li>
 									<li>
-										<a href="auto_transfer">
-											<span class="sub-item">자동이체</span>
-										</a>
-									</li>
-									<li>
 										<a href="transfer_List">
 											<span class="sub-item">이체내역</span>
 										</a>
 									</li>
 									<li>
-										<a href="auto_transfer_List">
+										<a href="autoTransferInsert">
+											<span class="sub-item">자동이체 신청</span>
+										</a>
+									</li>
+									<li>
+										<a href="autoTransferList">
 											<span class="sub-item">자동이체 관리</span>
 										</a>
 									</li>							

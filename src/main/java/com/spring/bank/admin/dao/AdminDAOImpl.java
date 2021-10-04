@@ -64,11 +64,11 @@ public class AdminDAOImpl implements AdminDAO {
 	public int insertDepositProduct(DepositProductVO vo) {
 		return sqlSession.getMapper(AdminDAO.class).insertDepositProduct(vo);
 	}
-
-	// 관리자 페이지 예금 상품 수
+	
 	@Override
-	public int getDepositProductCnt() {
-		return sqlSession.getMapper(AdminDAO.class).getDepositProductCnt();
+	public ArrayList<DepositVO> selectDepositProduct() {
+	
+		return sqlSession.getMapper(AdminDAO.class).selectDepositProduct();
 	}
 	
 	// 관리자 페이지 예금 상품 조회
@@ -77,18 +77,6 @@ public class AdminDAOImpl implements AdminDAO {
 		return sqlSession.getMapper(AdminDAO.class).selectDepositProduct(map);
 	}
 
-	// 관리자 페이지 예금 상품 수(검색결과수)
-	@Override
-	public int getDepositProductSearchCnt(String search) {
-		return sqlSession.getMapper(AdminDAO.class).getDepositProductSearchCnt(search);
-	}
-	
-	// 관리자 페이지 예금 상품 검색(입력받아서 검색)
-	@Override
-	public ArrayList<DepositProductVO> searchDepositProduct(Map<String, Object> map) {
-		return sqlSession.getMapper(AdminDAO.class).searchDepositProduct(map);
-	}
-		
 	// 관리자 페이지 예금 상품 상세조회
 	@Override
 	public DepositProductVO getDepositProductInfo(String deposit_product_name) {
@@ -535,10 +523,24 @@ public class AdminDAOImpl implements AdminDAO {
 		return sqlSession.delete("com.spring.bank.admin.dao.AdminDAO.noticeDeleteAction", notice_num);
 	}
 
+	// 관리자 페이지 회원별 가입상품 수
 	@Override
-	public ArrayList<DepositVO> selectDepositProductTest() {
-	
-		return sqlSession.getMapper(AdminDAO.class).selectDepositProductTest();
+	public int getCustomerProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getCustomerProductCnt();
 	}
-
+		
+	// 관리자 페이지 회원별 가입상품리스트
+	public ArrayList<AccountVO> getCustomerProductList(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).getCustomerProductList(map);
+	}
+		
+	// 관리자 페이지 회원별 가입상품 검색결과 수
+	public int getSearchCustomerProductCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getSearchCustomerProductCnt(search);
+	}
+	
+	// 관리자 페이지 회원별 가입상품 검색결과 리스트
+	public ArrayList<AccountVO> getSearchCustomerProductList(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).getSearchCustomerProductList(map);
+	}
 }

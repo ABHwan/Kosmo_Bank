@@ -10,6 +10,7 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
+import com.spring.bank.user.vo.AutoTransferVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -297,5 +298,40 @@ public interface CustomerDAO {
 	// 은행별 계좌 조회(복환)
 	public ArrayList<AccountVO> getAccountList(String member_id);
 	
+	// 회원 자동이체 신청
+	public int insertAutoTransfer(AutoTransferVO vo); 
 	
+	// 회원 자동이체 조회
+	public ArrayList<AutoTransferVO> getMyAutoTransfer(String member_id);
+	
+	// 회원 자동이체 해지
+	public int deleteAutoTransfer(int auto_id);
+	
+	// 자동이체 오늘날짜에 입금할거있는지 조회
+	public ArrayList<AutoTransferVO> selectByDay(int day);
+
+	// 자동이체 후 최신납부내역 갱신
+	public int updateAutoTransfer(int auto_id);
+	
+	// 자동이체 위해 내계좌에서 잔액조회
+	public int selectAccountBalance(String account_id);
+
+	// 자동이체 납부(transfer 테이블에 이체내역추가)
+	public int insertTranferByAuto(TransferVO vo);
+	
+	// 자동이체 납부(AutoTransfer_list 테이블에 내역추가)
+	public int insertAutoTransferList(Map<String, Object> map);
+	
+	// 자동이체 실패 -> 자동이체리스트 테이블에 내역추가
+	public int failAutoTransferList(int auto_id);
+	
+	// 자동이체 결과 내계좌에 반영
+	public int updateAccountAutoTransfer(Map<String, Object> map);
+	
+	// 오늘날짜가 자동이체 만기일을 지났을시 자동으로 만기상태로 바꿔주기
+	public int exitAutoTransfer();
+	
+	// 가계부에 가져올 자동이체일 조회
+	public ArrayList<AccountBookVO> myAccountAutoTransfer(String member_id);
 }
+

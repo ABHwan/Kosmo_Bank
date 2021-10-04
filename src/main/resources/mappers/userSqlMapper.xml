@@ -200,8 +200,7 @@
 	<!-- 회원 계좌 비밀번호 확인 -->
 	<select id="account_pwd" parameterType="String"
 		resultType="java.util.Map">
-		SELECT COUNT(*) FROM account WHERE account_password =
-		#{strId}
+		SELECT COUNT(*) FROM account WHERE account_password =#{strPassword}
 	</select>
 
 	<!-- 이체 확인 -->
@@ -432,7 +431,7 @@
 	
 	<!-- 가계부 조회 -->
 	<select id="getAccountBook" parameterType="String" resultType="com.spring.bank.user.vo.AccountBookVO">
-		SELECT * 
+		SELECT income, expense, register_date, member_id, accountbook_id, (income-expense) as total
 		FROM ACCOUNTBOOK 
 		WHERE MEMBER_ID = #{member_id}
 	</select>
@@ -788,12 +787,12 @@
     	 ORDER BY account_bankCode
     </select>
     
-    <!-- 은행별 계좌연동상태(복환 - 연동 O) -->
+    <!-- 연동된 계좌 불러오기(복환 - 연동 O) -->
     <select id="getAccountConnected" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
-    	SELECT account_bankCode, account_linked
+    	SELECT account_id, account_bankCode, account_linked
     	  FROM account
     	 WHERE member_id = #{member_id} AND account_linked = 1
-    	 GROUP BY account_bankCode, account_linked
+    	 GROUP BY account_id, account_bankCode, account_linked
     	 ORDER BY account_bankCode
     </select>
     
@@ -831,4 +830,74 @@
     </update>
     <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 끝 -->
     <!-- 대표계좌설정(복환) 끝 -->
+    
+    <!-- 회원 자동이체신청 -->
+    <insert id="insertAutoTransfer" parameterType="com.spring.bank.user.vo.AutoTransferVO">
+    	INSERT INTO auto_transfer(auto_id, member_id, account_id, auto_senderAccount, auto_type, auto_outDate, auto_money, auto_registDate, auto_expirationDate, auto_inPlace, auto_status, AUTO_SENDERACCOUNT_BANKCODE)
+    	VALUES(SEQ_autoTransfer_id.nextval, #{member_id}, #{account_id}, #{auto_senderAccount}, #{auto_type}, #{auto_outDate}, #{auto_money}, #{auto_registDate}, #{auto_expirationDate}, #{auto_inPlace}, 0, #{auto_senderAccount_bankCode})
+    </insert>
+    
+    <!-- 회원 자동이체 조회 -->
+    <select id="getMyAutoTransfer" parameterType="String" resultType="com.spring.bank.user.vo.AutoTransferVO">
+    	SELECT * FROM auto_transfer WHERE member_id = #{member_id}
+    </select>
+    
+    <!-- 회원 자동이체 해지 -->
+	<update id="deleteAutoTransfer" parameterType="int">
+		UPDATE auto_transfer SET auto_status=1, auto_cancle=sysdate  
+		 WHERE auto_id=#{auto_id}
+	</update>
+    
+    <!-- 자동이체 오늘날짜에 입금할거있는지 조회 -->
+    <select id="selectByDay" parameterType="int" resultType="com.spring.bank.user.vo.AutoTransferVO">
+    	SELECT * FROM auto_transfer WHERE auto_outDate=#{day} and auto_status=0
+    </select>
+    
+    <!-- 자동이체위해 내계좌로 잔액조회 -->
+    <select id="selectAccountBalance" parameterType="string" resultType="int">
+    	SELECT account_balance FROM account where account_id=#{account_id}
+    </select>
+    
+    <!-- 자동이체 실행(이체 내역 테이블에 내역추가) -->
+    <insert id="insertTranferByAuto" parameterType="com.spring.bank.user.vo.TransferVO">
+    	INSERT INTO transfer(transfer_id, member_id, account_id, transfer_senderAccount, transfer_money, transfer_inOut, transfer_inOutDate, transfer_outComment, TRANSFER_BANKCODE)
+    	VALUES(transfer_seq.nextval, #{member_id}, #{account_id}, #{transfer_senderAccount}, #{transfer_money}, '출금', sysdate, #{transfer_outComment}, #{transfer_bankCode})
+    </insert>
+    
+    <!-- 자동이체 실행(자동이체 내역 테이블에 내역추가) -->
+    <insert id="insertAutoTransferList" parameterType="java.util.Map">
+    	INSERT INTO auto_transfer_list
+    	VALUES(SEQ_autoTransfer_list_id.nextval, #{auto_id}, trunc(sysdate), '성공', #{member_id}, #{auto_money}, #{auto_inplace})
+    </insert>
+    
+    <!-- 자동이체후 내계좌잔액감소 -->
+    <update id="updateAccountAutoTransfer" parameterType="java.util.Map">
+    	UPDATE account set account_balance=#{account_balance}
+    	 WHERE account_id=#{account_id}
+    </update>
+    
+    <!-- 자동이체완료시 최신납부일 최신화 -->
+    <update id="updateAutoTransfer" parameterType="int">
+    	UPDATE auto_transfer set auto_lastDay=sysdate WHERE auto_id=#{auto_id}
+    </update>
+    
+    <!-- 자동이체 실패(자동이체 내역 테이블에 내역추가) -->
+    <insert id="failAutoTransferList" parameterType="int">
+    	INSERT INTO auto_transfer_list
+    	VALUES(SEQ_autoTransfer_list_id.nextval, #{auto_id}, sysdate, '실패(잔액부족)')
+    </insert>
+    
+    <!-- 자동이체 만기 -->
+    <update id="exitAutoTransfer">
+    <![CDATA[
+    	UPDATE auto_transfer set auto_status=2
+    	 WHERE auto_expirationDate < sysdate
+    ]]>
+    </update>
+    
+    <!-- 가계부에 추가될 자동이체 내역 -->
+    <select id="myAccountAutoTransfer" parameterType="String" resultType="com.spring.bank.user.vo.AccountBookVO">
+    	 SELECT * from auto_transfer_list
+    	 where member_id=#{member_id} and auto_success='성공'
+    </select>
 </mapper>

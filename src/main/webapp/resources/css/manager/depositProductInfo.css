@@ -40,7 +40,7 @@ table {
 }
 
 table tr th {
-  width: 20%;
+  width: 30%;
   padding: 10px;
   border: 2px solid lightgray;
   color: #151515;
@@ -48,6 +48,7 @@ table tr th {
 }
 
 table tr td {
+  padding:0 60px;
   border: 2px solid lightgray;
   color: #151515;
   font-size: 18px;
@@ -213,6 +214,7 @@ table th.content {
   border-radius: 6px;
   background: #007bff;
   font-size: 15px;
+  margin-left: 10px;
 }
 
 .btnList button a {

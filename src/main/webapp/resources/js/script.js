@@ -479,8 +479,7 @@ function irpJoinInCheck() {
 	
 }
 
-<<<<<<< HEAD
-=======
+
 // 삭제 Confirm(복환)
 function deleteConfirm(formName, url) {
 	// 호출할 때 괄호 안에 formName, url 입력해주기
@@ -569,4 +568,3 @@ function accountConnectConfirm(bankName) {
 	});
 }
 
->>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb

@@ -171,9 +171,9 @@ $(document).ready(function() {
                     data : 'deposit_product_name',
                    	render : function(data) {
                            return '<a href="depositProductInfo?deposit_product_name=' 
-                        		   + data + '&pageNum=${pageNum}&number=${number + 1}">' + data + '</a>';
-                       }			
-                    	
+                        		   + data + '">' + data + '</a>';
+                     }	
+     
                 }, {
                     'sTitle' : '상품요약',
                     data : 'deposit_product_summary'
@@ -241,7 +241,7 @@ $(document).ready(function() {
                 }
         ];
 
-        url = 'depositProductListTestSelect';
+        url = 'depositProductListSelect';
         callList(url, columns);
     }
 });
@@ -312,7 +312,11 @@ $(document).on("click", '#selectAttendacne', function() {
             data : 'rNum'
         }, {
             'sTitle' : '상품명',
-            data : 'deposit_product_name'
+            data : 'deposit_product_name',
+            render : function(data) {
+                return '<a href="depositProductInfo?deposit_product_name=' 
+             		   + data + '">' + data + '</a>';
+			}
         }, {
             'sTitle' : '상품요약',
             data : 'deposit_product_summary'
@@ -384,7 +388,7 @@ $(document).on("click", '#selectAttendacne', function() {
         ]
     ];
     
-    url = 'depositProductListTestSelect';
+    url = 'depositProductListSelect';
     callList(url, columns, ordering);
 });
 
@@ -406,7 +410,7 @@ function callList(url, columns, ordering) {
         destroy : true,
     });
 
-    if (url == 'depositProductListTestSelect') {
+    if (url == 'depositProductListSelect') {
     	$('.col-md-12').append('<div id="datatable-btn">');
         //$('#datatable-btn').append('<button id="depositProductInsert" class="btn btn-primary"><span class="btn-label"><i class="fa fa-plus"></i></span></button>');
         $('#datatable-btn').append('<button id="depositProductDelete" class="btn btn-primary" onclick="javascript:fn_process(2)"></button>');

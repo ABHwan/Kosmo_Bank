@@ -3,6 +3,7 @@ package com.spring.bank.user.service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ import org.jsoup.Jsoup;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -34,6 +34,7 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
+import com.spring.bank.user.vo.AutoTransferVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -72,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
 		String member_id = (String) req.getSession().getAttribute("customerID");
 		
 		// 고유키를 통해 해당하는 연동된 계좌들을 불러온다.
-		List<AccountVO> dtos = dao.getAccountList(member_id);
+		List<AccountVO> dtos = dao.getAccountConnected(member_id);
 		
 		// 대표계좌 불러오기
 		AccountVO vo = dao.getAccountDefault(member_id);
@@ -1460,7 +1461,6 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("pageNum", pageNum); // 페이지 번호
 		req.setAttribute("number", number); // 출력용 글번호
 
-
 		if (cnt > 0) {
 			req.setAttribute("startPage", startPage); // 시작페이지
 			req.setAttribute("endPage", endPage); // 마지막 페이지
@@ -1526,25 +1526,22 @@ public class CustomerServiceImpl implements CustomerService {
 		// 출력용 글 번호
 		//number = cnt - (currentPage - 1) * pageSize; 
 		number = cnt - (currentPage - 1) * pageSize;
-
+		
 		System.out.println("number : " + number);
 		System.out.println("pageSize : " + pageSize);
-
+		
 		// 시작 페이지
 		// 1 = (1 / 3) * 3 + 1;
 		// startPage = (currentPage / pageBlock) * pageBlock + 1;
 		startPage = (currentPage / pageBlock) * pageBlock + 1;
-		
 		if(currentPage % pageBlock == 0) {
 			startPage -= pageBlock;
 		}
-
 		System.out.println("startPage : " + startPage);
-
+		
 		// 마지막 페이지
 		// 3 = 1 + 3 - 1
 		endPage = startPage + pageBlock - 1;
-
 		if(endPage > pageCount) {
 			endPage = pageCount;
 		}
@@ -1880,8 +1877,8 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	
 	// 환율 데이터 입력 후 출력(지호)
-	@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
-	@Scheduled(fixedRate = 6000) // 1분마다 한번씩
+	//@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
+	//@Scheduled(fixedRate = 6000) // 1분마다 한번씩
 	@Override
 	public void exchanges(Model model) {
 		
@@ -1976,8 +1973,8 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	// 환율 목록 출력(지호)
-	@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
-	@Scheduled(fixedRate = 6000) // 1분마다 한번씩
+	//@Scheduled(cron = "0 0/5 9-17 * * *") // 9시부터 17시까지
+	//@Scheduled(fixedRate = 6000) // 1분마다 한번씩
 	@Override
 	public void exchangeList(HttpServletRequest req, Model model) {
 
@@ -2024,7 +2021,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		model.addAttribute("list", list);
 	}
-
+	
 	// 회원 계좌 찾기
 	@Override
 	public void getAccount(HttpServletRequest req, Model model) {
@@ -2161,10 +2158,18 @@ public class CustomerServiceImpl implements CustomerService {
 		String member_id = (String) req.getSession().getAttribute("customerID");
 		ArrayList<AccountBookVO> list = dao.getAccountBook(member_id);
 		ArrayList<AccountBookVO> report = dao.getAccountBookReport(member_id);
-		
+		ArrayList<AccountBookVO> auto = dao.myAccountAutoTransfer(member_id);
+		System.out.println("report 사이즈 : " + report.size());
+		int sumAutoMoney=0;
+		for(int i=0; i<auto.size(); i++) {
+			sumAutoMoney += auto.get(i).getAuto_money();
+		}
+		System.out.println("해당날짜 자동이체 합계액 :" + sumAutoMoney);
 		model.addAttribute("report", report);
 		model.addAttribute("list", list);
-		System.out.println("report 사이즈 : " + report.size());
+		model.addAttribute("auto", auto);
+		model.addAttribute("sumAutoMoney", sumAutoMoney);
+		
 	}
 	
 	// 예금 리스트(민재)
@@ -2517,7 +2522,6 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 
 		cnt = dao.getLoanCancelCnt((String) req.getSession().getAttribute("customerID"));
-
 		System.out.println("cnt : " + cnt);
 
 		// 글 30건 기준
@@ -3023,7 +3027,6 @@ public class CustomerServiceImpl implements CustomerService {
 			model.addAttribute("currentPage", currentPage); // 현재페이지
 		}
 	}
-
 	public void signInfo(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = (String) req.getParameter("loan_product_name");
 		String member_id = (String) req.getSession().getAttribute("customerID");
@@ -3033,10 +3036,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 		UserVO loanMember = dao.getUserInfo(member_id);
 		LoanProductVO loanProduct = dao.getLoanProductInfo(loan_product_name);
+		//ArrayList<AccountVO> loanAccount = dao.loanAccountInfo(member_id);
 		
 		
 		model.addAttribute("loanMember", loanMember);
 		model.addAttribute("loanProduct", loanProduct);
+		//model.addAttribute("loanAccount", loanAccount);
 	}
 
 
@@ -3184,5 +3189,125 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 	
+	// 자동이체신청
+	public void insertAutoTransfer(HttpServletRequest req, Model model) {
+		AutoTransferVO vo = new AutoTransferVO();
+		vo.setMember_id(req.getParameter("member_id"));
+		vo.setAccount_id(req.getParameter("account_id"));
+		vo.setAuto_senderAccount(req.getParameter("auto_senderAccount"));
+		vo.setAuto_money(Integer.parseInt(req.getParameter("auto_money")));
+		vo.setAuto_outDate(Integer.parseInt(req.getParameter("auto_outDate")));
+		vo.setAuto_registDate(Date.valueOf(req.getParameter("auto_registDate")));
+		vo.setAuto_expirationDate(Date.valueOf(req.getParameter("auto_expirationDate")));
+		vo.setAuto_type(Integer.parseInt(req.getParameter("auto_type")));
+		vo.setAuto_inPlace(req.getParameter("auto_inPlace"));
+		vo.setAuto_senderAccount_bankCode(Integer.parseInt(req.getParameter("sendAccountBankCode")));
+		
+		int insertCnt = 0;
+		insertCnt = dao.insertAutoTransfer(vo);
+		System.out.println("자동이체 신청 insertCnt : " + insertCnt);
+		model.addAttribute("insertCnt", insertCnt);
+	}
+	
+	// 회원자동이체목록
+	public void getMyAutoTransfer(HttpServletRequest req, Model model) {
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		ArrayList<AutoTransferVO> dtos = new ArrayList<AutoTransferVO>();
+		dtos = dao.getMyAutoTransfer(member_id);
+		
+		model.addAttribute("dtos", dtos);
+	}
+	
+	// 회원 자동이체 해지
+	public void deleteAutoTransfer(HttpServletRequest req, Model model) {
+		int auto_id = Integer.parseInt(req.getParameter("auto_id"));
+		int deleteCnt = 0;
+		deleteCnt = dao.deleteAutoTransfer(auto_id);
+		System.out.println("자동이체 해지 deleteCnt : " + deleteCnt);
+		model.addAttribute("deleteCnt", deleteCnt);
+	}
+	
+	// 자동이체 실행
+	@Override
+	public void AutoTransferAction() {
+		// 오늘날짜(해당일자) 구하기
+		SimpleDateFormat format = new SimpleDateFormat("dd");
+		java.util.Date date = new java.util.Date();
+		String days = format.format(date);
+		
+		System.out.println("오늘날짜day 자동이체 실행" + days+"일");
+
+		// 자동이체 조건
+		int auto_id = 0;
+		String account_id="";
+		String auto_senderAccount="";
+		int auto_money = 0;
+		String auto_inPlace="";
+		String member_id="";
+		int sendAccountBankCode=0;
+		
+		//int auto_status=0;
+		int day= Integer.parseInt(days);
+		
+		// 오늘날짜로 자동이체조회해서 오늘납부할리스트들 가져오기
+		ArrayList<AutoTransferVO> transferInfo = dao.selectByDay(day);
+		System.out.println("오늘날짜 자동이체 조회 : " + transferInfo.size());
+		// 자동이체설정
+		if(transferInfo.size() != 0) {
+			int account_balance=0; // 잔액
+			for(int i=0; i<transferInfo.size(); i++) {
+				auto_id = transferInfo.get(i).getAuto_id();
+				account_id = transferInfo.get(i).getAccount_id(); // 내 계좌번호
+				auto_senderAccount = transferInfo.get(i).getAuto_senderAccount(); // 받는사람계좌번호
+				auto_money = transferInfo.get(i).getAuto_money();
+				auto_inPlace = transferInfo.get(i).getAuto_inPlace();
+				member_id = transferInfo.get(i).getMember_id();
+				sendAccountBankCode = transferInfo.get(i).getAuto_senderAccount_bankCode();
+				
+				// 내 계좌 잔액조회
+				account_balance = dao.selectAccountBalance(account_id);
+				
+				if(account_balance >= auto_money) {
+					// 이체시작
+					// 1.이체테이블에 내역 추가
+					TransferVO vo = new TransferVO();
+					vo.setAccount_id(account_id);
+					vo.setTransfer_senderAccount(auto_senderAccount);
+					vo.setTransfer_money(auto_money);
+					vo.setTransfer_outComment(auto_inPlace);
+					vo.setMember_id(member_id);
+					vo.setTransfer_bankCode(sendAccountBankCode);
+					dao.insertTranferByAuto(vo);
+					
+					// 2.자동이체내역테이블에 내역추가
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("auto_id", auto_id);
+					map.put("member_id", member_id);
+					map.put("auto_money", auto_money);
+					map.put("auto_inplace", auto_inPlace);
+					dao.insertAutoTransferList(map);
+					
+					// 3.납부한거 계좌반영(내 계좌 잔액감소)
+					Map<String, Object> map1 = new HashMap<String, Object>();
+					map1.put("account_balance", (account_balance-auto_money));
+					map1.put("account_id", account_id);
+					dao.updateAccountAutoTransfer(map1);
+					
+					// 자동이체 테이블에 최신납부내역 갱신
+					System.out.println("자동이체 성공");
+					
+					// 4.자동이체 테이블에 납부내역 갱신
+					dao.updateAutoTransfer(auto_id);
+				} else {
+					System.out.println("자동이체 실패 : 계좌잔액이 부족합니다.");
+					// 자동이체내역리스트에 실패내역 추가
+					dao.failAutoTransferList(auto_id); 
+				}
+			}
+		} else {
+			System.out.println("자동이체할 데이터가 없습니다.");
+		}
+	}
 	
 }

@@ -9,22 +9,8 @@
 	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
  	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<%@ include file="/WEB-INF/views/include/setting.jsp" %>
-	<!-- include libraries(jQuery, bootstrap) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<!-- include summernote css/js -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-	
-	<!-- include summernote-ko-KR -->
-	<script src="lang/summernote-ko-KR.js"></script>
 </head>
 <body>
-
-	<div id="summernote">
-	</div>
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		
@@ -88,162 +74,12 @@
 								</th>
 							</tr>
 						</table>
-						<div id="summernote">
-						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		</div>
-	</div>
-	
-	<script type="text/javascript">
-	$(document).ready(function() {
-		  $('#summernote').summernote({
-		    lang: 'ko-KR' // default: 'en-US'
-		  });
-		});
-	
-	</script>
-
-	
-	<!--   Core JS Files   -->
-	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
-	<script src="${rePath}js/core/popper.min.js"></script>
-	<script src="${rePath}js/core/bootstrap.min.js"></script>
-
-	<!-- jQuery UI -->
-	<script src="${rePath}js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<script src="${rePath}js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-
-	<!-- jQuery Scrollbar -->
-	<script src="${rePath}js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-
-	<!-- Chart JS -->
-	<script src="${rePath}js/plugin/chart.js/chart.min.js"></script>
-
-	<!-- jQuery Sparkline -->
-	<script src="${rePath}js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-	<!-- Chart Circle -->
-	<script src="${rePath}js/plugin/chart-circle/circles.min.js"></script>
-
-	<!-- Datatables -->
-	<script src="${rePath}js/plugin/datatables/datatables.min.js"></script>
-
-	<!-- Bootstrap Notify -->
-	<script src="${rePath}js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script src="${rePath}js/plugin/jqvmap/jquery.vmap.min.js"></script>
-	<script src="${rePath}js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
-
-	<!-- Sweet Alert -->
-	<script src="${rePath}js/plugin/sweetalert/sweetalert.min.js"></script>
-
-	<!-- Atlantis JS -->
-	<script src="${rePath}js/atlantis.min.js"></script>
-
-	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="${rePath}js/setting-demo.js"></script>
-	<script src="${rePath}js/demo.js"></script>
-	<script>
-		Circles.create({
-			id:'circles-1',
-			radius:45,
-			value:60,
-			maxValue:100,
-			width:7,
-			text: 5,
-			colors:['#f1f1f1', '#FF9E27'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
-
-		Circles.create({
-			id:'circles-2',
-			radius:45,
-			value:70,
-			maxValue:100,
-			width:7,
-			text: 36,
-			colors:['#f1f1f1', '#2BB930'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
-
-		Circles.create({
-			id:'circles-3',
-			radius:45,
-			value:40,
-			maxValue:100,
-			width:7,
-			text: 12,
-			colors:['#f1f1f1', '#F25961'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
-
-		var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
-
-		var mytotalIncomeChart = new Chart(totalIncomeChart, {
-			type: 'bar',
-			data: {
-				labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
-				datasets : [{
-					label: "Total Income",
-					backgroundColor: '#ff9e27',
-					borderColor: 'rgb(23, 125, 255)',
-					data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
-				}],
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				legend: {
-					display: false,
-				},
-				scales: {
-					yAxes: [{
-						ticks: {
-							display: false //this will remove only the label
-						},
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
-					}],
-					xAxes : [ {
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
-					}]
-				},
-			}
-		});
-
-		$('#lineChart').sparkline([105,103,123,100,95,105,115], {
-			type: 'line',
-			height: '70',
-			width: '100%',
-			lineWidth: '2',
-			lineColor: '#ffa534',
-			fillColor: 'rgba(255, 165, 52, .14)'
-		});
-	</script>
-<jsp:include page="/WEB-INF/views/include/chatbot.jsp" />
  
 </body>
 </html>

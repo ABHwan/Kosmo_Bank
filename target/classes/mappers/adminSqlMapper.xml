@@ -53,43 +53,11 @@
 		VALUES(#{deposit_product_name}, #{deposit_product_summary}, sysdate, #{deposit_product_interRate}, #{deposit_product_type}, #{deposit_product_maxDate}, #{deposit_product_minDate}, #{deposit_product_minPrice}, #{deposit_product_explanation}, #{deposit_product_notice}, #{deposit_product_bankCode})
 	</insert>
 	
-	<!-- 관리자 페이지 예금 상품 수 -->
-	<select id="getDepositProductCnt" resultType="int">
-		SELECT COUNT(*) as cnt FROM deposit_product
-	</select>
-	
 	<!-- 관리자 페이지 예금 상품 조회 -->
-	<select id="selectDepositProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.DepositProductVO">
-		<![CDATA[
-		SELECT * FROM
-			(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
-				FROM (SELECT * FROM deposit_product ORDER BY deposit_product_date DESC)
-			) WHERE rNum >= #{start} and rNum <= #{end}
-		]]>	
-	</select>
-	
-	<!-- test -->
-	<select id="selectDepositProductTest" resultType="com.spring.bank.product.vo.DepositProductVO">
+	<select id="selectDepositProduct" resultType="com.spring.bank.product.vo.DepositProductVO">
 		<![CDATA[
 		SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum
 		  FROM (SELECT * FROM deposit_product ORDER BY deposit_product_date DESC)
-		]]>	
-	</select>
-	
-	<!-- 관리자 페이지 예금 상품 수(검색결과수)  -->
-	<select id="getDepositProductSearchCnt" parameterType="String" resultType="int">
-		<![CDATA[ 
-		SELECT COUNT(*) as cnt FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%'
-		]]>
-	</select>
-	
-	<!-- 관리자 페이지 예금 상품 검색(입력받아서 검색) -->
-	<select id="searchDepositProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.DepositProductVO">
-		<![CDATA[
-		SELECT * FROM
-			(SELECT deposit_product_name, deposit_product_summary, deposit_product_date, deposit_product_interrate, deposit_product_type, deposit_product_maxdate, deposit_product_mindate, deposit_product_minprice, deposit_product_bankcode, rowNum rNum 
-				FROM (SELECT * FROM deposit_product WHERE deposit_product_name LIKE '%'||#{search}||'%' ORDER BY deposit_product_date DESC)
-			) WHERE rNum >= #{start} and rNum <= #{end}
 		]]>	
 	</select>
 	
@@ -768,4 +736,81 @@
 		DELETE FROM NOTICE WHERE notice_num = #{notice_num}
 	</delete>
 	
+	<!-- 관리자 페이지 회원별 가입상품 목록 수 -->
+	<select id="getCustomerProductCnt" resultType="int">
+		select count(*) cnt from
+			(select account_id,account_bankCode, account_Type, member_name, product_name, join_date, rowNum rNum 
+			  from
+			        (select d.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               d.deposit_product_name as product_name, d.deposit_joinDate as join_date from deposit d, account a, members m where d.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select s.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               s.saving_product_name as product_name, s.saving_joinDate as join_date from saving s, account a, members m where s.account_id=a.account_id and a.member_id=m.member_id
+			        union       
+			        select l.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               l.loan_product_name as product_name, l.loan_startDate as join_date from loan l, account a, members m where l.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select i.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               i.irp_product_name as product_name, i.irp_joinDate as join_date from irp i, account a, members m where i.account_id=a.account_id and a.member_id=m.member_id))
+	</select>
+	
+	<!-- 관리자 페이지 회원별 가입상품 목록 조회 -->
+	<select id="getCustomerProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.AccountVO">
+		<![CDATA[
+		select * from
+			(select account_id,account_bankCode, account_Type, member_id, member_name, product_name, join_date, rowNum rNum 
+			  from
+			        (select d.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               d.deposit_product_name as product_name, d.deposit_joinDate as join_date from deposit d, account a, members m where d.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select s.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               s.saving_product_name as product_name, s.saving_joinDate as join_date from saving s, account a, members m where s.account_id=a.account_id and a.member_id=m.member_id
+			        union       
+			        select l.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               l.loan_product_name as product_name, l.loan_startDate as join_date from loan l, account a, members m where l.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select i.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               i.irp_product_name as product_name, i.irp_joinDate as join_date from irp i, account a, members m where i.account_id=a.account_id and a.member_id=m.member_id)) 
+		where rNum>=#{start} and rNum<=#{end}
+		]]>
+	</select>	
+	
+	<!-- 관리자 페이지 회원별 가입상품 목록 수(검색) -->
+	<select id="getSearchCustomerProductCnt" parameterType="String" resultType="int">
+		select count(*) cnt from
+			(select account_id,account_bankCode, account_Type, member_name, product_name, join_date, rowNum rNum 
+			  from
+			        (select d.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               d.deposit_product_name as product_name, d.deposit_joinDate as join_date from deposit d, account a, members m where d.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select s.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               s.saving_product_name as product_name, s.saving_joinDate as join_date from saving s, account a, members m where s.account_id=a.account_id and a.member_id=m.member_id
+			        union       
+			        select l.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               l.loan_product_name as product_name, l.loan_startDate as join_date from loan l, account a, members m where l.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select i.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_name as member_name, 
+			               i.irp_product_name as product_name, i.irp_joinDate as join_date from irp i, account a, members m where i.account_id=a.account_id and a.member_id=m.member_id) where (member_name like ('%'||#{search}||'%') or product_name like ('%'||#{search}||'%')))
+	</select>
+	
+	<!-- 관리자 페이지 회원별 가입상품 목록 조회(검색) -->
+	<select id="getSearchCustomerProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.AccountVO">
+		<![CDATA[
+		select * from
+			(select account_id,account_bankCode, account_Type, member_id, member_name, product_name, join_date, rowNum rNum 
+			  from
+			        (select d.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               d.deposit_product_name as product_name, d.deposit_joinDate as join_date from deposit d, account a, members m where d.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select s.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               s.saving_product_name as product_name, s.saving_joinDate as join_date from saving s, account a, members m where s.account_id=a.account_id and a.member_id=m.member_id
+			        union       
+			        select l.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               l.loan_product_name as product_name, l.loan_startDate as join_date from loan l, account a, members m where l.account_id=a.account_id and a.member_id=m.member_id
+			        union
+			        select i.account_id as account_id, a.account_bankCode as account_bankCode, a.account_type as account_type, m.member_id as member_id, m.member_name as member_name, 
+			               i.irp_product_name as product_name, i.irp_joinDate as join_date from irp i, account a, members m where i.account_id=a.account_id and a.member_id=m.member_id) where (member_name like ('%'||#{search}||'%') or product_name like ('%'||#{search}||'%'))) 
+		where rNum>=#{start} and rNum<=#{end}
+		]]>
+	</select>
 </mapper>
