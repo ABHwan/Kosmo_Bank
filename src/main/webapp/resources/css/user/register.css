@@ -133,6 +133,9 @@ body {
 	margin-left: 10px;
 }
 
+#pass {
+	font-weight: bold;
+}
 
 #hp1 {
 	width: 40px;

@@ -16,7 +16,7 @@
 	    Cookie[] cookies = request.getCookies();
 	    if(cookies!=null){
 	        for(Cookie tempCookie : cookies){
-	            if(tempCookie.getName().equals("userID")){
+	            if(tempCookie.getName().equals("customerID")){
 	                tempCookie.setMaxAge(0);
 	                tempCookie.setPath("/");
 	                response.addCookie(tempCookie);

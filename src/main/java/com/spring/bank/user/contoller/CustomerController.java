@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -30,6 +32,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.AccessToken;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.spring.bank.user.service.CustomerServiceImpl;
+import com.spring.bank.user.vo.AccountVO;
 
 @Controller
 
@@ -44,7 +47,7 @@ public class CustomerController {
 	@Inject
 	private JavaMailSender javaMailSender;
 
-	
+	// 아임포트 client API
 	private IamportClient api = new IamportClient("imp_apikey", "ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f");
 	
 	// main 화면(크롤링, 지호)
@@ -52,9 +55,15 @@ public class CustomerController {
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
 		// service.exchanges(req, model);
+		
+		// 로그인 시 계좌 불러오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		if(member_id != null) {
+			service.accountLoad(req, model);
+		}
+		
 		return "index";
 	}
-
 	
 	// 회원가입 페이지
 	@RequestMapping("register.do")
@@ -385,20 +394,68 @@ public class CustomerController {
          
          System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
          
-         //연금 상품  insert
+         //예금 상품  insert
          service.insertDeposit(req, model);
          
 		return "customer/depositProduct/depositAction";
 	}
 	
-	//연금 상품 목록 
+	//연금 상품 목록 (지현)
 	@RequestMapping("irpProductList.do")
 	public String irpProductList(HttpServletRequest req, Model model) {
 		logger.info("url => irpProductList");
 		
+		service.irpList(req, model);
 		
 		return "customer/irp/irpProductList";
 	}
+	
+	//연금 상품검색(지현) - 고객
+	@RequestMapping("irpProductSearch.do")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		
+		service.irpProductSearch(req, model);
+		
+		return "customer/irp/irpProductSearch";
+	}
+	
+	//연금 상품 상세 보기 (지현) -고객
+	@RequestMapping("irpDetail.do")
+	public String irpDetail(HttpServletRequest req, Model model) {
+		logger.info("url => irpDetail");
+		
+		service.irpDetail(req, model);
+		
+		return "customer/irp/irpDetail";
+	}
+	
+	//연금 상품 신청화면(지현) - 고객
+	@RequestMapping("irpProductJoin")
+	public String irpProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductJoin");
+		
+		service.irpProductJoin(req, model);
+		
+		return "customer/irp/irpProductJoin";
+	}	
+	
+	//연금 상품 신청 화면에서 확인 눌렀을때 -> account 계좌 생성 & irp 테이블에 insert(지현)
+	@RequestMapping("irpProductAction")
+	public String irpAccess(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductAction");
+	      
+		 //계좌개설 insert account
+         service.makeAccount(req, model);
+         
+         System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
+         
+         //연금 상품  insert
+         service.insertIrp(req, model);
+         
+		return "customer/irp/irpAction";
+	}
+		
 
 	//적금 상품 조회(지호) - 고객
 	@RequestMapping("savingList")
@@ -429,14 +486,79 @@ public class CustomerController {
 	}
 	
 	//적금 상품 신청(지호)
-	@RequestMapping("savingProductAction")
-	public String savingProductAction(HttpServletRequest req, Model model) {
-		logger.info("url => depositProductInsert");
+	@RequestMapping("savingProductInsert")
+	public String savingProductInsert(HttpServletRequest req, Model model) {
+		logger.info("url => savingProductInsert");
 		
 		service.savingProductAction(req, model);
 		
-		return "customer/savingProduct/savingProductAction";
+		return "customer/savingProduct/savingProductJoin";
 	}	
+	
+	// 적금 상품 신청 처리(지호) 해야함
+	@RequestMapping("savingProductAction")
+	public String savingProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => savingProductAction");
+		
+		return "customer/savingProduct/savingProductAction";
+	}
+	
+	//예금 상품 상세에서 신청하기 누르면  신청 화면 (지현)
+//	@RequestMapping("depositProductJoin")
+//	public String depositProductInsert(HttpServletRequest req, Model model) {
+//		logger.info("url => depositProductJoin");
+//		
+//		service.setDepositProductJoin(req, model);
+//		
+//		return "customer/depositProduct/depositProductJoin";
+//	}
+	
+	//
+	// 펀드 상품 조회(지호) - 고객
+	@RequestMapping("fundList")
+	public String fundList(HttpServletRequest req, Model model) {
+		logger.info("url => fundList");
+		
+		service.fundList(req, model);
+		
+		return "customer/fundProduct/fundList";
+	}
+	
+	// 펀드 상품검색(지호) - 고객
+	@RequestMapping("fundProductSearch")
+	public String fundProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /fundProductSearch]");
+		service.fundProductSearch(req, model);
+		return "customer/fundProduct/fundProductSearch";
+	}
+	
+	// 펀드 상품 상세 보기 (지호) -고객
+	@RequestMapping("fundDetail")
+	public String fundDetail(HttpServletRequest req, Model model) {
+		logger.info("url => savingDetail");
+		
+		service.fundDetail(req, model);
+		
+		return "customer/fundProduct/fundDetail";
+	}
+	
+	// 펀드 상품 신청(지호)
+	@RequestMapping("fundProductInsert")
+	public String fundProductInsert(HttpServletRequest req, Model model) {
+		logger.info("url => fundProductInsert");
+		
+		service.fundProductAction(req, model);
+		
+		return "customer/fundProduct/fundProductInsert";
+	}	
+	
+	// 펀드 상품 신청 처리(지호) 해야함
+	@RequestMapping("fundProductAction")
+	public String fundProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => fundProductAction");
+		
+		return "customer/fundProduct/fundProductAction";
+	}
 	
 	//qna 게시판(지현)
 	@RequestMapping("qnaList")
@@ -600,13 +722,15 @@ public class CustomerController {
 
 		return "customer/bank/account_confirm";
 	}
+	
 	//!!!!!!!!!!지은!!!!!!!!!!!
 
-	// 대출중인 상품 목록
+
+	// 대출 상환 목록
 	@RequestMapping("loanHistoryList.do")
 	public String loanHistoryList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanHistoryList]");
-		service.loanHistoryList(req, model);
+		//service.loanHistoryList(req, model);
 		return "customer/loan/loanHistoryList";
 	}
 	
@@ -652,6 +776,14 @@ public class CustomerController {
 	public String loanPrincipalList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanPrincipalList]");
 		return "customer/loan/loanPrincipalList";
+	}
+	
+	// 대출 상환 상세
+	@RequestMapping("loanPrincipalRateList.do")
+	public String loanPrincipalRateList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalRateList]");
+		service.loanPrincipalRateList(req, model);
+		return "customer/loan/loanPrincipalRateList";
 	}
 
 	// 대출 원금 상세
@@ -706,14 +838,23 @@ public class CustomerController {
 		return "customer/loan/newLoanDetail";
 	}
 
-	// 신규대출
+	// 신규대출폼
 	@RequestMapping("newLoanSign.do")
 	public String newLoanSign(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /newLoanSign]");
+		service.signInfo(req, model);
 		return "customer/loan/newLoanSign";
 	}
+	
+	// 신규대출신청
+	@RequestMapping("newLoanSignAction.do")
+	public String newLoanSignAction(HttpServletRequest req, Model model) throws ParseException {
+		logger.info("[url ==> /newLoanSign]");
+		service.newLoanSignAction(req, model);
+		return "customer/loan/newLoanSignAction";
+	}
 
-	// 신규대출
+	// 대출약관
 	@RequestMapping("terms.do")
 	public String terms(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /terms]");
@@ -726,7 +867,6 @@ public class CustomerController {
 		service.searchLoanProductList(req, model);
 		return "customer/loan/searchLoanProductList";
 	}
-
 	//!!!!!!!!!!지은!!!!!!!!!!!
 
 	// 회원 자동 이체(유성)
@@ -886,4 +1026,68 @@ public class CustomerController {
 		
 		return "redirect:accountBook";
 	}
+	
+	// 은행별 계좌조회(복환)
+	@RequestMapping("myAccountList")
+	public String myAccountList(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/myAccountList";
+	}
+	
+	// 은행별 계좌조회(복환)
+	@ResponseBody
+	@RequestMapping("myAccountListSelect")
+	public ArrayList<AccountVO> myAccountListSelect(HttpServletRequest req, Model model) {
+		
+		
+		return service.getAccountList(req, model);
+	}
+	
+	// 계좌화면
+	@RequestMapping("accountConnect")
+	public String accountConnect(HttpServletRequest req, Model model) {
+		
+		// 계좌 체크 후 뿌리기
+		service.accountConnectCheck(req, model);
+		
+		return "customer/bank/accountConnect";
+	}
+	
+	// 계좌연동하기
+	@ResponseBody
+	@RequestMapping("accountConnectAction")
+	public int accountConnectAction(HttpServletRequest req, Model model) {
+		
+		// 계좌 연동
+		return service.accountConnectAction(req, model);
+	}
+	
+	// 계좌연동관리
+	@RequestMapping("accountConnectedList")
+	public String accountConnectedList(HttpServletRequest req, Model model) {
+		// 계좌 연동관리
+		service.accountConnectedList(req, model);
+		
+		return "customer/bank/myAccountConnect";
+	}
+	
+	// 계좌연동하기
+	@ResponseBody
+	@RequestMapping("accountDisConnectAction")
+	public int accountDisConnectAction(HttpServletRequest req, Model model) {
+		
+		
+		
+		// 계좌 연동
+		return service.accountDisConnectAction(req, model);
+	}
+	
+	// 중복로그인 감지
+	@RequestMapping("sessionErr")
+	public String SessionError(HttpServletRequest req, Model model) {
+		
+		return "common/sessionErr";
+	}
+	
 }

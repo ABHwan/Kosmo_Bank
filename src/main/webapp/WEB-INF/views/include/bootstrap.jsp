@@ -22,8 +22,11 @@
 <link rel="stylesheet" href="${rePath}css/bootstrap.min.css">
 <link rel="stylesheet" href="${rePath}css/atlantis.min.css">
 
-<!-- CSS Just for demo purpose, don't include it in your project -->
-<link rel="stylesheet" href="${rePath}css/demo.css">
+<!-- alert, confirm File -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!-- DataTable File -->
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
 
 <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />

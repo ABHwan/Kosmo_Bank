@@ -32,6 +32,8 @@ public class DepositProductVO {
 	private String deposit_product_notice;
 	private int deposit_product_bankCode;
 	
+	private int rNum;
+	
 	public DepositProductVO() {}
 
 	public String getDeposit_product_name() {
@@ -130,5 +132,14 @@ public class DepositProductVO {
 	public void setDeposit_product_bankCode(int deposit_product_bankCode) {
 		this.deposit_product_bankCode = deposit_product_bankCode;
 	}
+
+	public int getrNum() {
+		return rNum;
+	}
+
+	public void setrNum(int rNum) {
+		this.rNum = rNum;
+	}
+	
 	
 }

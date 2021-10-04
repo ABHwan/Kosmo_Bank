@@ -9,8 +9,22 @@
 	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
  	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<%@ include file="/WEB-INF/views/include/setting.jsp" %>
+	<!-- include libraries(jQuery, bootstrap) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	
+	<!-- include summernote-ko-KR -->
+	<script src="lang/summernote-ko-KR.js"></script>
 </head>
 <body>
+
+	<div id="summernote">
+	</div>
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		
@@ -74,6 +88,8 @@
 								</th>
 							</tr>
 						</table>
+						<div id="summernote">
+						</div>
 					</form>
 				</div>
 			</div>
@@ -81,6 +97,15 @@
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		  $('#summernote').summernote({
+		    lang: 'ko-KR' // default: 'en-US'
+		  });
+		});
+	
+	</script>
 
 	
 	<!--   Core JS Files   -->

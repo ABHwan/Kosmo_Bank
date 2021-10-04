@@ -10,7 +10,6 @@
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 
-
 </head>
 <body>
 <!-- 메인 콘텐츠 -->
@@ -63,15 +62,22 @@
 			            <th>최소금액</th>
 			            <th>은행코드</th>
 			            <th>등록일</th>
-			            <th>상세정보</th>
 			          </tr>
 			          <c:if test="${cnt > 0}">
 			          	<c:forEach var="dto" items="${dtos}">
+			          	
 				         <tr>
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>
-				           <td>${dto.deposit_product_name} <input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}"></td>
+
+				           <td>	
+				           		<label for="btn btn-link" onmouseover="style='font-weight: bold;'" onmouseout="style='font-weight: none;'">${dto.deposit_product_name}</label> 
+				           		<input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}">
+				           		
+				           		<input type="button" class="btn btn-link" id="btn btn-link" value="상세"
+			          				onclick="window.location='depositDetail.do?pageNum=${pageNum}&number=${number}&deposit_product_name=${dto.deposit_product_name}'" style="display:none;">
+				           </td>
 				           <td>${dto.deposit_product_summary}</td>
 				           <td>${dto.deposit_product_interRate}%</td>
 				           <td>
@@ -87,31 +93,33 @@
 				           <td>${dto.deposit_product_maxDate}개월</td>
 				           <td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원</td>
 				           <td>
-				           		<c:choose>
+				           		<c:choose> 
 				           			<c:when test="${dto.deposit_product_bankCode==0}">
 				           				미기재
 				           			</c:when>
 				           			<c:when test="${dto.deposit_product_bankCode==1}">
-				           				신한은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==2}">
 				           				국민은행
 				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==3}">
+				           			<c:when test="${dto.deposit_product_bankCode==2}">
 				           				우리은행
 				           			</c:when>
+				           			<c:when test="${dto.deposit_product_bankCode==3}">
+				           				농협은행
+				           			</c:when>
 				           			<c:when test="${dto.deposit_product_bankCode==4}">
-				           				기업은행
+				           				신한은행
 				           			</c:when>
 				           			<c:when test="${dto.deposit_product_bankCode==5}">
 				           				하나은행
 				           			</c:when>
+				           			<c:when test="${dto.deposit_product_bankCode==6}">
+				           				코스모 은행
+				           			</c:when>
 				           		</c:choose>
 				           </td>
 				           <td>${dto.deposit_product_date}</td>
-			          		<td><input type="button" class="btn btn-link" value="상세"
-			          				onclick="window.location='depositDetail.do?pageNum=${pageNum}&number=${number}&deposit_product_name=${dto.deposit_product_name}'"></td>
 				         </tr>
+				         
 				        </c:forEach>
 				      </c:if>
 				      

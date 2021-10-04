@@ -13,6 +13,16 @@
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
+	
+	<!-- 아임포트 본인인증 api 시작 -->
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	<!-- 아임포트 본인인증 api 끝 -->
+	
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -262,6 +272,14 @@
         </dependency>
         <!-- Java Mail API -->
         
+        <!-- 본인인증 api 시작 -->
+		<dependency>
+		    <groupId>com.github.iamport</groupId>
+		    <artifactId>iamport-rest-client-java</artifactId>
+		    <version>0.2.15</version>
+		</dependency>
+		<!-- 본인인증 api 끝 -->
+        
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -306,6 +324,19 @@
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                    <warName>sample</warName>
+ 
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            
         </plugins>
+        
     </build>
 </project>

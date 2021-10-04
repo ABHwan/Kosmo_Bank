@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
+import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -57,9 +61,9 @@ public interface AdminDAO {
 	// 관리자 페이지 예금 상품 삭제
 	public int deleteDepositProduct(String deposit_product_name);
 	
-	//
 	// 관리자 페이지 적금 상품 등록
 	public int insertSavingProduct(SavingProductVO vo);
+	
 	// 관리자 페이지 적금 상품 수
 	public int getSavingProductCnt(); 
 	
@@ -79,8 +83,57 @@ public interface AdminDAO {
     public int updateSavingProduct(SavingProductVO vo);
 	
 	// 관리자 페이지 적금 상품 삭제
-	public int deleteSavingProduct(String saving_product_name);	
+	public int deleteSavingProduct(String saving_product_name);
 	
+	// 관리자 페이지 펀드 상품 등록
+	public int insertFundProduct(FundProductVO vo);
+	
+	// 관리자 페이지 펀드 상품 수
+	public int getFundProductCnt(); 
+	
+	// 관리자 페이지 펀드 상품 조회
+	public ArrayList<FundProductVO> selectFundProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 펀드 상품 수(검색결과수)
+	public int getFundProductSearchCnt(String search);
+	
+	// 관리자 페이지 펀드 상품 검색(입력받아서 검색)
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 펀드 상품 상세조회
+    public FundProductVO getFundProductInfo(String fund_title);
+   
+    // 관리자 페이지 펀드 상품 수정
+    public int updateFundProduct(FundProductVO vo);
+	
+	// 관리자 페이지 펀드 상품 삭제
+	public int deleteFundProduct(String fund_title);	
+	
+	//지현
+	// 관리자 페이지 연금 상품 등록
+	public int insertIrpProduct(IrpProductVO vo);
+	
+	// 관리자 페이지 연금 상품 수
+	public int getIrpProductCnt(); 
+	
+	// 관리자 페이지 연금 상품 조회
+	public ArrayList<IrpProductVO> selectIrpProduct(Map<String, Object> map);
+
+	// 관리자 페이지 연금 상품 수(검색결과수)
+	public int getIrpProductSearchCnt(String search);
+	
+	// 관리자 페이지 연금 상품 검색(입력받아서 검색)
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 연금 상품 상세조회
+	public IrpProductVO getIrpProductInfo(String deposit_product_name);
+	
+	// 관리자 페이지 연금 상품 수정
+	public int updateIrpProduct(IrpProductVO vo);
+	
+	// 관리자 페이지 연금 상품 삭제
+	public int deleteIrpProduct(String irp_product_name);
+		
 	//문의사항 갯수 (지현)
 	public int getInquiryCnt();
 	
@@ -120,49 +173,64 @@ public interface AdminDAO {
 	// 관리자 페이지 TEST 계좌 생성(복환)
 	public int insertTestAccount(AccountVO vo);
 
+	// !지은!
+	// 대출 상품 개수
+	public int getLoanProductCnt();
+
+	// 대출 상품 목록
+	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
+
+	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
+
+	public int loanProductInsert(LoanProductVO l);
+
+	public int loanProductUpdate(LoanProductVO l);
+
+	public int loanProductDelete(String loan_product_name);
+
+	public LoanProductVO getLoanProductInfo(String loan_product_name);
+
+	public int getSearchLoanProductCnt(String keyword);
+
+	public int getLoanCnt();
+
+	public int getLoanRequestCnt();
+
+	public ArrayList<LoanVO> getLoanList(Map<String, Object> map);
+
+	public ArrayList<LoanVO> getLoanRequestList(Map<String, Object> map);
+
+	public int loanRequestAction(Map<String, Object> map);
+
+	public int getSearchLoanRequestCnt(String keyword);
+	public int getSearchLoanCnt(String keyword);
+
+	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);
+
+	public ArrayList<LoanVO> searchLoanList(Map<String, Object> map);
+
 	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
 
 	public int getLoanCancelCnt();
 
-	public ArrayList<LoanVO> searchLoanList(Map<String, Object> map);
+	public LoanVO getLoanInfo(Map<String, Object> map);
 
-	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);
+	public int transNewLoanAccount(TransferVO trans);
 
-	public int getSearchLoanCnt(String keyword);
+	public int setNewLoanAccount(Map<String, Object> map);
 
-	public int getSearchLoanRequestCnt(String keyword);
+	public TransferVO resetNewLoanAccount(Map<String, Object> map);
 
-	public int loanRequestAction(Map<String, Object> map);
+	public UserVO getUserInfo(String member_id);
+	
 
-	public int getLoanRequestCnt();
-
-	public int getLoanCnt();
-
-	public int getSearchLoanProductCnt(String keyword);
-
-	public ArrayList<LoanVO> getLoanRequestList(Map<String, Object> map);
-
-	public ArrayList<LoanVO> getLoanList(Map<String, Object> map);
-
-	public LoanProductVO getLoanProductInfo(String loan_product_name);
-
-	public int loanProductDelete(String loan_product_name);
-
-	public int loanProductUpdate(LoanProductVO l);
-
-	public int loanProductInsert(LoanProductVO l);
-
-	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
-
-	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
-
-	public int getLoanProductCnt(); 
+	// !지은!
 	
 	// 공지사항 쓰기 처리(민재)
 	public int mngNoticeWriteAction(NoticeVO vo);
 	
 	// 공지사항 - 비밀번호 인증(민재)
-	public int noticePWDCheck(Map<String, Object> map);
+	public String noticePWDCheck(int notice_num);
 	
 	// 공지사항 상세페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);
@@ -172,5 +240,8 @@ public interface AdminDAO {
 
 	// 공지사항 수정처리(민재)
 	public int noticeDeleteAction(int notice_num);
+	
+	// test
+	public ArrayList<DepositVO> selectDepositProductTest();
 
 }
