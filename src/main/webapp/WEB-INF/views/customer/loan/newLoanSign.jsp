@@ -70,15 +70,15 @@
 											<tr>
 												<th class="thCss"><label for="account_bankCode">계좌번호</label></th>
 												<td style="display:flex;">
-													<select class="form-control form-control" style="background-color:transparent !important; height: 40px !important; width: 20%; float: left; align-self: center;" name="account_bankCode">
-														<option value="1">국민</option>
-														<option value="2">우리</option>
-														<option value="3">농협</option>
-														<option value="4">신한</option>
-														<option value="5">하나</option>
-														<option value="6">코스모</option>
+													<select class="form-control form-control" style="background-color:transparent !important; height: 40px !important; width: 50%; float: left; align-self: center;" name="account_bankCode">
+														<option value="1">국민은행</option>
+														<option value="2">우리은행</option>
+														<option value="3">농협은행</option>
+														<option value="4">신한은행</option>
+														<option value="5">하나은행</option>
+														<option value="6">코스모은행</option>
 													</select> 
-													<input type="text" id="account_id" name="account_id" class="form-control " style="background-color:transparent !important; height: 40px !important; width: 30%; float: left; align-self: center;">
+													<!-- <input type="text" id="account_id" name="account_id" class="form-control " style="background-color:transparent !important; height: 40px !important; width: 30%; float: left; align-self: center;"> -->
 												</td>
 											</tr>
 													

@@ -59,11 +59,13 @@
 											<thead>
 												<tr>
 													<th scope="col">대출상환번호</th>
-													<th scope="col">대출번호(조인해서 정보끌어와야함 ㅅㅈㅈ)</th>
+													<th scope="col">대출번호</th>
 													<th scope="col">이체번호</th>
 													<th scope="col">대출상환일자</th>
 													<th scope="col">대출상환종류</th>
-													<th scope="col">대출상환금액</th>
+													<th scope="col">월 상환 총액</th>
+													<th scope="col">월 납입원금</th>
+													<th scope="col">월 납입이자</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -72,9 +74,26 @@
 														<td>${l.loan_history_id}</td>
 														<td>${l.loan_id}</td>
 														<td>${l.transfer_id}</td>
-														<td>${l.loan_history_date}</td>
-														<td>${l.loan_history_state}</td>
-														<td>${l.loan_history_amount}</td>
+														<td><fmt:formatDate value="${l.loan_history_date}" pattern="yyyy/MM/dd"/></td>
+														<td>
+															<c:choose>
+																<c:when test="${l.loan_history_state == 1}">
+																	정상
+																</c:when>
+																<c:when test="${l.loan_history_state == 2}">
+																	연체
+																</c:when>
+																<c:when test="${l.loan_history_state == 3}">
+																	중도상환
+																</c:when>
+																<c:when test="${l.loan_history_state == 4}">
+																	해지
+																</c:when>
+															</c:choose>
+														</td>
+														<td><fmt:formatNumber value="${l.loan_history_amount}"/></td>
+														<td><fmt:formatNumber value="${l.loan_history_tranAmount}"/></td>
+														<td><fmt:formatNumber value="${l.loan_history_tranInterest}"/></td>
 													</tr>
 												</c:forEach>
 												<c:if test="${cnt == 0}">
@@ -92,7 +111,7 @@
 												<!-- 이전블록[«] -->
 												<c:if test="${startPage > pageBlock}">
 													<li class="page-item"><a class="page-link"
-														href="loanList.do?pageNum=${startPage - pageBlock}"
+														href="#.do?pageNum=${startPage - pageBlock}"
 														aria-label="Previous"> <span aria-hidden="true">«</span>
 															<span class="sr-only">Previous</span>
 													</a></li>
@@ -102,19 +121,19 @@
 												<c:forEach var="i" begin="${startPage}" end="${endPage}">
 													<c:if test="${i == currentPage}">
 														<li class="page-item active"><a class="page-link"
-															href="loanList.do?pageNum=${i}">${i}</a></li>
+															href="#.do?pageNum=${i}">${i}</a></li>
 													</c:if>
 
 													<c:if test="${i != currentPage}">
 														<li class="page-item"><a class="page-link"
-															href="loanList.do?pageNum=${i}">${i}</a></li>
+															href="#.do?pageNum=${i}">${i}</a></li>
 													</c:if>
 												</c:forEach>
 
 												<!-- 다음블록[»] -->
 												<c:if test="${pageCount > endPage}">
 													<li class="page-item"><a class="page-link"
-														href="loanList.do?pageNum=${startPage + pageBlock}"
+														href="#.do?pageNum=${startPage + pageBlock}"
 														aria-label="Next"> <span aria-hidden="true">»</span> <span
 															class="sr-only">Next</span>
 													</a></li>

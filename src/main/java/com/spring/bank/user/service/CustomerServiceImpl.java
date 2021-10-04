@@ -3076,7 +3076,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public void newLoanSignAction(HttpServletRequest req, Model model) throws ParseException {
 		String loan_product_name = (String) req.getParameter("loan_product_name");
 		String member_id = (String) req.getParameter("member_id");
-		String account_id = req.getParameter("account_id");
+		String account_id = createAccountId(Integer.parseInt(req.getParameter("account_bankCode")));
 		int loan_state = 1; // final static int선언해야됨. 1:신청
 		int loan_amount = Integer.parseInt((String) req.getParameter("loan_amount"));
 		
@@ -3105,7 +3105,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String str_loan_startDate = (String) req.getParameter("loan_startDate");
-		Date loan_startDate = Date.valueOf(LocalDate.parse(str_loan_startDate, format));
+		Date loan_startDate = Date.valueOf(LocalDate.parse(str_loan_startDate, format));	
 		String str_loan_endDate = (String) req.getParameter("loan_endDate");
 		Date loan_endDate = Date.valueOf(LocalDate.parse(str_loan_endDate, format));
 		
@@ -3173,7 +3173,12 @@ public class CustomerServiceImpl implements CustomerService {
 		cntDate = cntDate.plusMonths(cnt+1);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		String cnt_date = cntDate.format(formatter);
-		
+		System.out.println("btnDate " + btnDate);
+		System.out.println("cntDate " + cntDate);
+		System.out.println("(cntDate.isAfter(date.toLocalDate()) " + (cntDate.isAfter(date.toLocalDate())));
+		System.out.println("date.toLocalDate().isAfter(btnDate)) " + date.toLocalDate().isAfter(btnDate));
+		System.out.println("cntDate.isEqual(date.toLocalDate()) " + cntDate.isEqual(date.toLocalDate()));
+		System.out.println("cntDate.isBefore(date.toLocalDate()) " + cntDate.isBefore(date.toLocalDate()));
 		String cnt_state = "";
 		int disabledBtn = 0;
 		if((cntDate.isAfter(date.toLocalDate()) && date.toLocalDate().isAfter(btnDate)) || cntDate.isEqual(date.toLocalDate())) {
@@ -3182,6 +3187,11 @@ public class CustomerServiceImpl implements CustomerService {
 			cnt_state = "연체";
 		} else {
 			cnt_state = "납부월이 아닙니다.";
+			disabledBtn = 1;
+		}
+		
+		if(loan.getLoan_state() == 1) {
+			cnt_state = "승인되지 않은 대출입니다.";
 			disabledBtn = 1;
 		}
 		
@@ -3200,7 +3210,7 @@ public class CustomerServiceImpl implements CustomerService {
 		model.addAttribute("loanAccount", loanAccount);
 		model.addAttribute("disabledBtn", disabledBtn);
 		
-
+		
 	}
 	public void loanPaymentAction(HttpServletRequest req, Model model) {
 		// 변수 받아오기 
