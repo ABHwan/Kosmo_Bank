@@ -307,12 +307,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).accountFind(strId);
 	}
 
-	// 계좌 비밀번호
-	@Override
-	public AccountVO account_pwd(Map<String, Object> map) {
-		return sqlSession.getMapper(CustomerDAO.class).account_pwd(map);
-	}
-
 	// 계좌 인증
 	@Override
 	public AccountVO selectAccount(String account_id) {
@@ -330,8 +324,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int transferSenderConfirm(TransferVO vo) {
 		return sqlSession.getMapper(CustomerDAO.class).transferSenderConfirm(vo);
 	}
-
-	// 받는 사람 이체 정보 추가
+	
+	// 회원 이체(받는 사람 이체 정보 추가)
 	@Override
 	public int transferReceiverConfirm(TransferVO vo) {
 		return sqlSession.getMapper(CustomerDAO.class).transferReceiverConfirm(vo);
@@ -339,14 +333,20 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	// 보낸사람 계좌 정보 변경
 	@Override
-	public int transfer_sender(AccountVO vo) {
-		return sqlSession.getMapper(CustomerDAO.class).transfer_sender(vo);
+	public int transfer_sender(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).transfer_sender(map);
 	}
 
 	// 받는사람 계좌 정보 변경
 	@Override
-	public int transfer_receiver(AccountVO vo) {
-		return sqlSession.getMapper(CustomerDAO.class).transfer_receiver(vo);
+	public int transfer_receiver(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).transfer_receiver(map);
+	}
+	
+	// 회원 이체 내역(유성)
+	@Override
+	public ArrayList<TransferVO> transferList(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).transferList(map);
 	}
 
 	// 회원 아파트 관리비

@@ -144,9 +144,6 @@ public interface CustomerDAO {
 	// 회원 계좌 찾기
 	public List<AccountVO> accountFind(String strId);
 
-	// 회원 계좌 비밀번호 확인
-	public AccountVO account_pwd(Map<String, Object> map);
-
 	// 계좌 인증
 	public AccountVO selectAccount(String account_id);
 
@@ -155,15 +152,18 @@ public interface CustomerDAO {
 
 	// 회원 이체(보낸 사람 이체 정보 추가)
 	public int transferSenderConfirm(TransferVO vo);
-
-	// 받는 사람 이체 정보 추가
+	
+	// 회원 이체(받는 사람 이체 정보 추가)
 	public int transferReceiverConfirm(TransferVO vo);
 
 	// 보낸사람 계좌 정보 변경(금액)
-	public int transfer_sender(AccountVO vo);
+	public int transfer_sender(Map<String, Object> map);
 
 	// 받는사람 계좌 정보 변경(금액)
-	public int transfer_receiver(AccountVO vo);
+	public int transfer_receiver(Map<String, Object> map);
+	
+	// 회원 이체 내역(유성)
+	public ArrayList<TransferVO> transferList(Map<String, Object> map);
 
 	// 회원 아파트 관리비 목록
 	public List<UtilityVO> apt_mtList(UtilityVO vo);

@@ -40,9 +40,7 @@
 							<th scope="col">출금계좌</th>
 							<th scope="col">입금은행<br>입금계좌
 							</th>
-							<th scope="col">받은분</th>
 							<th scope="col">이체금액(원)</th>
-							<th scope="col">날짜</th>
 							<th scope="col">내통장<br>메모
 							</th>
 							<th scope="col">받는통장<br>메모
@@ -52,38 +50,55 @@
 		
 					<tbody>
 						<tr class="table-light">
-							<td>{출금계좌번호}</td>
-							<td>{입금은행}<br>{입금계좌}
+							<td>${account_id}</td>
+							<c:if test="${transfer_bankCode == 0}">
+								<td>미기재<br>${transfer_senderAccount}
 							</td>
-							<td>{받는분}</td>
-							<td>{이체금액}</td>
-							<td>{날짜}</td>
-							<td>{내통장메모}</td>
-							<td>{받은통장메모}</td>
+							</c:if>
+							<c:if test="${transfer_bankCode == 1}">
+								<td>국민<br>${transfer_senderAccount}
+							</td>
+							</c:if>
+							<c:if test="${transfer_bankCode == 2}">
+								<td>우리<br>${transfer_senderAccount}
+							</td>
+							</c:if>
+							<c:if test="${transfer_bankCode == 3}">
+								<td>농협<br>${transfer_senderAccount}
+							</td>
+							</c:if>
+							<c:if test="${transfer_bankCode == 4}">
+								<td>신한<br>${transfer_senderAccount}
+							</td>
+							</c:if>
+							<c:if test="${transfer_bankCode == 5}">
+								<td>하나<br>${transfer_senderAccount}
+							</td>
+							</c:if>
+							<c:if test="${transfer_bankCode == 6}">
+								<td>코스모<br>${transfer_senderAccount}
+							</td>
+							</c:if><%-- <br>${transfer_senderAccount}
+							</td> --%>
+							<td>${transfer_money}</td>
+							<td>${transfer_outComment}</td>
+							<td>${transfer_inComment}</td>
 						</tr>
 					</tbody>
 				</table>
 		
-				<table class="table table-head-bg-primary mt-4">
-					<tbody>
-						<tr class="table-light">
-							<td>{이체건수}</td>
-							<td>{이체금액}</td>
-						</tr>
-					</tbody>
-				</table>
 			</div>
 		</div>
 
-											<div class="my-info text-center">
+			<div class="my-info text-center">
 
-												<table>
-													<tr>
-												</table>
-												<input class="btn btn-info" data-toggle="modal"
-													data-target="#sendMoney" type="submit"
-													data-target="#sendMoney" value="확인" onclick="window.location='index.do'">
-											</div>
+				<table>
+					<tr>
+				</table>
+				<input class="btn btn-primary" data-toggle="modal"
+					data-target="#sendMoney" type="submit"
+					data-target="#sendMoney" value="확인" onclick="window.location='transfer'">
+			</div>
 										
 									</div>
 								</div>

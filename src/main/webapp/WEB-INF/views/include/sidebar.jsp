@@ -186,7 +186,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="transfer_List">
+										<a href="transferList">
 											<span class="sub-item">이체내역</span>
 										</a>
 									</li>

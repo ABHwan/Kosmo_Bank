@@ -1,3 +1,4 @@
+/*
 // 계좌 비밀번호 확인
 function account_confirmPwd(){
 	if(!document.transferform.account_password.value){
@@ -21,25 +22,15 @@ function confirmPwdCheck(){
 		return false;
 	}
 }
+*/
 
-function setId(account_password) {
-	opener.document.transferform.account_password.value = account_password; 		// opener = window 객체의 open()
-	opener.document.transferform.hiddenPassword.value = 1;	// 메서드로 열린 새 창(=중복확인창)에서
-	self.close();									// 부모창(=회원가입)에 접근할 때 사용
-}
 
 
 // 이체시 필요한 정보 입력
 function transferCheck() {
 
-	// 계좌 비밀번호
-	if (!document.transferform.account_password.value) {
-		alert("계좌 비밀번호를 입력하세요");
-		document.transferform.account_password.focus();
-		return false;
-
-		// 입금계좌번호
-	} else if (!document.transferform.transfer_senderAccount.value) {
+	// 입금계좌번호
+	if (!document.transferform.transfer_senderAccount.value) {
 		alert("입금할 계좌번호를 입력하세요");
 		document.transferform.transfer_senderAccount.focus();
 		return false;

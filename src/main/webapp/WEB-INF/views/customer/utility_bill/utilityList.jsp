@@ -41,83 +41,80 @@
 							<div class="card">
 								<div class="card-header">
 									<div class="card-title">
-										<div class="d-flex justify-content-between mt-2">
-											납부 고지서 목록
-											
-										</div>
+										<div class="d-flex justify-content-between mt-2">납부 고지서
+											목록</div>
 									</div>
 								</div>
-								<div class="card-body"> 
-									<form action="loanList" method="post"
-										id="loanform">
-										<sec:csrfInput />
-										<table class="table table-hover card-table">
-											<thead>
-												<tr>
-													<th scope="col">날짜</th>
-													<th scope="col">고지번호</th>
-													<th scope="col">고지종류</th>
-													<th scope="col">납부 계좌번호</th>
-													<th scope="col">납부 금액</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach var="dto" items="${dtos}">
-													<tr>
-														<td>${dto.utility_date}</td>
-														<td>${dto.utility_num}</td>
-														<td>${dto.utility_id}</td>
-														<td>${dto.account_id}</td>
-														<td>${dto.utility_money}</td>
-												</c:forEach>
-												<c:if test="${cnt == 0}">
-													<tr>
-														<td colspan="10">납부한 내역이 없습니다</td>
-													</tr>
-												</c:if>
-											</tbody>
-										</table>
-									</form>
-									<!-- paging -->
-									<div class="d-flex justify-content-center">
-										<ul class="pagination pg-primary mt-5">
-											<c:if test="${cnt > 0}">
-												<!-- 이전블록[«] -->
-												<c:if test="${startPage > pageBlock}">
-													<li class="page-item"><a class="page-link"
-														href="utilityList?pageNum=${startPage - pageBlock}"
-														aria-label="Previous"> <span aria-hidden="true">«</span>
-															<span class="sr-only">Previous</span>
-													</a></li>
-												</c:if>
+<div class="card-body">
+	<form action="loanList" method="post" id="loanform">
+		<sec:csrfInput />
+		<table class="table table-hover card-table">
+			<thead>
+				<tr>
+					<th scope="col">납부 날짜</th>
+					<th scope="col">고지번호</th>
+					<th scope="col">고지종류</th>
+					<th scope="col">납부 계좌번호</th>
+					<th scope="col">납부 금액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="dto" items="${dtos}">
+					<tr>
+						<td>${dto.utility_date}</td>
+						<td>${dto.utility_num}</td>
+						<td>${dto.utility_id}</td>
+						<td>${dto.account_id}</td>
+						<td>${dto.utility_money}</td>
+				</c:forEach>
+				<c:if test="${cnt == 0}">
+					<tr>
+						<td colspan="10">납부한 내역이 없습니다</td>
+					</tr>
+				</c:if>
+			</tbody>
+		</table>
+	</form>
+	<!-- paging -->
+	<div class="d-flex justify-content-center">
+		<ul class="pagination pg-primary mt-5">
+			<c:if test="${cnt > 0}">
+				<!-- 이전블록[«] -->
+				<c:if test="${startPage > pageBlock}">
+					<li class="page-item"><a class="page-link"
+						href="utilityList?pageNum=${startPage - pageBlock}"
+						aria-label="Previous"> <span aria-hidden="true">«</span>
+							<span class="sr-only">Previous</span>
+					</a></li>
+				</c:if>
 
-												<!-- 블록 내의 페이지 번호 -->
-												<c:forEach var="i" begin="${startPage}" end="${endPage}">
-													<c:if test="${i == currentPage}">
-														<li class="page-item active"><a class="page-link"
-															href="utilityList?pageNum=${i}">${i}</a></li>
-													</c:if>
+				<!-- 블록 내의 페이지 번호 -->
+				<c:forEach var="i" begin="${startPage}" end="${endPage}">
+					<c:if test="${i == currentPage}">
+						<li class="page-item active"><a class="page-link"
+							href="utilityList?pageNum=${i}">${i}</a></li>
+					</c:if>
 
-													<c:if test="${i != currentPage}">
-														<li class="page-item"><a class="page-link"
-															href="utilityList?pageNum=${i}">${i}</a></li>
-													</c:if>
-												</c:forEach>
+					<c:if test="${i != currentPage}">
+						<li class="page-item"><a class="page-link"
+							href="utilityList?pageNum=${i}">${i}</a></li>
+					</c:if>
+				</c:forEach>
 
-												<!-- 다음블록[»] -->
-												<c:if test="${pageCount > endPage}">
-													<li class="page-item"><a class="page-link"
-														href="utilityList?pageNum=${startPage + pageBlock}"
-														aria-label="Next"> <span aria-hidden="true">»</span> <span
-															class="sr-only">Next</span>
-													</a></li>
-												</c:if>
-											</c:if>
-										</ul>
-										<div align="right"></div>
-									</div>
-									<!-- paging -->
-								</div>
+				<!-- 다음블록[»] -->
+				<c:if test="${pageCount > endPage}">
+					<li class="page-item"><a class="page-link"
+						href="utilityList?pageNum=${startPage + pageBlock}"
+						aria-label="Next"> <span aria-hidden="true">»</span> <span
+							class="sr-only">Next</span>
+					</a></li>
+				</c:if>
+			</c:if>
+		</ul>
+		<div align="right"></div>
+	</div>
+	<!-- paging -->
+</div>
 							</div>
 						</div>
 					</div>

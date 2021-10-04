@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -30,6 +31,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.AccessToken;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.spring.bank.user.service.CustomerServiceImpl;
+import com.spring.bank.user.vo.TransferVO;
 
 @Controller
 @RequestMapping("customer")
@@ -573,27 +575,6 @@ public class CustomerController {
 		return "exchange";
 	}
 
-	// 회원 이체(계좌 찾기)(유성)
-	@RequestMapping("transfer")
-	public String transfer(HttpServletRequest req, Model model) {
-		System.out.println("ulr ==> transfer");
-		logger.info("url ==> transfer");
-
-		service.getAccount(req, model);
-
-		return "customer/bank/transfer";
-	}
-
-	// 회원 이체(계좌 비밀번호 인증)(유성)
-	@RequestMapping("account_passwordCheck")
-	public String account_password(HttpServletRequest req, Model model) {
-		logger.info("url ==> account_passwordCheck");
-
-		// service.accountPwdConfirm(req, model);
-
-		return "customer/utility_bill/account_passwordCheck";
-	}
-
 	// 대출중인 상품 목록
 	@RequestMapping("loanHistoryList.do")
 	public String loanHistoryList(HttpServletRequest req, Model model) {
@@ -823,23 +804,58 @@ public class CustomerController {
 		return "customer/notice/noticeDetail";
 	}
 
+	// 회원 이체페이지 계좌 찾기(유성)
+	@RequestMapping("transfer")
+	public String transfer(HttpServletRequest req, Model model) {
+		System.out.println("ulr ==> transfer");
+		logger.info("url ==> transfer");
+
+		service.getAccount(req, model);
+
+		return "customer/bank/transfer";
+	}
+
 	// 회원 이체(유성)
 	@RequestMapping("transfer_confirm")
 	public String transfer_confirm(HttpServletRequest req, Model model) {
-		System.out.println("ulr ==> transfer_confirm");
 		logger.info("url ==> transfer_confirm");
+		
+		service.transferConfirm(req, model);
+		String account_id = req.getParameter("account_id");
+		int transfer_bankCode = Integer.parseInt(req.getParameter("transfer_bankCode"));
+		String transfer_senderAccount = req.getParameter("transfer_senderAccount");
+		int transfer_money = Integer.parseInt(req.getParameter("transfer_money"));
+		String transfer_outComment = req.getParameter("transfer_outComment");
+		String transfer_inComment = req.getParameter("transfer_inComment");
+		
+		model.addAttribute("account_id", account_id);
+		model.addAttribute("transfer_bankCode", transfer_bankCode);
+		model.addAttribute("transfer_senderAccount", transfer_senderAccount);
+		model.addAttribute("transfer_money", transfer_money);
+		model.addAttribute("transfer_outComment", transfer_outComment);
+		model.addAttribute("transfer_inComment", transfer_inComment);
 
+		
 		return "customer/bank/transfer_confirm";
 	}
 
 	// 회원 이체 내역(유성)
-	@RequestMapping("transfer_List")
+	@RequestMapping("transferList")
 	public String transfer_List(HttpServletRequest req, Model model) {
-		System.out.println("ulr ==> transfer_List");
-		logger.info("url ==> transfer_List");
+		logger.info("url ==> transferList");
 
-		return "customer/bank/transfer_List";
+		return "customer/bank/transferList";
 	}
+	
+	// 회원 이체 내역(유성)
+	@ResponseBody
+	@RequestMapping("transferListSelect")
+	public ArrayList<TransferVO> transfer_ListSelect(HttpServletRequest req, Model model) {
+		logger.info("url ==> transferList");
+
+		return service.transferList(req, model);
+	}
+	
 
 	// 회원 자동이체 내역(유성)
 	@RequestMapping("auto_transfer_List")
@@ -889,7 +905,6 @@ public class CustomerController {
 	// 납부에서 비밀번호체크창(유성)
 	@RequestMapping("account_pwdConfirm")
 	public String account_pwdConfirm(HttpServletRequest req, Model model) {
-		System.out.println("url => account_pwdConfirm");
 		logger.info("url ==> account_pwdConfirm");
 		String account_id = req.getParameter("account_id");
 		int utility_num = Integer.parseInt(req.getParameter("utility_num"));
@@ -904,7 +919,6 @@ public class CustomerController {
 	// 납부에서 비밀번호 입력받고 체크 후 납부처리(유성)
 	@RequestMapping("utilityConfirm")
 	public String utilityConfirm(HttpServletRequest req, Model model) {
-		System.out.println("url => utilityConfirm");
 		logger.info("url ==> utilityConfirm");
 		service.accountPwdConfirm(req, model);
 
@@ -916,7 +930,7 @@ public class CustomerController {
 	public String utility_List(HttpServletRequest req, Model model) {
 		System.out.println("url ==> utilityList");
 		service.utilityList(req, model);
-		
+
 		return "customer/utility_bill/utilityList";
 	}
 
@@ -947,5 +961,6 @@ public class CustomerController {
 
 		return "redirect:accountBook";
 	}
+	
 
 }

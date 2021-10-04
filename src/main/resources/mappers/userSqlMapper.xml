@@ -743,9 +743,10 @@
 		resultType="com.spring.bank.user.vo.AccountVO">
 		SELECT COUNT(*) FROM account
 		WHERE
-		account_id = #{account_id} AND account_password = #{account_password}
+		account_id = #{account_id}
+		AND account_password = #{account_password}
 	</select>
-
+	<!-- 계좌 인증 -->
 	<select id="selectAccount" parameterType="String"
 		resultType="com.spring.bank.user.vo.AccountVO">
 		SELECT account_id, account_password, member_id,
@@ -758,36 +759,68 @@
 	<!-- 회원 이체 -->
 	<insert id="transferSenderConfirm"
 		parameterType="com.spring.bank.user.vo.TransferVO">
-		INSERT INTO transfer
-		VALUES(transfer_seq.nextval,
-		#{account_id}, #{member_id} #{transfer_senderAccount},
-		#{transfer_money},
-		'출금',
-		SYSDATE, #{transfer_outComment},
-		#{transfer_inComment},#{transfer_senderName},
-		#{transfer_reseiverName}, #{transfer_bankCode})
+		INSERT into transfer
+		values(transfer_seq.nextval, #{account_id}, #{transfer_senderAccount}, #{transfer_money}, '출금',
+		sysdate, #{transfer_outComment}, #{transfer_inComment},
+		(select(select member_name from members where member_id = #{member_id}) as member_name
+		from account
+		where account_id = #{account_id}), (select m.member_name as member_name
+		from members m, account a
+		where m.member_id = a.member_id and account_id = #{transfer_senderAccount}), 1,
+		#{member_id})
+	</insert>
+
+	<insert id="transferReceiverConfirm"
+		parameterType="com.spring.bank.user.vo.TransferVO">
+		INSERT into transfer
+		values(transfer_seq.nextval, #{transfer_senderAccount}, #{account_id}, #{transfer_money}, '입금',
+		sysdate, #{transfer_outComment}, #{transfer_inComment},
+		(select m.member_name as member_name
+		from members m, account a
+		where m.member_id = a.member_id and account_id = #{transfer_senderAccount}),
+		(select(select member_name from members where member_id = #{member_id}) as member_name
+		from account
+		where account_id = #{account_id}), 1,
+		#{member_id})
 	</insert>
 
 	<!-- 보낸사람 계좌 정보 변경(금액) -->
-	<update id="transfer_sender"
-		parameterType="com.spring.bank.user.vo.AccountVO">
+	<update id="transfer_sender" parameterType="java.util.Map">
 		UPDATE account
 		SET
-		account_balance=#{account_balance}
+		account_balance = (SELECT (SELECT account_balance FROM account WHERE
+		account_id=#{account_id})
+		- #{transfer_money}
+		AS account_balance
+		FROM account
 		WHERE
-		account_id=#{account_id}
+		account_id = #{account_id})
+		WHERE account_id = #{account_id}
 	</update>
 
 	<!-- 받는사람 계좌 정보 변경(금액) -->
-	<update id="transfer_receiver"
-		parameterType="com.spring.bank.user.vo.AccountVO">
+	<update id="transfer_receiver" parameterType="java.util.Map">
 		UPDATE account
 		SET
-		account_balance=#{account_balance}
+		account_balance = (SELECT (SELECT account_balance FROM account WHERE
+		account_id=#{transfer_senderAccount})
+		+ #{transfer_money}
+		AS account_balance
+		FROM account
 		WHERE
-		account_id=#{account_id}
+		account_id = #{transfer_senderAccount})
+		WHERE account_id = #{transfer_senderAccount}
 	</update>
-
+	
+	<!-- 회원 이체 내역 -->
+	<select id="transferList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.TransferVO">
+		SELECT t.*, rowNum rNum
+		  FROM transfer t
+		 WHERE member_id = #{member_id}
+		   AND account_id = #{account_id}
+		   
+	  ORDER BY transfer_inoutDate DESC
+	</select>
 	<!-- 회원 아파트 관리비 목록 -->
 	<select id="apt_mtList"
 		parameterType="com.spring.bank.user.vo.UtilityVO"
@@ -882,7 +915,8 @@
 		SET
 		utility_state = 1,
 		account_id =
-		#{account_id}
+		#{account_id},
+		utility_date = sysdate
 		WHERE
 		utility_num = #{utility_num}
 	</update>
@@ -899,17 +933,17 @@
 	</select>
 
 	<!-- 공과금 갯수 -->
-	<select id="getUtilityCnt"
-		parameterType="String" resultType="int">
+	<select id="getUtilityCnt" parameterType="String"
+		resultType="int">
 		SELECT
 		COUNT(*) AS cnt
 		FROM utility_bill
-		WHERE member_id = #{member_id} AND utility_state = 1
+		WHERE member_id =
+		#{member_id} AND utility_state = 1
 	</select>
 
 	<!-- 납부 공과금 조회 -->
-	<select id="getUtilityList"
-		parameterType="java.util.Map"
+	<select id="getUtilityList" parameterType="java.util.Map"
 		resultType="com.spring.bank.user.vo.UtilityVO">
 		<![CDATA[
 		select * from 
@@ -919,5 +953,7 @@
 		]]>
 	</select>
 	
+	
+
 
 </mapper>

@@ -171,5 +171,7 @@ public interface AdminDAO {
 
 	// 공지사항 수정처리(민재)
 	public int noticeDeleteAction(int notice_num);
+	
+	
 
 }

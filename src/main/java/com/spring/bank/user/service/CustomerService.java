@@ -1,10 +1,13 @@
 package com.spring.bank.user.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
+
+import com.spring.bank.user.vo.TransferVO;
 
 public interface CustomerService {
 
@@ -88,6 +91,9 @@ public interface CustomerService {
 
 	// 회원 이체 최종 확인
 	public void transferConfirm(HttpServletRequest req, Model model);
+	
+	// 회원 이체 내역
+	public ArrayList<TransferVO> transferList(HttpServletRequest req, Model model);
 
 	// 회원 공과금(아파트관리비)
 	public void aptFee(HttpServletRequest req, Model model);

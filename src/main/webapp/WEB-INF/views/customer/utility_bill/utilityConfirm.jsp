@@ -31,7 +31,7 @@
 	<c:if test="${updateCnt == 1}">
 		<script type="text/javascript">
 			alert("${msg}");
-			window.location = 'utility_List';
+			window.location = 'utilityList';
 		</script>
 	</c:if>
 

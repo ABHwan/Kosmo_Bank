@@ -1524,38 +1524,93 @@ public class CustomerServiceImpl implements CustomerService {
 	// 회원 이체
 	@Override
 	public void transferConfirm(HttpServletRequest req, Model model) {
-
-		String member_id = (String) req.getSession().getAttribute("CustomerID");
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		System.out.println("member_id: " + member_id);
+		
 		String account_id = req.getParameter("account_id");
-		int account_password = Integer.parseInt(req.getParameter("account_password"));
-
-		int account_bank = Integer.parseInt(req.getParameter("account_bank"));
+		System.out.println("account_id: " + account_id);
+		
+		int transfer_bankCode = Integer.parseInt(req.getParameter("transfer_bankCode"));
+		System.out.println("transfer_bankCode: " + transfer_bankCode);
+		
 		String transfer_senderAccount = req.getParameter("transfer_senderAccount");
+		System.out.println("transfer_senderAccount: " + transfer_senderAccount);
+		
 		int transfer_money = Integer.parseInt(req.getParameter("transfer_money"));
+		System.out.println("transfer_money: " + transfer_money);
+		
+		String transfer_outComment = req.getParameter("transfer_outComment");
+		System.out.println("transfer_outComment: " + transfer_outComment);
+		
+		String transfer_inComment = req.getParameter("transfer_inComment");
+		System.out.println("transfer_inComment: " + transfer_inComment);
+		
+		/*
+		 * String transfer_senderName = req.getParameter("transfer_senderName");
+		 * System.out.println("transfer_senderName: " + transfer_senderName);
+		 * 
+		 * String transfer_receiverName = req.getParameter("transfer_receiverName");
+		 * System.out.println("transfer_receiverName: " + transfer_receiverName);
+		 */
+		
+		TransferVO trvo = new TransferVO();
+		trvo.setAccount_id(account_id);
+		trvo.setTransfer_senderAccount(transfer_senderAccount);
+		trvo.setTransfer_money(transfer_money);
+		trvo.setTransfer_outComment(transfer_outComment);
+		trvo.setTransfer_inComment(transfer_inComment);
+		//trvo.setTransfer_senderName(transfer_senderName);
+		//trvo.setTransfer_receiverName(transfer_receiverName);
+		trvo.setTransfer_bankCode(transfer_bankCode);
+		trvo.setMember_id(member_id);
+		
+		int insertSnderCnt = dao.transferSenderConfirm(trvo);
+		int insertReceiverCnt = dao.transferReceiverConfirm(trvo);
+		if(insertSnderCnt != 0 ) {
+			/*
+			 * int account_balance = Integer.parseInt(req.getParameter("account_balance"));
+			 * //null값 받는중 System.out.println("account_balance: " + account_balance);
+			 */
+			
+			AccountVO acvo = new AccountVO();
+			acvo.setAccount_id(account_id);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("transfer_money", transfer_money);
+			map.put("account_id", account_id);
+			map.put("transfer_senderAccount", transfer_senderAccount);
+			//map.put("account_balance", account_balance);
+			
+			int updateSenderCnt = dao.transfer_sender(map);
+			int updateReceiverCnt = dao.transfer_receiver(map);
+			
+			model.addAttribute("updateSenderCnt", updateSenderCnt);
+			model.addAttribute("updateReceiverCnt", updateReceiverCnt);
+		}
+		
+		model.addAttribute("trvo", trvo);
+		model.addAttribute("insertSnderCnt", insertSnderCnt);
+		model.addAttribute("insertReceiverCnt", insertReceiverCnt);
+		
 
+	}
+	
+	// 회원 이체 내역(유성)
+	@Override
+	public ArrayList<TransferVO> transferList(HttpServletRequest req, Model model) {
+		String member_id = (String) req.getSession().getAttribute("customerID");
 		System.out.println("서비스 확인(member_id): " + member_id);
+		
+		//String account_id = req.getParameter("account_id");
+		String account_id = "1657-124-489263";
 		System.out.println("서비스 확인(account_id): " + account_id);
-		System.out.println("서비스 확인(account_password): " + account_password);
-		System.out.println("서비스 확인(account_bank): " + account_bank);
-
-		TransferVO vo = new TransferVO();
-		vo.setAccount_id(account_id);
-		vo.setTransfer_bankCode(account_bank);
-		vo.setTransfer_senderAccount(transfer_senderAccount);
-		vo.setTransfer_money(transfer_money);
-
-		String transfer_inComment = "";
-		transfer_inComment = req.getParameter("transfer_inComment");
-		if (!transfer_inComment.equals("")) {
-			vo.setTransfer_inComment(transfer_inComment);
-		}
-
-		String transfer_outComment = "";
-		transfer_outComment = req.getParameter("transfer_outComment");
-		if (!transfer_outComment.equals("")) {
-			vo.setTransfer_outComment(transfer_outComment);
-		}
-
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("member_id", member_id);
+		map.put("account_id", account_id);
+		
+		return dao.transferList(map);
+		
 	}
 
 	// 아파트 관리비 목록 조회
@@ -2818,6 +2873,8 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("pageNum", pageNum);
 		req.setAttribute("number", number);
 	}
+
+	
 
 
 }

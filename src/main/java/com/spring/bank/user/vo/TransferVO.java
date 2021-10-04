@@ -5,7 +5,6 @@ import java.sql.Date;
 public class TransferVO {
 	private int transfer_id;
 	private String account_id;
-	private String member_id;
 	private String transfer_senderAccount;
 	private int transfer_money;
 	private String transfer_inOut;
@@ -15,6 +14,24 @@ public class TransferVO {
 	private String transfer_senderName;
 	private String transfer_receiverName;
 	private int transfer_bankCode;
+	private String member_id;
+	private int rNum;
+
+	public int getrNum() {
+		return rNum;
+	}
+
+	public void setrNum(int rNum) {
+		this.rNum = rNum;
+	}
+
+	public String getMember_id() {
+		return member_id;
+	}
+
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
 
 	public int getTransfer_bankCode() {
 		return transfer_bankCode;
@@ -38,14 +55,6 @@ public class TransferVO {
 
 	public void setAccount_id(String account_id) {
 		this.account_id = account_id;
-	}
-	
-	public String getMember_id() {
-		return member_id;
-	}
-
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
 	}
 
 	public String getTransfer_senderAccount() {
