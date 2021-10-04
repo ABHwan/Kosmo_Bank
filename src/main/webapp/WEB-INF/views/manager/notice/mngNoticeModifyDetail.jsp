@@ -70,9 +70,9 @@
 											<tr style="text-align:center; border-spacing:0 20px">
 											<tr align="center">
 												<th colspan="3">
-													<input class="button" type="submit" value="글수정">
-													<input class="button" type="reset" value="초기화">
-													<input class="button" type="submit" value="목록"
+													<input class="btn btn-primary" type="submit" value="글수정">
+													<input class="btn btn-primary btn-border" type="reset" value="초기화">
+													<input class="btn btn-primary btn-border" type="submit" value="목록"
 														formaction="noticeList.do?pageNum=${pageNum}">
 												</th>
 											</tr>

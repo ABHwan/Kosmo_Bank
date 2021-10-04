@@ -417,5 +417,29 @@ function savingList() {
 		});
 }
 
+// 리액트연동테스트
+function reactTest(){
+	console.log("react-ON");
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url : 'mngSleepReact',
+		type : 'POST',
+		beforeSend : function(xhr){
+			xhr.setRequestHeader(header, token);
+		},
+		
+		success : function(data){
+			console.log("성공");
+			$('.react').html(data);
+		},
+		
+		fail : function(){
+			console.log("실패")
+			
+		}
+	});
+}
 
 //-----------------------------------------------------------------

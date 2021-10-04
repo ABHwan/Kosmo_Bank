@@ -114,7 +114,7 @@
 											</c:if>
 										</td>
 										<td>
-											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.irp_joinDate}"/>
+											<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.irp_joinDate}"/>
 										</td>
 										<td>
 											${vo.irp_state}
@@ -126,7 +126,7 @@
 											${vo.irp_balance}
 										</td>
 										<td>
-											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.irp_endDate}"/>
+											<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.irp_endDate}"/>
 										</td> 
 									</tr>
 								</c:forEach>

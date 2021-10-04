@@ -10,78 +10,69 @@
  	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<%@ include file="/WEB-INF/views/include/setting.jsp" %>
 </head>
-<body>
+<body onload="reactTest();">
 
-	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
-		
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
-		</sec:authorize>
-		<sec:authorize access="hasRole('ROLE_USER')">
-			<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />		
-		</sec:authorize>
-		
-		<!-- 메인 폼-->
-		<div class="main-panel">
-			<div class="content">
-				<div class="notice">
-					<!-- 비밀번호 오류 -->
-					<c:if test="${selectCnt == 0}">
-						<script type="text/javascript">
-							alert("비밀번호가 틀렸습니다!");
-							window.history.back();
-						</script>
-					</c:if>
-					
-					<!-- 공지사항 수정 -->
-					<c:if test="${selectCnt != 0}">
-						<form action="mngNoticeModifyAction" method="post" name="modifyform">
-						<sec:csrfInput/>
-							<div class="card">
-								<div class="card-header">
-									<div class="card-title">공지사항 입력페이지</div>
-								</div>
-								<div class="card-body">
-									<table class="table mt-3">
-										<thead>
-											<tr align="center">
-												<th scope="col" colspan="3"> 
-												글제목&emsp;:&emsp;
-													<input type="text" value="${vo.notice_subject}" size="100" name="notice_subject">
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr align="center">
-												<td> 비밀번호 수정&emsp;:&emsp; <input type="password" value="${vo.notice_password}" size="20" name="notice_password">
-												<td></td>
-												<td></td>
-											</tr>
-											<tr height="600">
-												<td colspan="3">
-													<textarea rows="30" cols="220" name="notice_content">${vo.notice_content}</textarea>
-												</td>
-											</tr>
-											<tr style="text-align:center; border-spacing:0 20px">
-											<tr align="center">
-												<th colspan="3">
-													<input class="btn btn-primary" type="submit" value="글쓰기">
-													<button class="btn btn-primary btn-border" type="button" value="취소" onclick="window.history.back();"> 취소 </button>
-												</th>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</form>
-					</c:if>
+<div class="wrapper">
+	<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
+	</sec:authorize>
+	<sec:authorize access="hasRole('ROLE_USER')">
+		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />		
+	</sec:authorize>
+	<!-- 메인 폼-->
+	<div class="main-panel">
+		<div class="content">
+			<div class="page-inner">
+				<div class="page-header">
+						<h4 class="page-title"> 고객센터 </h4>
+						
+					<ul class="breadcrumbs">
+						<li class="nav-home">
+							<a href="#">
+								<i class="flaticon-home"></i>
+							</a>
+						</li>
+						<li class="separator">
+							<i class="flaticon-right-arrow"></i>
+						</li>
+						<li class="nav-item">
+							<a href="#">공지사항</a>
+						</li>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<li class="separator">
+							<i class="flaticon-right-arrow"></i>
+						</li>
+						<li class="nav-item">
+							<a href="#">공지사항관리</a>
+						</li>
+						</sec:authorize>
+						
+					</ul>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
+								<h4 class="card-title">공지사항</h4>
+							</sec:authorize>
+							</div>
+							<div class="card-body">
+								<div class="react">
+								
+								</div>
+								
+							</div>
+						</div>
+					</div>		
+				</div>				
 			</div>
 		</div>
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
-		</div>
 	</div>
+</div>
 
 	
 	<!--   Core JS Files   -->
@@ -220,6 +211,6 @@
 		});
 	</script>
 <jsp:include page="/WEB-INF/views/include/chatbot.jsp" />
- 
+ <script src="${rePath}js/script.js"></script>
 </body>
 </html>

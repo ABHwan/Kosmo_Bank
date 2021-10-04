@@ -86,7 +86,7 @@
 														</c:if>
 													</td>
 													<td>
-														<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.deposit_joinDate}"/>
+														<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.deposit_joinDate}"/>
 													</td>
 													<td>
 														${vo.deposit_state}
@@ -98,7 +98,7 @@
 														${vo.deposit_balance}
 													</td>
 													<td>
-														<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.deposit_endDate}"/>
+														<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.deposit_endDate}"/>
 													</td>
 												</tr>
 											</c:forEach>

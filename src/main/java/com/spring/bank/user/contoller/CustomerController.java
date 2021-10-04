@@ -1,3 +1,4 @@
+
 package com.spring.bank.user.contoller;
 
 import java.io.BufferedReader;
@@ -30,7 +31,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.AccessToken;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.spring.bank.user.service.CustomerServiceImpl;
-
+ 
 @Controller
 
 @RequestMapping("customer")
@@ -62,7 +63,7 @@ public class CustomerController {
 
 
 		return "customer/account/register";
-	}
+	} 
 
 	// 회원가입 중복확인 페이지 confirmId.do
 	@ResponseBody

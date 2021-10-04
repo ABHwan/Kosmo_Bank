@@ -1,10 +1,15 @@
 package com.spring.bank.admin.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -624,5 +629,57 @@ public class AdminController {
 		return "manager/notice/mngNoticeDeleteAction";
 	}
 	
+	// 휴면계좌 관리
+	@RequestMapping("mngSleep")
+	public String mngSleep(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /mngSleep.us]");
+		
+		// 이동할 페이지 
+		return "manager/notice/mngSleep";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="mngSleepReact", method= {RequestMethod.POST})
+	public String certifications(HttpServletRequest req, HttpSession session, Model model) throws Exception {
+		System.out.println("[url => certifications]");
+		logger.info("[url => certifications]");
+		
+		StringBuffer result = new StringBuffer();
+
+		req.setCharacterEncoding("UTF-8");
+		
+		// ajax 에서 받아온 값
+//		String imp_uid = req.getParameter("imp_uid");
+//		String access_token = req.getParameter("access_token");
+		
+		String urlstr = "http://localhost:3000/sleep"; 
+// imp_uid
+//				+ "?_token=" + access_token; // 클라이언트가 요청을 보낼 서버의 URL 주소
+		
+		URL url = new URL(urlstr);
+		HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+		// get 방식으로 전송
+		urlconnection.setRequestMethod("POST");
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
+		
+		String returnLine;
+		
+		while((returnLine = br.readLine()) != null) {
+			result.append(returnLine);
+			System.out.println(br.readLine());
+		}
+		
+		urlconnection.disconnect();
+		
+		System.out.println(result.toString());
+		
+		
+		req.setAttribute("json", result);
+		
+		return result.toString();
+		
+	}
 	
 }

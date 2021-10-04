@@ -87,7 +87,7 @@
 														</c:if>
 													</td>
 													<td>
-														<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.saving_joinDate}"/>
+														<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.saving_joinDate}"/>
 													</td>
 													<td>
 														${vo.saving_state}
@@ -99,7 +99,7 @@
 														${vo.saving_balance}
 													</td>
 													<td>
-														<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.saving_endDate}"/>
+														<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.saving_endDate}"/>
 													</td>
 												</tr>
 											</c:forEach>
