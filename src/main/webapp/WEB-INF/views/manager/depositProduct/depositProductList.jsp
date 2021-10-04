@@ -1,49 +1,88 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/setting.jsp" %>
-<%@ include file="/WEB-INF/views/include/bootstrap.jsp" %>
+<%@ include file="/WEB-INF/views/include/bootstrap.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자 페이지 - 예금 상품 조회</title>
-<!-- CSS -->
-<link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-    
+<title>예금조회</title>
+<!-- ajax 때문에 넣어주기 -->
+<sec:csrfMetaTags/>
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/> -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
 <script type="text/javascript">
-      $(function() {
-			$("#all_check").change(function() {
-				var is_check = $("#all_check").is(":checked");
-				$(".user_check").prop("checked", is_check);
+	$(function() {
+		$("#all_check").change(function() {
+			var is_check = $("#all_check").is(":checked");
+			$(".user_check").prop("checked", is_check);
+			
+		});
+	});
+	
+	
+	function fn_process(val){
+		var form = document.depositProductForm
+		swal({
+			title: '삭제를 진행하시겠습니까?',
+			text: "실행하면 되돌릴 수 없습니다!",
+			type: 'warning',
+			buttons:{
+				cancel: {
+					visible: true,
+					text : '아니오, 취소하겠습니다!',
+					className: 'btn btn-danger'
+				},
+				confirm: {
+					text : '네, 삭제를 진행하겠습니다!',
+					className : 'btn btn-success'
+				}
+			}
+		}).then((willDelete) => {
+			if (willDelete) {
+				swal("정상적으로 삭제 처리되었습니다!", {
+					icon: "success",
+					buttons : {
+						confirm : {
+							className: 'btn btn-success'
+						}
+					}
+				});
+				form.action = "depositProductDelete";
+			  	form.submit();
 				
-			});
-	  });
-      
-      function fn_process(val){
-    	  var form = document.depositProductForm
-    	  if(val == '1'){
-    		  // 회원정보수정시
-    		  form.action = "";
-    		  form.submit();
-    	  }else{
-    		  form.action = "depositProductDelete";
-    		  form.submit();
-    	  }
-      }
-</script>
-<script>
-	var msg = "<%=request.getAttribute("msg") %>";
-	if(msg != 'null'){
-		 alert(msg);
+			} else {
+				swal("취소하였습니다!", {
+					buttons : {
+						confirm : {
+							className: 'btn btn-success'
+						}
+					}
+				});
+			}
+		});
+		/*
+		if(val == '1'){
+			  // 회원정보수정시
+			  form.action = "";
+			  form.submit();
+		}else{
+			form.action = "depositProductDelete";
+		  	form.submit();
+		  	
+		}
+		*/
 	}
+
+	
+	
 </script>
 </head>
 <body>
-	<div class="wrapper">
-		<jsp:include page="/WEB-INF/views/include/header.jsp" />
-		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
-
-		<!-- 메인 콘텐츠 -->
+	<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
+<!-- 메인 콘텐츠 -->
 		<div class="main-panel">
 			<div class="content">
 				<!-- 고정헤더 -->
@@ -53,197 +92,401 @@
 							<div>
 								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
 								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br />
 									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
 							</div>
 						</div>
 					</div>
 				</div>
 				
-				<section id="main">
-			      <div class="main__container">
-			      <h2 class="title">예금 상품 리스트</h2>
-			       
-					<form action="depositProductSearch" method="post" class="contents__top2" name="searchForm">
-			          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			          <input type="search" name="search" placeholder="예금상품검색" />
-			          <button type="submit">
-			            <i class="fas fa-search"></i>
-			          </button>
-			        </form>
-			        
-			        <div class="contents__middle">
-			          <div>전체 예금 상품 수 ${cnt}건</div>
-			        </div>
-			        <form action="" name="depositProductForm">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			        <table class="admin__table">
-			          <tr class="table__head">
-			            <th class="zero"><input type="checkbox" id="all_check"></th>
-			            <th>번호</th>
-			            <th>상품명</th>
-			            <th>상품요약</th>
-			            <th>금리</th>
-			            <th>종류</th>
-			            <th>최소기간</th>
-			            <th>최대기간</th>
-			            <th>최소금액</th>
-			            <th>은행코드</th>
-			            <th>등록일</th>
-			          </tr>
-			          <c:if test="${cnt > 0}">
-			          	<c:forEach var="dto" items="${dtos}">
-				         <tr>
-				           <td><input type="checkbox" name="check" class="user_check" value="${dto.deposit_product_name}" /></td>
-				           
-				           <td>${number}
-				           		<c:set var="number" value="${number - 1}" />
-				           </td>
-				           <td><a href="depositProductInfo?deposit_product_name=${dto.deposit_product_name}&pageNum=${pageNum}&number=${number + 1}">${dto.deposit_product_name}</a></td>
-				           <td>${dto.deposit_product_summary}</td>
-				           <td>${dto.deposit_product_interRate}%</td>
-				           <td>
-					           <c:if test="${dto.deposit_product_type==0}">
-					           	복리
-					           </c:if>
-					           
-					           <c:if test="${dto.deposit_product_type!=0}">
-					           	단리
-					           </c:if>
-					       </td>
-				           <td>${dto.deposit_product_minDate}개월</td>
-				           <td>${dto.deposit_product_maxDate}개월</td>
-				           <td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원</td>
-				           <td>
-				           		<c:choose>
-				           			<c:when test="${dto.deposit_product_bankCode==0}">
-				           				미기재
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==1}">
-				           				국민은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==2}">
-				           				우리은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==3}">
-				           				농협은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==4}">
-				           				신한은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==5}">
-				           				하나은행
-				           			</c:when>
-				           			<c:when test="${vo.deposit_product_bankCode==6}">
-				           				코스모은행
-				           			</c:when>
-				           		</c:choose>
-				           </td>
-				           <td>${dto.deposit_product_date}</td>
-				         </tr>
-				        </c:forEach>
-				      </c:if>
-				      
-				      <!-- 게시글이 없으면 -->
-			          <c:if test="${cnt == 0}">
-			          	<td colspan="11" align="center">
-								등록된 예금 상품이 없습니다.
-						</td>
-			          </c:if>
-			        </table>
-			        </form>
-			        
-			        <div class="pagenation">
-			          <ul>
-			          	<!-- 게시글이 있으면 -->
-			          	<c:if test="${cnt > 0}">
-				            <li>
-					            <!-- 처음[◀◀] / 이전블록[◀] /  -->
-								<c:if test="${startPage > pageBlock}">
-									<a href="depositProductList"> [◀◀] </a>
-									<a href="depositProductList?pageNum=${startPage - pageBlock}"> [◀] </a>
-								</c:if>
-				            </li>
-				            
-				            <li>
-				              <!-- 블록내의 페이지번호 -->
-								<c:forEach var="i" begin="${startPage}" end="${endPage}">
-									<c:if test="${i == currentPage}">
-										<span><b>[${i}]</b></span>
-									</c:if>
-									
-									<c:if test="${i != currentPage}">
-										<a href="depositProductList?pageNum=${i}">[${i}]</a>
-									</c:if>
-								</c:forEach>
-				            </li>
-				            <li>
-					            <!-- 다음블록[▶] / 마지막▶[▶] -->
-								<c:if test="${pageCount > endPage}">
-									<a href="depositProductList?pageNum=${startPage + pageBlock}"> [▶] </a>
-									<a href="depositProductList?pageNum=${pageCount}"> [▶▶] </a>
-								</c:if>
-							</li>
-							
-				         </c:if>
-			          </ul>
-			        </div>	
-			        
-			       <div class="contents__bottom">
-			          <div class="bottom__one">
-			           <!--  <button onclick="javascript:fn_process('1')">예금정보 수정</button> -->
-			            <button onclick="javascript:fn_process('2')">예금상품 삭제</button>
-			          </div>
-			        </div>
-			      </div>
-			    </section>
-			    
+				<div class="page-inner">
+					<div class="page-header">
+						<h4 class="page-title">금융</h4>
+						<ul class="breadcrumbs">
+							<li class="nav-home"><a href="#"> <i
+									class="flaticon-home"></i>
+							</a></li>
+							<li class="separator"><i class="flaticon-right-arrow"></i></li>
+							<li class="nav-item"><a href="#">예금관리</a></li>
+							<li class="separator"><i class="flaticon-right-arrow"></i></li>
+							<li class="nav-item"><a href="#">예금리스트</a></li>
+						</ul>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">예금리스트</h4>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<div id="basic-datatables_wrapper"
+											class="dataTables_wrapper container-fluid dt-bootstrap4">
+											<div class="row">
+												<div class="col-md-12">
+													<form action="" name="depositProductForm" method="post" onsubmit="return Confirm();">
+														<sec:csrfInput/>
+														<div class="white-box" id="datatables">
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
-	
-	<!--   Core JS Files   -->
-	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
-	<script src="${rePath}js/core/popper.min.js"></script>
-	<script src="${rePath}js/core/bootstrap.min.js"></script>
-
-	<!-- jQuery UI -->
-	<script src="${rePath}js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<script src="${rePath}js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-
-	<!-- jQuery Scrollbar -->
-	<script src="${rePath}js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-
-	<!-- Chart JS -->
-	<script src="${rePath}js/plugin/chart.js/chart.min.js"></script>
-
-	<!-- jQuery Sparkline -->
-	<script src="${rePath}js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-	<!-- Chart Circle -->
-	<script src="${rePath}js/plugin/chart-circle/circles.min.js"></script>
-
-	<!-- Datatables -->
-	<script src="${rePath}js/plugin/datatables/datatables.min.js"></script>
-
-	<!-- Bootstrap Notify -->
-	<script src="${rePath}js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script src="${rePath}js/plugin/jqvmap/jquery.vmap.min.js"></script>
-	<script src="${rePath}js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
-
-	<!-- Sweet Alert -->
-	<script src="${rePath}js/plugin/sweetalert/sweetalert.min.js"></script>
-
-	<!-- Atlantis JS -->
-	<script src="${rePath}js/atlantis.min.js"></script>
-
-	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="${rePath}js/setting-demo.js"></script>
-	<script src="${rePath}js/demo.js"></script>
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
+
+<script type="text/javascript" src="${rePath}js/plugin/moment/moment.js"></script>
+<script type="text/javascript" src="${rePath}js/plugin/datatables/datatables.min.js"></script>
+<script type="text/javascript">
+var currTab;
+var csrfData = {};
+var csrfParameter;
+var csrfToken;
+var preventMultiFlag = false;
+var attCol = [
+	'#', '번호', '상품명', '상품요약', '금리', '종류', '최소기간', '최대기간', '최소금액', '은행코드', '등록일'
+];
+
+$(document).ready(function() {
+	
+    var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var currLocation = window.location.href;
+    
+    currLocation = currLocation.toString();
+    csrfData[csrfParameter] = csrfToken;
+    // 시작 주소로 처음 구분
+    console.log(currLocation.split('/')[5]);
+    if (currLocation.split('/')[5] == 'depositProductList') {
+        $('#datatables').append('<table id="depositTable" class="display table table-striped table-hover dataTable" style="width: 100% !important;"></table>');
+        columns = [
+                {
+                    'sTitle' : '<input type="checkBox" id="' + 'all_check' + '">',
+                    data : 'deposit_product_name',
+                    render : function(data) {
+                        return '<input type="checkBox" name="check" class="user_check" value="' + data + '">';
+                    }
+                }, {
+                    'sTitle' : '번호',
+                    data : 'rNum'
+                }, {
+                    'sTitle' : '상품명',
+                    data : 'deposit_product_name',
+                   	render : function(data) {
+                           return '<a href="depositProductInfo?deposit_product_name=' 
+                        		   + data + '&pageNum=${pageNum}&number=${number + 1}">' + data + '</a>';
+                       }			
+                    	
+                }, {
+                    'sTitle' : '상품요약',
+                    data : 'deposit_product_summary'
+                }, {
+                    'sTitle' : '금리',
+                    data : 'deposit_product_interRate',
+                }, {
+                    'sTitle' : '종류',
+                    data : 'deposit_product_type',
+                    render : function(data) {
+                   		var str = '';
+                    		if(data == 0) {
+                    			str = '복리';
+                    		} else {
+                    			str = '단리';
+                    		}
+                        return str;
+                    }
+                }, {
+                    'sTitle' : '최소기간',
+                    data : 'deposit_product_minDate',
+                    render : function(data) {
+                   		var str = data + "개월";
+                        return str;
+                    }
+                }, {
+                    'sTitle' : '최대기간',
+                    data : 'deposit_product_maxDate',
+                    render : function(data) {
+                   		var str = data + "개월";
+                        return str;
+                    }
+                }, {
+                    'sTitle' : '최소금액',
+                    data : 'deposit_product_minPrice',
+					render : DataTable.render.number( ',' , '.' , 0 , '' , '원' )
+					
+                    
+                }, {
+                    'sTitle' : '은행코드',
+                    data : 'deposit_product_bankCode',
+                   	render : function(data) {
+                       	var str = '';
+                       		if(data == 0) {
+                       			str = '미기재';
+                       		} else if(data == 1) {
+                       			str = '국민은행';
+                       		} else if(data == 2) {
+                       			str = '우리은행';
+                       		} else if(data == 3) {
+                       			str = '농협은행';
+                       		} else if(data == 4) {
+                       			str = '신한은행';
+                       		} else if(data == 5) {
+                       			str = '하나은행';
+                       		} else if(data == 6) {
+                       			str = '코스모은행';
+                       		}
+                           return str;
+                       }
+                }, {
+                    'sTitle' : '등록일',
+                    data : 'deposit_product_date',
+                   	render : $.fn.dataTable.render.moment()
+                }
+        ];
+
+        url = 'depositProductListTestSelect';
+        callList(url, columns);
+    }
+});
+
+$('.white-box').on('click', '#depositProductInsertAction, #insertCommuteAction', function(event) {
+    csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+    csrfToken = $("meta[name='_csrf']").attr("content");
+    var list = new Array();
+    var i = 0;
+    $('#depositProductInsertForm #attendance').each(function() {
+        var dataObject = new Object();
+        $('.form-control' + i).each(function() {
+            var data = $(this);
+            dataObject[data.attr('name')] = data.val();
+        });
+        console.log(dataObject);
+        list.push(dataObject);
+        i++;
+    });
+    list.pop();
+    var formData = JSON.stringify(list);
+    var loc = $('#depositProductInsertForm').attr('action');
+    console.log(loc, formData);
+
+    if (preventMultiFlag) {
+        alert('처리중입니다.');
+        return false;
+    } else {
+        $.ajax({
+            type : 'POST',
+            url : loc + '?' + csrfParameter + '=' + csrfToken,
+            data : formData,
+            accept : "application/json",
+            contentType : "application/json; charset=utf-8",
+            dataType : 'text',
+            beforeSend : function(xhr) {
+                xhr.setRequestHeader(csrfParameter, csrfToken);
+            },
+            success : function(data) {
+                if (data) {
+                    preventMultiFlag = true;
+                    window.close();
+                }
+            },
+            error : function() {
+                alert('오류');
+            },
+        });
+    }
+
+    event.preventDefault();
+});
+
+// SELECT 검색
+// 버튼 눌렀을때
+$(document).on("click", '#selectAttendacne', function() {
+    $(this).parent().parent().find('li').removeClass('active');
+    $(this).parent().addClass('active').addClass('nav-hover');
+    columns = [
+        {
+            'sTitle' : '<input type="checkBox" id=' + 'all_check' +'">',
+            data : 'deposit_product_name',
+            render : function(data) {
+                return '<input type="checkBox" name="check" class="user_check" value="' + data + '">';
+            }
+        }, {
+            'sTitle' : '번호',
+            data : 'rNum'
+        }, {
+            'sTitle' : '상품명',
+            data : 'deposit_product_name'
+        }, {
+            'sTitle' : '상품요약',
+            data : 'deposit_product_summary'
+        }, {
+            'sTitle' : '금리',
+            data : 'deposit_product_interRate',
+        }, {
+            'sTitle' : '종류',
+            data : 'deposit_product_type',
+            render : function(data) {
+           		var str = '';
+            		if(data == 0) {
+            			str = '복리';
+            		} else {
+            			str = '단리';
+            		}
+                return str;
+            }
+        }, {
+            'sTitle' : '최소기간',
+            data : 'deposit_product_minDate',
+            render : function(data) {
+           		var str = data + "개월";
+                return str;
+            }
+        }, {
+            'sTitle' : '최대기간',
+            data : 'deposit_product_maxDate',
+            render : function(data) {
+           		var str = data + "개월";
+                return str;
+            }
+        }, {
+            'sTitle' : '최소금액',
+            data : 'deposit_product_minPrice'
+            
+        }, {
+            'sTitle' : '은행코드',
+            data : 'deposit_product_bankCode',
+           	render : function(data) {
+               	var str = '';
+               		if(data == 0) {
+               			str = '미기재';
+               		} else if(data == 1) {
+               			str = '국민은행';
+               		} else if(data == 2) {
+               			str = '우리은행';
+               		} else if(data == 3) {
+               			str = '농협은행';
+               		} else if(data == 4) {
+               			str = '신한은행';
+               		} else if(data == 5) {
+               			str = '하나은행';
+               		} else if(data == 6) {
+               			str = '코스모은행';
+               		}
+                   return str;
+               }
+        }, {
+            'sTitle' : '등록일',
+            data : 'deposit_product_date',
+           	render : $.fn.dataTable.render.moment()
+        }
+	];
+
+    ordering = [
+        [
+                1, 'desc'
+        ]
+    ];
+    
+    url = 'depositProductListTestSelect';
+    callList(url, columns, ordering);
+});
+
+
+function callList(url, columns, ordering) {
+    $("#datatables").empty();
+    $('#datatables').append('<table id="depositTable" class="display table table-striped table-hover dataTable" style="width: 100% !important;" ></table>');
+    currTab = $('#depositTable').DataTable({
+    	"dom" : '<"top"l>rt<"bottom"ip><"clear">',
+        order : ordering,
+        ajax : {
+            url : url,
+            type : 'POST',
+            data : csrfData,
+            
+            dataSrc : ''
+        },
+        columns : columns,
+        destroy : true,
+    });
+
+    if (url == 'depositProductListTestSelect') {
+    	$('.col-md-12').append('<div id="datatable-btn">');
+        //$('#datatable-btn').append('<button id="depositProductInsert" class="btn btn-primary"><span class="btn-label"><i class="fa fa-plus"></i></span></button>');
+        $('#datatable-btn').append('<button id="depositProductDelete" class="btn btn-primary btn-border" onclick="javascript:fn_process(2)"><span class="btn-label"><i class="fa fa-plus"></i></span></button>');
+        $('#depositTable_length').after(
+                '<div id="basic-datatables_filter" class="dataTables_filter" style="text-align: right;"></div>');
+        $('#basic-datatables_filter').append('<label for="searchBar">검색 : &nbsp</label>');
+        $('#basic-datatables_filter').append(
+                '<input type="search" class="form-control form-control-sm" id="searchBar">');
+        var searchDiv = $('#basic-datatables_filter').find('label');
+        searchDiv.before('<select id="searchAttendance" style="margin-right:10px; height: 31px; color: darkslategray;">');
+        for (var i = 0; i < attCol.length; i++) {
+            $('#searchAttendance').append('<option value=' + i + '>' + attCol[i] + '</option>');
+        }
+
+        //$('#depositProductInsert').append('등록');
+        $('#depositProductDelete').append('삭제');
+    } else if (url == 'commuteList') {
+        $('#datatables').append('<button id="insertCommute">');
+        $('#insertCommute').append('신규 등록');
+    }
+}
+
+$('#depositTable').ready(function() {
+    $('#searchAttendance').on('click', function() {
+        var searchingText = $('#searchBar').val();
+        currTab.search('').columns().search('').draw();
+        if (this.value == 0) {
+            currTab.search(searchingText).draw();
+        } else {
+            currTab.columns(this.value).search(searchingText).draw();
+        }
+    });
+
+    $('#searchBar').on('keyup click', function() {
+        var col = $('#searchAttendance').val();
+        currTab.search('').columns().search('').draw();
+        if (col == 0) {
+            currTab.search(this.value).draw();
+        } else {
+            currTab.columns(col).search(this.value).draw();
+        }
+
+    });
+});
+
+// 날짜 형식 조정
+$.fn.dataTable.render.moment = function(from, to, locale) {
+    // Argument shifting
+    if (arguments.length === 1) {
+        locale = 'en';
+        to = from;
+        from = 'YYYY-MM-DD';
+    } else if (arguments.length === 2) {
+        locale = 'en';
+    }
+
+    return function(d, type, row) {
+        if (!d) { return type === 'sort' || type === 'type' ? 0 : d; }
+
+        var m = window.moment(d, from, locale, true);
+
+        // Order and type get a number value from Moment, everything else
+        // sees the rendered value
+        return m.format(type === 'sort' || type === 'type' ? 'x' : to);
+    };
+};
+
+</script>
 </html>
+
+

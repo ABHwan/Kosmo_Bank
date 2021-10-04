@@ -22,9 +22,6 @@
 <link rel="stylesheet" href="${rePath}css/bootstrap.min.css">
 <link rel="stylesheet" href="${rePath}css/atlantis.min.css">
 
-<!-- CSS Just for demo purpose, don't include it in your project -->
-<link rel="stylesheet" href="${rePath}css/demo.css">
-
 <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	

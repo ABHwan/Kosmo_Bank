@@ -124,22 +124,31 @@
         
         <c:forEach var="vo" items="${list}">
 	        calendar.addEvent({ 
-	            title:  '1. 수입액 : ' + "${vo.income}",
+	            title:  '1. 수입액 : ' + "${vo.income}" +'원',
 	            start: "${vo.register_date}",
 	            end: "${vo.register_date}",
 	        })
 	        
 	        calendar.addEvent({ 
-	              title:  '2. 지출액 : ' + "${vo.expense}",
+	              title:  '2. 지출액 : ' + "${vo.expense}"+'원',
 	              start: "${vo.register_date}",
 	              end: "${vo.register_date}",
         	})
          	calendar.addEvent({ 
-	              title:  '3. 정산액 : ' + "${vo.income - vo.expense} ",
+	              title:  '3. 정산액 : ' + "${vo.total}"+'원',
 	              start: "${vo.register_date}",
 	              end: "${vo.register_date}",
         	})
     	</c:forEach>
+	        
+	    <c:forEach var="au" items="${auto}">
+	        calendar.addEvent({ 
+	            title:  '자동이체 : '+"${au.auto_inplace}"+ ' 납부완료',
+	            start: "${au.auto_date}",
+	            end: "${au.auto_date}",
+	        })
+    	</c:forEach>
+	        
         calendar.render();
     });
     </script>
@@ -201,9 +210,9 @@
 						          		<tr>
 						          			<td> ${fn:substring(vo.register_date,0,4)}년 ${fn:substring(vo.register_date,4,6)}월</td>
 						          			<td><fmt:formatNumber value="${vo.expense}" type="number"/>원</td>
-						          			<td><fmt:formatNumber value ="${expense }" pattern="0" />원</td>
+						          			<td><fmt:formatNumber value ="${expense}" pattern="0" />원</td>
 						          			<td><fmt:formatNumber value="${vo.income}" type="number"/>원</td>
-						          			<td><fmt:formatNumber value ="${income }" pattern="0" />원</td>
+						          			<td><fmt:formatNumber value ="${income}" pattern="0" />원</td>
 						          			<td><fmt:formatNumber value="${vo.total}" type="number"/>원</td>
 						          		</tr>
 						          		<c:if test="${vo.total<0}">

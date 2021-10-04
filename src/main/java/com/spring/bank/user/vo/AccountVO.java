@@ -1,6 +1,6 @@
 package com.spring.bank.user.vo;
 
-import oracle.sql.DATE;
+import java.sql.Date;
 
 public class AccountVO {
 
@@ -13,12 +13,44 @@ public class AccountVO {
 	int account_state;
 	String account_stateContent;
 	int account_limit;
-	DATE account_deleteDate;
-	DATE account_sleepDate;
-	DATE account_newDate;
+	Date account_deleteDate;
+	Date account_sleepDate;
+	Date account_newDate;
 	String unique_key;
 	int account_default;
 	int account_linked;
+	
+	// 관리자 가입상품조회에 사용할거
+	private String member_name;
+	private String product_name;
+	private Date join_date;
+	
+	public String getMember_name() {
+		return member_name;
+	}
+
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
+
+	public String getProduct_name() {
+		return product_name;
+	}
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+	public Date getJoin_date() {
+		return join_date;
+	}
+
+	public void setJoin_date(Date join_date) {
+		this.join_date = join_date;
+	}
+
+	// 은행 logo 이미지
+	String account_bankImg;
 
 	public int getAccount_bankCode() {
 		return account_bankCode;
@@ -92,27 +124,27 @@ public class AccountVO {
 		this.account_limit = account_limit;
 	}
 
-	public DATE getAccount_deleteDate() {
+	public Date getAccount_deleteDate() {
 		return account_deleteDate;
 	}
 
-	public void setAccount_deleteDate(DATE account_deleteDate) {
+	public void setAccount_deleteDate(Date account_deleteDate) {
 		this.account_deleteDate = account_deleteDate;
 	}
 
-	public DATE getAccount_sleepDate() {
+	public Date getAccount_sleepDate() {
 		return account_sleepDate;
 	}
 
-	public void setAccount_sleepDate(DATE account_sleepDate) {
+	public void setAccount_sleepDate(Date account_sleepDate) {
 		this.account_sleepDate = account_sleepDate;
 	}
 
-	public DATE getAccount_newDate() {
+	public Date getAccount_newDate() {
 		return account_newDate;
 	}
 
-	public void setAccount_newDate(DATE account_newDate) {
+	public void setAccount_newDate(Date account_newDate) {
 		this.account_newDate = account_newDate;
 	}
 
@@ -139,5 +171,15 @@ public class AccountVO {
 	public void setAccount_linked(int account_linked) {
 		this.account_linked = account_linked;
 	}
+
+	public String getAccount_bankImg() {
+		return account_bankImg;
+	}
+
+	public void setAccount_bankImg(String account_bankImg) {
+		this.account_bankImg = account_bankImg;
+	}
+	
+	
 
 }

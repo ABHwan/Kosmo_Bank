@@ -1,8 +1,12 @@
 package com.spring.bank.admin.service;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
+
+import com.spring.bank.user.vo.DepositVO;
 
 public interface AdminService {
 	
@@ -15,11 +19,17 @@ public interface AdminService {
 	// 관리자 페이지 회원삭제
 	public void deleteCustomer(HttpServletRequest req, Model model);
 	
+	// 관리자 금융관리 조회
+	public void selectBanking(HttpServletRequest req, Model model);
+	
 	// 관리자 페이지 예금 상품 등록
 	public void insertDepositProduct(HttpServletRequest req, Model model);
 	
 	// 관리자 페이지 예금 상품 조회
 	public void selectDepositProduct(HttpServletRequest req, Model model);
+	
+	// test
+	public ArrayList<DepositVO> selectDepositProductTest();
 	
 	// 관리자 페이지 예금 상품 검색
 	public void searchDepositProduct(HttpServletRequest req, Model model);
@@ -50,6 +60,42 @@ public interface AdminService {
 	
     // 관리자 페이지 적금 상품 삭제
 	public void deleteSavingProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 등록(지현)
+	public void insertIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 조회(지현)
+	public void selectIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 검색(지현)
+	public void searchIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 상세 조회(지현)
+	public void getIrpProductInfo(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 수정(지현)
+	public void updateIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 삭제(지현)
+	public void deleteIrpProduct(HttpServletRequest req, Model model);
+
+	// 관리자 페이지 펀드 상품 등록 처리
+	public void fundProductInsertAction(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 펀드 상품 조회
+	public void selectFundProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 펀드 상품 검색
+	public void searchFundProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 펀드 상품 상세 조회
+    public void getFundProductInfo(HttpServletRequest req, Model model);
+   
+    // 관리자 페이지 펀드 상품 수정
+    public void updateFundProduct(HttpServletRequest req, Model model);
+	
+    // 관리자 페이지 펀드 상품 삭제
+	public void deleteFundProduct(HttpServletRequest req, Model model);	
 	
 	//qna게시글 조회(지현)
 	public void qnaList_mng(HttpServletRequest req,  Model model);
@@ -89,4 +135,10 @@ public interface AdminService {
 	
 	// 공지사항 삭제처리(민재)
 	public void mngNoticeDeleteAction(HttpServletRequest req, Model model);
+
+	// 관리자 페이지 회원별 가입상품조회
+	public void selectCustomerProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 회월별 가입상품검색
+	public void searchCustomerProduct(HttpServletRequest req, Model model);
 }

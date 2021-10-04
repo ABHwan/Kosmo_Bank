@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 public interface CustomerService {
+	
+	// 로그인 시 계좌 불러오기
+	public void accountLoad(HttpServletRequest req, Model model);
 
 	// 아이디 중복확인 처리
 	public int confirmIdAction(Map<String, Object> map);
@@ -16,9 +19,6 @@ public interface CustomerService {
 
 	// 회원가입 처리
 	public void registerAction(HttpServletRequest req, Model model);
-
-	// 이메일 인증 성공 처리
-	// public void emailSuccess(HttpServletRequest req, Model model);
 
 	// 회원정보 인증
 	public void confirmAction(HttpServletRequest req, Model model);
@@ -74,10 +74,10 @@ public interface CustomerService {
 	// 예금 상품 상세보기
 	public void depositDetail(HttpServletRequest req, Model model);
 	
-	//예금 신청 시 계좌번호 생성 insert
+	// 금융상품 신청 시 계좌번호 생성 insert
 	public void makeAccount(HttpServletRequest req, Model model);
 	
-	//예금 신청 
+	// 예금 신청 
 	public void insertDeposit(HttpServletRequest req, Model model);
 
 	// 회원 계좌 찾기
@@ -89,6 +89,21 @@ public interface CustomerService {
 	// 회원 이체 최종 확인
 	public void transferConfirm(HttpServletRequest req, Model model);
 	
+	// 연금 상품 조회
+	public void irpList(HttpServletRequest req, Model model);
+	
+	// 연금 상품 검색 
+	public void irpProductSearch(HttpServletRequest req, Model model);
+	
+	// 연금 상품 상세보기 
+	public void irpDetail(HttpServletRequest req, Model model);
+	
+	// 연금 상품 신청 화면 
+	public void irpProductJoin(HttpServletRequest req, Model model);
+	
+	// 연금 신청 irp insert
+	public void insertIrp(HttpServletRequest req, Model model);
+		
 	// 적금 상품 조회
 	public void savingList(HttpServletRequest req, Model model);
 	
@@ -101,11 +116,23 @@ public interface CustomerService {
 	// 적금 신청 
 	public void savingProductAction(HttpServletRequest req, Model model);
 	
+	// 펀드 상품 조회
+	public void fundList(HttpServletRequest req, Model model);
+	
+	// 펀드 상품 검색 
+	public void fundProductSearch(HttpServletRequest req, Model model);
+	
+	// 펀드 상품 상세보기 
+	public void fundDetail(HttpServletRequest req, Model model);
+	
+	// 펀드 신청 
+	public void fundProductAction(HttpServletRequest req, Model model);
+		
 	//예금 신청 상세 화면 
 	public void setDepositProductJoin(HttpServletRequest req, Model model);
 
 	// 환율 데이터 입력 후 출력
-	public void exchanges(Model model);
+	public void exchanges(HttpServletRequest req, Model model);
 	
 	// 환율 목록 출력
 	public void exchangeList(HttpServletRequest req, Model model);
@@ -143,4 +170,27 @@ public interface CustomerService {
 	// 공지사항상세페이지(민재)
 	public void noticeDetailAction(HttpServletRequest req, Model model);
 	
+	// 계좌조회
+	public void myAccountList(HttpServletRequest req, Model model);
+	
+	// 계좌연동체크
+	public void accountConnectCheck(HttpServletRequest req, Model model);
+	
+	// 계좌연동
+	public int accountConnectAction(HttpServletRequest req, Model model);
+	
+	// 계좌연동해지
+	public void accountDisConnectAction(HttpServletRequest req, Model model);
+	
+	// 회원 자동이체 신청
+	public void insertAutoTransfer(HttpServletRequest req, Model model);
+	
+	// 회원 자동이체 목록
+	public void getMyAutoTransfer(HttpServletRequest req, Model model);
+	
+	// 회원 자동이체 해지
+	public void deleteAutoTransfer(HttpServletRequest req, Model model);
+	
+	// 자동이체 실행
+	public void AutoTransferAction();
 }

@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+
+.wrap {
+    text-align: -webkit-center;
+}
+
+.card {
+	
+}
+
+.page-header {
+	text-align: -webkit-center;
+    justify-content: left;
+}
+
+.col-md-6 {
+	width: 800px;
+	flex:0 0 100%;
+	max-width: 100%;
+    text-align: -webkit-center;
+}
+
+.card-title {
+    font-size: 30px !important;
+    font-weight: 900 !important;
+}
+
+.main {
+    font-size: 25px !important;
+    font-weight: 600 !important;
+}
+
+.card-body {
+	align-self: center;
+	width:100%;
+}
+
+.table-hover {
+	text-align: center;
+}
+
+.bank-td {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    height: 100px !important;
+}
+
+.btn-td {
+	text-align: left;
+}
+
+.bankImg {
+    width: 40px;
+    height: 40px;
+    box-shadow: 1px 1px lightgrey;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+}
+
+.bankname {
+	padding-left: 15px;
+	font-size: 18px;
+}
+
+.btn-xs {
+	background-color: #31ce36 !important;
+	border: none;
+	font-size: 14px;
+}
+
+/* 연동완료 */
+.btn-success:disabled {
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    
+}
+
+
+/* 연동완료 */
+.btn-round.btn-success {
+	height: 30px;
+    min-width: 30px;
+    width: 30px;
+    left: -8px;
+}
+
+/* 계좌추가 */
+.btn-icon.btn-xs {
+    height: 30px;
+    min-width: 30px;
+    width: 30px;
+    top: -3px;
+    left: -5px;
+}
+
+/* 계좌없음 */
+.btn-warning {
+	height: 30px;
+    min-width: 30px;
+    width: 30px;
+    left: -5px;
+}
+
+.account-add-wrap {
+	
+}
+
+.account-add {
+	color:green;
+	font-weight:800;
+	font-size:15px;
+	cursor:pointer;
+}
+
+.account-add:hover {
+	color: #1572E8;
+}
+
+.account-complete {
+	color:gray;
+	font-weight:800;
+	font-size:15px;
+	cursor:default;
+}
+
+.account-null {
+	color:gray;
+	font-weight:800;
+	font-size:15px;
+	cursor:default;
+}
+
+.fa-plus:before {
+    content: "\f067";
+    padding-right: 1px;
+}
+
+.submit-btn {
+	display: none !important;
+}
+
+

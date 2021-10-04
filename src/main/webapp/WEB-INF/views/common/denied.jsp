@@ -14,5 +14,10 @@
 <body>
 	<h3> 관리자 페이지 </h3><br><br>
 	<p> ${errMsg }</p>
+	<script>
+		setTimeout(function() {
+			window.location="/bank/customer/index.do";
+		}, 500)
+	</script>
 </body>
 </html>

@@ -9,13 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
+import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -148,11 +152,107 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	// 관리자 페이지 적금 상품 삭제
 	@Override
-	public int deleteSavingProduct(String deposit_product_name) {
-		return sqlSession.getMapper(AdminDAO.class).deleteSavingProduct(deposit_product_name);
+	public int deleteSavingProduct(String saving_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).deleteSavingProduct(saving_product_name);
 	}
 
+	// 관리자 페이지 연금 상품 등록
+	public int insertIrpProduct(IrpProductVO vo) {
+		return sqlSession.getMapper(AdminDAO.class).insertIrpProduct(vo);
+	};
 	
+	// 관리자 페이지 연금  상품 수
+	@Override
+	public int getIrpProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getIrpProductCnt();
+	}
+	
+	// 관리자 페이지 연금  상품 조회
+	@Override
+	public ArrayList<IrpProductVO> selectIrpProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).selectIrpProduct(map);
+	}
+
+	// 관리자 페이지 연금 상품 수(검색결과수)
+	@Override
+	public int getIrpProductSearchCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getIrpProductSearchCnt(search);
+	}
+	
+	// 관리자 페이지 연금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).searchIrpProduct(map);
+	}
+		
+	// 관리자 페이지 연금 상품 상세조회
+	@Override
+	public IrpProductVO getIrpProductInfo(String irp_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).getIrpProductInfo(irp_product_name);
+	}
+	
+	// 관리자 페이지 펀드 상품 등록
+	@Override
+	public int insertFundProduct(FundProductVO vo) {
+		System.out.println("[DAO = insertFundProduct]");
+		return sqlSession.getMapper(AdminDAO.class).insertFundProduct(vo);
+	}
+
+	// 관리자 페이지 펀드 상품 수
+	@Override
+	public int getFundProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getFundProductCnt();
+	}
+
+	// 관리자 페이지 펀드 상품 조회
+	@Override
+	public ArrayList<FundProductVO> selectFundProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).selectFundProduct(map);
+	}
+
+	// 관리자 페이지 펀드 상품 수(검색결과수)
+	@Override
+	public int getFundProductSearchCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getFundProductSearchCnt(search);
+	}
+
+	// 관리자 페이지 펀드 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).searchFundProduct(map);
+	}
+
+	// 관리자 페이지 펀드 상품 상세조회
+	@Override
+	public FundProductVO getFundProductInfo(String fund_title) {
+	    return sqlSession.getMapper(AdminDAO.class).getFundProductInfo(fund_title);
+	}
+	   
+	// 관리자 페이지 펀드 상품 수정
+	@Override
+	public int updateFundProduct(FundProductVO vo) {
+	    return sqlSession.getMapper(AdminDAO.class).updateFundProduct(vo);
+	}
+	
+	// 관리자 페이지 펀드 상품 삭제
+	@Override
+	public int deleteFundProduct(String fund_title) {
+		return sqlSession.getMapper(AdminDAO.class).deleteFundProduct(fund_title);
+	}
+	
+	
+	// 관리자 페이지 연금 상품 수정
+	@Override
+	public int updateIrpProduct(IrpProductVO vo) {
+		return sqlSession.getMapper(AdminDAO.class).updateIrpProduct(vo);
+	}
+
+	// // 관리자 페이지 연금 상품 삭제
+	@Override
+	public int deleteIrpProduct(String irp_product_name) {
+		return sqlSession.getMapper(AdminDAO.class).deleteIrpProduct(irp_product_name);
+	}
+		
 	//qna 개수(지현)
 	@Override
 	public int getInquiryCnt() {
@@ -364,6 +464,40 @@ public class AdminDAOImpl implements AdminDAO {
 		return dao.getLoanCancelList(map);	
 	}
 
+	public LoanVO getLoanInfo(Map<String, Object> map) {
+		System.out.println("[AdminDAO => getLoanInfo()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.getLoanInfo(map);	
+	}
+
+	public int transNewLoanAccount(TransferVO trans) {
+		System.out.println("[AdminDAO => transNewLoanAccount()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.transNewLoanAccount(trans);	
+	}
+	
+	public int setNewLoanAccount(Map<String, Object> map) {
+		System.out.println("[AdminDAO => setNewLoanAccount()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.setNewLoanAccount(map);	
+	}
+
+	public TransferVO resetNewLoanAccount(Map<String, Object> map) {
+		System.out.println("[AdminDAO => resetNewLoanAccount()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.resetNewLoanAccount(map);	
+	}
+
+	// 회원정보 상세 페이지
+	@Override
+	public UserVO getUserInfo(String member_id) { 
+		System.out.println("[DAO => getUserInfo()]");
+		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);
+		return dao.getUserInfo(member_id);
+	}
+
+	
+	
 	// !지은!
 	
 	// 공지사항 쓰기 처리(민재)
@@ -375,9 +509,9 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	// 공지사항 - 비밀번호 인증(민재)
 	@Override
-	public int noticePWDCheck(Map<String, Object> map) {
+	public String noticePWDCheck(int notice_num) {
 		
-		return sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.noticePWDCheck", map);
+		return sqlSession.selectOne("com.spring.bank.admin.dao.AdminDAO.noticePWDCheck", notice_num);
 	}
 	
 	// 공지사항 상세페이지(민재)
@@ -399,5 +533,32 @@ public class AdminDAOImpl implements AdminDAO {
 	public int noticeDeleteAction(int notice_num) {
 		
 		return sqlSession.delete("com.spring.bank.admin.dao.AdminDAO.noticeDeleteAction", notice_num);
+	}
+
+	@Override
+	public ArrayList<DepositVO> selectDepositProductTest() {
+	
+		return sqlSession.getMapper(AdminDAO.class).selectDepositProductTest();
+	}
+
+	// 관리자 페이지 회원별 가입상품 수
+	@Override
+	public int getCustomerProductCnt() {
+		return sqlSession.getMapper(AdminDAO.class).getCustomerProductCnt();
+	}
+		
+	// 관리자 페이지 회원별 가입상품리스트
+	public ArrayList<AccountVO> getCustomerProductList(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).getCustomerProductList(map);
+	}
+		
+	// 관리자 페이지 회원별 가입상품 검색결과 수
+	public int getSearchCustomerProductCnt(String search) {
+		return sqlSession.getMapper(AdminDAO.class).getSearchCustomerProductCnt(search);
+	}
+	
+	// 관리자 페이지 회원별 가입상품 검색결과 리스트
+	public ArrayList<AccountVO> getSearchCustomerProductList(Map<String, Object> map) {
+		return sqlSession.getMapper(AdminDAO.class).getSearchCustomerProductList(map);
 	}
 }

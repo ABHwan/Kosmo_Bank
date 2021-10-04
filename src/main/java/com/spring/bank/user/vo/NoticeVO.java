@@ -1,6 +1,6 @@
 package com.spring.bank.user.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class NoticeVO {
 

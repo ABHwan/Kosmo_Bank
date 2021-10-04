@@ -21,6 +21,14 @@
 				</div>
 			</header>
 			
+			<!-- 로그인 세션이 존재할 시 index로 이동 -->
+			<c:if test="${sessionScope.customerID != null || sessionScope.adminID != null }">
+				<script>
+					window.location="index.do";
+				</script>
+			</c:if>
+			<!-- 로그인 세션이 존재할 시 index로 이동 -->
+			
 			<%
 				//쿠키가져오기
 				Cookie[] cookies = request.getCookies();
@@ -76,8 +84,8 @@
 						</p>
 					</div>
 					<div>
-						<input type="button" id="userLogin" name="userLogin" value="고객 로그인" onclick="window.location='${path}user/login.do'">
-						<input type="button" id="adminLogin" name="adminLogin" value="관리자 로그인" onclick="window.location='${path}manager/mngLogin.do'">
+						<input type="button" id="userLogin" name="userLogin" value="고객 로그인" onclick="window.location='${custPath}login.do'">
+						<input type="button" id="adminLogin" name="adminLogin" value="관리자 로그인" onclick="window.location='${mngPath}manager/mngLogin.do'">
 					
 					</div>
 					<div class="login_input_div">
@@ -98,7 +106,7 @@
 							<span class="keep_state_span">자동 로그인</span>
 						</label>
 						<span class="find_id_pwd">
-							<a href="idFind.do">아이디/비밀번호 찾기</a></span>
+							<a href="${custPath}idFind.do">아이디/비밀번호 찾기</a></span>
 					</div>
 				</section>
 				
@@ -111,7 +119,7 @@
 			</form>
 			<section class="button_section">
 				<div class="register_button_div">
-					<a href="register.do"><button>회원가입</button></a>
+					<a href="${custPath}register.do"><button>회원가입</button></a>
 				</div>
 				
 			</section>

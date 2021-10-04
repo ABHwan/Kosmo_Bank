@@ -28,7 +28,17 @@
 		authentication-manager-ref="uesrAuthManager" >
 		
 		<!-- 권한에 관계없이 접속 가능한 영역(guest도 접속 가능)  -->
-		<security:intercept-url pattern="/customer/**.do" access="permitAll" />
+		<security:intercept-url pattern="/customer/login.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/register.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/logoutAction.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/index.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/exchangeList.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/faqList.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/noticeList.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/idFind.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/idFindAction.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/pwFind.do" access="permitAll" />
+	    <security:intercept-url pattern="/customer/pwFindAction.do" access="permitAll" />
 		
 		<!-- 로그인한 사용자 영역 -->
 		<security:intercept-url pattern="/customer/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"/>
@@ -80,8 +90,9 @@
 		<!-- 권한에 관계없이 접속 가능한 영역(guest도 접속 가능) -->
 		<!-- <security:intercept-url pattern="/manager/**.do" access="permitAll" /> -->
 		<security:intercept-url pattern="/manager/mngLogin.do" access="permitAll" />
-      	<security:intercept-url pattern="/manager/logoutAction.do" access="permitAll" />
-      	
+		
+		<security:intercept-url pattern="/manager/logoutAction.do" access="permitAll" />
+		
 		<!-- 관리자 영역 설정 -->
 		<security:intercept-url pattern="/manager/**" access="hasRole('ROLE_ADMIN')" />
 		

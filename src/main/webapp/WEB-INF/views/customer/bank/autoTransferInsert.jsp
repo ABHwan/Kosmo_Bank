@@ -84,7 +84,19 @@
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-
+				<!-- 고정헤더 -->
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner py-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
+								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br />
+									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="page-inner">
 
 					<div class="row">
@@ -92,148 +104,127 @@
 						<div class="col">
 							<div class="card">
 								<div class="card-body">
-									<div class="card-title fw-mediumbold">자동 이체</div>
+									<div class="card-title fw-mediumbold">자동이체 등록</div>
 									<div class="card-list">
 										<hr>
 
-										<form action="transfer_confirm" method="post"
-											name="transfer_confirm"
-											onsubmit="return transfer_Info_Check();">
-
+										<form action="autoTransferInsertAction" method="post" name="transfer_confirm" onsubmit="return transfer_Info_Check();">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+											<input type="hidden" name="member_id" value="${sessionScope.customerID}">
 											<!-- table  -->
 											<div class="container">
 												<div class="table-responsive">
+													
 													<table class="table table-head-bg-primary mt-4">
 														<thead>
 															<tr class="table-danger">
-																<th style="background-color: #ffffff" colspan="2">출금정보</th>
+																<th style="background-color: #ffffff" colspan="2">자동이체정보</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr class="table-light">
 																<td>출금계좌번호</td>
-																<td><select class="input"
-																	name="transfer_account_num">
-																		<option value="111-111-111111(신한은행)">111-111-111111(신한은행)</option>
-																		<option value="222-2222-2222(국민은행)">222-2222-2222(국민은행)</option>
-																		<option value="33-33333-33333(농협)">33-33333-33333(농협)</option>
-																</select>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">잔액 조회</button></td>
-															<tr class="table-ligh">
-																<td>계좌비밀번호</td>
-																<td colspan="2"><input type="password"
-																	maxlength="4" required></td>
+																<td>
+																	<select class="input" name="account_id">
+																		<c:forEach var="dto" items="${dtos}" >
+																			<c:choose>
+																				<c:when test="${dto.account_bankCode==1}">
+																					<option value="${dto.account_id}">${dto.account_id} / 국민은행</option>
+																				</c:when>
+																				<c:when test="${dto.account_bankCode==2}">
+																					<option value="${dto.account_id}">${dto.account_id} / 우리은행</option>
+																				</c:when>
+																				<c:when test="${dto.account_bankCode==3}">
+																					<option value="${dto.account_id}">${dto.account_id} / 농협은행</option>
+																				</c:when>
+																				<c:when test="${dto.account_bankCode==4}">
+																					<option value="${dto.account_id}">${dto.account_id} / 신한은행</option>
+																				</c:when>
+																				<c:when test="${dto.account_bankCode==5}">
+																					<option value="${dto.account_id}">${dto.account_id} / 하나은행</option>
+																				</c:when>
+																				<c:when test="${dto.account_bankCode==6}">
+																					<option value="${dto.account_id}">${dto.account_id} / 코스모은행</option>
+																				</c:when>
+																			</c:choose>
+																		</c:forEach>
+																	</select>
+																</td>
 															</tr>
-														</tbody>
-													</table>
-
-													<table class="table table-head-bg-primary mt-4">
-														<thead>
-															<tr class="table-danger">
-																<th style="background-color: #ffffff" colspan="2">입금정보</th>
-															</tr>
-														</thead>
-														<tbody>
 															<tr class="table-light">
-																<td>입금은행</td>
-																<td colspan="2"><select class="input" name="bank"
-																	style='width: 150px' required>
-																		<option value="신한">신한은행</option>
-																		<option value="국민">국민은행</option>
-																		<option value="농협">농협</option>
-																</select></td>
-															<tr class="table-ligh">
 																<td>입금계좌번호</td>
-																<td colspan="2"><input type="text"
-																	name="transfer_send_account_num" style="width: 200px"
-																	required>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">최근입금계좌</button></td>
-															</tr>
-
-															<tr class="table-ligh">
+																<td colspan="2">
+																	<select class="input" name="sendAccountBankCode" style='width: 100px'>
+																			<option value="1">국민은행</option>
+																			<option value="2">우리은행</option>
+																			<option value="3">농협은행</option>
+																			<option value="4">신한은행</option>
+																			<option value="5">하나은행</option>
+																			<option value="6">코스모은행</option>
+																	</select>
+																	
+																	<input type="text" name="auto_senderAccount" style="width: 200px" placeholder="계좌번호를 입력하세요">
+																</td>
+															<tr>
+															
+															<tr class="table-light">
 																<td>이체금액</td>
-																<td colspan="2"><input type="text" name="amount"
-																	style="width: 200px" required>원
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">이체한도조회</button> <br>
-
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">1만원</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">3만원</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">5만원</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">10만원</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">50만원</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">100만원</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen">전액</button>
-																	<button class="btn btn-primary btn-sm"
-																		style="background-color: linen" type="reset">정정</button></td>
+																<td colspan="2"><input type="text" name="auto_money" style="width: 200px" required> 원</td>
 															</tr>
 
-															<tr class="table-ligh">
+															<tr class="table-light">
 																<td>이체 주기</td>
-																<td><select class="input" name="cycle"
-																	style='width: 150px' required>
+																<td>
+																	<select class="input" name="auto_outDate" style='width: 150px' required>
 																		<option value="">선택</option>
-																		<option value="1">1개월</option>
-																		<option value="2">2개월</option>
-																		<option value="3">3개월</option>
-																		<option value="6">6개월</option>
-																		<option value="12">12개월</option>
-																		<option value="월요일">월요일</option>
-																		<option value="화요일">화요일</option>
-																		<option value="수요일">수요일</option>
-																		<option value="목요일">목요일</option>
-																		<option value="금요일">금요일</option>
-																		<option value="매일">매일</option>
-																</select> <br>*매일 이체방식은 영업일에만 이체처리됩니다.<br> (토요일, 일요일,
-																	공휴일의 경우 이체처리 되지 않습니다.)</td>
+																		<option value="1">매달 1일</option>
+																		<option value="4">매달 4일</option>
+																		<option value="5">매달 5일</option>
+																		<option value="10">매달 10일</option>
+																		<option value="15">매달 15일</option>
+																		<option value="20">매달 20일</option>
+																		<option value="25">매달 25일</option>
+																	</select>
+																</td>
 															</tr>
-															<tr class="table-ligh">
+															
+															<tr class="table-light">
 																<td>이체시작일/이체종료일</td>
-																<td><input type="date" id="datepicker1"> ~
-																	<input type="date" id="datepicker2"></td>
+																<td><input type="date" name="auto_registDate" id="datepicker1"> ~
+																	<input type="date" name="auto_expirationDate" id="datepicker2"></td>
 															</tr>
 
-															<tr class="table-ligh">
-																<td>휴일이체구분</td>
-																<td><select class="input"
-																	name="holidays_auto_transfer" style='width: 150px'
-																	required>
-																		<option value="휴일익일이체">휴일익일이체</option>
-																		<option value="휴일전일이체">휴일전일이체</option>
-																</select> 당행이체 자동이체일 경우 선택</td>
+															
+
+															<tr class="table-light">
+																<td>자동이체 종류</td>
+																<td>
+																	<select class="input" name="auto_type" style='width: 150px' required>
+																		<option value="">선택</option>
+																		<option value="1">예금</option>
+																		<option value="2">적금</option>
+																		<option value="3">대출</option>
+																		<option value="4">연금</option>
+																		<option value="5">공과금</option>
+																		<option value="6">기타</option>
+																	</select>
+																</td>
 															</tr>
 
-															<tr class="table-ligh">
-																<td>받는통장 메모</td>
-																<td><input type="text" name="send_memo"
-																	style="width: 200px" placeholder="(선택)10자 이내 입력"
-																	maxlength="10"></td>
-															</tr>
-
-															<tr class="table-ligh">
-																<td>내통장 메모</td>
-																<td><input type="text" name="my_memo"
-																	style="width: 200px" placeholder="(선택)10자 이내 입력"
-																	maxlength="10"></td>
+															<tr class="table-light">
+																<td>이체기관명(내용)</td>
+																<td>
+																<input type="text" name="auto_inPlace" style="width: 200px" placeholder="이체기관명(내용) 입력">
+																</td>
 															</tr>
 														</tbody>
 													</table>
 												</div>
 											</div>
+											
 											<div class="my-info text-center">
-												<input type="button" class="btn btn-info"
-													style="width: 80px"
-													onclick="window.location='index.do'" value="취소">
-												<input class="btn btn-info" type="submit" value="다음(최종확인)">
+												<input class="btn btn-primary" type="submit" value="등록">
+												<input class="btn btn-primary btn-border" type="reset" value="초기화">
 											</div>
 										</form>
 									</div>
