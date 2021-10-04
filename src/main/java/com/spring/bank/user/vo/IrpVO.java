@@ -1,6 +1,6 @@
 package com.spring.bank.user.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 //연금 
 public class IrpVO {
@@ -12,8 +12,8 @@ public class IrpVO {
    private Date irp_joinDate;             // 연금가입날짜
    private int irp_state;                // 연금상태
    private float irp_rate;             // 연금금리
-   private String irp_money;             // 연금금액
-   private String irp_endDate;          // 만기일
+   private int irp_money;             // 연금금액
+   private Date irp_endDate;          // 만기일
 
    public int getIrp_id() {
       return irp_id;
@@ -71,19 +71,19 @@ public class IrpVO {
       this.irp_rate = irp_rate;
    }
 
-   public String getIrp_money() {
+   public int getIrp_money() {
       return irp_money;
    }
 
-   public void setIrp_money(String irp_money) {
+   public void setIrp_money(int irp_money) {
       this.irp_money = irp_money;
    }
 
-   public String getIrp_endDate() {
+   public Date getIrp_endDate() {
       return irp_endDate;
    }
 
-   public void setIrp_endDate(String irp_endDate) {
+   public void setIrp_endDate(Date irp_endDate) {
       this.irp_endDate = irp_endDate;
    }
 

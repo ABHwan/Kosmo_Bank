@@ -197,6 +197,7 @@ public interface AdminDAO {
 	public int loanRequestAction(Map<String, Object> map);
 
 	public int getSearchLoanRequestCnt(String keyword);
+	
 	public int getSearchLoanCnt(String keyword);
 
 	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);

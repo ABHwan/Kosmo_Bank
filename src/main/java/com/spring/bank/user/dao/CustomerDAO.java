@@ -14,6 +14,7 @@ import com.spring.bank.user.vo.AutoTransferVO;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.IrpVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
@@ -165,6 +166,9 @@ public interface CustomerDAO {
 	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
 	
+	//연금 신청 처리 insert
+	public int insertIrp(IrpVO vo);
+	
 	//멤버의 unique_key가져오기
 	public String getUniqueKey(String member_id);
 	
@@ -246,6 +250,12 @@ public interface CustomerDAO {
 	public int newLoanSignAction(LoanVO loan);
 
 	public LoanVO getLoanInfo(Map<String, Object> map);
+	
+	// 대출번호 별 나의 대출 상환내역 불러오기  - 개수(진지현)
+	public int getLoanPayCnt(Map<String, Object> map);
+	
+	// 대출번호 별 나의 대출 상환내역 불러오기  - 리스트(진지현)
+	public ArrayList<LoanHistoryVO> getLoanPayList(Map<String, Object> map);
 
 	// 회원이름 불러오기(민재)
 	public String getName(String strId);
@@ -333,5 +343,8 @@ public interface CustomerDAO {
 	
 	// 가계부에 가져올 자동이체일 조회
 	public ArrayList<AccountBookVO> myAccountAutoTransfer(String member_id);
+
+	// 대표 계좌 설정
+	
 }
 

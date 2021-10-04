@@ -234,7 +234,7 @@
 	
 	<!-- 관리자 페이지 연금 상품 수정 -->
 	 <update id="updateIrpProduct" parameterType="com.spring.bank.product.vo.IrpProductVO">
-		UPDATE irp_product SET irp_product_summary=#{irp_product_summary}, irp_product_interRate=#{irp_product_interRate}, irp_product_expiryTerm=#{irp_product_expiryTerm}, irp_product_explanation=#{irp_product_explanation},irp_product_money=#{irp_product_money}, irp_product_notice=#{irp_product_notice}, irp_product_bankCode=#{irp_product_bankCode}
+		UPDATE irp_product SET irp_product_summary=#{irp_product_summary}, irp_product_interRate=#{irp_product_interRate}, irp_product_expiryTerm=#{irp_product_expiryTerm}, irp_product_explanation=#{irp_product_explanation}, irp_product_money=#{irp_product_money}, irp_product_notice=#{irp_product_notice}, irp_product_bankCode=#{irp_product_bankCode}
 			WHERE irp_product_name=#{irp_product_name}
 	</update> 
 	

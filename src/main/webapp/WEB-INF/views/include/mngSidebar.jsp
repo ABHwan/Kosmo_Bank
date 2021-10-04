@@ -234,12 +234,11 @@
 							<div class="collapse" id="고객">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="${mngPath}qnaList_mng">
-											<span class="sub-item">고객상담게시판(1:1)</span>
+									<!-- 
+										<a href="http://localhost:3000/faq" onclick="window.open(this.href, '_blank', 'width=1300, height=800'); return false;">
+											<span class="sub-item">고객센터 관리</span>
 										</a>
-										<a href="${mngPath}faq">
-											<span class="sub-item">자주묻는 질문</span>
-										</a>
+										 -->
 										<a href="${mngPath}mngNoticeList">
 											<span class="sub-item">공지사항 관리</span>
 										</a>

@@ -99,11 +99,8 @@
 	</update>
 
 	<!-- qna 상세페이지, 수정상세페이지 -->
-	<select resultType="com.spring.bank.user.vo.InquiryVO"
-		parameterType="int" id="getInquiryDetail">
-		SELECT * FROM inquiry
-		WHERE
-		inquiry_id=#{inquiry_id}
+	<select resultType="com.spring.bank.user.vo.InquiryVO" parameterType="int" id="getQnaDetail">
+		SELECT * FROM inquiry WHERE inquiry_id=#{inquiry_id}
 	</select>
 
 	<!-- 게시글 수정 삭제시 비밀번호 인증 -->
@@ -384,6 +381,12 @@
 		WHERE irp_product_name=#{irp_product_name} 	
 	</select>
 	
+	<!-- 연금 신청 처리 -->
+	<insert id="insertIrp" parameterType="com.spring.bank.user.vo.DepositVO" >
+		INSERT INTO irp(irp_id, irp_product_name, member_id,account_id, irp_joinDate, irp_rate, irp_money, irp_endDate)
+		VALUES(irp_seq.nextval, #{irp_product_name},#{member_id}, #{account_id}, sysdate, #{irp_rate}, #{irp_money}, #{irp_endDate})
+	</insert>
+	
 	<!-- 환율 저장 후 출력(지호) -->
     <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">
     	INSERT INTO exchange_rate(exchange_country, exchange_rate)
@@ -613,21 +616,28 @@
     
     <!-- 대출 상환 목록 -->
 	<select id="getLoanHistoryList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanHistoryVO">
-   		<![CDATA[
-	    	SELECT * 
-			  FROM (SELECT loan_history_id
-			  			   , loan_id
-			  			   , transfer_id
-			  			   , loan_history_date
-			  			   , loan_history_state
-			  			   , loan_history_amount
-			  		       , rowNum rNum  
-					  FROM (SELECT * 
-					          FROM loan_history
-					         WHERE member_id = #{member_id}
-					         ORDER BY loan_history_id DESC
-					       ) 
-				   )
+	<![CDATA[
+		SELECT * 
+		  FROM (SELECT 
+		              member_id,
+		              loan_history_id,
+		              loan_id, 
+		              transfer_id, 
+		              loan_history_date,
+		              loan_history_state,
+		              loan_history_amount,
+		              loan_history_tranAmount,
+		              LOAN_HISTORY_TRANINTEREST, 
+		              rowNum rNum
+		          FROM (
+		            SELECT l.member_id, h.loan_history_id, h.loan_id, h.transfer_id, h.loan_history_date, h.loan_history_state, h.loan_history_amount, h.loan_history_tranAmount, h.loan_history_tranInterest, rowNum rNum
+		             FROM loan l
+		             JOIN loan_history h
+		               ON l.loan_id = h.loan_id
+		            WHERE l.member_id = #{member_id}
+		          ORDER BY loan_history_id DESC
+		          )
+		       )
 			 WHERE rNum >= #{start} 
 			   AND rNum <= #{end}
 		]]>
@@ -636,9 +646,53 @@
     
 	<!-- 대출 가입 개수 -->
 	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM loan_history WHERE member_id = #{member_id}
+		SELECT COUNT(*) AS cnt
+		  FROM loan l 
+		  JOIN loan_history h
+		    ON l.loan_id = h.loan_id
+		 WHERE l.member_id = #{member_id}
 	</select>
 	
+	<!-- 대출번호 별 나의 대출 상환내역 불러오기  - 개수(진지현) -->
+	<select id="getLoanPayCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) AS cnt
+		  FROM loan l 
+		  JOIN loan_history h
+		    ON l.loan_id = h.loan_id
+		 WHERE l.member_id = #{member_id}
+		   AND l.loan_id = #{loan_id}
+	</select>
+	
+	<!-- 대출번호 별 나의 대출 상환내역 불러오기  - 리스트(진지현) -->
+	<select id="getLoanPayList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanHistoryVO">
+	<![CDATA[
+		SELECT *
+		  FROM (SELECT 
+		              member_id,
+		              loan_history_id,
+		              loan_id, 
+		              transfer_id, 
+		              loan_history_date,
+		              loan_history_state,
+		              loan_history_amount,
+		              loan_history_tranAmount,
+		              loan_history_tranInterest, 
+		              rowNum rNum
+		          FROM (
+		            SELECT l.member_id, h.loan_history_id, h.loan_id, h.transfer_id, h.loan_history_date, h.loan_history_state, h.loan_history_amount, h.loan_history_tranAmount, h.loan_history_tranInterest, rowNum rNum
+		             FROM loan l
+		             JOIN loan_history h
+		               ON l.loan_id = h.loan_id
+		            WHERE l.member_id = #{member_id}
+		             AND l.loan_id = #{loan_id}
+		          ORDER BY loan_history_id DESC
+		          )
+		       )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+	</select>
+
     <!-- 신규대출 등록 -->
     <insert id="newLoanSignAction" parameterType="com.spring.bank.user.vo.LoanVO">
 	    INSERT INTO loan(loan_id
@@ -900,4 +954,5 @@
     	 SELECT * from auto_transfer_list
     	 where member_id=#{member_id} and auto_success='성공'
     </select>
+
 </mapper>

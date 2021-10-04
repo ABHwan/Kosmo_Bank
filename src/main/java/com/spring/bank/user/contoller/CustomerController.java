@@ -55,6 +55,7 @@ public class CustomerController {
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
 		//service.exchanges(model);
+		
 		// 로그인 시 계좌 불러오기
 		String member_id = (String) req.getSession().getAttribute("customerID");
 		if(member_id != null) {
@@ -388,8 +389,8 @@ public class CustomerController {
 	public String depositAccess(HttpServletRequest req, Model model) {
 		logger.info("url => depositAccess");
 	      
-		 //계좌개설 insert account
-         service.makeAccount(req, model);
+		 //연금 용 계좌개설 insert account
+         service.makeDepositAccount(req, model);
          
          System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
          
@@ -444,8 +445,8 @@ public class CustomerController {
 	public String irpAccess(HttpServletRequest req, Model model) {
 		logger.info("url => irpProductAction");
 	      
-		 //계좌개설 insert account
-         service.makeAccount(req, model);
+		 //연금용 계좌 개설 insert account
+		service.makeIrpAccount(req, model);
          
          System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
          
@@ -723,16 +724,16 @@ public class CustomerController {
 	}
 	
 	//!!!!!!!!!!지은!!!!!!!!!!!
-
-
-	// 대출 상환 목록
+	
+	//대출 납입 목록(지현)
 	@RequestMapping("loanHistoryList.do")
 	public String loanHistoryList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanHistoryList]");
-		//service.loanHistoryList(req, model);
+		service.loanHistoryList(req, model);
+		
 		return "customer/loan/loanHistoryList";
 	}
-	
+
 	// 대출중인 상품 목록
 	@RequestMapping("loanAccountList.do")
 	public String loanAccountList(HttpServletRequest req, Model model) {
@@ -777,12 +778,23 @@ public class CustomerController {
 		return "customer/loan/loanPrincipalList";
 	}
 	
-	// 대출 상환 상세
+	// 대출 상환 예정표 
 	@RequestMapping("loanPrincipalRateList.do")
 	public String loanPrincipalRateList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanPrincipalRateList]");
 		service.loanPrincipalRateList(req, model);
 		return "customer/loan/loanPrincipalRateList";
+	}
+	 
+	// 나의 대출 상환 내역 상세 (진지현)
+	@RequestMapping("myLoanList.do")
+	public String myLoanList(HttpServletRequest req, Model model) {
+		logger.info("[url => myLoanList]");
+		
+		service.myLoanList(req, model);
+		System.out.println("wow");
+		
+		return "customer/loan/myLoanList";
 	}
 
 	// 대출 원금 상세
@@ -1043,7 +1055,7 @@ public class CustomerController {
 		return service.getAccountList(req, model);
 	}
 	
-	// 계좌연동
+	// 계좌연동확인
 	@RequestMapping("accountConnect")
 	public String accountConnect(HttpServletRequest req, Model model) {
 		
@@ -1074,8 +1086,6 @@ public class CustomerController {
 	@ResponseBody
 	@RequestMapping("accountDisConnectAction")
 	public int accountDisConnectAction(HttpServletRequest req, Model model) {
-		
-		
 		
 		// 계좌 연동
 		return service.accountDisConnectAction(req, model);

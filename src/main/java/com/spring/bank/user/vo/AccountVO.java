@@ -188,6 +188,7 @@ public class AccountVO {
 	public void setAccount_bankImg(String account_bankImg) {
 		this.account_bankImg = account_bankImg;
 	}
+
 	
 
 }

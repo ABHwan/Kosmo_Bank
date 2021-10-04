@@ -20,22 +20,23 @@ function errorAlert(errorMsg) {
 
 //-- 예금 가입 페이지
 function joinInCheck() {
-	var currentMonth = $("#currentMonth").val().replaceAll('-','');
-	var account_limit = $("#account_limit").val();
-	var sysdate = convertDateFormat(new Date());
+//	var currentMonth = $("#currentMonth").val().replaceAll('-','');
+//	var account_limit = $("#account_limit").val();
+//	var sysdate = convertDateFormat(new Date());
+//	
+//	console.log('currentMonth', currentMonth);
 	
-	console.log('currentMonth', currentMonth);
+	var account_balance =$("#account_balance").val();
 	
-	/*// 
-	if(sysdate > currentMonth){
-		alert("가입기간을 다시 확인해주세요");
-		return false;*/
-	// 한도금액
-	//} 
-	if(!account_limit){
-		alert("한도를 입력해주세요");
+	if(!document.depositProductForm.term.value){
+		alert("예치 기간을 다시 확인해주세요");
+		document.depositProductForm.term.focus();
 		return false;
-		
+	// 한도금액
+	}else if(!document.depositProductForm.account_balance.value){
+		alert("예치 금액을 입력해주세요");
+		document.depositProductForm.account_balance.focus();
+		return false;
 	// 비밀번호
 	} else if(!document.depositProductForm.account_password.value) {
 		alert("비밀번호를 입력하세요!!");
@@ -50,6 +51,29 @@ function joinInCheck() {
 	}
 	
 }
+//irpProductionJoin 값 check
+
+function irpJoinInCheck(){
+
+var sysdate = convertDateFormat(new Date());
+	
+	if(!document.irpProductForm.account_balance.value){
+		alert("연금 금액을 입력해주세요");
+		document.irpProductForm.account_balance.focus();
+		return false;
+	// 비밀번호
+	} else if(!document.irpProductForm.account_password.value) {
+		alert("비밀번호를 입력하세요!!");
+		document.irpProductForm.account_password.focus();
+		return false;
+	// 비밀번호 확인
+	} else if(document.irpProductForm.account_password.value != document.irpProductForm.REaccount_password.value) {
+		alert("비밀번호가 일치하지않습니다!!");
+		document.irpProductForm.REaccount_password.focus();
+		return false;
+	}
+}
+
 
 
 function convertDateFormat(date) {

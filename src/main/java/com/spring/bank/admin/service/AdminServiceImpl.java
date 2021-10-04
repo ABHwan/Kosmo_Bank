@@ -490,6 +490,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void getDepositProductInfo(HttpServletRequest req, Model model) {
 		String deposit_product_name = req.getParameter("deposit_product_name");
+		
 		System.out.println(deposit_product_name + " 상품 상세조회");
 		DepositProductVO vo = dao.getDepositProductInfo(deposit_product_name);
 		model.addAttribute("vo", vo);
@@ -814,24 +815,6 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 
-	// 관리자 페이지 적금 상품 삭제
-	@Override
-	public void deleteFundProduct(HttpServletRequest req, Model model) {
-		int deleteCnt = 0;
-		String saving_product_names[] = req.getParameterValues("check");
-		if (saving_product_names != null) {
-			for (int i = 0; i < saving_product_names.length; i++) {
-				deleteCnt = dao.deleteSavingProduct(saving_product_names[i]);
-				System.out.println("삭제선택된 적금상품명: " + saving_product_names[i]);
-			}
-			model.addAttribute("msg", "펀드상품 삭제처리되었습니다");
-		} else {
-			model.addAttribute("msg", "삭제하실 상품을 선택해주세요.");
-		}
-		System.out.println("펀드상품 삭제여부 : " + deleteCnt);
-		model.addAttribute("deleteCnt", deleteCnt);
-	}
-
 	// 관리자 페이지 연금 상품 등록(지현)
 	@Override
 	public void insertIrpProduct(HttpServletRequest req, Model model) {
@@ -844,7 +827,7 @@ public class AdminServiceImpl implements AdminService {
 		vo.setIrp_product_explanation(req.getParameter("irp_product_explanation"));
 		vo.setIrp_product_notice(req.getParameter("irp_product_notice"));
 		vo.setIrp_product_bankCode(Integer.parseInt(req.getParameter("irp_product_bankCode")));
-		vo.setIrp_product_money(Integer.parseInt(req.getParameter("irp_product_money")) * 10000);
+		vo.setIrp_product_money(Integer.parseInt(req.getParameter("irp_product_money")));
 
 		int insertCnt = dao.insertIrpProduct(vo);
 		System.out.println("연금상품등록 insertCnt : " + insertCnt);
@@ -1077,7 +1060,7 @@ public class AdminServiceImpl implements AdminService {
 		vo.setIrp_product_interRate(Float.parseFloat(req.getParameter("irp_product_interRate")));
 		vo.setIrp_product_expiryTerm(Integer.parseInt(req.getParameter("irp_product_expiryTerm")));
 		vo.setIrp_product_explanation(req.getParameter("irp_product_explanation"));
-		vo.setIrp_product_money(Integer.parseInt(req.getParameter("irp_product_money")) * 10000);
+		vo.setIrp_product_money(Integer.parseInt(req.getParameter("irp_product_money")));
 		vo.setIrp_product_notice(req.getParameter("irp_product_notice"));
 		vo.setIrp_product_bankCode(Integer.parseInt(req.getParameter("irp_product_bankCode")));
 
@@ -1403,6 +1386,25 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("updateCnt", updateCnt);
 		model.addAttribute("pageNum", pageNum);
 	}
+
+	// 관리자 페이지 펀드 상품 삭제
+	@Override
+	public void deleteFundProduct(HttpServletRequest req, Model model) {
+		int deleteCnt = 0;
+		String fund_title[] = req.getParameterValues("check");
+		if (fund_title != null) {
+			for (int i = 0; i < fund_title.length; i++) {
+				deleteCnt = dao.deleteFundProduct(fund_title[i]);
+				System.out.println("삭제선택된 펀드상품명: " + fund_title[i]);
+			}
+			model.addAttribute("msg", "펀드상품 삭제처리되었습니다");
+		} else {
+			model.addAttribute("msg", "삭제하실 상품을 선택해주세요.");
+		}
+		System.out.println("펀드상품 삭제여부 : " + deleteCnt);
+		model.addAttribute("deleteCnt", deleteCnt);
+	}
+
 
 	// qna 조회(지현)
 	@Override

@@ -6,9 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예금 상품 목록 조회 - 고객</title>
+<title>대출 상환 목록 조회 - 고객</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
+
 
 </head>
 <body>
@@ -24,7 +25,7 @@
 							<div>
 								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
 								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
 									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
 							</div>
 						</div>
@@ -33,103 +34,75 @@
 				
 				<section id="main">
 			      <div class="main__container" style="width: 95%;">
-			      <h2 class="title">예금 상품 리스트</h2>
+			      <h2 class="title">대출 상환 목록</h2>
 			       <div class="row">
 						<div class="col">
 							<div class="card">
 								<div class="card-header">
-					<form action="depositProductSearch.do" method="post" class="contents__top2" name="searchForm">
-						<sec:csrfInput/>
-			          <input type="search" name="search" placeholder="예금상품검색" />
-			          <button type="submit">
-			            <i class="fas fa-search"></i>
-			          </button>
-			        </form>
-			        
 			        <div class="contents__middle">
-			          <div>전체 예금 상품 수 ${cnt}건</div>
+			          <div>대출 상환 목록 ${cnt} 건 </div>
 			        </div>
-			        <form action="depositDetail.do" name="depositProductForm">
-			        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			         <input type="hidden" name="pageNum" value="${pageNum}">
-			         <input type="hidden" name="number" value="${number}">
 			        <table class="display table table-striped table-hover dataTable">
 			          <tr class="sorting">
 			            <th>번호</th>
-			            <th>상품명</th>
-			            <th>상품요약</th>
-			            <th>금리</th>
-			            <th>종류</th>
-			            <th>최소기간</th>
-			            <th>최대기간</th>
-			            <th>최소금액</th>
-			            <th>은행코드</th>
-			            <th>등록일</th>
+			            <th>대출 번호</th>
+			            <th>이체 번호</th>
+			            <th>대출 상환 일자</th>
+			            <th>대출 상환 종류</th>
+			            <th>대출 상환 금액</th>
+			            <th>납입 원금</th>
+			            <th>납입 이자</th>
 			          </tr>
 			          <c:if test="${cnt > 0}">
-			          	<c:forEach var="dto" items="${dtos}">
-			          	<input type="hidden" name="deposit_product_notice" value="${dto.deposit_product_notice}">
+			          	<c:forEach var="l" items="${loanPay}">
 				         <tr>
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>
 				          <td>
-				          		<a href="depositDetail.do?deposit_product_name=${dto.deposit_product_name}&pageNum=${pageNum}&number=${number + 1}">${dto.deposit_product_name}</a>
+				          	${l.loan_id}
 				          </td>
-				           
-				           <td>${dto.deposit_product_summary}</td>
-				           <td>${dto.deposit_product_interRate}%</td>
+				          <td>
+				          	${l.transfer_id}
+				          </td>
+				          <td>
+				          	${l.loan_history_date}
+				          </td>
+				          <td>
+					          <%-- <c:if t   1이자/2원금/3중도상환+수수료/4해지로 인한 원금 상환--%>
+					          <c:if test="${l.loan_history_state == 1}">
+					          	이자
+					          </c:if>
+					          <c:if test="${l.loan_history_state == 2}">
+					          	원금
+					          </c:if>
+					          <c:if test="${l.loan_history_state == 3}">
+					          	중도상환 , 수수료
+					          </c:if>
+					          <c:if test="${l.loan_history_state == 4}">
+					          	해지
+					          </c:if>
+				          </td>
+				       	  <td>
+				       	  <fmt:formatNumber value="${l.loan_history_amount}"/>원
+				       	  </td>
 				           <td>
-					           <c:if test="${dto.deposit_product_type==1}">
-					           	복리
-					           </c:if>
-					           
-					           <c:if test="${dto.deposit_product_type!=1}">
-					           	단리
-					           </c:if>
-					       </td>
-				           <td>${dto.deposit_product_minDate}개월</td>
-				           <td>${dto.deposit_product_maxDate}개월</td>
-				           <td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원</td>
-				           <td>
-				           		<c:choose> 
-				           			<c:when test="${dto.deposit_product_bankCode==0}">
-				           				미기재
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==1}">
-				           				국민은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==2}">
-				           				우리은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==3}">
-				           				농협은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==4}">
-				           				신한은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==5}">
-				           				하나은행
-				           			</c:when>
-				           			<c:when test="${dto.deposit_product_bankCode==6}">
-				           				코스모 은행
-				           			</c:when>
-				           		</c:choose>
+				           <fmt:formatNumber value="${l.loan_history_tranAmount}"/>원
 				           </td>
-				           <td>${dto.deposit_product_date}</td>
+				           <td>
+				           <fmt:formatNumber value="${l.loan_history_tranInterest}"/>원 
+				           </td>
 				         </tr>
-				         
 				        </c:forEach>
 				      </c:if>
 				      
 				      <!-- 게시글이 없으면 -->
 			          <c:if test="${cnt == 0}">
 			          	<td colspan="6" align="center">
-								등록된 예금 상품이 없습니다.
+								해당 대출상품의 상환 내역이 없습니다.
 						</td>
 			          </c:if>
 			        </table>
-			        </form>
 			        </div>
 			       
 			        <div class="pagenation">
@@ -140,7 +113,7 @@
                               <!-- 이전블록[«] -->
                               <c:if test="${startPage > pageBlock}">
                                  <li class="page-item">
-                                    <a class="page-link" href="depositList?pageNum=${startPage - pageBlock}" aria-label="Previous">
+                                    <a class="page-link" href="myLoanList?pageNum=${startPage - pageBlock}" aria-label="Previous">
                                        <span aria-hidden="true">«</span>
                                        <span class="sr-only">Previous</span>
                                     </a>
@@ -151,14 +124,14 @@
                               <c:forEach var="i" begin="${startPage}" end="${endPage}" >
                                  <c:if test="${i == currentPage}">
                                     <li class="page-item active">
-                                       <a class="page-link" href="depositList?pageNum=${i}">${i}</a>
+                                       <a class="page-link" href="myLoanList.do?pageNum=${i}">${i}</a>
                                     </li>
                                  </c:if>
                                  
                                  
                                  <c:if test="${i != currentPage}">
                                     <li class="page-item">
-                                       <a class="page-link" href="depositList?pageNum=${i}">${i}</a>
+                                       <a class="page-link" href="myLoanList.do?pageNum=${i}">${i}</a>
                                     </li>
                                  </c:if>
                               </c:forEach>
@@ -166,7 +139,7 @@
                               <!-- 다음블록[»] -->
                               <c:if test="${pageCount > endPage}" >
                                  <li class="page-item">
-                                    <a class="page-link" href="depositList?pageNum=${startPage + pageBlock}" aria-label="Next">
+                                    <a class="page-link" href="myLoanList.do?pageNum=${startPage + pageBlock}" aria-label="Next">
                                        <span aria-hidden="true">»</span>
                                        <span class="sr-only">Next</span>
                                     </a>

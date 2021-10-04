@@ -7,9 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta charset="UTF-8">
 <title>자주묻는 질문 게시판</title>
-<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no'
-	name='viewport' />
-<link rel="icon" href="${rePath}images/img/icon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 <!-- CSS Files -->
 <link rel="stylesheet" href="${rePath}css/user/qnaList.css">
 <link rel="stylesheet" href="${rePath}css/bootstrap.min.css">
@@ -42,7 +40,21 @@
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-				<div class="page-inner">
+			<!-- 고정헤더 -->
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
+								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
+									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<section id="main" >
+			      <div class="main__container" style="width: 95%;">
 					<h4 class="page-title">자주하는 질문(FAQ)</h4>
 					<div class="row">
 						<div class="col">
@@ -58,10 +70,10 @@
 										<c:forEach var="dto" items="${dtos}">
 										<details>
 							<summary>
-						<table class="qna_table">
+						<table class="display table table-striped table-hover dataTable">
 					        <tr class="hide">
 					        	<!-- 문의 번호 -->
-					        	<th id="no">Q
+					        	<th width="30px">Q
 					        		<c:set var="number" value="${number - 1}" />
 					        		<!-- qna_seq 번호 -->
 					        		<input type="hidden" name="faq_id" value="${dto.faq_id}">
@@ -75,21 +87,26 @@
 				         </table>
 				         
 				         </summary>
-					        <table class="qna_table_a">
-					         
-					         <tr id="hide_answer">
-					         	<th id="no">A</th>
-				         	<c:if test="${dto.faq_content == null }" >
-					         	
-					         	<td id="answer" colspan="4">
-					         		답변이 등록되지 않았습니다.
-					         	</td>
-				         	</c:if>
-				         	<c:if test="${dto.faq_content != null }" >
-				         		<td id="answer" colspan="2">
-				         			${dto.faq_content}
-				         		</td>
-				         	</c:if>
+					        <table  class="display table table-striped table-hover dataTable">
+					         <tr>
+					         	<c:if test="${dto.faq_content == null }" >
+					         		<th width="30px">
+						         	<div><i class="icon-pencil"></i></div>
+						         	</th>
+						         	<td text-align="center" colspan="4">
+						         		답변이 등록되지 않았습니다.
+						         	</td>
+						         	
+					         	</c:if>
+					         	<c:if test="${dto.faq_content != null }" >
+					         		<th width="30px">
+						         	<i class="icon-pencil"></i>
+						         	</th>
+					         		<td text-align="center" colspan="4">
+					         			${dto.faq_content}
+					         		</td>
+					         		
+					         	</c:if>
 					         </tr>
 				         </table> 
 				         </details>
@@ -102,47 +119,63 @@
 										<th scope="col" colspan="4">FAQ가 등록되지 않았습니다.</th>
 									</tr>
 								</c:if>
-										
-									<!-- 페이징처리 -->	
-									<table class="qna_table">
-									<tr>
-										<td colspan="4"align="center">
-											<!--  게시글이 있으면 -->
-											<c:if test="${cnt > 0 }">
-												<!-- 처음[◀◀] / 이전블록[◀] /  -->
-												<c:if test="${startPage > pageBlock}">
-													<a href="faq"> [◀◀] </a>
-													<a href="faq?pageNum=${startPage - pageBlock}"> [◀] </a>
-												</c:if>
-												
-												<!-- 블록 내의 페이지 번호 -->
-												<c:forEach var="i" begin="${startPage }" end="${endPage }" >
-													<c:if test="${i == currentPage}">
-														<span><b>[${i}]</b></span>
-													</c:if>
-													
-													<c:if test="${i != currentPage}">
-														<a href="faq?pageNum=${i}">[${i}]</a>
-													</c:if>
-												</c:forEach>
-												
-												<!-- 다음블록[▶] // 마지막[▶▶] -->
-												<c:if test="${pageCount > endPage }" >
-													<a href="faq?pageNum=${startPage + pageBlock}">[▶]</a>
-													<a href="faq?pageNum=${pageCount}">[▶▶]</a>
-												</c:if>
-											</c:if>
-										</td>
-										
-									</tr>
-				         			</table>
+								
 									</form>
 								</div>
+								  <div class="pagenation">
+			        		 <ul>
+			          	   <!-- paging -->
+                           <ul class="pagination pg-primary mt-5">
+                           <c:if test="${cnt > 0}">
+                              <!-- 이전블록[«] -->
+                              <c:if test="${startPage > pageBlock}">
+                                 <li class="page-item">
+                                    <a class="page-link" href="loanProductList?pageNum=${startPage - pageBlock}" aria-label="Previous">
+                                       <span aria-hidden="true">«</span>
+                                       <span class="sr-only">Previous</span>
+                                    </a>
+                                 </li>   
+                              </c:if>
+                              
+                              <!-- 블록 내의 페이지 번호 -->
+                              <c:forEach var="i" begin="${startPage}" end="${endPage}" >
+                                 <c:if test="${i == currentPage}">
+                                    <li class="page-item active">
+                                       <a class="page-link" href="loanProductList?pageNum=${i}">${i}</a>
+                                    </li>
+                                 </c:if>
+                                 
+                                 
+                                 <c:if test="${i != currentPage}">
+                                    <li class="page-item">
+                                       <a class="page-link" href="loanProductList?pageNum=${i}">${i}</a>
+                                    </li>
+                                 </c:if>
+                              </c:forEach>
+                              
+                              <!-- 다음블록[»] -->
+                              <c:if test="${pageCount > endPage}" >
+                                 <li class="page-item">
+                                    <a class="page-link" href="loanProductList?pageNum=${startPage + pageBlock}" aria-label="Next">
+                                       <span aria-hidden="true">»</span>
+                                       <span class="sr-only">Next</span>
+                                    </a>
+                                 </li>
+                              </c:if>
+                           </c:if>
+                           </ul>
+                           <!-- paging -->
+                           </ul>
 							</div>
 						</div>
 					</div>
+					
+					</div>
 				</div>
+				</section>
 			</div>
+			
+			
 		</div>
 	</div>
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

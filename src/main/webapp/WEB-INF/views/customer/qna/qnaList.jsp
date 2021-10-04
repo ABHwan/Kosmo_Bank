@@ -6,9 +6,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>코스모 뱅크</title>
-<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no'
-	name='viewport' />
-<link rel="icon" href="${rePath}images/img/icon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
 <!-- CSS Files -->
 <link rel="stylesheet" href="${rePath}css/user/qnaList.css">
 <link rel="stylesheet" href="${rePath}css/bootstrap.min.css">
@@ -41,101 +39,136 @@
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
-				<div class="content">
-					<div class="page-inner">
-							<h4 class="page-title">문의 내역</h4>
-							<div class="row">
-								<div class="col">
-									<div class="card">
-										<div class="card-header">
-											<div class="card-title">1:1 질문</div>
-										</div>
-										<div class="card-body">
-											<form action="qnaWrite" method="post">
-												<sec:csrfInput />
-												<input type="hidden" name="pageNum" value="${pageNum}">
-
-												<%-- <c:forEach var="작은 바구니 참조변수" items="${큰 바구니}"> --%>
-
-												
-													<table class="qna_table">
-														<tr class="qna_top">
-															<th id="no">번호</th>
-															<th id="subject">제목</th>
-															<th id="indate">문의글 등록일</th>
-															<th id="update_td">수정</th>
-														</tr>
-														<c:if test="${cnt > 0 }">
-															<c:forEach var="dto" items="${dtos}">
-																<tr class="hide">
-																	<!-- 문의 번호 -->
-																	<td>${number}<c:set var="number"
-																			value="${number - 1}" /> <!-- qna_seq 번호 --> <input
-																		type="hidden" name="inquiry_id"
-																		value="${dto.inquiry_id}">
-																	</td>
-
-																	<!-- 문의 제목 [문의유형] 제목 -->
-																	<td id="inquiry_title">${dto.inquiry_title}</td>
-
-																	<!-- 문의 등록일 -->
-																	<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
-																			value="${dto.inquiry_regDate}" /></td>
-																	<td><input type="button" id="update"
-																		onclick="window.location='qnaDetail?inquiry_id=${dto.inquiry_id}&pageNum=${pageNum}&number=${number + 1}'"
-																		value="상세 보기"></td>
-
-																</tr>
-															</c:forEach>
-														</c:if>
-														<c:if test="${cnt== 0 }">
-															<tr>
-																<td colspan="5">문의글이 존재하지 않습니다</td>
-															</tr>
-														</c:if>
-														<tr>
-															<td colspan="4" align="center">
-																<!--  게시글이 있으면 --> <c:if test="${cnt > 0 }">
-																	<!-- 처음[◀◀] / 이전블록[◀] /  -->
-																	<c:if test="${startPage > pageBlock}">
-																		<a href="qnaList"> [◀◀] </a>
-																		<a href="qnaList?pageNum=${startPage - pageBlock}">
-																			[◀] </a>
-																	</c:if>
-
-																	<!-- 블록 내의 페이지 번호 -->
-																	<c:forEach var="i" begin="${startPage }"
-																		end="${endPage }">
-																		<c:if test="${i == currentPage}">
-																			<span><b>[${i}]</b></span>
-																		</c:if>
-
-																		<c:if test="${i != currentPage}">
-																			<a href="qnaList?pageNum=${i}">[${i}]</a>
-																		</c:if>
-																	</c:forEach>
-
-																	<!-- 다음블록[▶] // 마지막[▶▶] -->
-																	<c:if test="${pageCount > endPage }">
-																		<a href="qnaList?pageNum=${startPage + pageBlock}">[▶]</a>
-																		<a href="qnaList?pageNum=${pageCount}">[▶▶]</a>
-																	</c:if>
-																</c:if>
-															</td>
-														</tr>
-													</table>
-												</div>
-												<input type="submit" value="글쓰기">
-											</form>
-
-										</div>
-									</div>
-								</div>
+			<div class="content">
+				<!-- 고정헤더 -->
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner py-5">
+						<div
+							class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1>
+								<br />
+								<h2 class="text-white op-7 mb-2">
+									KOSMO BANK에 오신 것을 환영합니다.<br /> 저희는 고객님의 <strong>자산관리</strong>를
+									효율적이고, 안전하게 도와드립니다. </br> 또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게
+									통합하여 금융상품을 이용하실 수 있습니다.
+								</h2>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+				<section id="main">
+					<div class="main__container"  style="width: 95%;">
+						<h2 class="title">1:1 질문</h2>
+						<div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title"></div>
+								</div>
+					<div class="card-body">
+						<form action="qnaWrite" method="post">
+							<sec:csrfInput />
+							<input type="hidden" name="pageNum" value="${pageNum}">
+							<div align="right" >
+								<input type="submit" value="글쓰기" class="btn btn-primary" >
+							</div>
+							<br>
+							<table class="table table-bordered">
+								<tr class="qna_top">
+									<th id="no">번호</th>
+									<th id="subject">제목</th>
+									<th id="indate">문의글 등록일</th>
+									<th id="update_td">수정</th>
+								</tr>
+								<c:if test="${cnt > 0 }">
+									<c:forEach var="dto" items="${dtos}">
+										<tr class="hide">
+											<!-- 문의 번호 -->
+											<td>${number}<c:set var="number" value="${number - 1}" />
+												<!-- qna_seq 번호 --> <input type="hidden" name="inquiry_id"
+												value="${dto.inquiry_id}">
+											</td>
+
+											<!-- 문의 제목 [문의유형] 제목 -->
+											<td id="inquiry_title">${dto.inquiry_title}</td>
+
+											<!-- 문의 등록일 -->
+											<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
+													value="${dto.inquiry_regDate}" /></td>
+											<td><input type="button" id="update"  class="btn btn-primary"
+												onclick="window.location='qnaDetail?inquiry_id=${dto.inquiry_id}&pageNum=${pageNum}&number=${number + 1}'"
+												value="상세 보기"></td>
+
+										</tr>
+									</c:forEach>
+								</c:if>
+								<c:if test="${cnt== 0 }">
+									<tr>
+										<td colspan="5">문의글이 존재하지 않습니다</td>
+									</tr>
+								</c:if>
+							</table>
+							</form>
+					</div>
+					
+					
+			
+			
+			        <div class="pagenation">
+			          <ul>
+			          	   <!-- paging -->
+                           <ul class="pagination pg-primary mt-5">
+                           <c:if test="${cnt > 0}">
+                              <!-- 이전블록[«] -->
+                              <c:if test="${startPage > pageBlock}">
+                                 <li class="page-item">
+                                    <a class="page-link" href="loanProductList?pageNum=${startPage - pageBlock}" aria-label="Previous">
+                                       <span aria-hidden="true">«</span>
+                                       <span class="sr-only">Previous</span>
+                                    </a>
+                                 </li>   
+                              </c:if>
+                              
+                              <!-- 블록 내의 페이지 번호 -->
+                              <c:forEach var="i" begin="${startPage}" end="${endPage}" >
+                                 <c:if test="${i == currentPage}">
+                                    <li class="page-item active">
+                                       <a class="page-link" href="loanProductList?pageNum=${i}">${i}</a>
+                                    </li>
+                                 </c:if>
+                                 
+                                 
+                                 <c:if test="${i != currentPage}">
+                                    <li class="page-item">
+                                       <a class="page-link" href="loanProductList?pageNum=${i}">${i}</a>
+                                    </li>
+                                 </c:if>
+                              </c:forEach>
+                              
+                              <!-- 다음블록[»] -->
+                              <c:if test="${pageCount > endPage}" >
+                                 <li class="page-item">
+                                    <a class="page-link" href="loanProductList?pageNum=${startPage + pageBlock}" aria-label="Next">
+                                       <span aria-hidden="true">»</span>
+                                       <span class="sr-only">Next</span>
+                                    </a>
+                                 </li>
+                              </c:if>
+                           </c:if>
+                           
+                           </ul>
+                           
+                           <!-- paging -->
+                           </ul>
+			        </div>	
+			        </div>
+		</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>
 	<script src="${rePath}js/core/bootstrap.min.js"></script>

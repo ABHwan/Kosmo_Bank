@@ -73,8 +73,9 @@
 				error-if-maximum-exceeded="true" ==> 최대 세션 초과시 에러 옵션
 			
 			 -->
+			 
 		
-			<security:concurrency-control max-sessions="1"
+			<security:concurrency-control  max-sessions="1"
 				expired-url="/customer/sessionErr.do"
 				error-if-maximum-exceeded="true" />
 		</security:session-management>

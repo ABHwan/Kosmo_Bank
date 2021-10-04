@@ -13,8 +13,6 @@
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
-		
-		
 
 		<!-- 메인 콘텐츠 -->
 		<div class="main-panel">
@@ -179,6 +177,5 @@
 	
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	
-
 </body>
 </html>

@@ -102,7 +102,7 @@
 											</div>
 											<div class="info-user ml-3">
 												<div class="username"><fmt:formatNumber value="${dto.account_balance }" />원</div>
-												<div class="status">${account_id} </div>
+												<div class="status">${dto.account_id}&nbsp;[${dto.account_stateContent}] </div>
 											</div>
 										</div>
 										</c:forEach>

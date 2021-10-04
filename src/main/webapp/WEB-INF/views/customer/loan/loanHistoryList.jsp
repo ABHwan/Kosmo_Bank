@@ -59,11 +59,13 @@
 											<thead>
 												<tr>
 													<th scope="col">대출상환번호</th>
-													<th scope="col">대출번호(조인해서 정보끌어와야함 ㅅㅈㅈ)</th>
+													<th scope="col">대출번호</th>
 													<th scope="col">이체번호</th>
 													<th scope="col">대출상환일자</th>
 													<th scope="col">대출상환종류</th>
 													<th scope="col">대출상환금액</th>
+													<th scope="col">납입 원금</th>
+													<th scope="col">납입 이자</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -73,8 +75,24 @@
 														<td>${l.loan_id}</td>
 														<td>${l.transfer_id}</td>
 														<td>${l.loan_history_date}</td>
-														<td>${l.loan_history_state}</td>
-														<td>${l.loan_history_amount}</td>
+														<td>
+												          <%-- <c:if t   1이자/2원금/3중도상환+수수료/4해지로 인한 원금 상환--%>
+												          <c:if test="${l.loan_history_state == 1}">
+												          	이자
+												          </c:if>
+												          <c:if test="${l.loan_history_state == 2}">
+												          	원금
+												          </c:if>
+												          <c:if test="${l.loan_history_state == 3}">
+												          	중도상환 , 수수료
+												          </c:if>
+												          <c:if test="${l.loan_history_state == 4}">
+												          	해지
+												          </c:if>
+											          </td>
+														<td><fmt:formatNumber value="${l.loan_history_amount}" />원</td>
+														<td><fmt:formatNumber value="${l.loan_history_tranAmount}" />원</td>
+														<td><fmt:formatNumber value="${l.loan_history_tranInterest}" />원</td>
 													</tr>
 												</c:forEach>
 												<c:if test="${cnt == 0}">
@@ -92,7 +110,7 @@
 												<!-- 이전블록[«] -->
 												<c:if test="${startPage > pageBlock}">
 													<li class="page-item"><a class="page-link"
-														href="loanList.do?pageNum=${startPage - pageBlock}"
+														href="loanHistoryList.do?pageNum=${startPage - pageBlock}"
 														aria-label="Previous"> <span aria-hidden="true">«</span>
 															<span class="sr-only">Previous</span>
 													</a></li>
@@ -102,19 +120,19 @@
 												<c:forEach var="i" begin="${startPage}" end="${endPage}">
 													<c:if test="${i == currentPage}">
 														<li class="page-item active"><a class="page-link"
-															href="loanList.do?pageNum=${i}">${i}</a></li>
+															href="loanHistoryList.do?pageNum=${i}">${i}</a></li>
 													</c:if>
 
 													<c:if test="${i != currentPage}">
 														<li class="page-item"><a class="page-link"
-															href="loanList.do?pageNum=${i}">${i}</a></li>
+															href="loanHistoryList.do?pageNum=${i}">${i}</a></li>
 													</c:if>
 												</c:forEach>
 
 												<!-- 다음블록[»] -->
 												<c:if test="${pageCount > endPage}">
 													<li class="page-item"><a class="page-link"
-														href="loanList.do?pageNum=${startPage + pageBlock}"
+														href="loanHistoryList.do?pageNum=${startPage + pageBlock}"
 														aria-label="Next"> <span aria-hidden="true">»</span> <span
 															class="sr-only">Next</span>
 													</a></li>
@@ -135,51 +153,5 @@
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 
-	<!--   Core JS Files   -->
-	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
-	<script src="${rePath}js/core/popper.min.js"></script>
-	<script src="${rePath}js/core/bootstrap.min.js"></script>
-
-	<!-- jQuery UI -->
-	<script
-		src="${rePath}js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<script
-		src="${rePath}js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-
-	<!-- jQuery Scrollbar -->
-	<script
-		src="${rePath}js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-
-	<!-- Chart JS -->
-	<script src="${rePath}js/plugin/chart.js/chart.min.js"></script>
-
-	<!-- jQuery Sparkline -->
-	<script
-		src="${rePath}js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-	<!-- Chart Circle -->
-	<script src="${rePath}js/plugin/chart-circle/circles.min.js"></script>
-
-	<!-- Datatables -->
-	<script src="${rePath}js/plugin/datatables/datatables.min.js"></script>
-
-	<!-- Bootstrap Notify -->
-	<script
-		src="${rePath}js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script src="${rePath}js/plugin/jqvmap/jquery.vmap.min.js"></script>
-	<script src="${rePath}js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
-
-	<!-- Sweet Alert -->
-	<script src="${rePath}js/plugin/sweetalert/sweetalert.min.js"></script>
-
-	<!-- Atlantis JS -->
-	<script src="${rePath}js/atlantis.min.js"></script>
-
-	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="${rePath}js/setting-demo.js"></script>
-	<script src="${rePath}js/demo.js"></script>
 </body>
 </html>
