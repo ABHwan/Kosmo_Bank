@@ -722,16 +722,15 @@ public class CustomerController {
 	}
 	
 	//!!!!!!!!!!지은!!!!!!!!!!!
-
-
-	// 대출 상환 목록
+	//대출 납입 목록(지현)
 	@RequestMapping("loanHistoryList.do")
 	public String loanHistoryList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanHistoryList]");
-		//service.loanHistoryList(req, model);
+		service.loanHistoryList(req, model);
+		
 		return "customer/loan/loanHistoryList";
 	}
-	
+
 	// 대출중인 상품 목록
 	@RequestMapping("loanAccountList.do")
 	public String loanAccountList(HttpServletRequest req, Model model) {
@@ -776,12 +775,23 @@ public class CustomerController {
 		return "customer/loan/loanPrincipalList";
 	}
 	
-	// 대출 상환 상세
+	// 대출 상환 예정표 
 	@RequestMapping("loanPrincipalRateList.do")
 	public String loanPrincipalRateList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanPrincipalRateList]");
 		service.loanPrincipalRateList(req, model);
 		return "customer/loan/loanPrincipalRateList";
+	}
+	 
+	// 나의 대출 상환 내역 상세 (진지현)
+	@RequestMapping("myLoanList.do")
+	public String myLoanList(HttpServletRequest req, Model model) {
+		logger.info("[url => myLoanList]");
+		
+		service.myLoanList(req, model);
+		System.out.println("wow");
+		
+		return "customer/loan/myLoanList";
 	}
 
 	// 대출 원금 상세

@@ -617,21 +617,28 @@
     
     <!-- 대출 상환 목록 -->
 	<select id="getLoanHistoryList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanHistoryVO">
-   		<![CDATA[
-	    	SELECT * 
-			  FROM (SELECT loan_history_id
-			  			   , loan_id
-			  			   , transfer_id
-			  			   , loan_history_date
-			  			   , loan_history_state
-			  			   , loan_history_amount
-			  		       , rowNum rNum  
-					  FROM (SELECT * 
-					          FROM loan_history
-					         WHERE member_id = #{member_id}
-					         ORDER BY loan_history_id DESC
-					       ) 
-				   )
+	<![CDATA[
+		SELECT * 
+		  FROM (SELECT 
+		              member_id,
+		              loan_history_id,
+		              loan_id, 
+		              transfer_id, 
+		              loan_history_date,
+		              loan_history_state,
+		              loan_history_amount,
+		              loan_history_tranAmount,
+		              LOAN_HISTORY_TRANINTEREST, 
+		              rowNum rNum
+		          FROM (
+		            SELECT l.member_id, h.loan_history_id, h.loan_id, h.transfer_id, h.loan_history_date, h.loan_history_state, h.loan_history_amount, h.loan_history_tranAmount, h.loan_history_tranInterest, rowNum rNum
+		             FROM loan l
+		             JOIN loan_history h
+		               ON l.loan_id = h.loan_id
+		            WHERE l.member_id = #{member_id}
+		          ORDER BY loan_history_id DESC
+		          )
+		       )
 			 WHERE rNum >= #{start} 
 			   AND rNum <= #{end}
 		]]>
@@ -640,9 +647,52 @@
     
 	<!-- 대출 가입 개수 -->
 	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM loan_history WHERE member_id = #{member_id}
+		SELECT COUNT(*) AS cnt
+		  FROM loan l 
+		  JOIN loan_history h
+		    ON l.loan_id = h.loan_id
+		 WHERE l.member_id = #{member_id}
 	</select>
 	
+	<!-- 대출번호 별 나의 대출 상환내역 불러오기  - 개수(진지현) -->
+	<select id="getLoanPayCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(*) AS cnt
+		  FROM loan l 
+		  JOIN loan_history h
+		    ON l.loan_id = h.loan_id
+		 WHERE l.member_id = #{member_id}
+		   AND l.loan_id = #{loan_id}
+	</select>
+	
+	<!-- 대출번호 별 나의 대출 상환내역 불러오기  - 리스트(진지현) -->
+	<select id="getLoanPayList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanHistoryVO">
+	<![CDATA[
+		SELECT *
+		  FROM (SELECT 
+		              member_id,
+		              loan_history_id,
+		              loan_id, 
+		              transfer_id, 
+		              loan_history_date,
+		              loan_history_state,
+		              loan_history_amount,
+		              loan_history_tranAmount,
+		              loan_history_tranInterest, 
+		              rowNum rNum
+		          FROM (
+		            SELECT l.member_id, h.loan_history_id, h.loan_id, h.transfer_id, h.loan_history_date, h.loan_history_state, h.loan_history_amount, h.loan_history_tranAmount, h.loan_history_tranInterest, rowNum rNum
+		             FROM loan l
+		             JOIN loan_history h
+		               ON l.loan_id = h.loan_id
+		            WHERE l.member_id = #{member_id}
+		             AND l.loan_id = #{loan_id}
+		          ORDER BY loan_history_id DESC
+		          )
+		       )
+			 WHERE rNum >= #{start} 
+			   AND rNum <= #{end}
+		]]>
+	</select>
     <!-- 신규대출 등록 -->
     <insert id="newLoanSignAction" parameterType="com.spring.bank.user.vo.LoanVO">
 	    INSERT INTO loan(loan_id

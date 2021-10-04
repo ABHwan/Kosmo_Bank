@@ -145,7 +145,8 @@
 															</details>
 														</td> --%>
 														<td>
-															<button type="button" class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalRateList.do?loan_id=${l.loan_id}'">상환표</button>
+															<button type="button" class="btn btn-primary btn-xs" onclick="window.location='loanPrincipalRateList.do?loan_id=${l.loan_id}'">상환 예정표</button>
+															<button type="button" class="btn btn-primary btn-xs" onclick="window.location='myLoanList.do?loan_id=${l.loan_id}'">상환 내역 확인</button>
 														</td>
 													</tr>
 												</c:forEach>

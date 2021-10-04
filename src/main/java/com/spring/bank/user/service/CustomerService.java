@@ -173,4 +173,10 @@ public interface CustomerService {
 	// 공지사항상세페이지(민재)
 	public void noticeDetailAction(HttpServletRequest req, Model model);
 	
+	// 보험 납입 내역 (지현)
+	public void loanHistoryList(HttpServletRequest req, Model model);
+	
+	// 나의 보험 상환 내역_loan_id별  (지현)
+	public void myLoanList(HttpServletRequest req, Model model);
+	
 }

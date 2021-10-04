@@ -252,6 +252,12 @@ public interface CustomerDAO {
 	public int newLoanSignAction(LoanVO loan);
 
 	public LoanVO getLoanInfo(Map<String, Object> map);
+	
+	// 대출번호 별 나의 대출 상환내역 불러오기  - 개수(진지현)
+	public int getLoanPayCnt(Map<String, Object> map);
+	
+	// 대출번호 별 나의 대출 상환내역 불러오기  - 리스트(진지현)
+	public ArrayList<LoanHistoryVO> getLoanPayList(Map<String, Object> map);
 
 	// 회원이름 불러오기(민재)
 	public String getName(String strId);

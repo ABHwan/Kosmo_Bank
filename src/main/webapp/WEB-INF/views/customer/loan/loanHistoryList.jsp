@@ -59,11 +59,13 @@
 											<thead>
 												<tr>
 													<th scope="col">대출상환번호</th>
-													<th scope="col">대출번호(조인해서 정보끌어와야함 ㅅㅈㅈ)</th>
+													<th scope="col">대출번호</th>
 													<th scope="col">이체번호</th>
 													<th scope="col">대출상환일자</th>
 													<th scope="col">대출상환종류</th>
 													<th scope="col">대출상환금액</th>
+													<th scope="col">납입 원금</th>
+													<th scope="col">납입 이자</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -75,6 +77,8 @@
 														<td>${l.loan_history_date}</td>
 														<td>${l.loan_history_state}</td>
 														<td>${l.loan_history_amount}</td>
+														<td>${l.loan_history_tranAmount}</td>
+														<td>${l.loan_history_tranInterest}</td>
 													</tr>
 												</c:forEach>
 												<c:if test="${cnt == 0}">

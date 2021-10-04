@@ -470,6 +470,17 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).getAccountBookReport(member_id);
 	}
 	
+	// 대출번호 별 나의 대출 상환내역 불러오기  - 개수(진지현)
+	@Override
+	public int getLoanPayCnt(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).getLoanPayCnt(map);
+	}
+	
+	// 대출번호 별 나의 대출 상환내역 불러오기  - 리스트(진지현)
+	@Override
+	public ArrayList<LoanHistoryVO> getLoanPayList(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).getLoanPayList(map);
+	}
 	//지은~!~!@@@@!
 
 	// 대출 가입 상품
@@ -492,12 +503,14 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return dao.getLoanCancelList(map);
 	}
 
+	@Override
 	public int getLoanCnt(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanCnt()]");
 		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
 		return dao.getLoanCnt(map);
 	}
 
+	@Override
 	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanList()]");
 		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
@@ -536,6 +549,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return dao.getLoanProductInfo(loan_product_name);	
 	}
 
+	@Override
 	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map) {
 		System.out.println("[UserDAO => getLoanHistoryList()]");
 		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
@@ -544,8 +558,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	public int getLoanHistoryCnt(String member_id) {
 		System.out.println("[UserDAO => getLoanHistoryCnt()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.getLoanHistoryCnt(member_id);	
+		return sqlSession.getMapper(CustomerDAO.class).getLoanHistoryCnt(member_id);
+//		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+//		return dao.getLoanHistoryCnt(member_id);	
 	}
 
 	public ArrayList<AccountVO_old> loanAccountInfo(String member_id) {
