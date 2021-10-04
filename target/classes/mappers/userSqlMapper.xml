@@ -629,4 +629,14 @@
     	SELECT * FROM NOTICE WHERE notice_num = #{notice_num}
     </select>
     
+    <!-- 펀드리스트(민재) -->
+    <select id="fundList" parameterType="String" resultType="com.spring.bank.product.vo.FundProductVO">
+    	SELECT f.fund_title AS "fund_title", i.fund_my_account AS "fund_my_account", f.fund_account AS "fund_account",
+    		   i.fund_amount AS "fund_amount", i.fund_money AS "fund_money", f.fund_goal_money AS "fund_goal_money",
+    		   f.fund_end_date AS "fund_end_date", f.fund_id AS "fund_id", m.member_id AS "member_id", f.fund_current_money AS "fund_current_money"
+    	  FROM FUND f JOIN FUND_INVESTOR i ON f.fund_id = i.fund_id
+    	  			  JOIN MEMBERS m ON m.member_id = i.member_id
+    	  			  JOIN ACCOUNT a ON m.unique_key = a.unique_key
+    	 WHERE m.member_id = #{member_id}
+    </select>
 </mapper>

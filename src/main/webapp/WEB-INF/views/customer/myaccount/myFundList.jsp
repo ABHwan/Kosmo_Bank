@@ -48,7 +48,7 @@
 				 	<br>
 				</div>
 			<div class="card-header">
-				<h4 class="card-title">나의 예금상품</h4>
+				<h4 class="card-title">나의 펀드상품</h4>
 			</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -60,76 +60,54 @@
 										${boardName}상품이름
 									</th>
 									<th>
-										${boardName}계좌번호
+										내 계좌번호
 									</th>
 									<th>
-										${boardName}은행명
+										${boardName}&nbsp;계좌번호
 									</th>
 									<th>
-										${boardName}가입날짜
+										${boardName}&nbsp;구입 수량
 									</th>
 									<th>
-										${boardName}상태
+										${boardName}&nbsp;구입 금액
 									</th>
 									<th>
-										${boardName}금리
+										${boardName}&nbsp;현재 상태
 									</th>
 									<th>
-										${boardName}금액
+										${boardName}&nbsp;목표 금액
 									</th>
 									<th>
-										${boardName}만기일
+										${boardName}&nbsp;종료일
 									</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="vo" items="${list}">
-								<tr>
-									<td>
-										${vo.irp_product_name}
-									</td>
+									<tr>
 										<td>
-											${vo.account_id}
+											${vo.fund_title}
 										</td>
 										<td>
-										<!-- 로고처리할까? 
-											-->
-											<c:if test="${vo.irp_product_bankCode == 0}">
-												<c:out value="미기재"/>
-											</c:if>
-											<c:if test="${vo.irp_product_bankCode == 1}">
-												<c:out value="국민은행"/>
-											</c:if>
-											<c:if test="${vo.irp_product_bankCode == 2}">
-												<c:out value="우리은행"/>
-											</c:if>
-											<c:if test="${vo.irp_product_bankCode == 3}">
-												<c:out value="농협은행"/>
-											</c:if>
-											<c:if test="${vo.irp_product_bankCode == 4}">
-												<c:out value="신한은행"/>
-											</c:if>
-											<c:if test="${vo.irp_product_bankCode == 5}">
-												<c:out value="하나은행"/>
-											</c:if>
-											<c:if test="${vo.irp_product_bankCode == 6}">
-												<c:out value="코스모뱅크"/>
-											</c:if>
+											${vo.fund_my_account}
 										</td>
 										<td>
-											<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.irp_joinDate}"/>
+											${vo.fund_account}
 										</td>
 										<td>
-											${vo.irp_state}
+											${vo.fund_amount}
 										</td>
 										<td>
-											${vo.irp_rate}
+											${vo.fund_money}
 										</td>
 										<td>
-											${vo.irp_balance}
+											${vo.fund_current_money / vo.fund_goal_money * 100}%
 										</td>
 										<td>
-											<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.irp_endDate}"/>
+											${vo.fund_goal_money}
+										</td>
+										<td>
+											<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.fund_end_date}"/>
 										</td> 
 									</tr>
 								</c:forEach>
@@ -137,7 +115,7 @@
 						</table>
 						</c:if>
 						<c:if test="${cnt == 0}">
-							<c:out value="해당 은행에 계좌가 없습니다."></c:out>
+							<c:out value="해당 상품이 없습니다."></c:out>
 						</c:if>
 					</div>
 				</div>

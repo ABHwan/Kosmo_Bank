@@ -143,4 +143,6 @@ public interface CustomerService {
 	// 공지사항상세페이지(민재)
 	public void noticeDetailAction(HttpServletRequest req, Model model);
 	
+	// 펀드리스트(민재)
+	public void myFundList(HttpServletRequest req, Model model);
 }

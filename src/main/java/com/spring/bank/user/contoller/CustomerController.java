@@ -887,4 +887,16 @@ public class CustomerController {
 		
 		return "redirect:accountBook";
 	}
+	
+	// 펀드리스트(민재)
+	@RequestMapping("fund.do")
+	public String fund(HttpServletRequest req, Model model) {
+		
+		logger.info("[url ==> /fund.us]");
+		
+		service.myFundList(req, model);
+		
+		// 이동할 페이지
+		return "customer/myaccount/myFundList";
+	} 
 }

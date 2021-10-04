@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -511,5 +512,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeDetail", notice_num);
 		
+	}
+	
+	// 펀드리스트 불러오기(민재)
+	public List<FundProductVO> fundList(String member_id){
+		
+		return sqlSession.selectList("com.spring.bank.user.dao.CustomerDAO.fundList", member_id);
 	}
 }

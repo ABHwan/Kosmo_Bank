@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 
 import com.spring.bank.customer.encrypt.UserAuthenticationService;
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
 import com.spring.bank.user.vo.AccountBookVO;
@@ -2437,4 +2438,33 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("number", number);
 	}
 	
+	// 펀드 리스트(민재)
+	@Override
+	public void myFundList(HttpServletRequest req, Model model) {
+		System.out.println("[보유상품목록 => 펀드화면]");
+		
+		String strId = (String) req.getSession().getAttribute("customerID");
+		// strId = "kim";
+		System.out.println("strId : " + strId);
+		
+		// 회원 이름 가져오기
+		String member_name = dao.getName(strId);
+		System.out.println("member_name : " + member_name);
+		
+		req.setAttribute("member_name", member_name);
+		req.setAttribute("boardName", "펀드");
+		
+		List<FundProductVO> list = null;
+		
+		// 리스트 가져오기
+		list = dao.fundList(strId);
+		
+		int cnt = list.size();
+		System.out.println("cnt : " + cnt);
+		System.out.println("list : " + list);
+		System.out.println("서브리스트");
+		req.setAttribute("boardName", "펀드");
+		req.setAttribute("list", list);
+		req.setAttribute("cnt", cnt);
+	} 
 }
