@@ -21,6 +21,14 @@
 				</div>
 			</header>
 			
+			<!-- 로그인 세션이 존재할 시 index로 이동 -->
+			<c:if test="${sessionScope.customerID != null || sessionScope.adminID != null }">
+				<script>
+					window.location="index.do";
+				</script>
+			</c:if>
+			<!-- 로그인 세션이 존재할 시 index로 이동 -->
+			
 			<%
 				//쿠키가져오기
 				Cookie[] cookies = request.getCookies();

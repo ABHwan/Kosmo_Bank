@@ -12,7 +12,7 @@
 <!-- 글쓰기 실패 -->
 <c:if test="${deleteCnt == 0}">
 	<script type="text/javascript">
-		alert("공지사항 삭제실패");
+		alert("공지사항 삭제실패 - 비밀번호 오류");
 		window.history.go(-1);
 	</script>
 </c:if>

@@ -86,7 +86,7 @@
 				${vo.deposit_balance}
 			</td>
 			<td>
-				${vo.deposit_endDate}
+				<fmt:formatDate value="${vo.deposit_endDate}"/>
 			</td>
 		</tr>
 

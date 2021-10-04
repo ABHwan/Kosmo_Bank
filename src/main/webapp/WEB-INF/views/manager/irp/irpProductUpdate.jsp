@@ -33,74 +33,75 @@
 					</div>
 				</div>
 				
-				<main id="main">
-			      <div class="container">
-			        <h1 class="title">예금상품 수정</h1>
+				<main id="main"  align="center">
+			      <div class="main__container" style="width: 95%;">
+			        <h1 class="title"></h1>
 			        <div class="row">
 						<div class="col">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-title">${vo.irp_product_name}</div>
+									<div class="card-title">
+									<strong>${vo.irp_product_name}</strong></div>
 								</div>
 								<div class="card-body">
-			        <form action="irpProductUpdateAction" method="post" name="irpProductUpdateForm" class="main__form">
+			        <form action="irpProductUpdateAction" method="post" name="irpProductUpdateForm" class="main__form" onsubmit="return irpProductInsertCheck()">
 			        <sec:csrfInput/>
 			          <input type="hidden" name="pageNum" value="${pageNum}">
 			          <input type="hidden" name="irp_product_name" value="${vo.irp_product_name}">
-			          	<table>
-							<tr class="form__row">
+			          	<table class="table table-bordered">
+							<tr>
 								<th>연금상품이름</th>
 								<td>
-									${vo.irp_product_name}
+								<input class="form-control form-control-sm" type="text" style="width: 50%;"  name="irp_product_name" value="${vo.irp_product_name}">
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>연금상품 한줄요약</th>
 								<td>
-									<input class="input" type="text" name="irp_product_summary" value="${vo.irp_product_summary}">
+									<input class="form-control form-control-sm" type="text" style="width: 50%;"  name="irp_product_summary" value="${vo.irp_product_summary}">
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>금리(%)</th>
 								<td>
-									<input class="input" type="text" name="irp_product_interRate" value="${vo.irp_product_interRate}">
+									<input class="form-control form-control-sm" type="text" style="width: 50%;" name="irp_product_interRate" value="${vo.irp_product_interRate}">
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>연금 납입(가입) 기간</th>
 								<td>
-									<input class="input" type="text" name="irp_product_expiryTerm" value="${vo.irp_product_expiryTerm}">
+									<input class="form-control form-control-sm" type="text" style="width: 50%;" name="irp_product_expiryTerm" value="${vo.irp_product_expiryTerm}">
 								</td>
 							</tr>
 							
-							<tr class="form__row">
-								<th>예금설명</th>
+							<tr>
+								<th>연금설명</th>
 								<td>
-									<textarea type="text" name="irp_product_explanation">${vo.irp_product_explanation}</textarea>
+									<textarea class="form-control" name="irp_product_explanation">${vo.irp_product_explanation}</textarea>
 								</td>
 							</tr>
 							
-							<tr class="form__row">
-								<th>예금 금액</th>
+							<tr>
+								<th>연금 금액</th>
 								<td>
-									<input type="text" name="irp_product_money" value="${vo.irp_product_money/10000}"> </textarea>만원
+									<input class="form-control form-control-sm" type="number" min="100000" name="irp_product_money" value="${vo.irp_product_money}"> 원
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>유의사항</th>
 								<td>
-									<textarea type="text" name="irp_product_notice">${vo.irp_product_notice}</textarea>
+									<textarea  class="form-control" name="irp_product_notice">${vo.irp_product_notice}</textarea>
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>은행코드</th>
 								<td>
-									<select class="input" name="irp_product_bankCode">
+									<select  class="form-control form-control-sm" style="width: 50%;" name="irp_product_bankCode">
 										<c:choose>
 											<c:when test="${vo.irp_product_bankCode==0}">
 												<option value="0" selected>미기재</option>
@@ -175,22 +176,19 @@
 									</select>
 								</td>
 							</tr>
-							
-							<tr class="form__row submit">
-								<th colspan="2">
-									<input class="submit" type="submit" value="상품수정">
-									<input class="submit" type="reset" value="초기화">
-									<input class="submit" type="button" value="수정취소" onclick="window.history.back()">
-								</th>
-							</tr>
-					   </table>
+							 </table>
+							 
+							<div align="center">
+									<input class="btn btn-primary" type="submit" value="상품수정">
+									<input class="btn btn-primary btn-border" type="reset" value="초기화">
+								</div>
+					  
 			        </form>
 			      </div>
 			      </div>
 			      </div>
 			      </div>
 			      </div>
-			      
 			    </main>
 			</div>
 		</div>

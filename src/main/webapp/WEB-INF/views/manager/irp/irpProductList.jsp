@@ -48,7 +48,7 @@
 			<div class="content">
 				<!-- 고정헤더 -->
 				<div class="panel-header bg-primary-gradient" style="height: 300px;">
-					<div class="page-inner py-5">
+					<div class="page-inner">
 						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
 							<div>
 								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
@@ -61,24 +61,29 @@
 				</div>
 				
 				<section id="main">
-			      <div class="main__container">
+			      <div class="main__container" style="width: 95%;">
 			      <h2 class="title">연금 상품 리스트</h2>
-			       
+			        <div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header">
 					<form action="irpProductSearch" method="post" class="contents__top2" name="searchForm">
 					<sec:csrfInput/>
 			          <input type="search" name="search" placeholder="연금상품검색" />
 			          <button type="submit">
 			            <i class="fas fa-search"></i>
 			          </button>
+			          
 			        </form>
 			        
 			        <div class="contents__middle">
-			          <div>전체 연금 상품 수 ${cnt}건</div>
+			          <div>전체 연금 상품 수 ${cnt}건
+			          </div>
 			        </div>
 			        <form action="" name="IrpProductForm">
 					<sec:csrfInput/>
-			        <table class="admin__table">
-			          <tr class="table__head">
+			        <table class="display table table-striped table-hover dataTable">
+			          <tr class="sorting">
 			            <th class="zero"><input type="checkbox" id="all_check"></th>
 			            <th>번호</th>
 			            <th>상품명</th>
@@ -185,14 +190,19 @@
                            </c:if>
                            </ul>
                            <!-- paging -->
+                            
 			          </ul>
-			        </div>	
-			        
-			       <div class="contents__bottom">
-			          <div class="bottom__one">
-			           <!--  <button onclick="javascript:fn_process('1')">예금정보 수정</button> -->
-			            <button onclick="javascript:fn_process('2')">연금상품 삭제</button>
+			          <div align="right">
+			          <button class="btn btn-primary btn-border" onclick="javascript:fn_process('2')" align="right">연금상품 삭제</button>
 			          </div>
+			          <div>
+			           
+			        </div>	
+			        </div>
+			        </div>
+			        </div>
+			        </div>
+			       
 			        </div>
 			      </div>
 			    </section>

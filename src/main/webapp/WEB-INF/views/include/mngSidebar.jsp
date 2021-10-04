@@ -139,6 +139,29 @@
 								</ul>
 							</div>
 						</li>
+						
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#펀드">
+								<i class="fas fa-coins"></i>
+								<p>펀드관리</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="펀드">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="fundProductInsert">
+											<span class="sub-item"> 등록</span>
+										</a>
+									</li>
+									<li>
+										<a href="fundProductList">
+											<span class="sub-item"> 조회</span>
+										</a>
+									</li>									
+								</ul>
+							</div>
+						</li>
+						
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#irp">
 								<i class="fas fa-coins"></i>
@@ -211,11 +234,8 @@
 							<div class="collapse" id="고객">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="${mngPath}qnaList_mng">
-											<span class="sub-item">고객상담게시판(1:1)</span>
-										</a>
-										<a href="${mngPath}faq">
-											<span class="sub-item">자주묻는 질문</span>
+										<a href="http://localhost:3000/faq" onclick="window.open(this.href, '_blank', 'width=1300, height=800'); return false;">
+											<span class="sub-item">고객센터 관리</span>
 										</a>
 										<a href="${mngPath}mngNoticeList">
 											<span class="sub-item">공지사항 관리</span>
@@ -259,14 +279,12 @@
 										<a href="testAccountData">
 											<span class="sub-item">고객계좌데이터추가</span>
 										</a>
-										
 									</li>
-									
 								</ul>
 							</div>
 						</li>
 						
-						
+						</ul>
 					</div>
 				</div>
 			</div>

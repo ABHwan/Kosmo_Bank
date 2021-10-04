@@ -18,7 +18,7 @@ public class UserDeniedHandler implements AccessDeniedHandler {
 		
 		request.setAttribute("errMsg", "관리자만 접근할 수 있는 페이지입니다.");
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/account/denied.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/denied.jsp");
 		dispatcher.forward(request, response);
 		
 	}

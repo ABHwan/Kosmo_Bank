@@ -456,26 +456,3 @@ function irpProductInsertCheck() {
 	
 }
 
-//연금 상품 가입 시 체크 
-function irpJoinInCheck() {
-	var sysdate = convertDateFormat(new Date());
-	
-	if(!account_limit){
-		alert("한도를 입력해주세요");
-		return false;
-		
-	// 비밀번호
-	} else if(!document.depositProductForm.account_password.value) {
-		alert("비밀번호를 입력하세요!!");
-		document.depositProductForm.account_password.focus();
-		return false;
-		
-	// 비밀번호 확인
-	} else if(document.depositProductForm.account_password.value != document.depositProductForm.REaccount_password.value) {
-		alert("비밀번호가 일치하지않습니다!!");
-		document.depositProductForm.REaccount_password.focus();
-		return false;
-	}
-	
-}
-

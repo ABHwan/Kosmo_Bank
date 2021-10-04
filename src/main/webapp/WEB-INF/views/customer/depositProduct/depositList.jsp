@@ -20,7 +20,7 @@
 			<div class="content">
 				<!-- 고정헤더 -->
 				<div class="panel-header bg-primary-gradient" style="height: 300px;">
-					<div class="page-inner py-5">
+					<div class="page-inner">
 						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
 							<div>
 								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
@@ -33,9 +33,12 @@
 				</div>
 				
 				<section id="main">
-			      <div class="main__container">
+			      <div class="main__container" style="width: 95%;">
 			      <h2 class="title">예금 상품 리스트</h2>
-			       
+			       <div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header">
 					<form action="depositProductSearch.do" method="post" class="contents__top2" name="searchForm">
 						<sec:csrfInput/>
 			          <input type="search" name="search" placeholder="예금상품검색" />
@@ -51,8 +54,8 @@
 			        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			         <input type="hidden" name="pageNum" value="${pageNum}">
 			         <input type="hidden" name="number" value="${number}">
-			        <table class="admin__table">
-			          <tr class="table__head">
+			        <table class="display table table-striped table-hover dataTable">
+			          <tr class="sorting">
 			            <th>번호</th>
 			            <th>상품명</th>
 			            <th>상품요약</th>
@@ -66,16 +69,14 @@
 			          </tr>
 			          <c:if test="${cnt > 0}">
 			          	<c:forEach var="dto" items="${dtos}">
+			          	<input type="hidden" name="deposit_product_notice" value="${dto.deposit_product_notice}">
 				         <tr>
 				           <td>${number}
 				           		<c:set var="number" value="${number - 1}" />
 				           </td>
-				           <td>   
-                             <label for="btn btn-link" onmouseover="style='font-weight: bold;'" onmouseout="style='color:black !important; font-weight: none;'">${dto.deposit_product_name}</label> 
-                             <input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}">
-                             <input type="button" class="btn btn-link" id="btn btn-link" value="상세"
-                               onclick="window.location='depositDetail.do?pageNum=${pageNum}&number=${number}&deposit_product_name=${dto.deposit_product_name}'" style="display:none;">
-                     	  </td>
+				          <td>
+				          <a href="depositDetail.do?deposit_product_name=${dto.deposit_product_name}&pageNum=${pageNum}&number=${number + 1}">${dto.deposit_product_name}</a>
+				          </td>
 				           
 				           <td>${dto.deposit_product_summary}</td>
 				           <td>${dto.deposit_product_interRate}%</td>
@@ -129,42 +130,56 @@
 			          </c:if>
 			        </table>
 			        </form>
-			        
+			        </div>
+			       
 			        <div class="pagenation">
 			          <ul>
-			          	<!-- 게시글이 있으면 -->
-			          	<c:if test="${cnt > 0}">
-				            <li>
-					            <!-- 처음[◀◀] / 이전블록[◀] /  -->
-								<c:if test="${startPage > pageBlock}">
-									<a href="depositList"> [◀◀] </a>
-									<a href="depositList?pageNum=${startPage - pageBlock}"> [◀] </a>
-								</c:if>
-				            </li>
-				            
-				            <li>
-				              <!-- 블록내의 페이지번호 -->
-								<c:forEach var="i" begin="${startPage}" end="${endPage}">
-									<c:if test="${i == currentPage}">
-										<span><b>[${i}]</b></span>
-									</c:if>
-									
-									<c:if test="${i != currentPage}">
-										<a href="depositList?pageNum=${i}">[${i}]</a>
-									</c:if>
-								</c:forEach>
-				            </li>
-				            <li>
-					            <!-- 다음블록[▶] / 마지막▶[▶] -->
-								<c:if test="${pageCount > endPage}">
-									<a href="depositList?pageNum=${startPage + pageBlock}"> [▶] </a>
-									<a href="depositList?pageNum=${pageCount}"> [▶▶] </a>
-								</c:if>
-							</li>
-							
-				         </c:if>
-			          </ul>
-			        </div>	
+			          	   <!-- paging -->
+                           <ul class="pagination pg-primary mt-5">
+                           <c:if test="${cnt > 0}">
+                              <!-- 이전블록[«] -->
+                              <c:if test="${startPage > pageBlock}">
+                                 <li class="page-item">
+                                    <a class="page-link" href="loanProductList?pageNum=${startPage - pageBlock}" aria-label="Previous">
+                                       <span aria-hidden="true">«</span>
+                                       <span class="sr-only">Previous</span>
+                                    </a>
+                                 </li>   
+                              </c:if>
+                              
+                              <!-- 블록 내의 페이지 번호 -->
+                              <c:forEach var="i" begin="${startPage}" end="${endPage}" >
+                                 <c:if test="${i == currentPage}">
+                                    <li class="page-item active">
+                                       <a class="page-link" href="loanProductList?pageNum=${i}">${i}</a>
+                                    </li>
+                                 </c:if>
+                                 
+                                 
+                                 <c:if test="${i != currentPage}">
+                                    <li class="page-item">
+                                       <a class="page-link" href="loanProductList?pageNum=${i}">${i}</a>
+                                    </li>
+                                 </c:if>
+                              </c:forEach>
+                              
+                              <!-- 다음블록[»] -->
+                              <c:if test="${pageCount > endPage}" >
+                                 <li class="page-item">
+                                    <a class="page-link" href="loanProductList?pageNum=${startPage + pageBlock}" aria-label="Next">
+                                       <span aria-hidden="true">»</span>
+                                       <span class="sr-only">Next</span>
+                                    </a>
+                                 </li>
+                              </c:if>
+                           </c:if>
+                           </ul>
+                           <!-- paging -->
+                           </ul>
+			        </div>
+			        </div>
+			        </div>
+			        </div>
 			        
 			       
 			      </div>

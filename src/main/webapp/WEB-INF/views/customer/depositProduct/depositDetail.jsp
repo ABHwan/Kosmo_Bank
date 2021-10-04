@@ -9,8 +9,6 @@
 <title>예금 상세 보기</title>
 <!-- CSS -->
 <link rel="stylesheet" href="${rePath}css/manager/admin1.css" />
-
-
 <script>
 	var msg = "<%=request.getAttribute("msg") %>";
 	if(msg != 'null'){
@@ -42,8 +40,8 @@
 				</div>
 			
 				<section id="main">
-			      <div class="main__container">
-					<h2 class="title">예금 상품 가입하기 </h2>
+			      <div class="main__container"  style="width: 95%;">
+					<h2 class="title">예금 상품 상세보기 </h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
@@ -51,32 +49,31 @@
 									<div class="card-title">${dto.deposit_product_name}</div>
 								</div>
 								<div class="card-body">
-								 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 									 <form action="depositProductJoin" method="post" name="depositProductForm">
 									 	<sec:csrfInput/>
 								         <input type="hidden" name="pageNum" value="${pageNum}">
 								         <input type="hidden" name="number" value="${number}">
 								         <input type="hidden" name="customerID" value="${sessionScope.customerID}">
 								         <input type="hidden" name="deposit_product_summary" value="${dto.deposit_product_summary}">
-						        <table class="admin__table">
+						        <table class="table table-bordered">
 						          <tr>
-						            <th class="table__head">상품명</th>
+						            <th>상품명</th>
 						             <td>${dto.deposit_product_name} 
 						             <input type="hidden" name="deposit_product_name" class="user_check" value="${dto.deposit_product_name}">
 						             </td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">상품 설명</th>
+						            <th>상품 설명</th>
 						            <td>${dto.deposit_product_explanation}</td>
 						          </tr>
 						          <tr>
-						            <th class="table__head">금리</th>
+						            <th>금리</th>
 						              <td>${dto.deposit_product_interRate}%
 						              <input type="hidden" value ="${dto.deposit_product_interRate}" name ="deposit_product_interRate">
 						              	</td>
 						          </tr>
 						          <tr>
-						          	 <th class="table__head">종류</th>
+						          	 <th>종류</th>
 						          	 <td>
 						          	 <c:if test="${dto.deposit_product_type==1}">
 								           	복리
@@ -89,17 +86,17 @@
 						          	 </td>
 						           </tr>
 						           <tr>
-							           <th class="table__head">최소기간</th>
+							           <th>최소기간</th>
 							           <td>${dto.deposit_product_minDate}개월</td>
 						           </tr>
 						           
 						           <tr>
-						           		<th class="table__head">최대기간</th>
+						           		<th>최대기간</th>
 						           		<td>${dto.deposit_product_maxDate}개월</td>
 						           </tr>
 						           
 						           <tr>
-						           		<th class="table__head">최소금액</th>
+						           		<th>최소금액</th>
 						           		<td><fmt:formatNumber value="${dto.deposit_product_minPrice}" type="number"/>원
 						           		 <input type="hidden" value="${dto.deposit_product_minPrice }" name="deposit_product_minPrice">
 						           		</td>
@@ -107,7 +104,7 @@
 						           </tr>
 						      		
 						      		<tr>
-						      			<th class="table__head">은행코드</th>
+						      			<th>은행코드</th>
 						      			<td>
 							           		<c:choose>
 							           			<c:when test="${dto.deposit_product_bankCode==0}">
@@ -138,14 +135,21 @@
 						      		
 						      		
 						      		<tr>
-						      			 <th class="table__head">등록일</th>
+						      			 <th>등록일</th>
 						      			 <td>${dto.deposit_product_date}
+						      			 	</td>
+						      		</tr>
+						      		
+						      		<tr>
+						      			 <th>유의사항 </th>
+						      			 <td>${dto.deposit_product_notice}
+						      			 <input type="hidden" value="${dto.deposit_product_notice}" name ="deposit_product_notice">
 						      			 	</td>
 						      		</tr>
 						      		
 						        </table>
 						        <div align ="right">
-						          	<input type="submit" class="btn btn-primary btn-border" value="예금상품 신청하러 가기 ">
+						          	<input type="submit" class="btn btn-primary" value="예금상품 신청하러 가기 ">
 						          	<input type="button" class="btn btn-primary btn-border" onclick="window.history.back()" value="돌아가기">
 						        </div>
 			        </form>

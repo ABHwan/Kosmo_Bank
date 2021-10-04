@@ -110,22 +110,22 @@
 																<p>중도상환수수료 요율 : ${p.loan_product_prepaymentRate}%</p>
 															</details></td>
 														<td>
-														   <button id="proEdit" formaction="loanProductUpdate.do"
-														      class="btn btn-link btn-primary btn-lg"
-														      style="padding: 0px;" data-original-title="수정">
-														      <i class="fa fa-edit"></i>
-														   </button>
+															<button id="proEdit" formaction="loanProductUpdate.do"
+																class="btn btn-link btn-primary btn-lg"
+																style="padding: 0px;" data-original-title="수정">
+																<i class="fa fa-edit"></i>
+															</button>
 														</td>
 														<td>
-														   <button id="proRemove" formaction="loanProductDelete.do"
-														      class="btn btn-link btn-danger" style="padding: 0px;"
-														data-original-title="삭제">
-														      <i class="fa fa-times"></i>
-														   </button>
+															<button id="proRemove" formaction="loanProductDelete.do"
+																class="btn btn-link btn-danger" style="padding: 0px;"
+																data-original-title="삭제">
+																<i class="fa fa-times"></i>
+															</button>
 														</td>
 													</tr>
-															</c:forEach>
-															<c:if test="${cnt == 0}">
+												</c:forEach>
+												<c:if test="${cnt == 0}">
 													<tr>
 														<td colspan="10">대출 상품이 존재하지 않습니다.</td>
 													</tr>
@@ -187,6 +187,21 @@
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 
+<!-- 	<script type="text/javascript">
+		$("#proEdit").click(
+				function() {
+					$("#loanProductform").attr("action",
+							"/bank/manager/loanProductUpdate.do");
+					$("#loanProductform").submit();
+				});
+		$("#proRemove").click(
+				function() {
+					$("#loanProductform").attr("action",
+							"/bank/manager/loanProductDelete.do");
+					$("#loanProductform").submit();
+				});
+	</script>
+ -->
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>

@@ -10,7 +10,7 @@
 <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no'
 	name='viewport' />
 <link rel="icon" href="${rePath}images/img/icon.ico" type="image/x-icon" />
-<link rel="stylesheet" href="${rePath}css/user/qnaWrite.css">
+<%-- <link rel="stylesheet" href="${rePath}css/user/qnaWrite.css"> --%>
 <link rel="stylesheet" href="${rePath}css/bootstrap.min.css">
 <link rel="stylesheet" href="${rePath}css/atlantis.min.css">
 <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -37,20 +37,36 @@
 </head>
 <body>
 	<div class="wrapper">
-		<div class="main-header">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-				<div class="page-inner">
-
-					<h4>문의 사항</h4>
+				<!-- 고정헤더 -->
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner py-5">
+						<div
+							class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1>
+								<br />
+								<h2 class="text-white op-7 mb-2">
+									KOSMO BANK에 오신 것을 환영합니다.<br /> 저희는 고객님의 <strong>자산관리</strong>를
+									효율적이고, 안전하게 도와드립니다. </br> 또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게
+									통합하여 금융상품을 이용하실 수 있습니다.
+								</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+			<section id="main">
+					<div class="main__container"  style="width: 95%;">
+					<h2 class="title">문의 상세 보기</h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-title">1:1 질문</div>
+									<div class="card-title"></div>
 								</div>
 								<div class="card-body">
 									<form action="qnaModifyCheck" align="center"
@@ -63,31 +79,42 @@
 											type="hidden" name="inquiry_id" id="inquiry_id"
 											value="${dto.inquiry_id}">
 										<div class="qna_div">
-											<table class="qna_table" align="center">
+											<table class="table table-bordered">
 												<tr>
 													<th><label for="inquiry_title">문의 제목</label></th>
-													<td><input type="text" id="inquiry_title"
-														value="${dto.inquiry_title}" readonly></td>
+													<td>${dto.inquiry_title}</td>
 												</tr>
 
 												<tr>
 													<th><label for="member_id">작성자</label></th>
-													<td><input type="text" id="member_id"
-														value="${dto.member_id}" readonly></td>
+													<td>${dto.member_id}</td>
 												</tr>
 												<tr>
 													<th><label for="inquiry_content">문의 내용</label></th>
-													<td><input type="text" id="inquiry_title"
-														value="${dto.inquiry_content}" readonly></td>
+													<td>${dto.inquiry_content}</td>
 												</tr>
-
+												<tr>
+													<th>문의 답변</th>
+														<td>
+															<c:if test="${dto.inquiry_answer == null }">
+															   답변대기중입니다
+															</c:if>
+															<c:if test="${dto.inquiry_answer != null }">
+															${dto.inquiry_answer}
+															</c:if>
+														</td>
+												<tr>
 												<tr>
 													<td colspan="2"><br>
 														<div class="complete_cancel" align="center">
-															<input type="submit" value="수정하기"> <input
-																type="button"
-																onclick="window.location='qnaList?pageNum=${pageNum}'"
-																value="목록">
+														<c:if test="${dto.member_id == sessionScope.customerID}">
+															<input type="submit"  class="btn btn-primary" value="수정하기">
+															<input type="button" class="btn btn-primary btn-border" onclick="window.location='qnaList?pageNum=${pageNum}'" value="목록">
+														</c:if>
+														<c:if test="${dto.member_id != sessionScope.customerID}">
+															<input type="button" class="btn btn-primary btn-border" onclick="window.location='qnaList?pageNum=${pageNum}'" value="목록">
+														</c:if>
+															 
 														</div></td>
 												</tr>
 

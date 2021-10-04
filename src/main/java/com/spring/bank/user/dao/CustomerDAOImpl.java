@@ -9,15 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
+import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
+import com.spring.bank.user.vo.IrpVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.MyDepositVO;
 import com.spring.bank.user.vo.MyIRPVO;
 import com.spring.bank.user.vo.MySavingVO;
@@ -197,13 +201,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).getDepositList(map);
 	}
 
-	// 관리자 페이지 예금 상품 수(검색결과수)
+	//  예금 상품 수(검색결과수)
 	@Override
 	public int getDepositProductSearchCnt(String search) {
 		return sqlSession.getMapper(CustomerDAO.class).getDepositProductSearchCnt(search);
 	}
 
-	// 관리자 페이지 예금 상품 검색(입력받아서 검색)
+	//예금 상품 검색(입력받아서 검색)
 	@Override
 	public ArrayList<DepositProductVO> searchDepositProduct(Map<String, Object> map) {
 		return sqlSession.getMapper(CustomerDAO.class).searchDepositProduct(map);
@@ -265,13 +269,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).getSavingList(map);
 	}
 	
-	// 관리자 페이지 적금 상품 수(검색결과수)
+	// 적금 상품 수(검색결과수)
 	@Override
 	public int getSavingProductSearchCnt(String search) {
 		return sqlSession.getMapper(CustomerDAO.class).getSavingProductSearchCnt(search);
 	}
 	
-	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	// 적금 상품 검색(입력받아서 검색)
 	@Override
 	public ArrayList<SavingProductVO> searchSavingProduct(Map<String, Object> map){
 		return sqlSession.getMapper(CustomerDAO.class).searchSavingProduct(map);
@@ -280,8 +284,53 @@ public class CustomerDAOImpl implements CustomerDAO {
 	// 적금 상품 상세 보기
 	@Override
 	public SavingProductVO getSavingDetail(String saving_product_name) {
-
+		
 		return sqlSession.getMapper(CustomerDAO.class).getSavingDetail(saving_product_name);
+	}
+
+	// 적금 신청
+	@Override
+	public int savingProductAction(SavingProductVO vo) {
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.savingProductAction",vo);
+	}
+	
+	// 펀드 상품 갯수
+	@Override
+	public int getFundCnt(){
+		
+		return sqlSession.getMapper(CustomerDAO.class).getFundCnt();
+	}		
+	
+	// 적금 상품 조회
+	@Override
+	public List<FundProductVO> getFundList(Map<String, Integer> map){
+		
+		return sqlSession.getMapper(CustomerDAO.class).getFundList(map);
+	}
+	
+	// 관리자 페이지 적금 상품 수(검색결과수)
+	@Override
+	public int getFundProductSearchCnt(String search) {
+		return sqlSession.getMapper(CustomerDAO.class).getFundProductSearchCnt(search);
+	}
+	
+	// 관리자 페이지 적금 상품 검색(입력받아서 검색)
+	@Override
+	public ArrayList<FundProductVO> searchFundProduct(Map<String, Object> map){
+		return sqlSession.getMapper(CustomerDAO.class).searchFundProduct(map);
+	}
+	
+	// 펀드 상품 상세 보기
+	@Override
+	public FundProductVO getFundDetail(String fund_title) {
+		
+		return sqlSession.getMapper(CustomerDAO.class).getFundDetail(fund_title);
+	}
+
+	// 펀드 신청
+	@Override
+	public int fundProductAction(FundProductVO vo) {
+		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.savingProductAction",vo);
 	}
 	 
 	//멤버의 unique_key가져오기 
@@ -303,6 +352,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public int insertDeposit(DepositVO vo) {
 		
 		return sqlSession.getMapper(CustomerDAO.class).insertDeposit(vo);
+	}
+	
+	//연금 신청 처리 insert
+	@Override
+	public int insertIrp(IrpVO vo) {
+		
+		return sqlSession.getMapper(CustomerDAO.class).insertIrp(vo);
 	}
 	
 	// 환율 저장 후 출력
@@ -415,69 +471,101 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 	
 	//지은~!~!@@@@!
+
 	// 대출 가입 상품
 	@Override
 	public ArrayList<LoanProductVO> loanList() {
 		System.out.println("[DAO => loanList()]");
-		return sqlSession.getMapper(CustomerDAO.class).loanList();
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.loanList();
 	}
 
 	public int getLoanCancelCnt(String member_id) {
 		System.out.println("[DAO => getLoanCancelCnt()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanCancelCnt(member_id);
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanCancelCnt(member_id);
 	}
 
-	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map) {
+	public ArrayList<LoanVO> getLoanCancelList(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanCancelList()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanCancelList(map);
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanCancelList(map);
 	}
 
-	public int getLoanCnt(String member_id) {
+	public int getLoanCnt(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanCnt()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanCnt(member_id);
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanCnt(map);
 	}
 
 	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map) {
 		System.out.println("[DAO => getLoanList()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanList(map);
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanList(map);
 	}
 	
 	// 대출 상품 개수
 	public int getLoanProductCnt() {
 		System.out.println("[UserDAO => getLoanProductCnt()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanProductCnt();	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanProductCnt();	
 	}
 
 	// 대출 상품 목록
 	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map) {
 		System.out.println("[UserDAO => getLoanProductList()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanProductList(map);	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanProductList(map);	
 	}
 
 	public int getSearchLoanProductCnt(String keyword) {
 		System.out.println("[UserDAO => getSearchLoanProductCnt()]");
-		return sqlSession.getMapper(CustomerDAO.class).getSearchLoanProductCnt(keyword);	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getSearchLoanProductCnt(keyword);	
 	}
 
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map) { // parameter : keyword, start, end
 		System.out.println("[UserDAO => searchLoanProductList()]");
-		return sqlSession.getMapper(CustomerDAO.class).searchLoanProductList(map);	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.searchLoanProductList(map);	
 	}
 
 	public LoanProductVO getLoanProductInfo(String loan_product_name) {
 		System.out.println("[UserDAO => getLoanProductInfo()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanProductInfo(loan_product_name);	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanProductInfo(loan_product_name);	
 	}
 
 	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map) {
 		System.out.println("[UserDAO => getLoanHistoryList()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanHistoryList(map);	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanHistoryList(map);	
 	}
 
 	public int getLoanHistoryCnt(String member_id) {
 		System.out.println("[UserDAO => getLoanHistoryCnt()]");
-		return sqlSession.getMapper(CustomerDAO.class).getLoanHistoryCnt(member_id);	
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanHistoryCnt(member_id);	
 	}
+
+	public ArrayList<AccountVO_old> loanAccountInfo(String member_id) {
+		System.out.println("[UserDAO => loanAccountInfo()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.loanAccountInfo(member_id);	
+	}
+
+	public int newLoanSignAction(LoanVO loan) {
+		System.out.println("[UserDAO => newLoanSignAction()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.newLoanSignAction(loan);	
+	}
+
+	public LoanVO getLoanInfo(Map<String, Object> map) {
+		System.out.println("[UserDAO => getLoanInfo()]");
+		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
+		return dao.getLoanInfo(map);	
+	}
+	
 	//지은!!!!!!!!1
 	
 	// 회원 이름 불러오기(민재) 
@@ -548,4 +636,38 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.selectOne("com.spring.bank.user.dao.CustomerDAO.getNoticeDetail", notice_num);
 		
 	}
+	
+	// 대표 계좌 불러오기
+	@Override
+	public AccountVO getAccountDefault(String unique_key) {
+		System.out.println("DAO - 대표계좌불러오기");
+		
+		return sqlSession.getMapper(CustomerDAO.class).getAccountDefault(unique_key);
+	}
+
+	// 계좌 불러오기(연동 O)
+	@Override
+	public List<AccountVO> getAccountLinked(String unique_key) {
+		System.out.println("DAO - 연동계좌불러오기");
+		return sqlSession.getMapper(CustomerDAO.class).getAccountLinked(unique_key);
+	}
+
+	// 계좌 불러오기(연동 X)
+	@Override
+	public List<AccountVO> getAccountUnLinked(String unique_key) {
+		System.out.println("DAO - 비연동계좌불러오기");
+		return sqlSession.getMapper(CustomerDAO.class).getAccountUnLinked(unique_key);
+	}
+
+	@Override
+	public int accountLinkAction(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).accountLinkAction(map);
+	}
+
+	@Override
+	public int accountUnLinkAction(Map<String, Object> map) {
+		return sqlSession.getMapper(CustomerDAO.class).accountUnLinkAction(map);
+	}
+
+	
 }

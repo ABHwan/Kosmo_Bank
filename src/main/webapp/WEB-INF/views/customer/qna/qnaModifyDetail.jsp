@@ -38,16 +38,33 @@
 <link rel="stylesheet" href="${rePath}css/demo.css">
 </head>
 <body>
-	<div class="wrapper">
-		<div class="main-header">
-			<jsp:include page="/WEB-INF/views/include/header.jsp" />
-			<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
-			<!-- 메인 폼-->
-			<div class="main-panel">
-				<div class="content">
-					<div class="page-inner">
-						<div class="qna_container">
-							<h2>문의사항 수정</h2>
+<div class="wrapper">
+
+	<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
+	<!-- 메인 폼-->
+	<div class="main-panel">
+		<div class="content">
+				<!-- 고정헤더 -->
+			<div class="panel-header bg-primary-gradient" style="height: 300px;">
+				<div class="page-inner py-5">
+					<div
+						class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+						<div>
+							<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1>
+							<br />
+							<h2 class="text-white op-7 mb-2">
+								KOSMO BANK에 오신 것을 환영합니다.<br /> 저희는 고객님의 <strong>자산관리</strong>를
+								효율적이고, 안전하게 도와드립니다. <br /> 또한 <strong>오픈뱅킹</strong> 서비스를 활용하여
+								보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.
+							</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+				<main id="main" align="center">
+				<div class="main__container" style="width: 95%;">
+					<h1 class="title">문의사항 수정</h1>
 							<div class="row">
 								<div class="col">
 									<div class="card">
@@ -65,35 +82,35 @@
 														name="customerID"> <input type="hidden"
 														value="${pageNum}" name="pageNum">
 													<div class="common-info-line">
-														<table class="qna_table" align="center">
+														<table class="table table-bordered" align="center">
 															<tr>
 																<th><label for="inquiry_title">문의 제목</label></th>
-																<td><input type="text" name="inquiry_title"
+																<td><input type="text" class="form-control form-control-sm" name="inquiry_title"
 																	id="inquiry_title" value="${dto.inquiry_title}"></td>
 															</tr>
 
 															<tr>
 																<th><label for="member_id">작성자</label></th>
-																<td><input type="text" id="member_id"
+																<td><input type="text" class="form-control form-control-sm" 
 																	value="${dto.member_id}" readonly></td>
 															</tr>
 
 															<tr>
 																<th><label for="inquiry_content">문의 내용</label></th>
-																<td><input type="text" name="inquiry_content"
-																	id="inquiry_title" value="${dto.inquiry_content}"></td>
+																<td>
+																<textarea class="form-control" name="inquiry_content" placeholder="${dto.inquiry_content}"></textarea>
 															</tr>
 
 
 															<tr>
 																<td colspan="3"><br>
 																	<div class="complete_cancel" align="center">
-																		<input type="submit" value="수정"> <input
-																			type="button"
+																		<input type="submit" class="btn btn-primary" value="수정"> <input
+																			type="button" class="btn btn-primary btn-border" 
 																			onclick="window.location='qnaDeleteAction?pageNum=${pageNum}&inquiry_id=${inquiry_id}'"
 																			value="삭제"> <input type="button"
 																			onclick="window.location='qnaList?pageNum=${pageNum}'"
-																			value="목록">
+																			value="목록" class="btn btn-primary btn-border" >
 																	</div></td>
 															</tr>
 
@@ -104,13 +121,13 @@
 										</div>
 									</div>
 								</div>
+								
 							</div>
 						</div>
+						</main>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

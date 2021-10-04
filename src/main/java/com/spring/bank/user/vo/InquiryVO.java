@@ -11,7 +11,7 @@ public class InquiryVO {
     private int inquiry_ref;			//답글 여부	
     private Date inquiry_regDate;	 	//작성일	
     private String inquiry_password;	//비밀번호	
-	
+	private String inquiry_answer;		//답변
     
     public int getInquiry_id() {
 		return inquiry_id;
@@ -54,6 +54,12 @@ public class InquiryVO {
 	}
 	public void setInquiry_password(String inquiry_password) {
 		this.inquiry_password = inquiry_password;
+	}
+	public String getInquiry_answer() {
+		return inquiry_answer;
+	}
+	public void setInquiry_answer(String inquiry_answer) {
+		this.inquiry_answer = inquiry_answer;
 	}
 
     

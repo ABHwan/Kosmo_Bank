@@ -12,6 +12,7 @@
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/header.jsp" />
 		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />
+
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
@@ -53,7 +54,6 @@
 								</div>
 								<div class="card-body"> 
 									<form action="newLoanSign.do" method="post" id="newloanListform">
-										<input type="hidden" name="loan_product_name" value="" />
 										<sec:csrfInput />
 										<table class="table table-hover card-table">
 											<thead>
@@ -69,9 +69,11 @@
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach var="p" items="${loanProducts}">
+												<c:forEach var="p" items="${loanProducts}" varStatus="status">
 													<tr>
-														<td><a href="newLoanDetail.do?loan_product_name=${p.loan_product_name}">${p.loan_product_name}</a></td>
+														<td>
+															<a href="newLoanDetail.do?loan_product_name=${p.loan_product_name}">${p.loan_product_name}</a>
+														</td>
 														<td>${p.loan_product_rate}&nbsp;%</td>
 														<td><fmt:formatNumber
 																value="${p.loan_product_minPrice}" pattern="#,###.##" />&nbsp;~&nbsp;<fmt:formatNumber
@@ -110,7 +112,7 @@
 															</details>
 														</td>
 														<td>
-															<button onclick="signBtn(${p.loan_product_name});" class="btn btn-primary btn-xs">대출 신청</button>
+															<button type="button" onclick="window.location='newLoanSign.do?loan_product_name=${p.loan_product_name}'" class="btn btn-primary btn-xs">대출 신청</button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -171,14 +173,13 @@
 	</div>
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
-
+<!-- 
 	<script type="text/javascript">
-		function signBtn(name) {
-			var loan_name = document.querySelector('input[name="loan_product_name"]');
-			loan_name.value = name;
+		function signBtn(i) {
+			document.querySelector('input[name="loan_product_name"]').value = ${loanProducts[i].loan_product_name};
 		}
 	</script>
-
+ -->
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>

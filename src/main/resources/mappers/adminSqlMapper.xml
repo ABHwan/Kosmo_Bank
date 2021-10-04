@@ -155,6 +155,62 @@
 		DELETE FROM saving_product WHERE saving_product_name IN ( #{saving_product_name} )
 	</delete>
 	
+	<!-- 펀드 -->
+	<!-- 관리자 페이지 펀드 상품 등록 -->
+	<insert id="insertFundProduct" parameterType="com.spring.bank.product.vo.FundProductVO">
+		INSERT INTO fund(fund_id, fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, fund_bank_code)
+		VALUES(fund_id.nextval, #{fund_title}, #{fund_content}, #{fund_start_date}, #{fund_end_date}, #{fund_goal_money}, #{fund_category}, 0, #{fund_mem_name}, #{fund_mem_hp}, #{fund_mem_email}, #{fund_account}, #{fund_filename}, #{fund_summary}, #{fund_bank_code})
+	</insert>
+	
+	<!-- 관리자 페이지 펀드 상품 수 -->
+	<select id="getFundProductCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM fund
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 조회 -->
+	<select id="selectFundProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.FundProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, rowNum rNum 
+				FROM (SELECT * FROM fund ORDER BY fund_start_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 수(검색결과수)  -->
+	<select id="getFundProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM fund WHERE fund_title LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 검색(입력받아서 검색) -->
+	<select id="searchFundProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.FundProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT fund_title, fund_title, fund_content, fund_start_date, fund_end_date, fund_goal_money, fund_category, fund_approve, fund_mem_name, fund_mem_hp, fund_mem_email, fund_account, fund_filename, fund_summary, rowNum rNum 
+				FROM (SELECT * FROM fund WHERE fund_title LIKE '%'||#{search}||'%' ORDER BY fund_start_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 관리자 페이지 펀드 상품 상세조회 -->
+    <select id="getFundProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.FundProductVO">
+        SELECT * FROM fund WHERE fund_title=#{fund_title}
+    </select>
+   
+    <!-- 관리자 페이지 펀드 상품 수정 -->
+    <update id="updateFundProduct" parameterType="com.spring.bank.product.vo.FundProductVO">
+        UPDATE fund set fund_content=#{fund_content}, fund_start_date=#{fund_start_date}, fund_end_date=#{fund_end_date}, fund_goal_money=#{fund_goal_money}, fund_category=#{fund_category}
+        , fund_mem_name=#{fund_mem_name}, fund_mem_hp=#{fund_mem_hp}, fund_mem_email=#{fund_mem_email}, fund_account=#{fund_account}, fund_filename=#{fund_filename}, fund_summary=#{fund_summary}, fund_bank_code=#{fund_bank_code}
+         WHERE fund_title=#{fund_title}
+     </update>
+	
+	<!-- 관리자 페이지 펀드 상품 삭제 -->
+	<delete id="deleteFundProduct" parameterType="String">
+		DELETE FROM fund WHERE fund_title IN ( #{fund_title} )
+	</delete>
+		
 	<!-- 진지현 작성 -->
 	
 	<!-- 관리자 페이지 연금 상품 등록 -->
@@ -202,7 +258,7 @@
 	
 	<!-- 관리자 페이지 연금 상품 수정 -->
 	 <update id="updateIrpProduct" parameterType="com.spring.bank.product.vo.IrpProductVO">
-		UPDATE irp_product SET irp_product_summary=#{irp_product_summary}, irp_product_interRate=#{irp_product_interRate}, irp_product_expiryTerm=#{irp_product_expiryTerm}, irp_product_explanation=#{irp_product_explanation},irp_product_money=#{irp_product_money}, irp_product_notice=#{irp_product_notice}, irp_product_bankCode=#{irp_product_bankCode}
+		UPDATE irp_product SET irp_product_summary=#{irp_product_summary}, irp_product_interRate=#{irp_product_interRate}, irp_product_expiryTerm=#{irp_product_expiryTerm}, irp_product_explanation=#{irp_product_explanation}, irp_product_money=#{irp_product_money}, irp_product_notice=#{irp_product_notice}, irp_product_bankCode=#{irp_product_bankCode}
 			WHERE irp_product_name=#{irp_product_name}
 	</update> 
 	
@@ -300,11 +356,12 @@
 	
 	<!-- 관리자 TEST 계좌 생성(복환) -->
     <insert id="insertTestAccount" parameterType="com.spring.bank.user.vo.AccountVO">
-    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked)
-		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0)
+    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked, account_bankImg)
+		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0, #{account_bankImg})
     </insert>
 
-	<!-- 지은 -->
+		<!-- 지은 -->
+	
 	<!-- 대출 상품 개수 -->
 	<select id="getLoanProductCnt" resultType="int">
 		SELECT COUNT(*) FROM loan_product
@@ -620,17 +677,71 @@
 			   AND rNum <= #{end}
 		]]>
     </select>
+    
+    <!-- 대출 정보 가져오기 -->
+	<select id="getLoanInfo" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM loan
+			 WHERE loan_id = #{loan_id} 
+		]]>
+    </select>
+    
+    <!-- 대출 승인 후 대출 계좌에 대출금 이체 -->
+	<insert id="transNewLoanAccount" parameterType="com.spring.bank.user.vo.TransferVO">
+		INSERT INTO transfer(transfer_id
+		                     , account_id
+		                     , transfer_senderAccount
+		                     , transfer_money
+		                     , transfer_inOut
+		                     , transfer_inOutDate 
+		                     , transfer_inComment
+		                     , transfer_senderName
+		                     , transfer_receiverName
+		                     , transfer_bankCode
+							)
+		VALUES(transfer_seq.nextval
+		       , #{account_id}
+		       , #{account_id}
+		       , #{transfer_money}
+		       , #{transfer_inOut}
+			   , SYSDATE 
+			   , #{transfer_inComment}
+			   , #{transfer_senderName}
+			   , #{transfer_receiverName}
+			   , #{transfer_bankCode}
+			  )
+	</insert>    
+	
+    <!-- 대출 승인 후 대출 계좌에 대출금 이체 취소 -->
+	<delete id="resetNewLoanAccount" parameterType="java.util.Map">
+		DELETE transfer WHERE transfer_inComment LIKE '%'||#{transfer_inComment}||'%'
+	</delete>
+	
+	<!-- 대출 계좌 잔고에 돈 넣어주기 -->
+	<update id="setNewLoanAccount" parameterType="java.util.Map">
+		UPDATE account
+		   SET account_balance = account_balance + #{loan_amount}
+         WHERE account_id = #{account_id}
+	</update>
+	
+	
+    <!-- 회원정보 상세 페이지 -->
+    <select id="getUserInfo" parameterType="String" resultType="com.spring.bank.user.vo.UserVO">
+    	SELECT * FROM members WHERE member_id = #{member_id}
+    </select>
+    
 	<!-- 지은 -->
 	
 	<!-- 공지사항 쓰기 처리(민재) -->
 	<insert id="mngNoticeWriteAction" parameterType="com.spring.bank.user.vo.NoticeVO">
-		INSERT INTO NOTICE
-		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0, #{notice_date})
+		INSERT INTO NOTICE(NOTICE_NUM, NOTICE_WRITER, NOTICE_SUBJECT, NOTICE_PASSWORD, NOTICE_CONTENT, NOTICE_READCNT)
+		VALUES (notice_num_seq.nextval, #{notice_writer}, #{notice_subject}, #{notice_password}, #{notice_content}, 0)
 	</insert>
 	
 	<!-- 공지사항 - 비밀번호 인증(민재) -->
-	<select id="noticePWDCheck" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(*) FROM NOTICE WHERE notice_num = #{notice_num} AND notice_password = #{notice_password}
+	<select id="noticePWDCheck" parameterType="int" resultType="String">
+	   SELECT notice_password FROM NOTICE WHERE notice_num = #{notice_num}
 	</select>
 	
 	<!-- 공지사항 상세페이지(민재) -->

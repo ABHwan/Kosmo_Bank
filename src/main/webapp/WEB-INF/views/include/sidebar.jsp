@@ -18,38 +18,43 @@
 						
 						
 							<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-								<c:if test="${sessionScope.customerID != null}">
+								<c:choose>
+								<c:when test="${sessionScope.adminID != null}">
+									<span>
+										<span class="user-level">관리자</span>
+										<span class="caret"></span>
+									</span>
+								</c:when>
+								
+								<c:when test="${sessionScope.customerID != null}">
 									<span>
 										<span class="user-level">${sessionScope.customerID}</span>
 										<span class="caret"></span>
 									</span>
-								</c:if>
+								</c:when>
 								
-								<c:if test="${sessionScope.customerID == null}">
+								<c:otherwise>
 									<span>
-										<span class="user-level">사용자</span>
+										<span class="user-level">로그인</span>
 										<span class="caret"></span>
 									</span>
-								</c:if>
+								</c:otherwise>
+								</c:choose>
 							</a>
 							<div class="clearfix"></div>
 
 							<div class="collapse in" id="collapseExample">
 								<ul class="nav">
-									<c:if test="${sessionScope.customerID == null}">
+									<c:choose>
+									<c:when test="${sessionScope.adminID != null}">
 										<li>
-											<a href="${path}customer/login.do">
-												<span class="link-collapse">로그인</span>
+											<a href="${path}manager/index">
+												<span class="link-collapse">관리자 페이지</span>
 											</a>
 										</li>
-										<li>
-											<a href="${path}customer/register.do">
-												<span class="link-collapse">회원가입</span>
-											</a>
-										</li>								
-									</c:if>
+									</c:when>
 									
-									<c:if test="${sessionScope.customerID != null}">
+									<c:when test="${sessionScope.customerID != null}">
 										<!-- 로그인시 나타날 화면 -->
 	 									<li>
 											<a href="${path}customer/myPage">
@@ -66,7 +71,21 @@
 												<span class="link-collapse">나만의 가계부</span>
 											</a>
 										</li>
-									</c:if>
+									</c:when>
+									<c:otherwise>
+										<!-- 로그인 안됐을 경우 -->
+										<li>
+											<a href="${path}customer/login.do">
+												<span class="link-collapse">로그인</span>
+											</a>
+										</li>
+										<li>
+											<a href="${path}customer/register.do">
+												<span class="link-collapse">회원가입</span>
+											</a>
+										</li>	
+									</c:otherwise>
+									</c:choose>
 								</ul>
 							</div>
 						</div>
@@ -88,7 +107,7 @@
 							<div class="collapse" id="base">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="#">
+										<a href="myAccountList">
 											<span class="sub-item">계좌조회</span>
 										</a>
 									</li>
@@ -98,7 +117,7 @@
 										</a>
 									</li>									
 									<li>
-										<a href="#">
+										<a href="accountConnect">
 											<span class="sub-item">계좌연동</span>
 										</a>
 									</li>
@@ -139,24 +158,46 @@
 							</a>
 							<div class="collapse" id="forms">
 								<ul class="nav nav-collapse">
+									
 									<li>
 										<a href="savingList">
 											<span class="sub-item">적금</span>
 										</a>
 									</li>
+									
 									<li>
 										<a href="${custPath}depositList.do">
 											<span class="sub-item">예금</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
-											<span class="sub-item">대출</span>
+										<a href="${custPath}irpProductList.do">
+											<span class="sub-item">연금</span>
 										</a>
 									</li>
 									<li>
-										<a href="${custPath}irpProductList.do">
-											<span class="sub-item">연금</span>
+										<a href="fundList">
+											<span class="sub-item">펀드</span>
+										</a>
+									</li>
+									<li>
+										<a href="${custPath}saving.do">
+											<span class="sub-item">${sessionScope.customerID}님의 적금</span>
+										</a>
+									</li>
+									<li>
+										<a href="${custPath}deposit.do">
+											<span class="sub-item">${sessionScope.customerID}님의 예금</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="sub-item">${sessionScope.customerID}님의 대출</span>
+										</a>
+									</li>
+									<li>
+										<a href="${custPath}irp.do">
+											<span class="sub-item">${sessionScope.customerID}님의 연금</span>
 										</a>
 									</li>
 								</ul>
@@ -246,6 +287,47 @@
 							</div>
 						</li>
 						<li class="nav-item">
+							<a data-toggle="collapse" href="#loans">
+								<i class="fas fa-receipt"></i>
+								<p>대출</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="loans">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="loanAccountList.do">
+											<span class="sub-item">대출 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanCancelList.do">
+											<span class="sub-item">대출 해지/만기 목록</span>
+										</a>
+									</li>
+									<li>
+										<a href="loanHistoryList.do">
+											<span class="sub-item">대출 상환 목록</span>
+										</a>
+									</li>
+									<!-- <li>
+										<a href="loanDirectDebit.do">
+											<span class="sub-item">대출 자동이체</span>
+										</a>
+									</li> -->
+									<!-- <li>
+										<a href="loanPrincipalRateList.do">
+											<span class="sub-item">대출 원금/이자 조회</span>
+										</a>
+									</li> -->
+									<li>
+										<a href="newLoanList.do">
+											<span class="sub-item">신규 대출</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li class="nav-item">
 							<a data-toggle="collapse" href="#submenu">
 								<i class="fas fa-phone"></i>
 								<p>고객센터</p>
@@ -276,52 +358,29 @@
 								</ul>
 							</div>
 						</li>
+						<c:if test="${sessionScope.customerID != null }">
 						<li class="nav-item">
-							<a data-toggle="collapse" href="#loans">
+							<a data-toggle="collapse" href="#myPage">
 								<i class="fas fa-receipt"></i>
-								<p>대출</p>
+								<p>마이페이지</p>
 								<span class="caret"></span>
 							</a>
-							<div class="collapse" id="loans">
+							<div class="collapse" id="myPage">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="loanAccountList.do">
-											<span class="sub-item">대출 목록</span>
+										<a href="#">
+											<span class="sub-item">기본 정보</span>
 										</a>
 									</li>
 									<li>
-										<a href="loanCancelList.do">
-											<span class="sub-item">대출 해지/만기 목록</span>
-										</a>
-									</li>
-									<li>
-										<a href="loanHistoryList.do">
-											<span class="sub-item">대출 상환 목록</span>
-										</a>
-									</li>
-									<li>
-										<a href="loanDirectDebit.do">
-											<span class="sub-item">대출 자동이체</span>
-										</a>
-									</li>
-									<li>
-										<a href="loanPrincipalList.do">
-											<span class="sub-item">대출 원금 목록</span>
-										</a>
-									</li>
-									<li>
-										<a href="loanRateList.do">
-											<span class="sub-item">대출 이자 목록</span>
-										</a>
-									</li>
-									<li>
-										<a href="newLoanList.do">
-											<span class="sub-item">신규 대출</span>
+										<a href="#">
+											<span class="sub-item">연동관리</span>
 										</a>
 									</li>
 								</ul>
 							</div>
 						</li>
+						</c:if>
 						</ul>
 					</div>
 				</div>

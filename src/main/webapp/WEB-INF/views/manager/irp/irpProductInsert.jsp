@@ -33,65 +33,74 @@
 					</div>
 				</div>
 				
-				<main id="main">
-			      <div class="container">
-			        <h1 class="title">연금상품등록</h1>
-			        <form action="irpProductInsertAction" method="post" name="irpProductInsertForm" class="main__form" onsubmit="return irpProductInsertCheck()">
+				<main id="main" align="center">
+				<div class="main__container" style="width: 95%;">
+			        <h1 class="title"></h1>
+			          <div class="row">
+						<div class="col">
+							<div class="card">
+							<div class="card-header">
+									<div class="card-title">
+									<strong>연금 상품 등록 정보 작성</strong></div>
+								</div>
+								<div class="card-body">
+			        <form action="irpProductInsertAction" method="post" name="irpProductInsertForm" onsubmit="return irpProductInsertCheck()">
 					  <sec:csrfInput/>
-			          	<table>
-							<tr class="form__row">
+			          	<table class="table table-bordered">
+							<tr>
 								<th>연금상품이름</th>
 								<td>
-									<input class="input" type="text" name="irp_product_name" >
+									<input class="form-control form-control-sm" type="text" style="width: 50%;" name="irp_product_name" >
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>연금상품 한줄요약</th>
 								<td>
-									<input class="input" type="text" name="irp_product_summary">
+									<input class="form-control form-control-sm" type="text"style="width: 50%;" name="irp_product_summary">
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>금리(%)</th>
 								<td>
-									<input class="input" type="text" name="irp_product_interRate">
+									<input class="form-control form-control-sm"  type="text"style="width: 50%;" name="irp_product_interRate">%
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>연금 금액</th>
 								<td>
-									<input class="input" type="text" name="irp_product_money">만원
+									<input class="form-control form-control-sm" type="number" min="100000"  style="width: 50%;" name="irp_product_money">원
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>연금 납입(가입) 기간</th>
 								<td>
-									<input class="input" type="text" name="irp_product_expiryTerm">
+								<small>*개월로 입력</small><br>
+									<input class="form-control form-control-sm" type="text"style="width: 50%;" name="irp_product_expiryTerm">개월
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>연금설명</th>
 								<td>
-									<textarea name="irp_product_explanation" placeholder="연금설명을 입력해주세요."></textarea>
+									<textarea class="form-control" name="irp_product_explanation" placeholder="연금설명을 입력해주세요."></textarea>
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>유의사항</th>
 								<td>
-									<textarea name="irp_product_notice" placeholder="유의사항을 입력해주세요."></textarea>
+									<textarea class="form-control" name="irp_product_notice" placeholder="유의사항을 입력해주세요."></textarea>
 								</td>
 							</tr>
 							
-							<tr class="form__row">
+							<tr>
 								<th>은행코드</th>
 								<td>
-									<select class="input" name="irp_product_bankCode">
+									<select class="form-control form-control-sm" style="width: 50%;"name="irp_product_bankCode">
 										<option value="0">미기재</option>
 										<option value="1">국민은행</option>
 										<option value="2">우리은행</option>
@@ -103,14 +112,19 @@
 								</td>
 							</tr>
 							
-							<tr class="form__row submit">
-								<th colspan="2">
-									<input class="submit" type="submit" value="상품등록">
-									<input class="submit" type="reset" value="초기화">
-								</th>
-							</tr>
-					   </table>
-			        </form>
+							</table>
+							 <div align="center">
+						<input class="btn btn-primary" type="submit" value="상품등록">
+						<input class="btn btn-primary btn-border" type="reset" value="초기화">
+			   		</div>
+			        
+			        
+			   		</form>
+			        </div>
+			        
+			        </div>
+			       </div>
+			       </div>
 			      </div>
 			    </main>
 			</div>

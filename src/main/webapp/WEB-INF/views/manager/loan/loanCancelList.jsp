@@ -160,7 +160,7 @@
 												<!-- 이전블록[«] -->
 												<c:if test="${startPage > pageBlock}">
 													<li class="page-item"><a class="page-link"
-														href="loanList.do?pageNum=${startPage - pageBlock}"
+														href="loanCancelList.do?pageNum=${startPage - pageBlock}"
 														aria-label="Previous"> <span aria-hidden="true">«</span>
 															<span class="sr-only">Previous</span>
 													</a></li>
@@ -170,19 +170,19 @@
 												<c:forEach var="i" begin="${startPage}" end="${endPage}">
 													<c:if test="${i == currentPage}">
 														<li class="page-item active"><a class="page-link"
-															href="loanList.do?pageNum=${i}">${i}</a></li>
+															href="loanCancelList.do?pageNum=${i}">${i}</a></li>
 													</c:if>
 
 													<c:if test="${i != currentPage}">
 														<li class="page-item"><a class="page-link"
-															href="loanList.do?pageNum=${i}">${i}</a></li>
+															href="loanCancelList.do?pageNum=${i}">${i}</a></li>
 													</c:if>
 												</c:forEach>
 
 												<!-- 다음블록[»] -->
 												<c:if test="${pageCount > endPage}">
 													<li class="page-item"><a class="page-link"
-														href="loanList.do?pageNum=${startPage + pageBlock}"
+														href="loanCancelList.do?pageNum=${startPage + pageBlock}"
 														aria-label="Next"> <span aria-hidden="true">»</span> <span
 															class="sr-only">Next</span>
 													</a></li>

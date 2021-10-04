@@ -39,7 +39,7 @@
  	<c:if test="${updateCnt == 1}">
 		<script type="text/javascript">
 			alert("대출 승인 완료");
-			window.location="loanProductList.do";
+			window.location="loanRequestList.do";
 		</script>
  	</c:if>
  	<c:if test="${updateCnt != 1}">

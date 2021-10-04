@@ -34,13 +34,14 @@
 				</div>
 			
 				<section id="main">
-			      <div class="main__container">
+			      <div class="main__container" style="width: 95%;">
 					<h2 class="title">연금 가입 정보 입력 </h2>
 					<div class="row">
 						<div class="col">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-title">${dto.irp_product_name}</div>
+									<div class="card-title">
+									${dto.irp_product_name}</div>
 								</div>
 								<div class="card-body">
 									 <form action="irpProductAction" method="post" name="irpProductForm" onsubmit="return irpJoinInCheck()">
@@ -48,58 +49,67 @@
 								         <input type="hidden" name="number" value="${number}">
 								         <input type="hidden" name ="unique_key" value="${unique_key}">
 										 <sec:csrfInput />
-						        <table class="table table-striped mt-3">
+						        <table class="table table-bordered">
 						          <tr>
-						          	<th scope="col">신청자</th>
+						          	<th>신청자</th>
 						          	<td>${sessionScope.customerID}</td>
 						          </tr>
 						        
 						          <tr>
-						            <th scope="col">상품명</th>
+						            <th>상품명</th>
 						             <td>${dto.irp_product_name} 
-						             <input type="hidden" name="irp_product_name" class="user_check" value="${dto.irp_product_name}">
+						             <input type="hidden" name="product_name" class="user_check" value="${dto.irp_product_name}">
 						             </td>
 						          </tr>
 						          <tr>
-						            <th scope="col">상품 요약</th>
+						            <th>상품 요약</th>
 						            <td>${dto.irp_product_summary}</td>
 						          </tr>
 						          <tr>
-						            <th scope="col">금리</th>
+						            <th>금리</th>
 						              <td>${dto.irp_product_interRate}%
-						               <input type="hidden" name="irp_product_interRate" class="user_check" value="${dto.irp_product_interRate}">
+						               <input type="hidden" name="product_interRate" class="user_check" value="${dto.irp_product_interRate}">
 						              </td>
 						          </tr>
+						          
+						          <tr>
+						           		<th>연금 납입(가입) 기간</th>
+						           		<td>${dto.irp_product_expiryTerm}개월
+						           		<input type="hidden" name="irp_product_expiryTerm" class="user_check" value="${dto.irp_product_expiryTerm}">
+						           		</td>
+						           </tr>
+						      		
 						         
 						           <tr>
-						           		<th scope="col">연금 금액     <small>*10만원 단위</small>
-						           		 </th>
-						           		 <td><fmt:formatNumber name="account_balance" id="irp_product_money" value="${dto.irp_product_money}" type="number"/>만원</td>
+						           		<th>연금 금액 </th>
+						           		<td>
+						           		<input type="number" id="account_balance" step="10" name="irp_product_money" min="100000">원
+						           		<br><font size="2em" color="red" >*10만원 이상</font></td>
 						           </tr>
 						      		
 						      		<tr>
-						      			<th scope="col">은행코드</th>
+						      			<th>은행코드</th>
 						      			<td>
 							           		<c:choose>
-							           			<c:when test="${dto.deposit_product_bankCode==0}">
+							           			<c:when test="${dto.irp_product_bankCode==0}">
 							           				미기재
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==1}">
+							           			<c:when test="${dto.irp_product_bankCode==1}">
 							           				국민은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==2}">
+							           			<c:when test="${dto.irp_product_bankCode==2}">
 							           				우리은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==3}">
+							           			<c:when test="${dto.irp_product_bankCode==3}">
 							           				농협은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==4}">
+							           			<c:when test="${dto.irp_product_bankCode==4}">
 							           				신한은행
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==5}">
+							           			<c:when test="${dto.irp_product_bankCode==5}">
 							           				하나은행 
 							           			</c:when>
-							           			<c:when test="${dto.deposit_product_bankCode==6}">
+							           			<c:when test="${dto.irp_product_bankCode==6}">
 							           				코스모 뱅크  
 							           			</c:when>
 							           		</c:choose>
@@ -107,31 +117,36 @@
 							           </td>
 						      		</tr>
 						      		<tr>
-						      			<th scope="col">계좌번호 확인</th>
+						      			<th>계좌번호 확인</th>
 						      			<td>${account_id}
 						      				<input type="hidden" value="${account_id}" name ="account_id">
 						      			</td>
 						      		</tr>
 						      		
 						      		<tr>
-										<th scope="col">계좌 비밀번호 <small>*4자리 숫자로 입력</small></th>
+										<th>계좌 비밀번호 <small>*4자리 숫자로 입력</small></th>
 										<td><input type="password" id="account_password" name="account_password" maxlength="4"
 											placeholder="비밀번호 입력">
 										</td>
 									</tr>
 					
 									<tr>
-										<th scope="col">계좌 비밀번호 확인</th>
+										<th>계좌 비밀번호 확인</th>
 										<td><input type="password" id="REaccount_password" name="REaccount_password" maxlength="4"
 											placeholder="비밀번호 확인">
 										</td>
 									</tr>
-						      		
+						      		<tr>
+										<th>유의 사항 </th>
+										<td>${dto.irp_product_notice}
+										<input type="hidden" name="irp_product_notice" value="${dto.irp_product_notice}">
+										</td>
+									</tr>
 						        </table>
-						        <div align ="right">
-						          	<input type="submit" class="btn btn-primary btn-border" value="가입 ">
+						        <div align ="center">
+						          	<input type="submit" class="btn btn-primary" value="가입 ">
+						          	<input type="button" class="btn btn-primary btn-border" onclick="window.history.back()" value="돌아가기">
 						        </div>
-						        
 			        </form>
 								</div>
 							</div>
