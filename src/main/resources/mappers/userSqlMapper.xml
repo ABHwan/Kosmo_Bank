@@ -21,16 +21,6 @@
     	 VALUES(#{member_id}, #{member_password}, #{member_name}, #{member_birth}, #{member_hp}, #{member_email}, #{member_zipcode}, #{member_addr1}, #{member_addr2}, #{member_addr3}, sysdate, 1, 'ROLE_USER', #{unique_key})
     </insert>
     
-    <!-- 이메일 인증 성공 처리 -->
-    <update id="emailSuccess" parameterType="com.spring.bank.user.vo.UserVO">
-    	UPDATE members SET member_enabled = #{member_enabled} WHERE member_email = #{member_email}
-    </update>
-    
-    <!-- 이메일 체크 -->
-    <select id="emailChk" parameterType="String" resultType="int">
-    	SELECT member_enabled FROM members WHERE member_id = #{member_id}
-    </select>
-    
     <!-- 로그인 및 회원인증 -->
     <select id="SelectUser" parameterType="String" resultType="com.spring.bank.user.vo.UserVO">
     	SELECT * FROM members WHERE member_id = #{member_id}
@@ -348,15 +338,52 @@
 	<!-- 예금 가입 시 account 테이블 insert   -->
 	<insert id="insertAccount" parameterType="com.spring.bank.user.vo.AccountVO">
 		INSERT INTO account(account_id,account_password, member_id, account_type, account_newDate, account_bankCode, account_balance)
-		VALUES(#{account_id}, #{account_password}, #{member_id}, 0, sysdate, #{account_bankCode}, #{account_balance})
+		VALUES(#{account_id}, #{account_password}, #{member_id}, #{account_type}, sysdate, #{account_bankCode}, #{account_balance})
 	</insert>
 	
 	<!-- 예금 신청 처리 -->
 	<insert id="insertDeposit" parameterType="com.spring.bank.user.vo.DepositVO" >
 		INSERT INTO deposit(deposit_id, deposit_product_name, account_id,deposit_joinDate, deposit_rate, deposit_type, deposit_endDate)
 		VALUES(deposit_seq.nextval, #{deposit_product_name}, #{account_id}, sysdate, #{deposit_rate}, #{deposit_type}, #{deposit_endDate})
->>>>>>> master
 	</insert>
+	
+	<!-- 연금 상품 개수 -->
+	 <select id="getIrpCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM irp_product
+	</select> 
+	
+	<!-- 연금 상품 조회  -->
+	<select id="getIrpList" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.IrpProductVO">
+		<![CDATA[
+			SELECT * FROM 
+				(SELECT irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate,irp_product_money, irp_product_expiryTerm, irp_product_explanation, irp_product_notice, irp_product_bankCode, rowNUM rNum 
+					 FROM (SELECT * FROM irp_product ORDER BY irp_product_date DESC))
+				WHERE rNum >= #{start} AND rNum <= #{end}
+		]]>
+	</select>
+	
+	<!--연금 상품 수(검색결과수)  -->
+	<select id="getIrpProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM irp_product WHERE irp_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	
+	<!-- 연금 상품 검색(입력받아서 검색) -->
+	<select id="searchIrpProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.IrpProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_money, irp_product_expiryTerm, irp_product_explanation, irp_product_notice, irp_product_bankcode, rowNum rNum 
+				FROM (SELECT * FROM irp_product WHERE irp_product_name LIKE '%'||#{search}||'%' ORDER BY irp_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	
+	<!-- 연금 상품 상세 조회 -->
+	<select id="getIrpDetail" parameterType="String" resultType="com.spring.bank.product.vo.IrpProductVO">
+		SELECT * FROM  irp_product
+		WHERE irp_product_name=#{irp_product_name} 	
+	</select>
 	
 	<!-- 환율 저장 후 출력(지호) -->
     <insert id="exchangeIn" parameterType="com.spring.bank.user.vo.CrawlerVO">
@@ -422,7 +449,7 @@
 	</select>
     
     
-    <!-- !지은! -->
+     <!-- !지은! -->
 	<!-- 대출 해지 개수 -->
 	<select id="getLoanCancelCnt" parameterType="String" resultType="int">
 		SELECT COUNT(*) FROM loan WHERE loan_state IN(3, 4, 5, 7) AND member_id = #{member_id}
@@ -464,7 +491,7 @@
     </select>
     
 	<!-- 대출 가입 개수 -->
-	<select id="getLoanCnt" parameterType="String" resultType="int">
+	<select id="getLoanCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(*) FROM loan WHERE loan_state IN(1, 2, 7) AND member_id = #{member_id}
 	</select>
 	
@@ -544,6 +571,21 @@
 		 WHERE loan_product_name = #{loan_product_name} 
     </select>
     
+	<!-- 계좌 조회  -->
+	<select id="loanAccountInfo" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * 
+		  FROM account
+		 WHERE member_id = #{member_id} 
+    </select>
+    
+	<!-- 대출 조회  -->
+	<select id="getLoanInfo" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+    	SELECT * 
+		  FROM loan
+		 WHERE loan_id = #{loan_id} 
+    </select>
+
+    
 	<!-- 대출 상품 목록 search -->
 	<select id="searchLoanProductList" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanProductVO">
    		<![CDATA[
@@ -593,10 +635,70 @@
 		]]>
     </select>
     
+        
+	<!-- 대출 내역 개수  -->
+	<select id="getLoanHistoryCntToLoan" parameterType="java.util.Map" resultType="int">
+    	SELECT COUNT(*) 
+		  FROM loan_history
+		 WHERE loan_id = #{loan_id} 
+    </select>
+    
+        
+	<!-- 대출 내역 개수  -->
+	<select id="getLoanDate" resultType="java.sql.Date">
+    	SELECT * 
+		  FROM loan_date
+    </select>
+    
 	<!-- 대출 가입 개수 -->
 	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">
 		SELECT COUNT(*) FROM loan_history WHERE member_id = #{member_id}
 	</select>
+	
+    <!-- 신규대출 등록 -->
+    <insert id="newLoanSignAction" parameterType="com.spring.bank.user.vo.LoanVO">
+	    INSERT INTO loan(loan_id
+	    				 , loan_product_name
+	    				 , member_id
+	    				 , account_id
+	    				 , loan_state
+	    				 , loan_startDate
+	    				 , loan_endDate
+	    				 , loan_month
+	    				 , loan_repaymentType
+	    				 , loan_rate
+	    				 , loan_monthlyRepayment
+	    				 , loan_amount
+	    				 , loan_balance
+	    				 , loan_interest
+	    				 , loan_tranAmount
+	    				 , loan_tranInterest
+	    				 , loan_delinquency
+	    				 , loan_prepaymentRate
+	    				)
+	    VALUES(loan_seq.nextval
+	    	   , #{loan_product_name}
+	    	   , #{member_id}
+	    	   , #{account_id}
+	    	   , #{loan_state}
+	    	   , #{loan_startDate}
+	    	   , #{loan_endDate}
+	    	   , #{loan_month}
+	    	   , #{loan_repaymentType}
+	    	   , #{loan_rate}
+	    	   , #{loan_monthlyRepayment}
+	    	   , #{loan_amount}
+	    	   , #{loan_balance}
+	    	   , #{loan_interest}
+	    	   , #{loan_tranAmount}
+	    	   , #{loan_tranInterest}
+	    	   , #{loan_delinquency}
+	    	   , #{loan_prepaymentRate} 
+	    	  )
+    </insert>
+    
+  
+	
     <!-- !지은! -->
 
     <!-- 회원 이름 불러오기(민재) -->
@@ -680,4 +782,50 @@
     	SELECT * FROM NOTICE WHERE notice_num = #{notice_num}
     </select>
     
+    <!-- 대표 계좌 불러오기(복환) -->
+    <select id="getAccountDefault" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 1 AND account_default = 1
+    </select>
+    
+    <!-- 계좌 불러오기(복환 - 연동 O) -->
+    <select id="getAccountLinked" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 1
+    </select>
+    
+    
+    <!-- 계좌 불러오기(복환 - 연동 X) -->
+    <select id="getAccountUnLinked" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 0
+    </select>
+    
+    <!-- 계좌 연동하기(복환) - 연동하면 member_id 가 등록됨. -->
+    <update id="accountLinkAction" parameterType="java.util.Map">
+    	UPDATE account SET account_linked = 1, member_id = #{member_id} WHERE account_id = #{account_id} AND unique_key = #{unique_key} AND account_liked = 0 
+    </update>
+    
+    <!-- 계좌 연동해제(복환) - 연동해제하면 member_id 등록해제 -->
+    <update id="accountUnLinkAction" parameterType="java.util.Map">
+    	UPDATE account SET account_linked = 0, member_id = null WHERE account_id = #{account_id} AND member_id = #{member_id} AND account_liked = 1
+    </update>
+    
+    
+    <!-- 대표계좌설정(복환) 시작 -->
+    <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 시작 -->
+    <select id="defaultDeliveryCnt" resultType="int">
+    	SELECT COUNT(*) FROM account WHERE member_id = #{member_id} AND account_default = 1
+    </select>
+    
+    <update id="defaultDeliveryUpdate">
+    	UPDATE account SET account_default = 0 WHERE member_id = #{member_id} AND account_default = 1
+    </update>
+    
+    <!-- 계좌 관리 -->
+    <update id="updateDelivery">
+    	UPDATE account SET account_password = #{account_password}, account_default = #{account_default} 
+    	WHERE unique_key = #{unique_key} AND account_id = #{account_id}
+    </update>
+    <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 끝 -->
+    
+    
+    <!-- 대표계좌설정(복환) 끝 -->
 </mapper>

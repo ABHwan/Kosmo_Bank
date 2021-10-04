@@ -79,6 +79,7 @@ public class AdminController {
 	@RequestMapping("index")
 	public String index(HttpServletRequest req, Model model) {
 		System.out.println("[index.ad]");
+
 		
 		// 이동할 페이지
 		return "index(manager)";
@@ -175,6 +176,16 @@ public class AdminController {
 		service.deleteCustomer(req, model);
 		service.customerList(req, model);
 		return "manager/customerInfo/customerInfo";
+	}
+	
+	//관리자 - 금융상품 관리
+	@RequestMapping("bankingAccept")
+	public String bankingAccept(HttpServletRequest req, Model model) {
+		logger.info("url => bankingAccept");
+		
+		service.selectBanking(req, model);
+		
+		return "manager/customerInfo/bankingAccept";
 	}
 	
 	// 관리자 - 예금관리 - 상품등록페이지
@@ -475,6 +486,83 @@ public class AdminController {
 		return "manager/qna/faqDeleteAction";
 	}
 
+	//관리자 - 연금 추가(지현)
+	@RequestMapping("irpProductInsert")
+	public String irpAdd(HttpServletRequest req, Model model) {
+		logger.info("url => irpInsert");
+		
+		return "manager/irp/irpProductInsert";
+	}
+	
+	//관리자 - 연금 추가 처리 (지현)
+	@RequestMapping("irpProductInsertAction")
+	public String irpProductInsertAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductInsertAction");
+		
+		service.insertIrpProduct(req, model);
+		
+		return "manager/irp/irpProductInsertAction";
+	}
+	
+	// 관리자 - 연금관리 - 상품조회페이지
+	@RequestMapping("IrpProductList")
+	public String IrpProductList(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /IrpProductList]");
+		
+		service.selectIrpProduct(req, model);
+		
+		return "manager/irp/irpProductList";
+	}
+	
+	// 관리자 - 연금관리 - 상품검색
+	@RequestMapping("irpProductSearch")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		service.searchIrpProduct(req, model);
+		return "manager/irp/irpProductSearch";
+	}
+	
+	// 관리자 - 연금 관리 - 상품 상세조회
+	@RequestMapping("irpProductInfo")
+	public String irpProductInfo(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductInfo]");
+		
+		service.getIrpProductInfo(req, model);
+		
+		return "manager/irp/irpProductInfo";
+	}
+	
+	// 관리자 연금 관리 - 상품 수정 페이지
+	@RequestMapping("irpProductUpdate")
+	public String irpProductUpdate(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductUpdate]");
+		
+		service.getIrpProductInfo(req, model);
+		
+		return "manager/irp/irpProductUpdate";
+	}
+	
+	// 관리자 연금 관리 - 상품 수정 처리
+	@RequestMapping("irpProductUpdateAction")
+	public String irpProductUpdateAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductUpdateAction]");
+		
+		service.updateIrpProduct(req, model);
+		
+		return "manager/irp/irpProductUpdateAction";
+	}
+		
+	// 관리자 - 연금 관리 - 상품삭제
+	@RequestMapping("irpProductDelete")
+	public String irpProductDelete(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductDelete]");
+		
+		service.deleteIrpProduct(req, model);
+		service.selectIrpProduct(req, model);
+		
+		return "manager/irp/irpProductList";
+	}
+	
 	// 회원별 계좌목록페이지
 	@RequestMapping("customerAccountInfo")
 	public String customerAccountInfo(HttpServletRequest req, Model model) {
@@ -510,33 +598,38 @@ public class AdminController {
 	}
 	
 	//!지은!
+	// 대출 상품 목록
 	@RequestMapping("loanProductList.do")
 	public String loanProductList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanProductList]");
 		service.loanProductList(req, model);
 		return "manager/loan/loanProductList";
 	}
-
+	
+	// 대출 상품 검색
 	@RequestMapping("searchLoanProductList.do")
 	public String searchLoanProductList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /searchLoanProductList]");
 		service.searchLoanProductList(req, model);
 		return "manager/loan/searchLoanProductList";
 	}
-
+	
+	// 대출 상품 추가
 	@RequestMapping("loanProductInsert.do")
 	public String loanProductInsert(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanProductInsert]");
 		return "manager/loan/loanProductInsert";
 	}
 	
+	// 대출 상품 추가 처리
 	@RequestMapping("loanProductInsertAction.do")
 	public String loanProductInsertAction(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanProductInsertAction]");
 		service.loanProductInsertAction(req, model);
 		return "manager/loan/loanProductInsertAction";
 	}
-
+	
+	// 대출 상품 수정
 	@RequestMapping("loanProductUpdate.do")
 	public String loanProductUpdate(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanProductUpdate]");
@@ -544,6 +637,7 @@ public class AdminController {
 		return "manager/loan/loanProductUpdate";
 	}
 	
+	// 대출 상품 수정 처리
 	@RequestMapping("loanProductUpdateAction.do")
 	public String loanProductUpdateAction(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanProductUpdateAction]");
@@ -551,6 +645,7 @@ public class AdminController {
 		return "manager/loan/loanProductUpdateAction";
 	}
 	
+	// 대출 상품 삭제
 	@RequestMapping("loanProductDelete.do")
 	public String loanProductDelete(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanProductDelete]");
@@ -558,6 +653,7 @@ public class AdminController {
 		return "manager/loan/loanProductDeleteAction";
 	}
 	
+	// 대출 요청 목록
 	@RequestMapping("loanRequestList.do")
 	public String loanRequestList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanRequestList]");
@@ -565,13 +661,23 @@ public class AdminController {
 		return "manager/loan/loanRequestList";
 	}
 
+	// 대출 승인 처리
 	@RequestMapping("loanRequestAction.do")
 	public String loanRequestAction(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanRequestList]");
 		service.loanRequestAction(req, model);
 		return "manager/loan/loanRequestAction";
 	}
+
+	// 대출 거절
+	@RequestMapping("loanRefusalAction.do")
+	public String loanRefusalAction(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /loanRequestList]");
+		service.loanRefusalAction(req, model);
+		return "manager/loan/loanRefusalAction";
+	}
 	
+	// 대출 목록
 	@RequestMapping("loanList.do")
 	public String loanList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanRequestList]");
@@ -579,6 +685,7 @@ public class AdminController {
 		return "manager/loan/loanList";
 	}
 	
+	// 대출 해지 목록
 	@RequestMapping("loanCancelList.do")
 	public String loanCancelList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanCancelList]");
@@ -586,6 +693,7 @@ public class AdminController {
 		return "manager/loan/loanCancelList";
 	}
 	
+	// 대출 요청 목록 검색
 	@RequestMapping("searchLoanRequestList.do")
 	public String searchLoanRequestAction(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /searchLoanRequestList]");
@@ -593,6 +701,7 @@ public class AdminController {
 		return "manager/loan/searchLoanRequestList";
 	}
 	
+	//대출 목록 검색
 	@RequestMapping("searchLoanList.do")
 	public String searchLoanList(HttpServletRequest req, Model model) {
 		System.out.println("[url ==> /loanRequestList]");

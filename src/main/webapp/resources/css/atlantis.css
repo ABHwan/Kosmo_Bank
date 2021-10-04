@@ -77,6 +77,32 @@ warning-color : #ffa534
 danger-color : #f3545d
 
 -------------------------------------------------------------------*/
+/* index 커스텀 시작 */
+
+.login-btn-wrap {
+	text-align: center;
+}
+
+.login-btn {
+	border: none;
+    font-weight: bold;
+    width: 300px;
+    font-size: 18px;
+    color: white;
+    border-radius: 30px;
+    height: 70px;
+    background-image: url(/bank/resources/images/img/ico-sign-00.png);
+    background-position: left 20px top 13px;
+    background-size: 35px;
+    background-repeat: no-repeat;
+    background-color: cadetblue;
+    padding-left: 35px;
+    cursor: pointer;
+}
+
+
+/* index 커스텀 끝 */
+
 *:focus {
   outline: 0 !important;
   -webkit-box-shadow: none !important;
@@ -2185,7 +2211,7 @@ body {
         margin-bottom: 5px;
         font-weight: 400; }
       .card-list .item-list .info-user .status {
-        font-size: 11px;
+        font-size: 14px;
         color: #7d7b7b; }
 
 .card-title {
@@ -4294,9 +4320,9 @@ label.error {
     min-width: 2rem;
     width: 2rem; }
   .btn-icon.btn-xs {
-    height: 1.6875rem;
-    min-width: 1.6875rem;
-    width: 1.6875rem; }
+    height: 20px;
+    min-width: 20px;
+    width: 20pxrem; }
 
 /*      Button States      */
 .btn-white {

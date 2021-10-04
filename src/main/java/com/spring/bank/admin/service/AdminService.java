@@ -15,6 +15,9 @@ public interface AdminService {
 	// 관리자 페이지 회원삭제
 	public void deleteCustomer(HttpServletRequest req, Model model);
 	
+	// 관리자 금융관리 조회
+	public void selectBanking(HttpServletRequest req, Model model);
+	
 	// 관리자 페이지 예금 상품 등록
 	public void insertDepositProduct(HttpServletRequest req, Model model);
 	
@@ -51,6 +54,24 @@ public interface AdminService {
     // 관리자 페이지 적금 상품 삭제
 	public void deleteSavingProduct(HttpServletRequest req, Model model);
 	
+	// 관리자 페이지 연금 상품 등록(지현)
+	public void insertIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 조회(지현)
+	public void selectIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 검색(지현)
+	public void searchIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 상세 조회(지현)
+	public void getIrpProductInfo(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 수정(지현)
+	public void updateIrpProduct(HttpServletRequest req, Model model);
+	
+	// 관리자 페이지 연금 상품 삭제(지현)
+	public void deleteIrpProduct(HttpServletRequest req, Model model);
+
 	// 관리자 페이지 펀드 상품 등록 처리
 	public void fundProductInsertAction(HttpServletRequest req, Model model);
 	

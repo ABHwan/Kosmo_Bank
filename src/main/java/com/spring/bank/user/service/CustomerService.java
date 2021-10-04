@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 public interface CustomerService {
+	
+	// 로그인 시 계좌 불러오기
+	public void accountLoad(HttpServletRequest req, Model model);
 
 	// 아이디 중복확인 처리
 	public int confirmIdAction(Map<String, Object> map);
@@ -16,9 +19,6 @@ public interface CustomerService {
 
 	// 회원가입 처리
 	public void registerAction(HttpServletRequest req, Model model);
-
-	// 이메일 인증 성공 처리
-	// public void emailSuccess(HttpServletRequest req, Model model);
 
 	// 회원정보 인증
 	public void confirmAction(HttpServletRequest req, Model model);
@@ -89,6 +89,21 @@ public interface CustomerService {
 	// 회원 이체 최종 확인
 	public void transferConfirm(HttpServletRequest req, Model model);
 	
+	// 연금 상품 조회
+	public void irpList(HttpServletRequest req, Model model);
+	
+	// 연금 상품 검색 
+	public void irpProductSearch(HttpServletRequest req, Model model);
+	
+	// 연금 상품 상세보기 
+	public void irpDetail(HttpServletRequest req, Model model);
+	
+	// 연금 상품 신청 화면 
+	public void irpProductJoin(HttpServletRequest req, Model model);
+	
+	// 연금 신청 irp insert
+	public void insertIrp(HttpServletRequest req, Model model);
+		
 	// 적금 상품 조회
 	public void savingList(HttpServletRequest req, Model model);
 	

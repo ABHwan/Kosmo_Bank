@@ -7,6 +7,17 @@
 <head>
 <meta charset="UTF-8">
 <title>코스모 뱅크</title>
+<style type="text/css">
+	label.text{
+    transform: translateY(-90%);
+	}
+	
+	table th.thCss{
+		text-align: left !important;
+		padding-left: 90px !important;
+		width: 50% !important;
+	}
+</style>
 </head>
 <body>	
 	<div class="wrapper">
@@ -39,54 +50,56 @@
 								<div class="card-body">
 									<form action="newLoanSignAction.do" name="newLoanSignform" method="post">
 					 					<sec:csrfInput />
-										<table class="table table-hover card-table">
+										<table class="table table-hover card-table" >
 										<!--  -->
 										
 										
 											<tr>
-												<th><label for="loan_product_name">대출 상품명</label></th>
-												<td><input type="text" id="loan_product_name" name="loan_product_name" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="loan_product_name">대출 상품명</label></th>
+												<td><input type="text" value="${loanProduct.loan_product_name}" id="loan_product_name" name="loan_product_name" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ></td>
 											</tr>
 											<tr>
-												<th><label for="member_id">아이디</label></th>
-												<td><input type="text" id="member_id" name="member_id" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="member_id">아이디</label></th>
+												<td><input type="text" value="${loanMember.member_id}" id="member_id" name="member_id" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ></td>
 											</tr>
 											<tr>
-												<th><label for="">이름</label></th>
-												<td><input type="text" id="" name="" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="member_name">이름</label></th>
+												<td><input type="text" value="${loanMember.member_name}" id="member_name" name="member_name" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ></td>
 											</tr>
 											<tr>
-												<th><label for="account_id">계좌번호</label></th>
+												<th class="thCss"><label for="account_id">계좌번호</label></th>
 												<td style="display:flex;">
-													<select class="form-control form-control" style="width:30%;" name="account_id_select" onchange="setAccount();">
-														<option value="0">직접입력</option>
-														<option value="01010201201002324">01010201201002324</option>
-													</select>
-													<input type="text" id="account_id" name="account_id" style="width:70%;" class="form-control input-border-bottom">
+													<%-- <select class="form-control form-control" style="width:30%;" name="account_id_select" onchange="setAccount();">
+														<option value="0">계좌생성</option>
+														<c:forEach var="j" items="${loanAccount}">
+															<option value="${j.account_id}">${j.account_id}</option>
+														</c:forEach>
+													</select> --%>
+													<input type="text" id="account_id" name="account_id" class="form-control " style="background-color:transparent !important; height: 40px !important; width: 40%; float: left; align-self: center;">
 												</td>
 											</tr>
 											<tr>
-												<th><label for="loan_month">대출기간</label></th>
+												<th class="thCss"><label for="loan_month">대출기간</label></th>
 												<td style="display:flex;">
-													<select class="form-control form-control" style="width:40%;" name="loan_month" onchange="setEndDate();">
-														<c:forEach var="i" begin="12" step="6" end="120">
+													<select class="form-control form-control" name="loan_month" onchange="setEndDate();" style="background-color:transparent !important; height: 40px !important; width: 40%; float: left; align-self: center;">
+														<c:forEach var="i" begin="${loanProduct.loan_product_minDate * 12}" step="6" end="${loanProduct.loan_product_maxDate * 12}">
 															<option value="${i}">${i}&nbsp;개월&nbsp;&nbsp;(${i/12}&nbsp;년)</option>
 														</c:forEach>
 													</select>
 												</td>
 											</tr>
 											<tr>
-												<th><label for="loan_startDate">대출실행일</label></th>
-												<td><input type="text" id="loan_startDate" name="loan_startDate" class="form-control input-border-bottom datepicker-here" data-language="ko" data-position="top left" onmouseover="setEndDate();" onmouseout="setEndDate();" onblur="setEndDate();" onfocus="setEndDate();"/></td>
+												<th class="thCss"><label for="loan_startDate">대출실행일</label></th>
+												<td><input type="text" id="loan_startDate" name="loan_startDate" placeholder="실행일을 입력하세요." class="form-control  datepicker-here" data-language="ko" data-position="top left" onmouseover="setEndDate();" onmouseout="setEndDate();" onblur="setEndDate();" onfocus="setEndDate();" style="background-color:transparent !important; height: 40px !important; width: 40%; float: left;"/></td>
 											</tr>
 											<tr>
-												<th><label for="loan_endDate">대출만기일</label></th>
-												<td><input type="text" id="loan_endDate" name="loan_endDate" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="loan_endDate">대출만기일</label></th>
+												<td><input type="text" id="loan_endDate" name="loan_endDate" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ></td>
 											</tr>
 											<tr>
-												<th><label for="loan_repaymentType">상환방법</label></th>
+												<th class="thCss"><label for="loan_repaymentType">상환방법</label></th>
 												<td>
-													<select class="form-control form-control" name="loan_repaymentType">
+													<select class="form-control form-control" name="loan_repaymentType" style="height: 40px !important; width: 40%; float: left !important;">
 														<option value="1">원금균등상환</option>
 														<option value="2">원리금균등상환</option>
 														<option value="3">만기일시상환</option>
@@ -94,44 +107,44 @@
 												</td>
 											</tr>
 											<tr>
-												<th><label for="loan_amount">대출원금</label></th>
-												<td><input type="text" id="loan_amount" name="loan_amount" class="form-control input-border-bottom" required placeholder="원 단위로 입력하세요."></td>
+												<th class="thCss"><label for="loan_amount">대출원금</label></th>
+												<td><input type="text" id="loan_amount" name="loan_amount" class="form-control " required placeholder="원 단위로 입력하세요." style="background-color:transparent !important; height: 40px !important; width: 40%; float: left;"></td>
 											</tr>
 											<tr>
-												<th><label for="loan_rate">대출금리</label></th>
-												<td><input value="2.0" type="text" id="loan_rate" name="loan_rate" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="loan_rate">대출금리</label></th>
+												<td><input value="${loanProduct.loan_product_rate}" type="text" id="loan_rate" name="loan_rate" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ></td>
 											</tr>
 											<tr>
-												<th><label for="loan_prepaymentRate">중도상환수수료요율</label></th>
-												<td><input type="text" id="loan_prepaymentRate" name="loan_prepaymentRate" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="loan_prepaymentRate">중도상환수수료요율</label></th>
+												<td><input type="text" value="${loanProduct.loan_product_prepaymentRate}" id="loan_prepaymentRate" name="loan_prepaymentRate" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ></td>
 											</tr>
 											<tr style="height:100px;">
-												<th colspan="2">
+												<td colspan="2" class="thCss">
 												<button class="btn btn-secondary" type="button" onclick="setCash();">
 													<span class="btn-label">
 														<i class="fa fas fa-calculator"></i>
 													</span>
 													상환액 계산
 												</button>
-												</th>
+												</td>
 											</tr>
 											<tr>
-												<th><label for="loan_interest">총 이자</label></th>
-												<td><input type="text" id="loan_interest" name="loan_interest" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="loan_interest">총 이자</label></th>
+												<td style="text-align: left;"><label style="width: 40%;"><input type="text" id="loan_interest" name="loan_interest" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; float: left;" ></label><label class="text">&nbsp;원</label></td>
 											</tr>
 											<tr>
-												<th><label for="loan_return">총 상환금액</label></th>
-												<td><input type="text" id="loan_return" name="loan_return" class="form-control input-border-bottom" readonly></td>
+												<th class="thCss"><label for="loan_return">총 상환금액</label></th>
+												<td><input type="text" id="loan_return" name="loan_return" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; width: 40%; float: left;" ><label style="display: flex;transform: translateY(50%);">&nbsp;원</label></td>
 											</tr>
 											<tr>
-												<th colspan="2"><label for="loan_tranAmount" style="width:20%">1차 납입원금</label>&emsp;&emsp;+&emsp;&emsp;<label for="loan_tranInterest" style="width:20%">1차 납입이자</label>&emsp;&emsp;=&emsp;&emsp;<label for="loan_monthlyRepayment" style="width:20%">1차 상환액</label></th>
+												<td colspan="2" class="thCss"><label for="loan_tranAmount" style="width:20%">1차 납입원금</label>&emsp;&emsp;+&emsp;&emsp;<label for="loan_tranInterest" style="width:20%">1차 납입이자</label>&emsp;&emsp;=&emsp;&emsp;<label for="loan_monthlyRepayment" style="width:20%">1차 상환액</label></td>
 											</tr>
 											<tr>
-												<th colspan="2">
-													<label style="width:20%"><%-- <fmt:formatNumber id="loan_tranAmount_fmt" value="" pattern="#,###.##" /> --%><input type="text" id="loan_tranAmount" name="loan_tranAmount" class="form-control input-border-bottom" readonly></label>&nbsp;원&emsp;&emsp;+&emsp;&emsp;
-													<label style="width:20%"><%-- <fmt:formatNumber id="loan_tranInterest_fmt" value="" pattern="#,###.##" /> --%><input type="text" id="loan_tranInterest" name="loan_tranInterest" class="form-control input-border-bottom" readonly></label>&nbsp;원&emsp;&emsp;=&emsp;&emsp;
-													<label style="width:20%"><%-- <fmt:formatNumber id="loan_monthlyRepayment_fmt" value="" pattern="#,###.##" /> --%><input type="text" id="loan_monthlyRepayment" name="loan_monthlyRepayment" class="form-control input-border-bottom" readonly></label>&nbsp;원
-												</th>
+												<td colspan="2">
+													<label style="width: 18%;"><%-- <fmt:formatNumber id="loan_tranAmount_fmt" value="" pattern="#,###.##" /> --%><input type="text" id="loan_tranAmount" name="loan_tranAmount" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; float: left;" ></label><label class="text">&nbsp;원&emsp;&emsp;+&emsp;&emsp;</label>
+													<label style="width: 18%;"><%-- <fmt:formatNumber id="loan_tranInterest_fmt" value="" pattern="#,###.##" /> --%><input type="text" id="loan_tranInterest" name="loan_tranInterest" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; float: left;" ></label><label class="text">&nbsp;원&emsp;&emsp;=&emsp;&emsp;</label>
+													<label style="width: 18%;"><%-- <fmt:formatNumber id="loan_monthlyRepayment_fmt" value="" pattern="#,###.##" /> --%><input type="text" id="loan_monthlyRepayment" name="loan_monthlyRepayment" class="form-control " readonly style="border:none; background-color:transparent !important; height: 40px !important; float: left;" ></label><label class="text">&nbsp;원</label>
+												</td>
 											</tr>
 											
 										<!--  -->
@@ -238,6 +251,9 @@
 					//1차 납입원금
 					tranAmount.value = "0";
 					
+					//1차 납입이자
+					tranInterest.value = Math.round((amount * (rate / 12)));
+					
 					//1차 상환액
 					monthlyRepayment.value = parseInt(tranInterest.value) + parseInt(tranAmount.value);
 					
@@ -253,25 +269,28 @@
 	 	}
 	 	
 	 	function setEndDate() {
-	 		if(document.newLoanSignform.loan_month.value != null && document.newLoanSignform.loan_startDate.value != null) {
-	 			var startDate = document.newLoanSignform.loan_startDate.value.split('/');
-	 			var month = document.newLoanSignform.loan_month.value;
+	          if(document.newLoanSignform.loan_startDate.value != "") {
+	             var startDate = document.newLoanSignform.loan_startDate.value.split('/');
+	             var month = document.newLoanSignform.loan_month.value;
 
-	 			startDate[0] = parseInt(startDate[0]);
-	 			startDate[1] = parseInt(startDate[1]);
-	 			startDate[2] = parseInt(startDate[2]);
-	 			
-	 			startDate[1] += parseInt(month);
-	 			startDate[0] += ((startDate[1] - startDate[1] % 12) / 12);
-	 			startDate[1] = startDate[1] % 12;
+	             startDate[0] = parseInt(startDate[0]);
+	             startDate[1] = parseInt(startDate[1]);
+	             startDate[2] = parseInt(startDate[2]);
+	             
+	             startDate[1] += parseInt(month);
+	             startDate[0] += ((startDate[1] - startDate[1] % 12) / 12);
+	             startDate[1] = startDate[1] % 12;
 
-	 			if(startDate[1] < 10) {startDate[1] = "0" + startDate[1];}
-	 			if(startDate[2] < 10) {startDate[2] = "0" + startDate[2];}
-	 			
-	 			document.newLoanSignform.loan_endDate.value = startDate[0] + "/" + startDate[1] + "/" + startDate[2];
-	 		}
-	 	}
+	             if(startDate[1] < 10) {startDate[1] = "0" + startDate[1];}
+	             if(startDate[2] < 10) {startDate[2] = "0" + startDate[2];}
+	             
+	             document.newLoanSignform.loan_endDate.value = startDate[0] + "/" + startDate[1] + "/" + startDate[2];
+	          } else {
+	             document.newLoanSignform.loan_endDate.value = "";
+	          }
+	       }
 	 	
+	 	/*
 	 	function setAccount() {
 	 		if(document.newLoanSignform.account_id_select.value != 0) {
 	 			// 직접입력이 아닌경우 
@@ -282,7 +301,8 @@
 	 			document.newLoanSignform.account_id.focus();
 	 		}
 	 		
-	 	}
+	 	}*/
+	 	
  		function openTerms() {
  			var popupX = (window.screen.width / 2) - (800 / 2); // 윈도우 픽셀 기준 X축 중간
  			var popupY = (window.screen.height / 2) - (1000 / 2); // 윈도우 픽셀 기준 Y축 중간

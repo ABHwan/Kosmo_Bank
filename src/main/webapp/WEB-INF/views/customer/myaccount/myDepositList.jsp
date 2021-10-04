@@ -26,7 +26,7 @@
 							<div>
 								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
 								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
-									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. <br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
 									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
 							</div>
 						</div>
@@ -34,36 +34,39 @@
 				</div>
 				
 				<div class="card">
-					<div class="select">	
-						<p> &nbsp;&nbsp;&nbsp;${member_name}님의 ${boardName}리스트 </p>
-	<%-- 					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/icon.ico"></button>
-						<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/국민.PNG"></button>
-						<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/우리.PNG"></button>
-						<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/농협.PNG"></button>
-						<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/신한.PNG"></button>
-						<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/하나.PNG"></button>
-					<!-- account_type만 선택시 해당 전체리스트
-						account_bank로 sub select시 bank에 따른 쿼리
-					 -->
-					 	<br> <p>버튼은 보류</p> --%>
-					 	<br>
-						<select class="account_bank" id="selectBank" name="account_bank" onchange="depositList();">
-							<option value="0"> 전체 </option>
-							<option value="1"> 국민 </option>
-							<option value="2"> 우리 </option>
-							<option value="3"> 농협 </option>
-							<option value="4"> 신한 </option>
-							<option value="5"> 하나 </option>
-						</select>		
-					</div>
-					<div class="selectTable">
-						<p>위의 select box를 이용하세요!</p>
-					</div>
+				<div class="select">	
+					<p> &nbsp;&nbsp;&nbsp;${member_name}님의 ${boardName}리스트 </p>
+<%-- 					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/icon.ico"></button>
+					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/국민.PNG"></button>
+					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/우리.PNG"></button>
+					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/농협.PNG"></button>
+					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/신한.PNG"></button>
+					<button type="button" class="btn_image"><img id="bank_logo" src="${rePath}images/img/하나.PNG"></button>
+				<!-- account_type만 선택시 해당 전체리스트
+					account_bank로 sub select시 bank에 따른 쿼리
+				 -->
+				 	<br> <p>버튼은 보류</p> --%>
+				 	<br>
+					<select class="account_bank" id="selectBank" name="account_bank" onchange="depositList();">
+						<option value="0"> 전체 </option>
+						<option value="1"> 국민 </option>
+						<option value="2"> 우리 </option>
+						<option value="3"> 농협 </option>
+						<option value="4"> 신한 </option>
+						<option value="5"> 하나 </option>
+					</select>		
+				</div>
+				
+				<div class="selectTable">
+					<p>위의 select box를 이용하세요!</p>
 				</div>
 			</div>
+		</div>
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 		</div>
 	</div>
+
+	
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>
 	<script src="${rePath}js/core/popper.min.js"></script>

@@ -9,12 +9,12 @@ public class DepositVO {
 	private String deposit_product_name; // 예금상품이름
 	private String account_id; // 계좌번호
 	private Date deposit_joinDate; // 예금가입날짜
-	private int deposit_state; // 예금상태
+	private int deposit_state; // 예금상태  0:신청 1:승인 2:해지 
 	private Float deposit_rate; // 예금금리
 	private int deposit_type; // 예금종류(복/단)
 	private int deposit_balance; // 예치금액
 	private Date deposit_endDate; // 만기일
-	private int account_bankCode; // 은행 코드 0:미기재 1: 신한 2:국민 3:우리 4: 기업 5: 하나
+	private int account_bankCode; // 
 
 	public int getDeposit_id() {
 		return deposit_id;

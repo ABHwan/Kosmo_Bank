@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
@@ -13,6 +14,7 @@ import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.NoticeVO;
+import com.spring.bank.user.vo.TransferVO;
 import com.spring.bank.user.vo.UserVO;
 import com.spring.bank.user.vo.faqVO;
 
@@ -106,6 +108,31 @@ public interface AdminDAO {
 	// 관리자 페이지 펀드 상품 삭제
 	public int deleteFundProduct(String fund_title);	
 	
+	//지현
+	// 관리자 페이지 연금 상품 등록
+	public int insertIrpProduct(IrpProductVO vo);
+	
+	// 관리자 페이지 연금 상품 수
+	public int getIrpProductCnt(); 
+	
+	// 관리자 페이지 연금 상품 조회
+	public ArrayList<IrpProductVO> selectIrpProduct(Map<String, Object> map);
+
+	// 관리자 페이지 연금 상품 수(검색결과수)
+	public int getIrpProductSearchCnt(String search);
+	
+	// 관리자 페이지 연금 상품 검색(입력받아서 검색)
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map);
+	
+	// 관리자 페이지 연금 상품 상세조회
+	public IrpProductVO getIrpProductInfo(String deposit_product_name);
+	
+	// 관리자 페이지 연금 상품 수정
+	public int updateIrpProduct(IrpProductVO vo);
+	
+	// 관리자 페이지 연금 상품 삭제
+	public int deleteIrpProduct(String irp_product_name);
+		
 	//문의사항 갯수 (지현)
 	public int getInquiryCnt();
 	
@@ -145,43 +172,81 @@ public interface AdminDAO {
 	// 관리자 페이지 TEST 계좌 생성(복환)
 	public int insertTestAccount(AccountVO vo);
 
-	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
+	// !지은!
+	// 대출 상품 개수
+	public int getLoanProductCnt();
 
-	public int getLoanCancelCnt();
-
-	public ArrayList<LoanVO> searchLoanList(Map<String, Object> map);
-
-	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);
-
-	public int getSearchLoanCnt(String keyword);
-
-	public int getSearchLoanRequestCnt(String keyword);
-
-	public int loanRequestAction(Map<String, Object> map);
-
-	public int getLoanRequestCnt();
-
-	public int getLoanCnt();
-
-	public int getSearchLoanProductCnt(String keyword);
-
-	public ArrayList<LoanVO> getLoanRequestList(Map<String, Object> map);
-
-	public ArrayList<LoanVO> getLoanList(Map<String, Object> map);
-
-	public LoanProductVO getLoanProductInfo(String loan_product_name);
-
-	public int loanProductDelete(String loan_product_name);
-
-	public int loanProductUpdate(LoanProductVO l);
-
-	public int loanProductInsert(LoanProductVO l);
-
-	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
-
+	// 대출 상품 목록
 	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
 
-	public int getLoanProductCnt(); 
+	// 대출 상품 검색
+	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
+
+	// 대출 상품 추가
+	public int loanProductInsert(LoanProductVO l);
+
+	// 대출 상품 수정
+	public int loanProductUpdate(LoanProductVO l);
+
+	// 대출 상품 삭제
+	public int loanProductDelete(String loan_product_name);
+
+	// 대출 상품 조회
+	public LoanProductVO getLoanProductInfo(String loan_product_name);
+
+	// 대출 상품 검색 개수
+	public int getSearchLoanProductCnt(String keyword);
+
+	// 대출 목록 개수
+	public int getLoanCnt();
+
+	// 대출 요청 목록 개수
+	public int getLoanRequestCnt();
+
+	// 대출 목록
+	public ArrayList<LoanVO> getLoanList(Map<String, Object> map);
+
+	// 대출 요청 목록
+	public ArrayList<LoanVO> getLoanRequestList(Map<String, Object> map);
+	
+	// 대출 신청 승인 처리
+	public int loanRequestAction(Map<String, Object> map);
+
+	// 대출 신청 검색 개수
+	public int getSearchLoanRequestCnt(String keyword);
+	
+	// 대출 검색 개수
+	public int getSearchLoanCnt(String keyword);
+
+	// 대출 요청 검색 목록
+	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);
+
+	// 대출 검색 목록
+	public ArrayList<LoanVO> searchLoanList(Map<String, Object> map);
+
+	// 대출 해지? 목록
+	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
+
+	// 대출 해지 개수
+	public int getLoanCancelCnt();
+
+	// 대출 정보 얻어오기
+	public LoanVO getLoanInfo(Map<String, Object> map);
+
+	// 신규 대출 요금 계좌에 넣기
+	public int transNewLoanAccount(TransferVO trans);
+
+	// 계좌 잔고 올려주기
+	public int setNewLoanAccount(Map<String, Object> map);
+
+	// 입금 정정
+	public TransferVO resetNewLoanAccount(Map<String, Object> map);
+
+	// 회원 정보 가져오기
+	public UserVO getUserInfo(String member_id);
+	
+
+	// !지은!
 	
 	// 공지사항 쓰기 처리(민재)
 	public int mngNoticeWriteAction(NoticeVO vo);

@@ -12,162 +12,129 @@
 </head>
 <body>
 
-<div class="wrapper">
-	<jsp:include page="/WEB-INF/views/include/header.jsp" />
-	
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-		<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
-	</sec:authorize>
-	<sec:authorize access="hasRole('ROLE_USER')">
-		<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />		
-	</sec:authorize>
+	<div class="wrapper">
+		<jsp:include page="/WEB-INF/views/include/header.jsp" />
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<jsp:include page="/WEB-INF/views/include/mngSidebar.jsp" />
+		</sec:authorize>
+		<sec:authorize access="hasRole('ROLE_USER')">
+			<jsp:include page="/WEB-INF/views/include/sidebar.jsp" />		
+		</sec:authorize>
+		
 		<!-- 메인 폼-->
 		<div class="main-panel">
 			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-							<h4 class="page-title"> 고객센터 </h4>
-							
-						<ul class="breadcrumbs">
-							<li class="nav-home">
-								<a href="#">
-									<i class="flaticon-home"></i>
-								</a>
-							</li>
-							<li class="separator">
-								<i class="flaticon-right-arrow"></i>
-							</li>
-							<li class="nav-item">
-								<a href="#">공지사항</a>
-							</li>
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<li class="separator">
-								<i class="flaticon-right-arrow"></i>
-							</li>
-							<li class="nav-item">
-								<a href="#">공지사항관리</a>
-							</li>
-							</sec:authorize>
-							
-						</ul>
+				<div class="panel-header bg-primary-gradient" style="height: 300px;">
+					<div class="page-inner py-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h1 class="text-white pb-2 fw-bold">KOSMO BANK</h1> <br/>
+								<h2 class="text-white op-7 mb-2">KOSMO BANK에 오신 것을 환영합니다.<br/>
+									저희는 고객님의 <strong>자산관리</strong>를 효율적이고, 안전하게 도와드립니다. </br>
+									또한 <strong>오픈뱅킹</strong> 서비스를 활용하여 보다 편리하게 통합하여 금융상품을 이용하실 수 있습니다.</h2>
+							</div>
+						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card">
-								<div class="card-header">
-								<sec:authorize access="hasRole('ROLE_ADMIN')">
-									<h4 class="card-title">공지사항</h4>
-								</sec:authorize>
-								</div>
-								<div class="card-body">
-									<div class="table-responsive">
-										<!-- 관리자 공지사항 -->
-									<sec:authorize access="hasRole('ROLE_ADMIN')">
-										<table id="basic-datatables" class="display table table-striped table-hover" >
-											<thead>
-												<tr>
-													<th style="width:15%"> 글번호 </th>
-													<th style="width:45%"> 글제목 </th>
-													<th style="width:10%"> 작성자 </th>
-													<th style="width:15%"> 작성일 </th>
-													<th style="width:10%"> 조회수 </th>
-												</tr>
-											</thead>
-											<tbody>
-												<!-- 게시글이 있으면 -->
-												<c:if test="${cnt>0}">
-													<c:forEach var="vo" items="${list}">
-														<tr>
-															<td> ${number} 
-																<c:set var="number" value="${number -1 }" />
-															</td>									
-															<td> 
-																<a href="../customer/noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
-																	${vo.notice_subject}
-																</a>
-															</td>
-															<td> ${vo.notice_writer} </td>
-															<td> 
-																<fmt:formatDate pattern="yyyy-MM-dd" value="${vo.notice_date}"/>
-															</td>
-															<td> ${vo.notice_readCnt} </td>
-														</tr>
-													</c:forEach> 
-												</c:if>
-												<tr>
-													<td colspan="5">
-														조회수는 고객이 눌렀을 때만 작동합니다.
-													</td>
-												</tr>
-											</tbody>
-											<!-- 게시글이 없으면 -->
-											<tbody>
-												<c:if test="${cnt==0}">
-													<tr>
-														<td colspan="5" align="center">
-															게시글이 없습니다. 글을 작성해주세요!!
-														</td>
-													</tr>
-												</c:if>
-											</tbody>
-										</table>
-										
-										<button class="btn btn-primary" type="button" onclick="location.href='${mngPath}mngNoticeWrite?pageNum=${pageNum}'"> 글쓰기 </button>
-									</sec:authorize>
+				</div>
+				
+				<div class="notice">
+					<!-- 관리자 공지사항 -->
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<table border="1" style="width:1000px; align:center">
+							<tr>
+								<th style="width:15%"> 글번호 </th>
+								<th style="width:45%"> 글제목 </th>
+								<th style="width:15%"> 작성자 </th>
+								<th style="width:15%"> 작성일 </th>
+								<th style="width:5%"> 조회수 </th>
+							</tr>
+							
+							<!-- 게시글이 있으면 -->
+							<c:if test="${cnt>0}">
+								<c:forEach var="vo" items="${list}">
+									<tr>
+										<td> ${number} 
+											<c:set var="number" value="${number -1 }" />
+										</td>									
+										<td> 
+											<a href="../customer/noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
+												${vo.notice_subject}
+											</a>
+										</td>
+										<td> ${vo.notice_writer} </td>
+										<td> 
+											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
+										</td>
+										<td> ${vo.notice_readCnt} </td>
+									</tr>
+								</c:forEach> 
+							</c:if>
+							
+							<!-- 게시글이 없으면 -->
+							<c:if test="${cnt==0}">
+								<tr>
+									<td colspan="5" align="center">
+										게시글이 없습니다. 글을 작성해주세요!!
+									</td>
+								</tr>
+							</c:if>
+						</table>
+						
+						<button type="button" onclick="location.href='${mngPath}mngNoticeWrite?pageNum=${pageNum}'"> 글쓰기 </button>
+					</sec:authorize>
 					
-									<!-- 고객 공지사항 -->
-									<sec:authorize access="hasRole('ROLE_USER')">
-										<table id="basic-datatables" class="display table table-striped table-hover" >
-											<thead>
-												<tr>
-													<th style="width:15%"> 글번호 </th>
-													<th style="width:55%"> 글제목 </th>
-													<th style="width:15%"> 작성일 </th>
-												</tr>
-											</thead>
-											<!-- 게시글이 있으면 -->
-											<tbody>
-												<c:if test="${cnt>0}">
-													<c:forEach var="vo" items="${list}">
-														<tr>
-															<td> ${number} 
-																<c:set var="number" value="${number -1 }" />
-															</td>									
-															<td> 
-																<a href="noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
-																	${vo.notice_subject}
-																</a>
-															</td>
-															<td> 
-																<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
-															</td>
-														</tr>
-													</c:forEach>
-												</c:if>
-											</tbody>
-											<!-- 게시글이 없으면 -->
-											<c:if test="${cnt==0}">
-												<tr>
-													<td colspan="3" align="center">
-														공지사항 게시글이 없습니다.
-													</td>
-												</tr>
-											</c:if>
-										</table>
-									</sec:authorize>
-									
-									<!-- 페이지 컨트롤 -->
-									<table style="width:1000px; align:center">
-								    	<tr>
-								        	<th align="center">
-								            	<!-- 게시글이 있으면 -->
-								            	<c:if test="${cnt > 0}">
-								            		<!-- 처음[◀◀] / 이전블록[◀]  -->
-								            		<c:if test="${startPage > pageBlock}">
-								            			<a href="${custPath}noticeList.do"> [◀◀] </a>
-								            			<a href="${custPath}noticeList.do?pageNum=${startPage - pageBlock}"> [◀] </a>
-								            		</c:if>
-								            		
+					<!-- 고객 공지사항 -->
+					<sec:authorize access="hasRole('ROLE_USER')">
+						<table border="1" style="width:1000px; align:center">
+							<tr>
+								<th style="width:15%"> 글번호 </th>
+								<th style="width:55%"> 글제목 </th>
+								<th style="width:15%"> 작성일 </th>
+							</tr>
+							
+							<!-- 게시글이 있으면 -->
+							<c:if test="${cnt>0}">
+								<c:forEach var="vo" items="${list}">
+									<tr>
+										<td> ${number} 
+											<c:set var="number" value="${number -1 }" />
+										</td>									
+										<td> 
+											<a href="noticeDetail.do?notice_num=${vo.notice_num}&pageNum=${pageNum}&number=${number +1}">
+												${vo.notice_subject}
+											</a>
+										</td>
+										<td> 
+											<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${vo.notice_date}"/>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:if>
+							
+							<!-- 게시글이 없으면 -->
+							<c:if test="${cnt==0}">
+								<tr>
+									<td colspan="3" align="center">
+										공지사항 게시글이 없습니다.
+									</td>
+								</tr>
+							</c:if>
+						</table>
+					</sec:authorize>
+					
+					<!-- 페이지 컨트롤 -->
+					<table style="width:1000px" align="center">
+				    	<tr>
+				        	<th align="center">
+				            	<!-- 게시글이 있으면 -->
+				            	<c:if test="${cnt > 0}">
+				            		<!-- 처음[◀◀] / 이전블록[◀]  -->
+				            		<c:if test="${startPage > pageBlock}">
+				            			<a href="noticeList.do"> [◀◀] </a>
+				            			<a href="noticeList.do?pageNum=${startPage - pageBlock}"> [◀] </a>
+				            		</c:if>
+				            		
 				            		<!-- 블록내의 페이지번호 -->
 				            		<c:forEach var="i" begin="${startPage}" end="${endPage}">
 				            			<c:if test="${i == currentPage}">
@@ -175,14 +142,14 @@
 				            			</c:if>
 				            			
 				            			<c:if test="${i != currentPage}">
-				            				<a href="${custPath}noticeList.do?pageNum=${i}"> [${i}] </a>
+				            				<a href="noticeList.do?pageNum=${i}"> [${i}] </a>
 				            			</c:if>
 				            		</c:forEach>
 				            		
 				            		<!-- 다음블록[▶] / 마지막[▶▶]  -->
 				            		<c:if test="${pageCount > endPage}">
-				            			<a href="${custPath}noticeList.do?pageNum=${startPage + pageBlock}"> [▶] </a>
-				            			<a href="${custPath}noticeList.do?pageNum=${pageCount}"> [▶▶] </a>
+				            			<a href="noticeList.do?pageNum=${startPage + pageBlock}"> [▶] </a>
+				            			<a href="noticeList.do?pageNum=${pageCount}"> [▶▶] </a>
 				            		</c:if>
 				            	</c:if>
 				        	</th>
@@ -192,8 +159,8 @@
 			</div>
 		</div>
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+		</div>
 	</div>
-</div>
 
 	
 	<!--   Core JS Files   -->

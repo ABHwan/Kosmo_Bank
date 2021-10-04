@@ -212,6 +212,61 @@
 	</delete>
 		
 	<!-- 진지현 작성 -->
+	
+	<!-- 관리자 페이지 연금 상품 등록 -->
+	<insert id="insertIrpProduct" parameterType="com.spring.bank.product.vo.IrpProductVO">
+		INSERT INTO irp_product(irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_expiryTerm, irp_product_explanation,irp_product_money, irp_product_notice, irp_product_bankCode)
+		VALUES(#{irp_product_name}, #{irp_product_summary}, sysdate, #{irp_product_interRate}, #{irp_product_expiryTerm}, #{irp_product_explanation}, #{irp_product_money},#{irp_product_notice}, #{irp_product_bankCode})
+	</insert>
+	
+	<!-- 관리자 페이지연금 상품 수 -->
+	<select id="getIrpProductCnt" resultType="int">
+		SELECT COUNT(*) as cnt FROM irp_product
+	</select> 
+	
+	<!-- 관리자 페이지 연금 상품 조회 -->
+	<select id="selectIrpProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.IrpProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_expiryTerm, irp_product_explanation,irp_product_money, irp_product_notice, irp_product_bankCode, rowNum rNum 
+				FROM (SELECT * FROM irp_product ORDER BY irp_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select> 
+	
+	<!-- 관리자 페이지 연금 상품 수(검색결과수)  -->
+	 <select id="getIrpProductSearchCnt" parameterType="String" resultType="int">
+		<![CDATA[ 
+		SELECT COUNT(*) as cnt FROM irp_product WHERE irp_product_name LIKE '%'||#{search}||'%'
+		]]>
+	</select>
+	 
+	<!-- 관리자 페이지 연금 상품 검색(입력받아서 검색) -->
+	 <select id="searchIrpProduct" parameterType="java.util.Map" resultType="com.spring.bank.product.vo.IrpProductVO">
+		<![CDATA[
+		SELECT * FROM
+			(SELECT irp_product_name, irp_product_summary, irp_product_date, irp_product_interRate, irp_product_expiryTerm, irp_product_explanation,irp_product_money, irp_product_notice, irp_product_bankCode, rowNum rNum 
+				FROM (SELECT * FROM irp_product WHERE irp_product_name LIKE '%'||#{search}||'%' ORDER BY irp_product_date DESC)
+			) WHERE rNum >= #{start} and rNum <= #{end}
+		]]>	
+	</select>
+	 
+	<!-- 관리자 페이지 연금 상품 상세조회 -->
+	<select id="getIrpProductInfo" parameterType="String" resultType="com.spring.bank.product.vo.IrpProductVO">
+		SELECT * FROM irp_product WHERE irp_product_name=#{irp_product_name}
+	</select>
+	
+	<!-- 관리자 페이지 연금 상품 수정 -->
+	 <update id="updateIrpProduct" parameterType="com.spring.bank.product.vo.IrpProductVO">
+		UPDATE irp_product SET irp_product_summary=#{irp_product_summary}, irp_product_interRate=#{irp_product_interRate}, irp_product_expiryTerm=#{irp_product_expiryTerm}, irp_product_explanation=#{irp_product_explanation},irp_product_money=#{irp_product_money}, irp_product_notice=#{irp_product_notice}, irp_product_bankCode=#{irp_product_bankCode}
+			WHERE irp_product_name=#{irp_product_name}
+	</update> 
+	
+	<!-- 관리자 페이지 연금 상품 삭제 -->
+ 	<delete id="deleteIrpProduct" parameterType="String">
+		DELETE FROM irp_product WHERE irp_product_name IN ( #{irp_product_name} )
+	</delete> 
+	
 	<!-- 문의사항 갯수 -->
 	<select id="getInquiryCnt" resultType="int" >
 		SELECT COUNT(*) as cnt FROM inquiry
@@ -301,11 +356,12 @@
 	
 	<!-- 관리자 TEST 계좌 생성(복환) -->
     <insert id="insertTestAccount" parameterType="com.spring.bank.user.vo.AccountVO">
-    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked)
-		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0)
+    	INSERT INTO account(account_bankCode, account_id, account_password, account_balance, account_type, account_state, account_stateContent, account_limit, account_newDate, unique_key, account_default, account_linked, account_bankImg)
+		VALUES(#{account_bankCode}, #{account_id}, #{account_password}, #{account_balance}, #{account_type}, #{account_state}, #{account_stateContent}, #{account_limit}, sysdate, #{unique_key}, 0, 0, #{account_bankImg})
     </insert>
 
-	<!-- 지은 -->
+		<!-- 지은 -->
+	
 	<!-- 대출 상품 개수 -->
 	<select id="getLoanProductCnt" resultType="int">
 		SELECT COUNT(*) FROM loan_product
@@ -621,6 +677,60 @@
 			   AND rNum <= #{end}
 		]]>
     </select>
+    
+    <!-- 대출 정보 가져오기 -->
+	<select id="getLoanInfo" parameterType="java.util.Map" resultType="com.spring.bank.user.vo.LoanVO">
+   		<![CDATA[
+	    	SELECT * 
+			  FROM loan
+			 WHERE loan_id = #{loan_id} 
+		]]>
+    </select>
+    
+    <!-- 대출 승인 후 대출 계좌에 대출금 이체 -->
+	<insert id="transNewLoanAccount" parameterType="com.spring.bank.user.vo.TransferVO">
+		INSERT INTO transfer(transfer_id
+		                     , account_id
+		                     , transfer_senderAccount
+		                     , transfer_money
+		                     , transfer_inOut
+		                     , transfer_inOutDate 
+		                     , transfer_inComment
+		                     , transfer_senderName
+		                     , transfer_receiverName
+		                     , transfer_bankCode
+							)
+		VALUES(transfer_seq.nextval
+		       , #{account_id}
+		       , #{account_id}
+		       , #{transfer_money}
+		       , #{transfer_inOut}
+			   , SYSDATE 
+			   , #{transfer_inComment}
+			   , #{transfer_senderName}
+			   , #{transfer_receiverName}
+			   , #{transfer_bankCode}
+			  )
+	</insert>    
+	
+    <!-- 대출 승인 후 대출 계좌에 대출금 이체 취소 -->
+	<delete id="resetNewLoanAccount" parameterType="java.util.Map">
+		DELETE transfer WHERE transfer_inComment LIKE '%'||#{transfer_inComment}||'%'
+	</delete>
+	
+	<!-- 대출 계좌 잔고에 돈 넣어주기 -->
+	<update id="setNewLoanAccount" parameterType="java.util.Map">
+		UPDATE account
+		   SET account_balance = account_balance + #{loan_amount}
+         WHERE account_id = #{account_id}
+	</update>
+	
+	
+    <!-- 회원정보 상세 페이지 -->
+    <select id="getUserInfo" parameterType="String" resultType="com.spring.bank.user.vo.UserVO">
+    	SELECT * FROM members WHERE member_id = #{member_id}
+    </select>
+    
 	<!-- 지은 -->
 	
 	<!-- 공지사항 쓰기 처리(민재) -->
@@ -631,7 +741,7 @@
 	
 	<!-- 공지사항 - 비밀번호 인증(민재) -->
 	<select id="noticePWDCheck" parameterType="int" resultType="String">
-		SELECT notice_password FROM NOTICE WHERE notice_num = #{notice_num}
+	   SELECT notice_password FROM NOTICE WHERE notice_num = #{notice_num}
 	</select>
 	
 	<!-- 공지사항 상세페이지(민재) -->

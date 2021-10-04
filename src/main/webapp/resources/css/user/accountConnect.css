@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+
+.wrap {
+    text-align: -webkit-center;
+}
+
+.card {
+}
+
+.card-title {
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    margin-right: 170px;
+}
+
+.main {
+    font-size: 25px !important;
+    font-weight: 600 !important;
+}
+
+.card-body {
+	align-self: center;
+	width:100%;
+}
+
+.table-hover {
+	text-align: center;
+}
+
+.bank-td {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    height: 100px !important;
+}
+
+.btn-td {
+	text-align: left;
+}
+
+.bankImg {
+	width: 50px;
+	height: 50px;
+	box-shadow: 1px 1px lightgrey;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+}
+
+.bankname {
+	padding-left: 15px;
+	font-size: 20px;
+}
+
+.btn-xs {
+	background-color: #00800061 !important;
+	border: none;
+	font-size: 14px;
+}
+
+.account-add-wrap {
+	
+}
+
+.account-add {
+	color:green;
+	font-weight:800;
+	font-size:18px;
+}
+
+.btn-icon.btn-xs {
+    height: 30px;
+    min-width: 30px;
+    width: 30px;
+    top: -3px;
+    left: -5px;
+}
+

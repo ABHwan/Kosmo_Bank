@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -52,6 +53,13 @@ public class CustomerController {
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
 		// service.exchanges(req, model);
+		
+		// 로그인 시 계좌 불러오기
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		if(member_id != null) {
+			service.accountLoad(req, model);
+		}
+		
 		return "index";
 	}
 	
@@ -384,20 +392,68 @@ public class CustomerController {
          
          System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
          
-         //연금 상품  insert
+         //예금 상품  insert
          service.insertDeposit(req, model);
          
 		return "customer/depositProduct/depositAction";
 	}
 	
-	//연금 상품 목록 
+	//연금 상품 목록 (지현)
 	@RequestMapping("irpProductList.do")
 	public String irpProductList(HttpServletRequest req, Model model) {
 		logger.info("url => irpProductList");
 		
+		service.irpList(req, model);
 		
 		return "customer/irp/irpProductList";
 	}
+	
+	//연금 상품검색(지현) - 고객
+	@RequestMapping("irpProductSearch.do")
+	public String irpProductSearch(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /irpProductSearch]");
+		
+		service.irpProductSearch(req, model);
+		
+		return "customer/irp/irpProductSearch";
+	}
+	
+	//연금 상품 상세 보기 (지현) -고객
+	@RequestMapping("irpDetail.do")
+	public String irpDetail(HttpServletRequest req, Model model) {
+		logger.info("url => irpDetail");
+		
+		service.irpDetail(req, model);
+		
+		return "customer/irp/irpDetail";
+	}
+	
+	//연금 상품 신청화면(지현) - 고객
+	@RequestMapping("irpProductJoin")
+	public String irpProductAction(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductJoin");
+		
+		service.irpProductJoin(req, model);
+		
+		return "customer/irp/irpProductJoin";
+	}	
+	
+	//연금 상품 신청 화면에서 확인 눌렀을때 -> account 계좌 생성 & irp 테이블에 insert(지현)
+	@RequestMapping("irpProductAction")
+	public String irpAccess(HttpServletRequest req, Model model) {
+		logger.info("url => irpProductAction");
+	      
+		 //계좌개설 insert account
+         service.makeAccount(req, model);
+         
+         System.out.println("계좌 개설 후 예금 테이블 insert service go ======");
+         
+         //연금 상품  insert
+         service.insertIrp(req, model);
+         
+		return "customer/irp/irpAction";
+	}
+		
 
 	//적금 상품 조회(지호) - 고객
 	@RequestMapping("savingList")
@@ -664,13 +720,15 @@ public class CustomerController {
 
 		return "customer/bank/account_confirm";
 	}
+	
 	//!!!!!!!!!!지은!!!!!!!!!!!
 
-	// 대출중인 상품 목록
+
+	// 대출 상환 목록
 	@RequestMapping("loanHistoryList.do")
 	public String loanHistoryList(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanHistoryList]");
-		service.loanHistoryList(req, model);
+		//service.loanHistoryList(req, model);
 		return "customer/loan/loanHistoryList";
 	}
 	
@@ -717,12 +775,28 @@ public class CustomerController {
 		logger.info("[url ==> /loanPrincipalList]");
 		return "customer/loan/loanPrincipalList";
 	}
+	
+	// 대출 상환 상세
+	@RequestMapping("loanPrincipalRateList.do")
+	public String loanPrincipalRateList(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalRateList]");
+		service.loanPrincipalRateList(req, model);
+		return "customer/loan/loanPrincipalRateList";
+	}
 
 	// 대출 원금 상세
 	@RequestMapping("loanPrincipalDetail.do")
 	public String loanPrincipalDetail(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanPrincipalDetail]");
 		return "customer/loan/loanPrincipalDetail";
+	}
+
+	// 대출 원금 납부
+	@RequestMapping("loanPrincipalRatePayment.do")
+	public String loanPrincipalRatePayment(HttpServletRequest req, Model model) {
+		logger.info("[url ==> /loanPrincipalRatePayment]");
+		service.loanPaymentDetail(req, model);
+		return "customer/loan/loanPrincipalRatePayment";
 	}
 
 	// 대출 원금 납부
@@ -770,14 +844,23 @@ public class CustomerController {
 		return "customer/loan/newLoanDetail";
 	}
 
-	// 신규대출
+	// 신규대출폼
 	@RequestMapping("newLoanSign.do")
 	public String newLoanSign(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /newLoanSign]");
+		service.signInfo(req, model);
 		return "customer/loan/newLoanSign";
 	}
+	
+	// 신규대출신청
+	@RequestMapping("newLoanSignAction.do")
+	public String newLoanSignAction(HttpServletRequest req, Model model) throws ParseException {
+		logger.info("[url ==> /newLoanSign]");
+		service.newLoanSignAction(req, model);
+		return "customer/loan/newLoanSignAction";
+	}
 
-	// 신규대출
+	// 대출약관
 	@RequestMapping("terms.do")
 	public String terms(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /terms]");
@@ -790,7 +873,6 @@ public class CustomerController {
 		service.searchLoanProductList(req, model);
 		return "customer/loan/searchLoanProductList";
 	}
-
 	//!!!!!!!!!!지은!!!!!!!!!!!
 
 	// 회원 자동 이체(유성)
@@ -949,5 +1031,21 @@ public class CustomerController {
 		service.deleteAccountBook(req, model);
 		
 		return "redirect:accountBook";
+	}
+	
+	// 계좌연동
+	@RequestMapping("myAccountList")
+	public String myAccountList(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/myAccountList";
+	}
+	
+	// 계좌연동
+	@RequestMapping("accountConnect")
+	public String accountConnect(HttpServletRequest req, Model model) {
+		
+		
+		return "customer/bank/accountConnect";
 	}
 }

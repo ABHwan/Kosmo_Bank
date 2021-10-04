@@ -106,7 +106,7 @@
 																<p>중도상환수수료 요율 : ${p.loan_product_prepaymentRate}%</p>
 															</details></td>
 														<td>
-															<button onclick="signBtn(${p.loan_product_name});" class="btn btn-primary btn-xs">대출 신청</button>
+															<button type="button" onclick="window.location='newLoanSign.do?loan_product_name=${p.loan_product_name}'" class="btn btn-primary btn-xs">대출 신청</button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -167,13 +167,6 @@
 	</div>
 
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
-
-	<script type="text/javascript">
-		function signBtn(name) {
-			var loan_name = document.querySelector('input[name="loan_product_name"]');
-			loan_name.value = name;
-		}
-	</script>
 
 	<!--   Core JS Files   -->
 	<script src="${rePath}js/core/jquery.3.2.1.min.js"></script>

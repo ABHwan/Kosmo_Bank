@@ -1,19 +1,23 @@
 package com.spring.bank.user.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
 import com.spring.bank.product.vo.FundProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
+import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanHistoryVO;
 import com.spring.bank.user.vo.LoanProductVO;
+import com.spring.bank.user.vo.LoanVO;
 import com.spring.bank.user.vo.MyDepositVO;
 import com.spring.bank.user.vo.MyIRPVO;
 import com.spring.bank.user.vo.MySavingVO;
@@ -104,7 +108,25 @@ public interface CustomerDAO {
 
 	// 예금 상품 상세 보기
 	public DepositProductVO getDepositDetail(String deposit_product_name);
+	
+	// 연금 상품갯수
+	public int getIrpCnt();
 
+	// 연금 상품 조회
+	public List<IrpProductVO> getIrpList(Map<String, Integer> map);
+	
+	// 연금 상품 수(검색결과수)
+	public int getIrpProductSearchCnt(String search);
+	
+	// 연금 상품 검색(입력받아서 검색)
+	public ArrayList<IrpProductVO> searchIrpProduct(Map<String, Object> map);
+	
+	// 연금 상품 상세 보기
+	public IrpProductVO getIrpDetail(String irp_product_name);
+
+	//연금 상품 신청하기 
+//	public int irpInsert(IrpProductVO vo);
+	
 	// 적금 상품갯수
 	public int getSavingCnt();
 
@@ -144,7 +166,7 @@ public interface CustomerDAO {
 	//예금 신청 처리 insert 
 	public int insertDeposit(DepositVO vo);
 	
-	//멤버의 unique_key가져오기 
+	//멤버의 unique_key가져오기
 	public String getUniqueKey(String id);
 	
 	//예금 신청 시 계좌 생성
@@ -200,27 +222,35 @@ public interface CustomerDAO {
 
 	public ArrayList<LoanProductVO> loanList();
 
+	public Date getLoanDate();
+	
+	public ArrayList<LoanVO> getLoanCancelList(Map<String, Object> map);
+
 	public int getLoanCancelCnt(String member_id);
-
-	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
-
-	public int getLoanCnt(String member_id);
-
-	public int getLoanProductCnt();
-
-	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
 
 	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map);
 
-	public int getSearchLoanProductCnt(String keyword);
+	public int getLoanCnt(Map<String, Object> map);
 
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
+
+	public int getSearchLoanProductCnt(String keyword);
+
+	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
+
+	public int getLoanProductCnt();
 
 	public LoanProductVO getLoanProductInfo(String loan_product_name);
 
 	public ArrayList<LoanHistoryVO> getLoanHistoryList(Map<String, Object> map);
 
-	public int getLoanHistoryCnt(String member_id);	
+	public int getLoanHistoryCnt(String member_id);
+
+	public ArrayList<AccountVO_old> loanAccountInfo(String member_id);
+
+	public int newLoanSignAction(LoanVO loan);
+
+	public LoanVO getLoanInfo(Map<String, Object> map);
 
 	// 회원이름 불러오기(민재)
 	public String getName(String strId);
@@ -251,4 +281,22 @@ public interface CustomerDAO {
 	
 	// 공지사항 상세 페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);
+	
+	// 대표 계좌 불러오기
+	public AccountVO getAccountDefault(String unique_key);
+	
+	// 계좌 불러오기(연동 O)
+	public List<AccountVO> getAccountLinked(String unique_key);
+	
+	// 계좌 불러오기(연동 X)
+	public List<AccountVO> getAccountUnLinked(String unique_key);
+	
+	// 계좌 연동하기
+	public int accountLinkAction(Map<String, Object> map);
+	
+	// 계좌 연동해지
+	public int accountUnLinkAction(Map<String, Object> map);
+
+	// 대표 계좌 설정
+	
 }

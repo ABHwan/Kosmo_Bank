@@ -79,11 +79,11 @@
 											<span class="sub-item">회원 한도 승인</span>
 										</a>
 									</li>									
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item">비밀번호 변경</span>
+									 <li>
+										<a href="bankingAccept">
+											<span class="sub-item">금융상품 승인 / 거절</span>
 										</a>
-									</li> -->
+									</li> 
 									<!-- <li>
 										<a href="#">
 											<span class="sub-item">고객 상품가입 목록</span>
@@ -115,11 +115,6 @@
 											<span class="sub-item"> 조회</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="#">
-											<span class="sub-item"> 수정</span>
-										</a>
-									</li> -->
 								</ul>
 							</div>
 						</li>
@@ -168,33 +163,23 @@
 						</li>
 						
 						<li class="nav-item">
-							<a data-toggle="collapse" href="#tables">
+							<a data-toggle="collapse" href="#irp">
 								<i class="fas fa-coins"></i>
 								<p>연금관리</p>
 								<span class="caret"></span>
 							</a>
-							<div class="collapse" id="tables">
+							<div class="collapse" id="irp">
 								<ul class="nav nav-collapse">
-									<!-- <li>
-										<a href="#">
+									<li>
+										<a href="irpProductInsert">
 											<span class="sub-item"> 등록</span>
 										</a>
 									</li>
 									<li>
-										<a href="#">
-											<span class="sub-item"> 삭제</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
+										<a href="IrpProductList">
 											<span class="sub-item"> 조회</span>
 										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="sub-item"> 수정</span>
-										</a>
-									</li>					 -->				
+									</li>									
 								</ul>
 							</div>
 						</li>
@@ -302,7 +287,7 @@
 							</div>
 						</li>
 						
-						
+						</ul>
 					</div>
 				</div>
 			</div>

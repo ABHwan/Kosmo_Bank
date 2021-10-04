@@ -5,18 +5,21 @@ import java.sql.Timestamp;
 
 public class LoanJoinVO {
 	//AccountVO
-	private String account_id;
-	private int account_password;
-	//private String member_id; fk
-	private int account_balance;
-	private int account_type;
-	private int account_state;
-	private String account_stateContent;
-	private int account_limit;
-	private Date account_deleteDate;
-	private Date account_sleepDate;
-	private Date account_newDate;
-	private int account_bankCode;
+	int account_bankCode;
+	String account_id;
+	String account_password;
+	//String member_id;
+	int account_balance;
+	int account_type;
+	int account_state;
+	String account_stateContent;
+	int account_limit;
+	Date account_deleteDate;
+	Date account_sleepDate;
+	Date account_newDate;
+	//String unique_key;
+	int account_default;
+	int account_linked;
 	//AccountVO
 	
 	//UserVO
@@ -34,9 +37,7 @@ public class LoanJoinVO {
     private int member_enabled;   		// 이메일 인증키
     private String member_authority; // 회원등급 코드
     
-    private String access_token;
-    private String refresh_token;
-    private String user_seq_no;
+    private String unique_key;
 	//UserVO
 
 	//Auto_TransferVO
@@ -57,22 +58,22 @@ public class LoanJoinVO {
 
 	//LoanVO
 	private int loan_id;
-	//private String loan_product_name; fk
-	//private String member_id; fk
-	//private String account_id; fk
+	//private String loan_product_name;
+	//private String member_id;
+	//private String account_id;
 	private int loan_state;
 	private Date loan_startDate;
 	private Date loan_endDate;
 	private int loan_month;
 	private int loan_repaymentType;
 	private float loan_rate;
-	private int loan_monthlyRepayment;
-	private int loan_amount;
-	private int loan_balance;
+	private long loan_monthlyRepayment;
+	private long loan_amount;
+	private long loan_balance;
 	private int loan_interest;
-	private int loan_tranAmount;
+	private long loan_tranAmount;
 	private int loan_tranInterest;
-	private int loan_delinquency;
+	private long loan_delinquency;
 	private float loan_prepaymentRate;
 	//LoanVO
 
@@ -102,12 +103,6 @@ public class LoanJoinVO {
 	}
 	public void setAccount_id(String account_id) {
 		this.account_id = account_id;
-	}
-	public int getAccount_password() {
-		return account_password;
-	}
-	public void setAccount_password(int account_password) {
-		this.account_password = account_password;
 	}
 	public int getAccount_balance() {
 		return account_balance;
@@ -241,23 +236,12 @@ public class LoanJoinVO {
 	public void setMember_authority(String member_authority) {
 		this.member_authority = member_authority;
 	}
-	public String getAccess_token() {
-		return access_token;
+
+	public String getUnique_key() {
+		return unique_key;
 	}
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
-	}
-	public String getRefresh_token() {
-		return refresh_token;
-	}
-	public void setRefresh_token(String refresh_token) {
-		this.refresh_token = refresh_token;
-	}
-	public String getUser_seq_no() {
-		return user_seq_no;
-	}
-	public void setUser_seq_no(String user_seq_no) {
-		this.user_seq_no = user_seq_no;
+	public void setUnique_key(String unique_key) {
+		this.unique_key = unique_key;
 	}
 	public int getAuto_id() {
 		return auto_id;
@@ -373,22 +357,23 @@ public class LoanJoinVO {
 	public void setLoan_rate(float loan_rate) {
 		this.loan_rate = loan_rate;
 	}
-	public int getLoan_monthlyRepayment() {
+	
+	public long getLoan_monthlyRepayment() {
 		return loan_monthlyRepayment;
 	}
-	public void setLoan_monthlyRepayment(int loan_monthlyRepayment) {
+	public void setLoan_monthlyRepayment(long loan_monthlyRepayment) {
 		this.loan_monthlyRepayment = loan_monthlyRepayment;
 	}
-	public int getLoan_amount() {
+	public long getLoan_amount() {
 		return loan_amount;
 	}
-	public void setLoan_amount(int loan_amount) {
+	public void setLoan_amount(long loan_amount) {
 		this.loan_amount = loan_amount;
 	}
-	public int getLoan_balance() {
+	public long getLoan_balance() {
 		return loan_balance;
 	}
-	public void setLoan_balance(int loan_balance) {
+	public void setLoan_balance(long loan_balance) {
 		this.loan_balance = loan_balance;
 	}
 	public int getLoan_interest() {
@@ -397,10 +382,10 @@ public class LoanJoinVO {
 	public void setLoan_interest(int loan_interest) {
 		this.loan_interest = loan_interest;
 	}
-	public int getLoan_tranAmount() {
+	public long getLoan_tranAmount() {
 		return loan_tranAmount;
 	}
-	public void setLoan_tranAmount(int loan_tranAmount) {
+	public void setLoan_tranAmount(long loan_tranAmount) {
 		this.loan_tranAmount = loan_tranAmount;
 	}
 	public int getLoan_tranInterest() {
@@ -409,8 +394,11 @@ public class LoanJoinVO {
 	public void setLoan_tranInterest(int loan_tranInterest) {
 		this.loan_tranInterest = loan_tranInterest;
 	}
-	public int getLoan_delinquency() {
+	public long getLoan_delinquency() {
 		return loan_delinquency;
+	}
+	public void setLoan_delinquency(long loan_delinquency) {
+		this.loan_delinquency = loan_delinquency;
 	}
 	public void setLoan_delinquency(int loan_delinquency) {
 		this.loan_delinquency = loan_delinquency;
@@ -511,23 +499,40 @@ public class LoanJoinVO {
 	public void setLoan_history_amount(int loan_history_amount) {
 		this.loan_history_amount = loan_history_amount;
 	}
-	
+	public String getAccount_password() {
+		return account_password;
+	}
+	public void setAccount_password(String account_password) {
+		this.account_password = account_password;
+	}
+	public int getAccount_default() {
+		return account_default;
+	}
+	public void setAccount_default(int account_default) {
+		this.account_default = account_default;
+	}
+	public int getAccount_linked() {
+		return account_linked;
+	}
+	public void setAccount_linked(int account_linked) {
+		this.account_linked = account_linked;
+	}
 	@Override
 	public String toString() {
-		return "LoanJoinVO [account_id=" + account_id + ", account_password=" + account_password + ", account_balance="
-				+ account_balance + ", account_type=" + account_type + ", account_state=" + account_state
-				+ ", account_stateContent=" + account_stateContent + ", account_limit=" + account_limit
-				+ ", account_deleteDate=" + account_deleteDate + ", account_sleepDate=" + account_sleepDate
-				+ ", account_newDate=" + account_newDate + ", account_bankCode=" + account_bankCode + ", member_id="
+		return "LoanJoinVO [account_bankCode=" + account_bankCode + ", account_id=" + account_id + ", account_password="
+				+ account_password + ", account_balance=" + account_balance + ", account_type=" + account_type
+				+ ", account_state=" + account_state + ", account_stateContent=" + account_stateContent
+				+ ", account_limit=" + account_limit + ", account_deleteDate=" + account_deleteDate
+				+ ", account_sleepDate=" + account_sleepDate + ", account_newDate=" + account_newDate
+				+ ", account_default=" + account_default + ", account_linked=" + account_linked + ", member_id="
 				+ member_id + ", member_password=" + member_password + ", member_name=" + member_name
 				+ ", member_birth=" + member_birth + ", member_hp=" + member_hp + ", member_email=" + member_email
 				+ ", member_zipcode=" + member_zipcode + ", member_addr1=" + member_addr1 + ", member_addr2="
 				+ member_addr2 + ", member_addr3=" + member_addr3 + ", member_indate=" + member_indate
-				+ ", member_enabled=" + member_enabled + ", member_authority=" + member_authority + ", access_token="
-				+ access_token + ", refresh_token=" + refresh_token + ", user_seq_no=" + user_seq_no + ", auto_id="
-				+ auto_id + ", auto_senderAccount=" + auto_senderAccount + ", auto_type=" + auto_type
-				+ ", auto_outDate=" + auto_outDate + ", auto_money=" + auto_money + ", auto_cycle=" + auto_cycle
-				+ ", auto_registDate=" + auto_registDate + ", auto_expirationDate=" + auto_expirationDate
+				+ ", member_enabled=" + member_enabled + ", member_authority=" + member_authority + ", unique_key="
+				+ unique_key + ", auto_id=" + auto_id + ", auto_senderAccount=" + auto_senderAccount + ", auto_type="
+				+ auto_type + ", auto_outDate=" + auto_outDate + ", auto_money=" + auto_money + ", auto_cycle="
+				+ auto_cycle + ", auto_registDate=" + auto_registDate + ", auto_expirationDate=" + auto_expirationDate
 				+ ", auto_cancle=" + auto_cancle + ", auto_inPlace=" + auto_inPlace + ", auto_status=" + auto_status
 				+ ", auto_lastDay=" + auto_lastDay + ", loan_id=" + loan_id + ", loan_state=" + loan_state
 				+ ", loan_startDate=" + loan_startDate + ", loan_endDate=" + loan_endDate + ", loan_month=" + loan_month
@@ -544,6 +549,8 @@ public class LoanJoinVO {
 				+ loan_history_id + ", transfer_id=" + transfer_id + ", loan_history_date=" + loan_history_date
 				+ ", loan_history_state=" + loan_history_state + ", loan_history_amount=" + loan_history_amount + "]";
 	}
+	 
+	
 	
 	
 }
