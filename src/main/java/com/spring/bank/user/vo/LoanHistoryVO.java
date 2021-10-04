@@ -7,7 +7,7 @@ public class LoanHistoryVO {
 	private int loan_id;
 	private int transfer_id;
 	private Date loan_history_date;
-	private int loan_history_state;//1이자/2원금/3중도상환+수수료/4해지로 인한 원금 상환
+	private int loan_history_state;//1정상/2연체/3중도상환+수수료/4해지로 인한 원금 상환
 	private int loan_history_amount;
 	private int loan_history_tranAmount;
 	private int loan_history_tranInterest;

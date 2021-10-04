@@ -44,7 +44,7 @@
 										<table class="table table-hover card-table">
 											<tr>
 												<th><label for="loan_product_name">대출 상품명</label></th>
-												<td><input type="text" id="loan_product_name" name="loan_product_name" value="${loanProduct.loan_product_name}" class="form-control input-border-bottom" autofocus required></td>
+												<td><input type="text" id="loan_product_name" name="loan_product_name" value="${loanProduct.loan_product_name}" class="form-control input-border-bottom" autofocus readonly required></td>
 											</tr>
 											<tr>
 												<th><label for="loan_product_rate">대출 금리(%)</label></th>
@@ -100,29 +100,7 @@
 																</c:choose>
 															</option>
 														</c:forEach>
-												</select>기존 : 	<c:choose>												
-																	<c:when test="${loanProduct.loan_product_bankCode == 0}">
-																		미기재
-																	</c:when>
-																	<c:when test="${loanProduct.loan_product_bankCode == 1}">
-																		국민
-																	</c:when>
-																	<c:when test="${loanProduct.loan_product_bankCode == 2}">
-																		우리
-																	</c:when>
-																	<c:when test="${loanProduct.loan_product_bankCode == 3}">
-																		농협
-																	</c:when>
-																	<c:when test="${loanProduct.loan_product_bankCode == 4}">
-																		신한
-																	</c:when>
-																	<c:when test="${loanProduct.loan_product_bankCode == 5}">
-																		하나
-																	</c:when>
-																	<c:when test="${loanProduct.loan_product_bankCode == 6}">
-																		코스모
-																	</c:when>
-																</c:choose></td>
+												</select></td>
 											</tr>
 											<tr>
 												<th><label for="loan_product_prepaymentRate">중도상환수수료 요율(%)</label></th>

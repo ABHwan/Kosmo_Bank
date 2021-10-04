@@ -477,8 +477,7 @@
     
     <update id="loanProductUpdate" parameterType="com.spring.bank.product.vo.LoanProductVO">
     	UPDATE loan_product 
-    	   SET loan_product_name = #{loan_product_name}
-    	       , loan_product_rate = #{loan_product_rate}
+    	   SET loan_product_rate = #{loan_product_rate}
     	       , loan_product_minPrice = #{loan_product_minPrice}
     	       , loan_product_maxPrice = #{loan_product_maxPrice}
     	       , loan_product_minDate = #{loan_product_minDate}
