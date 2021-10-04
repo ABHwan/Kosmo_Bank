@@ -5,13 +5,34 @@
     text-align: -webkit-center;
 }
 
+<<<<<<< HEAD
 .card {
+=======
+
+.card {
+	
+}
+
+.page-header {
+	text-align: -webkit-center;
+    justify-content: left;
+}
+
+.col-md-6 {
+	width: 800px;
+	flex:0 0 100%;
+	max-width: 100%;
+    text-align: -webkit-center;
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
 }
 
 .card-title {
     font-size: 30px !important;
     font-weight: 900 !important;
+<<<<<<< HEAD
     margin-right: 170px;
+=======
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
 }
 
 .main {
@@ -39,24 +60,39 @@
 }
 
 .bankImg {
+<<<<<<< HEAD
 	width: 50px;
 	height: 50px;
 	box-shadow: 1px 1px lightgrey;
+=======
+    width: 40px;
+    height: 40px;
+    box-shadow: 1px 1px lightgrey;
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
     border: 1px solid lightgrey;
     border-radius: 10px;
 }
 
 .bankname {
 	padding-left: 15px;
+<<<<<<< HEAD
 	font-size: 20px;
 }
 
 .btn-xs {
 	background-color: #00800061 !important;
+=======
+	font-size: 18px;
+}
+
+.btn-xs {
+	background-color: #31ce36 !important;
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
 	border: none;
 	font-size: 14px;
 }
 
+<<<<<<< HEAD
 .account-add-wrap {
 	
 }
@@ -67,6 +103,25 @@
 	font-size:18px;
 }
 
+=======
+/* 연동완료 */
+.btn-success:disabled {
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    
+}
+
+
+/* 연동완료 */
+.btn-round.btn-success {
+	height: 30px;
+    min-width: 30px;
+    width: 30px;
+    left: -8px;
+}
+
+/* 계좌추가 */
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
 .btn-icon.btn-xs {
     height: 30px;
     min-width: 30px;
@@ -75,3 +130,64 @@
     left: -5px;
 }
 
+<<<<<<< HEAD
+=======
+/* 계좌없음 */
+.btn-warning {
+	height: 30px;
+    min-width: 30px;
+    width: 30px;
+    left: -5px;
+}
+
+.account-add-wrap {
+	
+}
+
+.account-add {
+	color:green;
+	font-weight:800;
+	font-size:15px;
+	cursor:pointer;
+}
+
+.account-add:hover {
+	color: #1572E8;
+}
+
+.account-complete {
+	color:gray;
+	font-weight:800;
+	font-size:15px;
+	cursor:default;
+}
+
+.account-null {
+	color:gray;
+	font-weight:800;
+	font-size:15px;
+	cursor:default;
+}
+
+.account-delete {
+	color:gray;
+	font-weight:800;
+	font-size:15px;
+	cursor:pointer;
+}
+
+.account-delete:hover {
+	color:#ff4141;
+}
+
+.fa-plus:before {
+    content: "\f067";
+    padding-right: 1px;
+}
+
+.submit-btn {
+	display: none !important;
+}
+
+
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb

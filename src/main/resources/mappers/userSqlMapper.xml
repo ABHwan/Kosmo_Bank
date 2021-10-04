@@ -332,7 +332,7 @@
 	<!-- 예금 신청시필요한 unique_key -->
 	<select id="getUniqueKey" parameterType="String" resultType="String">
 		SELECT unique_key FROM members
-		WHERE member_id = #{id}
+		WHERE member_id = #{member_id}
 	</select>
 	
 	<!-- 예금 가입 시 account 테이블 insert   -->
@@ -769,48 +769,66 @@
     
     <!-- 대표 계좌 불러오기(복환) -->
     <select id="getAccountDefault" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
-    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 1 AND account_default = 1
+    	SELECT * FROM account WHERE member_id = #{member_id} AND account_default = 1
     </select>
     
-    <!-- 계좌 불러오기(복환 - 연동 O) -->
-    <select id="getAccountLinked" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
-    	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 1
+    <!-- 은행별 계좌 -->
+    <select id="getAccountList" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT a.*, rowNum rNum
+		  FROM account a 
+		 WHERE member_id = #{member_id}
+		 ORDER BY a.account_bankCode
+    </select>
+    
+    <!-- 계좌 연동 체크 -->
+    <select id="accountConnectCheck" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT account_bankCode, account_linked
+    	  FROM account WHERE unique_key = #{unique_key}
+    	 GROUP BY account_bankCode, account_linked
+    	 ORDER BY account_bankCode
+    </select>
+    
+    <!-- 은행별 계좌연동상태(복환 - 연동 O) -->
+    <select id="getAccountConnected" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    	SELECT account_bankCode, account_linked
+    	  FROM account
+    	 WHERE member_id = #{member_id} AND account_linked = 1
+    	 GROUP BY account_bankCode, account_linked
+    	 ORDER BY account_bankCode
     </select>
     
     
-    <!-- 계좌 불러오기(복환 - 연동 X) -->
-    <select id="getAccountUnLinked" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
+    <!-- 은행별 계좌연동상태 불러오기(복환 - 연동 X) -->
+    <select id="getAccountDisConnected" parameterType="String" resultType="com.spring.bank.user.vo.AccountVO">
     	SELECT * FROM account WHERE unique_key = #{unique_key} AND account_linked = 0
     </select>
     
     <!-- 계좌 연동하기(복환) - 연동하면 member_id 가 등록됨. -->
-    <update id="accountLinkAction" parameterType="java.util.Map">
-    	UPDATE account SET account_linked = 1, member_id = #{member_id} WHERE account_id = #{account_id} AND unique_key = #{unique_key} AND account_liked = 0 
+    <update id="accountConnectAction" parameterType="java.util.Map">
+    	UPDATE account SET member_id = #{member_id}, account_linked = 1 WHERE unique_key = #{unique_key} AND account_bankCode = #{account_bankCode}
     </update>
     
     <!-- 계좌 연동해제(복환) - 연동해제하면 member_id 등록해제 -->
-    <update id="accountUnLinkAction" parameterType="java.util.Map">
-    	UPDATE account SET account_linked = 0, member_id = null WHERE account_id = #{account_id} AND member_id = #{member_id} AND account_liked = 1
+    <update id="accountDisConnectAction" parameterType="String">
+    	UPDATE account SET account_default = 0, member_id = null, account_linked = 0 WHERE member_id = #{member_id} AND account_bankCode = #{account_bankCode}
     </update>
     
     
     <!-- 대표계좌설정(복환) 시작 -->
     <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 시작 -->
-    <select id="defaultDeliveryCnt" resultType="int">
+    <select id="defaultAccountCnt" resultType="int">
     	SELECT COUNT(*) FROM account WHERE member_id = #{member_id} AND account_default = 1
     </select>
     
-    <update id="defaultDeliveryUpdate">
+    <update id="defaultAccountUpdate">
     	UPDATE account SET account_default = 0 WHERE member_id = #{member_id} AND account_default = 1
     </update>
     
     <!-- 계좌 관리 -->
-    <update id="updateDelivery">
+    <update id="updateAccount">
     	UPDATE account SET account_password = #{account_password}, account_default = #{account_default} 
     	WHERE unique_key = #{unique_key} AND account_id = #{account_id}
     </update>
     <!-- DB에 대표 계좌가 존재하면 값을 0으로 변경 끝 -->
-    
-    
     <!-- 대표계좌설정(복환) 끝 -->
 </mapper>

@@ -34,7 +34,6 @@ import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.dao.CustomerDAOImpl;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
-import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -72,14 +71,11 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		String member_id = (String) req.getSession().getAttribute("customerID");
 		
-		// 세션 ID를 받아와 멤버 정보에 있는 고유키(unique_key)를 받아온다.
-		String unique_key = dao.getUniqueKey(member_id);
-		
 		// 고유키를 통해 해당하는 연동된 계좌들을 불러온다.
-		List<AccountVO> dtos = dao.getAccountLinked(unique_key);
+		List<AccountVO> dtos = dao.getAccountList(member_id);
 		
 		// 대표계좌 불러오기
-		AccountVO vo = dao.getAccountDefault(unique_key);
+		AccountVO vo = dao.getAccountDefault(member_id);
 		
 		req.setAttribute("vo", vo);
 		req.setAttribute("dtos", dtos);
@@ -1464,6 +1460,7 @@ public class CustomerServiceImpl implements CustomerService {
 		req.setAttribute("pageNum", pageNum); // 페이지 번호
 		req.setAttribute("number", number); // 출력용 글번호
 
+
 		if (cnt > 0) {
 			req.setAttribute("startPage", startPage); // 시작페이지
 			req.setAttribute("endPage", endPage); // 마지막 페이지
@@ -1529,22 +1526,25 @@ public class CustomerServiceImpl implements CustomerService {
 		// 출력용 글 번호
 		//number = cnt - (currentPage - 1) * pageSize; 
 		number = cnt - (currentPage - 1) * pageSize;
-		
+
 		System.out.println("number : " + number);
 		System.out.println("pageSize : " + pageSize);
-		
+
 		// 시작 페이지
 		// 1 = (1 / 3) * 3 + 1;
 		// startPage = (currentPage / pageBlock) * pageBlock + 1;
 		startPage = (currentPage / pageBlock) * pageBlock + 1;
+		
 		if(currentPage % pageBlock == 0) {
 			startPage -= pageBlock;
 		}
+
 		System.out.println("startPage : " + startPage);
-		
+
 		// 마지막 페이지
 		// 3 = 1 + 3 - 1
 		endPage = startPage + pageBlock - 1;
+
 		if(endPage > pageCount) {
 			endPage = pageCount;
 		}
@@ -2517,6 +2517,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 
 		cnt = dao.getLoanCancelCnt((String) req.getSession().getAttribute("customerID"));
+
 		System.out.println("cnt : " + cnt);
 
 		// 글 30건 기준
@@ -3032,12 +3033,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 		UserVO loanMember = dao.getUserInfo(member_id);
 		LoanProductVO loanProduct = dao.getLoanProductInfo(loan_product_name);
-		ArrayList<AccountVO_old> loanAccount = dao.loanAccountInfo(member_id);
 		
 		
 		model.addAttribute("loanMember", loanMember);
 		model.addAttribute("loanProduct", loanProduct);
-		model.addAttribute("loanAccount", loanAccount);
 	}
 
 
@@ -3101,4 +3100,89 @@ public class CustomerServiceImpl implements CustomerService {
 		System.out.println(loan);
 		req.setAttribute("loan", loan);
 	}
+
+	// 계좌 조회(연동)
+	@Override
+	public void myAccountList(HttpServletRequest req, Model model) {
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		List<AccountVO> dtos = dao.getAccountConnected(member_id);
+		
+		model.addAttribute("dtos", dtos);
+		
+	}
+	
+	// 계좌 연동체크(복환)
+	@Override
+	public void accountConnectCheck(HttpServletRequest req, Model model) {
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		String unique_key = dao.getUniqueKey(member_id);
+		
+		List<AccountVO> dtos = dao.accountConnectCheck(unique_key);
+		
+		model.addAttribute("dtos", dtos);
+		
+	}
+
+	// 계좌 연동(복환)
+	@Override
+	public int accountConnectAction(HttpServletRequest req, Model model) {
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		String unique_key = dao.getUniqueKey(member_id);
+		String account_bankCode = req.getParameter("account_bankCode");
+		
+		System.out.println("bankcode:" + account_bankCode);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("member_id", member_id);
+		map.put("unique_key", unique_key);
+		map.put("account_bankCode", account_bankCode);
+		
+		return dao.accountConnectAction(map);
+	}
+	
+	// 계좌 연동해제(복환)
+	@Override
+	public int accountDisConnectAction(HttpServletRequest req, Model model) {
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		String account_bankCode = req.getParameter("account_bankCode");
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("member_id", member_id);
+		map.put("account_bankCode", account_bankCode);
+		
+		return dao.accountDisConnectAction(map);
+	}
+	
+	// 계좌 연동관리(복환)
+	@Override
+	public void accountConnectedList(HttpServletRequest req, Model model) {
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		
+		List<AccountVO> list = dao.getAccountConnected(member_id);
+		
+		model.addAttribute("dtos", list);
+	}
+
+	// 은행별 계좌조회(복환)
+	@Override
+	public ArrayList<AccountVO> getAccountList(HttpServletRequest req, Model model) {
+		
+		String member_id = (String) req.getSession().getAttribute("customerID");
+		
+		return dao.getAccountList(member_id);
+		
+	}
+	
+	
 }

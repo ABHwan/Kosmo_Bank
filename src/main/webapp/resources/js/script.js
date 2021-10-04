@@ -479,3 +479,94 @@ function irpJoinInCheck() {
 	
 }
 
+<<<<<<< HEAD
+=======
+// 삭제 Confirm(복환)
+function deleteConfirm(formName, url) {
+	// 호출할 때 괄호 안에 formName, url 입력해주기
+	var form = document.formName
+	swal({
+		// Confirm 제목
+		title: '삭제를 진행하시겠습니까?',
+		// Confirm 내용
+		text: "실행하면 되돌릴 수 없습니다!",
+		// 아이콘 type
+		type: 'warning',
+		buttons:{
+			// 취소 버튼 설정
+			cancel: {
+				visible: true,
+				text : '아니오, 취소하겠습니다!',
+				className: 'btn btn-danger'
+			},
+			// 수락 버튼 설정
+			confirm: {
+				text : '네, 삭제를 진행하겠습니다!',
+				className : 'btn btn-success'
+			}
+		}
+	// 버튼을 누른 후 로직
+	}).then((willDelete) => {
+		// 수락을 눌렀을 때
+		if (willDelete) {
+			swal("정상적으로 처리되었습니다!", {
+				icon: "success",
+				buttons : {
+					confirm : {
+						className: 'btn btn-success'
+					}
+				}
+			});
+			// 수락 후 로직 처리
+			form.action = "depositProductDelete";
+		  	form.submit();
+			
+		} else {
+			swal("취소하였습니다!", {
+				buttons : {
+					confirm : {
+						className: 'btn btn-success'
+					}
+				}
+			});
+		}
+	});
+}
+
+function accountConnectConfirm(bankName) {
+	swal({
+		// Confirm 제목
+		title: bankName + '을 연동 하시겠습니까?',
+		// Confirm 내용
+		text: "다시 연동해제할 수 있습니다!",
+		// 아이콘 type
+		type: 'info',
+		buttons:{
+			// 수락 버튼
+			confirm: {
+				text : '네, 연동을 진행하겠습니다!',
+				className : 'btn btn-success'
+			},
+			// 취소 버튼
+			cancel: {
+				visible: true,
+				text : '아니오, 취소하겠습니다!',
+				className: 'btn btn-danger'
+			}
+		}
+	// 버튼을 누른 후 로직
+	}).then((check) => {
+		// 수락을 눌렀을 때
+		if (check) {
+			
+			return true;
+		
+		// 취소하였을 때
+		} else {
+			
+			return false;
+		}
+	});
+}
+
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb

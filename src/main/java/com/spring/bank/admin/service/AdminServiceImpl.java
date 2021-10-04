@@ -20,6 +20,7 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
@@ -750,7 +751,6 @@ public class AdminServiceImpl implements AdminService {
 
 		ArrayList<SavingProductVO> dtos = null;
 		if (cnt > 0) {
-
 			dtos = dao.searchSavingProduct(map);
 		}
 
@@ -804,7 +804,7 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("updateCnt", updateCnt);
 		model.addAttribute("pageNum", pageNum);
 	}
-
+	
 	// 관리자 페이지 적금 상품 삭제
 	@Override
 	public void deleteSavingProduct(HttpServletRequest req, Model model) {
@@ -823,6 +823,7 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 
+	
 	// 관리자 페이지 연금 상품 등록(지현)
 	@Override
 	public void insertIrpProduct(HttpServletRequest req, Model model) {
@@ -2092,6 +2093,7 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 
+
 	public void loanProductList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanProductList()]");
 
@@ -2960,7 +2962,7 @@ public class AdminServiceImpl implements AdminService {
 			break;
 
 		case 3:
-			bankImg = "/bank/resources/images/bank/nhicon.jpg";
+			bankImg = "/bank/resources/images/bank/nhicon.png";
 			break;
 
 		case 4:
@@ -2968,15 +2970,23 @@ public class AdminServiceImpl implements AdminService {
 			break;
 
 		case 5:
-			bankImg = "/bank/resources/images/bank/hanaicon.jpg";
+			bankImg = "/bank/resources/images/bank/hanaicon.png";
 			break;
 
 		case 6:
-			bankImg = "/bank/resources/images/bank/uriicon.jpg";
+			bankImg = "/bank/resources/images/bank/kosmoicon.png";
 			break;
 
 		}
 
 		return bankImg;
+	}
+
+	@Override
+	public ArrayList<DepositVO> selectDepositProductTest() {
+		
+		System.out.println("탔어");
+		
+		return dao.selectDepositProductTest();
 	}
 }

@@ -20,6 +20,12 @@ public class AccountVO {
 	int account_default;
 	int account_linked;
 	
+	// Request
+	String member_name;
+	String product_name;
+	String join_date;
+	String rNum;
+	
 	// 은행 logo 이미지
 	String account_bankImg;
 
@@ -143,6 +149,38 @@ public class AccountVO {
 		this.account_linked = account_linked;
 	}
 
+	public String getMember_name() {
+		return member_name;
+	}
+
+	public void setMember_name(String member_name) {
+		this.member_name = member_name;
+	}
+
+	public String getProduct_name() {
+		return product_name;
+	}
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+	public String getJoin_date() {
+		return join_date;
+	}
+
+	public void setJoin_date(String join_date) {
+		this.join_date = join_date;
+	}
+
+	public String getrNum() {
+		return rNum;
+	}
+
+	public void setrNum(String rNum) {
+		this.rNum = rNum;
+	}
+
 	public String getAccount_bankImg() {
 		return account_bankImg;
 	}
@@ -150,7 +188,6 @@ public class AccountVO {
 	public void setAccount_bankImg(String account_bankImg) {
 		this.account_bankImg = account_bankImg;
 	}
-	
 	
 
 }

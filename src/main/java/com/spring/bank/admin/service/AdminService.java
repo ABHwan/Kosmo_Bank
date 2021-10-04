@@ -1,8 +1,12 @@
 package com.spring.bank.admin.service;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
+
+import com.spring.bank.user.vo.DepositVO;
 
 public interface AdminService {
 	
@@ -23,6 +27,9 @@ public interface AdminService {
 	
 	// 관리자 페이지 예금 상품 조회
 	public void selectDepositProduct(HttpServletRequest req, Model model);
+	
+	// test
+	public ArrayList<DepositVO> selectDepositProductTest();
 	
 	// 관리자 페이지 예금 상품 검색
 	public void searchDepositProduct(HttpServletRequest req, Model model);

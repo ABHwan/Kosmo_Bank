@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
-import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.FundProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
@@ -222,7 +223,6 @@ public interface AdminDAO {
 
 	public UserVO getUserInfo(String member_id);
 	
-
 	// !지은!
 	
 	// 공지사항 쓰기 처리(민재)
@@ -239,5 +239,8 @@ public interface AdminDAO {
 
 	// 공지사항 수정처리(민재)
 	public int noticeDeleteAction(int notice_num);
+	
+	// test
+	public ArrayList<DepositVO> selectDepositProductTest();
 
 }

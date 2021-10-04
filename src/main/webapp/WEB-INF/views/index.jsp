@@ -43,7 +43,7 @@
 									</div>
 									<div class="card-detail">
 										<div class="login-btn-wrap">
-											<button type="button" class="login-btn" onclick="window.location='login.do'"
+											<button type="button" class="login-btn" onclick="window.location='${custPath}login.do'"
 											onmouseover="style='background-color: lightseagreen !important;'"
 											onmouseout="style='background-color: cadetblue !important;'">
 												로그인 후 이용해주세요!
@@ -102,7 +102,7 @@
 											</div>
 											<div class="info-user ml-3">
 												<div class="username"><fmt:formatNumber value="${dto.account_balance }" />원</div>
-												<div class="status">${account_id} 국민</div>
+												<div class="status">${dto.account_id} &nbsp; [${dto.account_stateContent }] </div>
 											</div>
 										</div>
 										</c:forEach>

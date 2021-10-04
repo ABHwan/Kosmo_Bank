@@ -2,6 +2,7 @@ package com.spring.bank.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.bank.admin.service.AdminServiceImpl;
 import com.spring.bank.user.service.CustomerServiceImpl;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.util.ImageUploaderHandler;
 
 
@@ -211,6 +213,23 @@ public class AdminController {
 		System.out.println("[url ==> /depositProductList]");
 		service.selectDepositProduct(req, model);
 		return "manager/depositProduct/depositProductList";
+	}
+	
+	// 관리자 - 예금관리 - 상품조회페이지
+	@RequestMapping("depositProductListTest")
+	public String depositProductListTest(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductList]");
+		
+		return "manager/depositProduct/test";
+	}
+	
+	// 관리자 - 예금관리 - 상품조회페이지
+	@ResponseBody
+	@RequestMapping("depositProductListTestSelect")
+	public ArrayList<DepositVO> depositProductListTestSelect(HttpServletRequest req, Model model) {
+		System.out.println("[url ==> /depositProductListTestSelect]");
+		
+		return service.selectDepositProductTest();
 	}
 	
 	// 관리자 - 예금관리 - 상품검색

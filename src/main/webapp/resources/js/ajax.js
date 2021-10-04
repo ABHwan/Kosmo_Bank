@@ -2,12 +2,12 @@
  * 
  */
 
-
-// 본인인증 ajax
-function confirm() {
-	IMP.init('iamport');
+// -- 계좌연동
+function accountConnectConfirm(bankcode) {
+	
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
+<<<<<<< HEAD
 	var access_token;
 	$.ajax({
 		type : 'POST',
@@ -81,14 +81,94 @@ function confirm() {
 					 		$("#pass").attr("diabled", true);
 					 		$("#pass").css("color", "black");
 					 		
+=======
+	var account_bankCode = $("#account_bankCode"+bankcode).val();
+	console.log("account_bankCode : " + account_bankCode);
+	
+	var bankName = "";
+	switch(bankcode) {
+		case 1 : bankName="국민은행";
+			break;
+		case 2 : bankName="우리은행";
+			break;
+		case 3 : bankName="농협은행";
+			break;
+		case 4 : bankName="신한은행";
+			break;
+		case 5 : bankName="하나은행";
+			break;
+		default : bankName="코스모뱅크";
+			break;
+	}
+	
+	swal({
+		// Confirm 제목
+		title: bankName + '을 연동 하시겠습니까?',
+		// Confirm 내용
+		text: "다시 연동해제할 수 있습니다!",
+		// 아이콘 type
+		type: 'info',
+		buttons:{
+			// 수락 버튼
+			confirm: {
+				text : '네, 연동을 진행하겠습니다!',
+				className : 'btn btn-success'
+			},
+			// 취소 버튼
+			cancel: {
+				visible: true,
+				text : '아니오, 취소하겠습니다!',
+				className: 'btn btn-danger'
+			}
+		}
+	// 버튼을 누른 후 로직
+	}).then((check) => {
+		// 수락을 눌렀을 때
+		if (check) {
+			$.ajax({
+				url : "accountConnectAction",
+				data:  {"account_bankCode":account_bankCode},
+				type: "post",
+				dataType: 'json',
+				
+				beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token);
+				},
+				dataSrc: '',
+				success : function(result) {
+					console.log("요청 성공");
+					console.log("성공여부 : " + result);
+					if (result > 0) {
+							// 1 : 연동완료
+							swal("계좌 연동에 성공하였습니다!", "아래 버튼을 클릭해주세요!", {
+								icon : "success",
+								buttons: {
+									confirm: {
+										className : 'btn btn-success'
+									}
+								},
+							});
+							setTimeout(function() {
+								window.location = "accountConnect";
+							}, 1000);
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
 						} else {
-							alert("이미 가입된 계정이 존재합니다.");
-							return false;
-						}
-						
-					}).fail(function() {
-						alert("요청 실패");
+							// 0 : 연동실패
+							swal("계좌 연동에 실패하였습니다!", "아래 버튼을 클릭해주세요!", {
+								icon : "error",
+								buttons: {
+									confirm: {
+										className : 'btn btn-danger'
+									}
+								},
+							});
+							setTimeout(function() {
+								window.location = "accountConnect";
+							}, 1000);
+							
+						} 
 					
+<<<<<<< HEAD
 					})
 			 		
 			 });
@@ -121,185 +201,140 @@ function confirmId() {
 		beforeSend : function(xhr){
 			xhr.setRequestHeader(header, token);
 		},
+=======
+					}, error : function() {console.log("요청 실패");}
+				});
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb
 		
-		success : function(data) {
-			console.log("성공");
-			$("#id_check").text("");
-			if (data == 1) {
-					// 1 : 아이디가 중복되는 문구
-					$("#id_check").text("사용중인 아이디입니다.");
-					$("#id_check").css("color", "red");
-					$("#userId").css("border-color", "red");
-					
-					$("input[name=hiddenId]").val(0);
-					console.log($("input[name=hiddenId]").val());
-					
-				} else {
-					// 0 : 사용가능
-					$("#id_check").text("사용 가능한 아이디입니다.");
-					$("#id_check").css("color","green");
-					$("#userId").css("border-color", "#d7d7d7");
-					$("input[name=hiddenId]").val(1);
-					console.log($("input[name=hiddenId]").val());
-					
-					// input 입력 값 없을 시  id_check 초기화
-					if(member_id == "") {
-						$("#id_check").text("");
-					}
-				} 
-			
-			}, error : function() {console.log("실패");}
-		});
-	}, 10);
-}
-
-//회원가입 이메일 인증
-function emailChk() {
-	
-	console.log("emailChk - ON");
-	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-	var dice;
-	var sss;
-	var click=0;
-	var userEmail;
-	var counter;
-	
-	$('#mail1').click(function() {
-		$("#dice").val('');
-		
-		userEmail1 = $("input[name=email1").val();
-		userEmail2 = $("input[name=email2").val();
-		userEmail = userEmail1 + "@" + userEmail2;
-		console.log("이메일 : " + userEmail);
-		// var idJ = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-		if(userEmail1 == ""){
-			alert("형식에 맞게 이메일을 입력해 주세요!");
-			return;
-		} else if(userEmail2 == "") {
-			alert("형식에 맞게 이메일을 입력해 주세요!");
-			return;
-		}
-		click++;
-		$('#dice_check').css('display','');
-		
-		if(click>=1){
-			$("#mail1").css('display','none').css('margin-top','0px').css('border','1px solid').css('cursor','pointer')
-			$("#mail2").css('display','')
-			$("#dice_check1").css('display','');
-			
-		}
-		
-		var stop = false;
-		var mm=5;
-		var ss=59;
-		// 인증번호 카운터
-		counter = setInterval(function(){
-			if(!stop){
-			var time_text =  mm+':'+ss+'초';
-			$("#dice_check").text(time_text);
-			$("#dice_check").css('color','red').css('display','inline-block');
-			$("input[name=counter]").val(1);
-			ss--;
-			if(ss==-1){
-				if(mm < 1){
-					mm=0;
-					if(ss<0){
-						clearInterval(counter);
-						$("#dice_check").text('');
-						$("#dice_check1").css('display','none');
-						
-						$("#mail1").css('display','').css('margin-top','0px').css('border','1px solid').css('cursor','pointer');
-						$("#mail2").css('display','none');
+		// 취소하였을 때
+		} else {
+			swal("취소하였습니다!", {
+				buttons : {
+					confirm : {
+						className: 'btn btn-success'
 					}
 				}
-				else{mm--;}
-				ss=10;
-			}
-			if(ss<=9){
-				ss = '0'+ss;
-			}
-			}
-			else{
-				clearInterval(counter);
-			}
-		},1000);
+			});
+			// 취소 로직처리
+			
+		}
+	});
+	
 		
-		$.ajax({
-			url : "usermailCheck.do",
-			type: "POST",
-			data:  {"userEmail":userEmail},
-			dataType: 'json',
-			beforeSend : function(xhr){
-				xhr.setRequestHeader(header, token);
+}
+
+
+
+//-- 계좌연동해제
+function accountDisConnectConfirm(bankcode) {
+	
+	var bankName = "";
+	switch(bankcode) {
+		case 1 : bankName="국민은행";
+			break;
+		case 2 : bankName="우리은행";
+			break;
+		case 3 : bankName="농협은행";
+			break;
+		case 4 : bankName="신한은행";
+			break;
+		case 5 : bankName="하나은행";
+			break;
+		default : bankName="코스모뱅크";
+			break;
+	}
+	
+	swal({
+		// Confirm 제목
+		title: bankName + '을 연동해제 하시겠습니까?',
+		// Confirm 내용
+		text: "다시 연동할 수 있습니다!",
+		// 아이콘 type
+		type: 'warning',
+		buttons:{
+			
+			// 수락 버튼
+			confirm: {
+				text : '네, 연동해제를 진행하겠습니다!',
+				className : 'btn btn-success'
 			},
-			success : function(data) {
-				dice = data.dice;
-			}, error : function() {console.log("실패");}		
-		})
-		
-		
-		// 다시 보내기 버튼
-		$('#mail2').click(function() {
+			// 취소 버튼
+			cancel: {
+				visible: true,
+				text : '아니오, 취소하겠습니다!',
+				className: 'btn btn-danger'
+			}
 			
-			mm=5;
-			ss=59;
-			
-			userEmail1 = $("input[name=email1").val();
-			userEmail2 = $("input[name=email2").val();
-			userEmail = userEmail1 + "@" + userEmail2;
-			console.log("이메일 : "+userEmail);
-			
-			$("input[name=emailChk]").val(0);
-			$("#dice").val('');
-			
-			
+		}
+	// 버튼을 누른 후 로직
+	}).then((check) => {
+		// 수락을 눌렀을 때
+		if (check) {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			var account_bankCode = $("#account_bankCode"+bankcode).val();
+			console.log("account_bankCode : " + account_bankCode);
 			$.ajax({
-				url : "usermailCheck.do",
-				type: "POST",
-				data:  {"userEmail":userEmail},
+				url : "accountDisConnectAction",
+				data:  {"account_bankCode":account_bankCode},
+				type: "post",
 				dataType: 'json',
+				
 				beforeSend : function(xhr){
 					xhr.setRequestHeader(header, token);
 				},
-				success : function(data) {
-					dice = data.dice;				
-				}, error : function() {console.log("실패");}		
-			})
-			
-		})
-	});
-
-
-	var suc;
-	$("#btn_dice").click(function(){
-		console.log("인증번호 확인버튼 누름");
-		if(dice==$("#dice").val()){
-			alert('성공');
-			clearInterval(counter);
-			suc =1;
-			$("#dice_check").html("") ;
-			//$("#dice_check").css("color","green");
-			$("#dice_check1").css('display','none');
-			$("#mail2").html("인증완료");
-			// pointer-events - none : a 태그 클릭 비활성화
-			$("#mail2").css("pointer-events", "none").css("color", "green");
-			
-			$("#dice").css('display','none');
-			$("#btn_dice").css('display','none');
-			$("input[name=emailChk]").val("1");
-			console.log("이메일인증" + $("input[name=emailChk]").val());
-			mm=0;
-			ss=0;
+				dataSrc: '',
+				success : function(result) {
+					console.log("요청 성공");
+					console.log("성공여부 : " + result);
+					if (result > 0) {
+							// 1 : 연동완료
+							swal("계좌 연동해제에 성공하였습니다!", "아래 버튼을 클릭해주세요!", {
+								icon : "success",
+								buttons: {
+									confirm: {
+										className : 'btn btn-success'
+									}
+								},
+							});
+							setTimeout(function() {
+								window.location = "accountConnectedList";
+							}, 1000);
+						} else {
+							// 0 : 연동실패
+							swal("계좌 연동해제에 실패하였습니다!", "아래 버튼을 클릭해주세요!", {
+								icon : "error",
+								buttons: {
+									confirm: {
+										className : 'btn btn-danger'
+									}
+								},
+							});
+							setTimeout(function() {
+								window.location = "accountConnectedList";
+							}, 1000);
+							
+						} 
+					
+					}, error : function() {console.log("요청 실패");}
+				});
+		
+		// 취소하였을 때
+		} else {
+			swal("취소하였습니다!", {
+				buttons : {
+					confirm : {
+						className: 'btn btn-success'
+					}
+				}
+			});
+			// 취소 로직처리
 			
 		}
-		else{
-			alert('인증번호를 확인해주세요');
-		}
 	});
-
 }
+<<<<<<< HEAD
 // -- 회원가입이메일인증
 
+=======
+>>>>>>> 234a5f596bf320ae67ba0884bf9dac3bb1082ffb

@@ -74,7 +74,7 @@
 				</c:if>
 			</td>
 			<td>
-				${vo.deposit_joinDate}
+				<fmt:formatDate value="${vo.deposit_joinDate}"/>
 			</td>
 			<td>
 				${vo.deposit_state}

@@ -258,7 +258,7 @@
 	 	}
 	 	
 	 	function setEndDate() {
-	 		if(document.newLoanSignform.loan_month.value != null && document.newLoanSignform.loan_startDate.value != null) {
+	 		if(document.newLoanSignform.loan_startDate.value != "") {
 	 			var startDate = document.newLoanSignform.loan_startDate.value.split('/');
 	 			var month = document.newLoanSignform.loan_month.value;
 
@@ -274,6 +274,8 @@
 	 			if(startDate[2] < 10) {startDate[2] = "0" + startDate[2];}
 	 			
 	 			document.newLoanSignform.loan_endDate.value = startDate[0] + "/" + startDate[1] + "/" + startDate[2];
+	 		} else {
+	 			document.newLoanSignform.loan_endDate.value = "대출 만기일을 입력해주세요.";
 	 		}
 	 	}
 	 	

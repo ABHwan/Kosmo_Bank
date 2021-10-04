@@ -87,8 +87,8 @@
 											</tr>
 										</table>
 										<div align="center"><br><br>
-											<input type="submit" class="btn btn-primary" value="완료">&emsp;
-											<input type="reset"	class="btn btn-primary" value="초기화">
+											<input type="submit" class="btn btn-primary submit" value="완료">&emsp;
+											<input type="reset"	class="btn btn-primary btn-border" value="초기화">
 										</div>
 									</form>
 								</div>

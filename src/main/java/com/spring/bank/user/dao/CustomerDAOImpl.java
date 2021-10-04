@@ -14,7 +14,6 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
-import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -334,9 +333,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 	 
 	//멤버의 unique_key가져오기 
 	@Override
-	public String getUniqueKey(String id) {
+	public String getUniqueKey(String member_id) {
 		
-		return sqlSession.getMapper(CustomerDAO.class).getUniqueKey(id);
+		return sqlSession.getMapper(CustomerDAO.class).getUniqueKey(member_id);
 	}
 	
 	//예금 신청 시 계좌 개설 
@@ -540,12 +539,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return dao.getLoanHistoryCnt(member_id);	
 	}
 
-	public ArrayList<AccountVO_old> loanAccountInfo(String member_id) {
-		System.out.println("[UserDAO => loanAccountInfo()]");
-		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
-		return dao.loanAccountInfo(member_id);	
-	}
-
 	public int newLoanSignAction(LoanVO loan) {
 		System.out.println("[UserDAO => newLoanSignAction()]");
 		CustomerDAO dao = sqlSession.getMapper(CustomerDAO.class);
@@ -639,26 +632,43 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	// 계좌 불러오기(연동 O)
 	@Override
-	public List<AccountVO> getAccountLinked(String unique_key) {
+	public List<AccountVO> getAccountConnected(String member_id) {
 		System.out.println("DAO - 연동계좌불러오기");
-		return sqlSession.getMapper(CustomerDAO.class).getAccountLinked(unique_key);
+		return sqlSession.getMapper(CustomerDAO.class).getAccountConnected(member_id);
 	}
 
 	// 계좌 불러오기(연동 X)
 	@Override
-	public List<AccountVO> getAccountUnLinked(String unique_key) {
+	public List<AccountVO> getAccountDisConnected(String unique_key) {
 		System.out.println("DAO - 비연동계좌불러오기");
-		return sqlSession.getMapper(CustomerDAO.class).getAccountUnLinked(unique_key);
+		return sqlSession.getMapper(CustomerDAO.class).getAccountDisConnected(unique_key);
+	}
+	
+	// 계좌 연동 체크(복환)
+	@Override
+	public List<AccountVO> accountConnectCheck(String unique_key) {
+		System.out.println("DAO - 연동계좌체크");
+		return sqlSession.getMapper(CustomerDAO.class).accountConnectCheck(unique_key);
 	}
 
+	// 계좌 연동하기(복환)
 	@Override
-	public int accountLinkAction(Map<String, Object> map) {
-		return sqlSession.getMapper(CustomerDAO.class).accountLinkAction(map);
+	public int accountConnectAction(Map<String, Object> map) {
+		System.out.println("DAO - 계좌 연동하기");
+		return sqlSession.getMapper(CustomerDAO.class).accountConnectAction(map);
 	}
 
+	// 계좌 연동해제(복환)
 	@Override
-	public int accountUnLinkAction(Map<String, Object> map) {
-		return sqlSession.getMapper(CustomerDAO.class).accountUnLinkAction(map);
+	public int accountDisConnectAction(Map<String, Object> map) {
+		System.out.println("DAO - 계좌 연동해제");
+		return sqlSession.getMapper(CustomerDAO.class).accountDisConnectAction(map);
+	}
+
+	// 은행별 계좌 조회(복환)
+	@Override
+	public  ArrayList<AccountVO> getAccountList(String member_id) {
+		return sqlSession.getMapper(CustomerDAO.class).getAccountList(member_id);
 	}
 
 	

@@ -10,7 +10,6 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountBookVO;
 import com.spring.bank.user.vo.AccountVO;
-import com.spring.bank.user.vo.AccountVO_old;
 import com.spring.bank.user.vo.CrawlerVO;
 import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
@@ -166,7 +165,7 @@ public interface CustomerDAO {
 	public int insertDeposit(DepositVO vo);
 	
 	//멤버의 unique_key가져오기
-	public String getUniqueKey(String id);
+	public String getUniqueKey(String member_id);
 	
 	//예금 신청 시 계좌 생성
 	public int insertAccount(AccountVO vo);
@@ -243,8 +242,6 @@ public interface CustomerDAO {
 
 	public int getLoanHistoryCnt(String member_id);
 
-	public ArrayList<AccountVO_old> loanAccountInfo(String member_id);
-
 	public int newLoanSignAction(LoanVO loan);
 
 	public LoanVO getLoanInfo(Map<String, Object> map);
@@ -279,21 +276,26 @@ public interface CustomerDAO {
 	// 공지사항 상세 페이지(민재)
 	public NoticeVO getNoticeDetail(int notice_num);
 	
-	// 대표 계좌 불러오기
+	// 대표 계좌 불러오기(복환)
 	public AccountVO getAccountDefault(String unique_key);
 	
-	// 계좌 불러오기(연동 O)
-	public List<AccountVO> getAccountLinked(String unique_key);
+	// 계좌 불러오기(연동 O)(복환)
+	public List<AccountVO> getAccountConnected(String unique_key);
 	
-	// 계좌 불러오기(연동 X)
-	public List<AccountVO> getAccountUnLinked(String unique_key);
+	// 계좌 불러오기(연동 X)(복환)
+	public List<AccountVO> getAccountDisConnected(String unique_key);
 	
-	// 계좌 연동하기
-	public int accountLinkAction(Map<String, Object> map);
+	// 계좌 연동 체크(복환)
+	public List<AccountVO> accountConnectCheck(String unique_key);
 	
-	// 계좌 연동해지
-	public int accountUnLinkAction(Map<String, Object> map);
+	// 계좌 연동하기(복환)
+	public int accountConnectAction(Map<String, Object> map);
 	
-	// 대표 계좌 설정
+	// 계좌 연동해지(복환)
+	public int accountDisConnectAction(Map<String, Object> map);
+	
+	// 은행별 계좌 조회(복환)
+	public ArrayList<AccountVO> getAccountList(String member_id);
+	
 	
 }

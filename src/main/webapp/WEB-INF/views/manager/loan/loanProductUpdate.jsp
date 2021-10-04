@@ -72,7 +72,7 @@
 														<c:forEach var="i" begin="0" end="6">
 															<option value="${i}"
 																<c:if test="${loanProduct.loan_product_bankCode == i}">
-																	checked
+																	selected
 																</c:if>
 															>
 																<c:choose>

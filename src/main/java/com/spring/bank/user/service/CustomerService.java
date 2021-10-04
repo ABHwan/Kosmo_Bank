@@ -1,10 +1,13 @@
 package com.spring.bank.user.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
+
+import com.spring.bank.user.vo.AccountVO;
 
 public interface CustomerService {
 	
@@ -169,5 +172,23 @@ public interface CustomerService {
 	
 	// 공지사항상세페이지(민재)
 	public void noticeDetailAction(HttpServletRequest req, Model model);
+	
+	// 계좌조회(복환)
+	public void myAccountList(HttpServletRequest req, Model model);
+	
+	// 계좌연동체크(복환)
+	public void accountConnectCheck(HttpServletRequest req, Model model);
+	
+	// 계좌연동(복환)
+	public int accountConnectAction(HttpServletRequest req, Model model);
+	
+	// 계좌연동해지(복환)
+	public int accountDisConnectAction(HttpServletRequest req, Model model);
+
+	// 계좌 연동 관리(복환)
+	public void accountConnectedList(HttpServletRequest req, Model model);
+	
+	// 은행별 계좌 조회
+	public ArrayList<AccountVO> getAccountList(HttpServletRequest req, Model model);
 	
 }

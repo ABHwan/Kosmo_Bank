@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그아웃 처리 페이지</title>
+<script src="${rePath}js/jquery-3.6.0.min.js"></script>
+<%@ include file="/WEB-INF/views/include/bootstrap.jsp" %>
+<title>세션중복 처리 페이지</title>
 </head>
 <body>
     <%
@@ -32,8 +35,25 @@
 	
 	
     <script>
-        alert("정상적으로 로그아웃 되었습니다.");
-        window.location = 'index.do';
+        swal({
+        	title : "중복로그인 시도가 감지되어 로그아웃됩니다!",
+        	text : "본인이 아니라면 주의하세요!",
+        	icon : "error",
+        	buttons: {
+        		confirm: {
+        			className : 'btn btn-danger'
+        			
+        		}
+        	},
+        }).then((result) => {
+        	if(result){
+        		setTimeout(function() {
+        			window.location = "index.do";
+        		}, 1000);
+        	}
+        });
+        
+        
     </script>
     
 </body>

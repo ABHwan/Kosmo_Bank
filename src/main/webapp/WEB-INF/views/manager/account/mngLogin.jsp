@@ -62,7 +62,7 @@
 						</p>
 					</div>
 					<div>
-						<input type="button" id="userLogin" name="userLogin" value="고객 로그인" onclick="window.location='${path}customer/login.do'">
+						<input type="button" id="userLogin" name="userLogin" value="고객 로그인" onclick="window.location='${custPath}login.do'">
 						<input type="button" id="adminLogin" name="adminLogin" value="관리자 로그인" onclick="window.location='${path}manager/mngLogin.do'">
 					
 					</div>

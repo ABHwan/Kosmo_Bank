@@ -14,6 +14,7 @@ import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
 import com.spring.bank.user.vo.AccountVO;
 import com.spring.bank.user.vo.CustomerAccountVO;
+import com.spring.bank.user.vo.DepositVO;
 import com.spring.bank.user.vo.InquiryVO;
 import com.spring.bank.user.vo.LoanProductVO;
 import com.spring.bank.user.vo.LoanVO;
@@ -533,4 +534,11 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return sqlSession.delete("com.spring.bank.admin.dao.AdminDAO.noticeDeleteAction", notice_num);
 	}
+
+	@Override
+	public ArrayList<DepositVO> selectDepositProductTest() {
+	
+		return sqlSession.getMapper(AdminDAO.class).selectDepositProductTest();
+	}
+
 }

@@ -13,7 +13,7 @@
 	
 	<!-- 회원본인인증 api 시작 -->
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.4.js"></script>
-	<script type="text/javascript" src="${rePath}js/ajax.js"></script>
+	<script type="text/javascript" src="${rePath}js/registerAjax.js"></script>
 	<!-- 회원본인인증 api 끝 -->
 	
 	

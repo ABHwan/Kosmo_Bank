@@ -107,7 +107,7 @@
 							<div class="collapse" id="base">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="myAccountList">
+										<a href="${custPath}myAccountList">
 											<span class="sub-item">계좌조회</span>
 										</a>
 									</li>
@@ -117,7 +117,7 @@
 										</a>
 									</li>									
 									<li>
-										<a href="accountConnect">
+										<a href="${custPath}accountConnect">
 											<span class="sub-item">계좌연동</span>
 										</a>
 									</li>
@@ -373,7 +373,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="#">
+										<a href="${custPath}accountConnectedList">
 											<span class="sub-item">연동관리</span>
 										</a>
 									</li>

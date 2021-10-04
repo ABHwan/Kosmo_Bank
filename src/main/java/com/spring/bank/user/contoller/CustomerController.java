@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -31,6 +32,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.AccessToken;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.spring.bank.user.service.CustomerServiceImpl;
+import com.spring.bank.user.vo.AccountVO;
 
 @Controller
 
@@ -45,7 +47,7 @@ public class CustomerController {
 	@Inject
 	private JavaMailSender javaMailSender;
 
-	
+	// 아임포트 client API
 	private IamportClient api = new IamportClient("imp_apikey", "ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW3ZGseDA6bkA5lamv9OqDMnxyeB9wqOsuO9W3Mx9YSJ4dTqJ3f");
 	
 	// main 화면(크롤링, 지호)
@@ -1025,7 +1027,7 @@ public class CustomerController {
 		return "redirect:accountBook";
 	}
 	
-	// 계좌연동
+	// 은행별 계좌조회(복환)
 	@RequestMapping("myAccountList")
 	public String myAccountList(HttpServletRequest req, Model model) {
 		
@@ -1033,11 +1035,59 @@ public class CustomerController {
 		return "customer/bank/myAccountList";
 	}
 	
-	// 계좌연동
+	// 은행별 계좌조회(복환)
+	@ResponseBody
+	@RequestMapping("myAccountListSelect")
+	public ArrayList<AccountVO> myAccountListSelect(HttpServletRequest req, Model model) {
+		
+		
+		return service.getAccountList(req, model);
+	}
+	
+	// 계좌화면
 	@RequestMapping("accountConnect")
 	public String accountConnect(HttpServletRequest req, Model model) {
 		
+		// 계좌 체크 후 뿌리기
+		service.accountConnectCheck(req, model);
 		
 		return "customer/bank/accountConnect";
 	}
+	
+	// 계좌연동하기
+	@ResponseBody
+	@RequestMapping("accountConnectAction")
+	public int accountConnectAction(HttpServletRequest req, Model model) {
+		
+		// 계좌 연동
+		return service.accountConnectAction(req, model);
+	}
+	
+	// 계좌연동관리
+	@RequestMapping("accountConnectedList")
+	public String accountConnectedList(HttpServletRequest req, Model model) {
+		// 계좌 연동관리
+		service.accountConnectedList(req, model);
+		
+		return "customer/bank/myAccountConnect";
+	}
+	
+	// 계좌연동하기
+	@ResponseBody
+	@RequestMapping("accountDisConnectAction")
+	public int accountDisConnectAction(HttpServletRequest req, Model model) {
+		
+		
+		
+		// 계좌 연동
+		return service.accountDisConnectAction(req, model);
+	}
+	
+	// 중복로그인 감지
+	@RequestMapping("sessionErr")
+	public String SessionError(HttpServletRequest req, Model model) {
+		
+		return "common/sessionErr";
+	}
+	
 }
