@@ -574,7 +574,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return sqlSession.getMapper(CustomerDAO.class).transferLoan(trans);
 	}
 
-	public int getTransID(TransferVO trans) {
+	public Integer getTransID(TransferVO trans) {
 		return sqlSession.getMapper(CustomerDAO.class).getTransID(trans);
 	}
 

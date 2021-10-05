@@ -3257,7 +3257,7 @@ public class CustomerServiceImpl implements CustomerService {
 			map.put("account_balance", account.getAccount_balance() - transfer_money);
 			int updateCnt = dao.accountPayment(map);
 			int insertCnt = dao.transferLoan(trans);
-			int transfer_id = dao.getTransID(trans);
+			Integer transfer_id = dao.getTransID(trans);
 			
 			LoanHistoryVO history = new LoanHistoryVO();
 			history.setLoan_id(loan.getLoan_id());

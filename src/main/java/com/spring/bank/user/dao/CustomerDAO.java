@@ -300,7 +300,7 @@ public interface CustomerDAO {
 
 	public int transferLoan(TransferVO trans);
 
-	public int getTransID(TransferVO trans);
+	public Integer getTransID(TransferVO trans);
 
 	public ArrayList<AccountVO> getAccountInfos(Map<String, Object> map);
 

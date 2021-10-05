@@ -554,8 +554,8 @@
     </update>
     
     <!-- 대출 납부 - transfer_id 가져오기 -->
-    <select id="getTransID" resultType = "int" parameterType="com.spring.bank.user.vo.TransferVO">
-    	SELECT transfer_id FROM transfer WHERE transfer_outComment = #{transfer_outComment} AND transfer_inOutDate = sysdate AND transfer_money = #{transfer_money} 
+    <select id="getTransID" resultType = "Integer" parameterType="com.spring.bank.user.vo.TransferVO">
+    	SELECT transfer_id FROM transfer WHERE transfer_outComment = #{transfer_outComment} AND transfer_money = #{transfer_money} 
     </select>
     
     <!-- 대출 납부 - loan history 추가 -->

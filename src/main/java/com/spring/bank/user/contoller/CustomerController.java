@@ -830,7 +830,8 @@ public class CustomerController {
 	}
 
 	// 대출 이자 상세
-	@RequestMapping("loanRateDetail.do")
+	@RequestMapping("lo"
+			+ "anRateDetail.do")
 	public String loanRateDetail(HttpServletRequest req, Model model) {
 		logger.info("[url ==> /loanRateDetail]");
 		return "customer/loan/loanRateDetail";
