@@ -350,6 +350,7 @@ public class AdminDAOImpl implements AdminDAO {
 		return dao.getLoanProductList(map);	
 	}
 
+	//
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map) { // parameter : keyword, start, end
 		System.out.println("[AdminDAO => searchLoanProductList()]");
 		AdminDAO dao = sqlSession.getMapper(AdminDAO.class);

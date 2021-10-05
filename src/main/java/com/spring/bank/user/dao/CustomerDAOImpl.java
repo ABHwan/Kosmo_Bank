@@ -1,5 +1,6 @@
 package com.spring.bank.user.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -754,5 +755,5 @@ public class CustomerDAOImpl implements CustomerDAO {
     public ArrayList<AccountBookVO> myAccountAutoTransfer(String member_id) {
         return sqlSession.getMapper(CustomerDAO.class).myAccountAutoTransfer(member_id);
     }
-	
+
 }

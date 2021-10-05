@@ -54,6 +54,7 @@ public class CustomerController {
 	@RequestMapping("index.do")
 	public String home(HttpServletRequest req, Model model) {
 		System.out.println("url ==> index");
+		
 		//service.exchanges(model);
 		
 		// 로그인 시 계좌 불러오기

@@ -490,7 +490,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void getDepositProductInfo(HttpServletRequest req, Model model) {
 		String deposit_product_name = req.getParameter("deposit_product_name");
-		
+		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
 		System.out.println(deposit_product_name + " 상품 상세조회");
 		DepositProductVO vo = dao.getDepositProductInfo(deposit_product_name);
 		model.addAttribute("vo", vo);
@@ -1091,6 +1091,7 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 
+
 	// 관리자 페이지 펀드 상품 등록 처리
 	@Override
 	public void fundProductInsertAction(HttpServletRequest req, Model model) {
@@ -1404,7 +1405,6 @@ public class AdminServiceImpl implements AdminService {
 		System.out.println("펀드상품 삭제여부 : " + deleteCnt);
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
-
 
 	// qna 조회(지현)
 	@Override
@@ -2007,6 +2007,8 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("pageNum", pageNum);
 	}
 
+
+
 	// 공지사항 수정인증(민재)
 	@Override
 	public void mngNoticeModifyDetail(HttpServletRequest req, Model model) {
@@ -2084,7 +2086,8 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
-
+	
+	// 대출 상품 목록
 	public void loanProductList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanProductList()]");
 
@@ -2186,6 +2189,7 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
+	// 대출 해지 목록
 	public void loanCancelList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanCancelList()]");
 		// 페이징
@@ -2285,7 +2289,8 @@ public class AdminServiceImpl implements AdminService {
 		}
 
 	}
-
+	
+	// 대출 상품 검색
 	public void searchLoanProductList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanProductList()]");
 
@@ -2390,12 +2395,14 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
+	// 대출 상품 삭제
 	public void loanProductDelete(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = req.getParameter("loan_product_name");
 		int deleteCnt = dao.loanProductDelete(loan_product_name);
 		model.addAttribute("deleteCnt", deleteCnt);
 	}
 
+	// 대출 상품 수정 처리
 	public void loanProductUpdateAction(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = req.getParameter("loan_product_name");
 		float loan_product_rate = (float) Double.parseDouble((String) req.getParameter("loan_product_rate"));
@@ -2425,11 +2432,13 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("updateCnt", updateCnt);
 	}
 
+	// 대출 상품 수정 폼
 	public void loanProductUpdate(HttpServletRequest req, Model model) { // 지은
 		LoanProductVO loanProduct = dao.getLoanProductInfo(req.getParameter("loan_product_name"));
 		model.addAttribute("loanProduct", loanProduct);
 	}
 
+	// 대출 상품 등록 처리
 	public void loanProductInsertAction(HttpServletRequest req, Model model) { // 지은
 		String loan_product_name = req.getParameter("loan_product_name");
 		float loan_product_rate = (float) Double.parseDouble((String) req.getParameter("loan_product_rate"));
@@ -2457,6 +2466,7 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("insertCnt", insertCnt);
 	}
 
+	// 대출 요청 목록
 	public void loanRequestList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanRequestList()]");
 
@@ -2557,6 +2567,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
+	// 대출 목록
 	public void loanList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => loanList()]");
 
@@ -2657,6 +2668,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
+	// 대출 승인
 	public void loanRequestAction(HttpServletRequest req, Model model) { // 지은
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("loan_id", req.getParameter("loan_id"));
@@ -2724,6 +2736,7 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("updateCnt", updateCnt);
 	}
 
+	// 대출 요청 목록 검색
 	public void searchLoanRequestList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => searchLoanRequestList()]");
 
@@ -2827,6 +2840,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
+	// 대출 목록 검색
 	public void searchLoanList(HttpServletRequest req, Model model) { // 지은
 		System.out.println("[AdminService => searchLoanList()]");
 

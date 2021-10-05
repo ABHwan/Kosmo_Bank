@@ -643,6 +643,19 @@
 		]]>
     </select>
     
+	<!-- 대출 내역 개수  -->
+	<select id="getLoanHistoryCntToLoan" parameterType="java.util.Map" resultType="int">
+    	SELECT COUNT(*) 
+		  FROM loan_history
+		 WHERE loan_id = #{loan_id} 
+    </select>
+    
+        
+	<!-- 대출 내역 개수  -->
+	<select id="getLoanDate" resultType="java.sql.Date">
+    	SELECT * 
+		  FROM loan_date
+    </select>
     
 	<!-- 대출 가입 개수 -->
 	<select id="getLoanHistoryCnt" parameterType="String" resultType="int">

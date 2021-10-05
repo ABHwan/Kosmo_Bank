@@ -19,13 +19,14 @@ public class AccountVO {
 	String unique_key;
 	int account_default;
 	int account_linked;
-	
+
 	// Request
 	private String member_name;
 	private String product_name;
 	private String join_date;
 	private String rNum;
 	
+
 	// 은행 logo 이미지
 	String account_bankImg;
 
@@ -149,6 +150,7 @@ public class AccountVO {
 		this.account_linked = account_linked;
 	}
 
+
 	public String getMember_name() {
 		return member_name;
 	}
@@ -181,6 +183,7 @@ public class AccountVO {
 		this.rNum = rNum;
 	}
 
+
 	public String getAccount_bankImg() {
 		return account_bankImg;
 	}
@@ -189,6 +192,5 @@ public class AccountVO {
 		this.account_bankImg = account_bankImg;
 	}
 
-	
 
 }

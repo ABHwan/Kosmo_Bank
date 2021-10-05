@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.bank.product.vo.DepositProductVO;
+import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.FundProductVO;
 import com.spring.bank.product.vo.IrpProductVO;
 import com.spring.bank.product.vo.SavingProductVO;
@@ -174,48 +175,70 @@ public interface AdminDAO {
 	// 대출 상품 목록
 	public ArrayList<LoanProductVO> getLoanProductList(Map<String, Object> map);
 
+	// 대출 상품 검색
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
 
+	// 대출 상품 추가
 	public int loanProductInsert(LoanProductVO l);
 
+	// 대출 상품 수정
 	public int loanProductUpdate(LoanProductVO l);
 
+	// 대출 상품 삭제
 	public int loanProductDelete(String loan_product_name);
 
+	// 대출 상품 조회
 	public LoanProductVO getLoanProductInfo(String loan_product_name);
 
+	// 대출 상품 검색 개수
 	public int getSearchLoanProductCnt(String keyword);
 
+	// 대출 목록 개수
 	public int getLoanCnt();
 
+	// 대출 요청 목록 개수
 	public int getLoanRequestCnt();
 
+	// 대출 목록
 	public ArrayList<LoanVO> getLoanList(Map<String, Object> map);
 
+	// 대출 요청 목록
 	public ArrayList<LoanVO> getLoanRequestList(Map<String, Object> map);
-
+	
+	// 대출 신청 승인 처리
 	public int loanRequestAction(Map<String, Object> map);
 
+	// 대출 신청 검색 개수
 	public int getSearchLoanRequestCnt(String keyword);
 	
+	// 대출 검색 개수
 	public int getSearchLoanCnt(String keyword);
 
+	// 대출 요청 검색 목록
 	public ArrayList<LoanVO> searchLoanRequestList(Map<String, Object> map);
 
+	// 대출 검색 목록
 	public ArrayList<LoanVO> searchLoanList(Map<String, Object> map);
 
+	// 대출 해지? 목록
 	public ArrayList<LoanProductVO> getLoanCancelList(Map<String, Object> map);
 
+	// 대출 해지 개수
 	public int getLoanCancelCnt();
 
+	// 대출 정보 얻어오기
 	public LoanVO getLoanInfo(Map<String, Object> map);
 
+	// 신규 대출 요금 계좌에 넣기
 	public int transNewLoanAccount(TransferVO trans);
 
+	// 계좌 잔고 올려주기
 	public int setNewLoanAccount(Map<String, Object> map);
 
+	// 입금 정정
 	public TransferVO resetNewLoanAccount(Map<String, Object> map);
 
+	// 회원 정보 가져오기
 	public UserVO getUserInfo(String member_id);
 	
 	// !지은!

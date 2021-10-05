@@ -232,7 +232,7 @@ public interface CustomerDAO {
 	public ArrayList<LoanProductVO> getLoanList(Map<String, Object> map);
 
 	public int getLoanCnt(Map<String, Object> map);
-
+	
 	public ArrayList<LoanProductVO> searchLoanProductList(Map<String, Object> map);
 
 	public int getSearchLoanProductCnt(String keyword);
